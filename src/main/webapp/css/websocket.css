@@ -1,0 +1,19 @@
+#cajaformulario{
+float: left;
+padding: 20px;
+border: 1px solid #999999;
+} #
+cajadatos{
+float: left;
+width: 500px;
+height: 350px;
+overflow: auto;
+margin-left: 20px;
+padding: 20px;
+border: 1px solid #999999;
+background: 122334;
+}#comando {
+	background-color: #FFCC00;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-style: oblique;
+}
