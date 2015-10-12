@@ -104,6 +104,10 @@ body {
 	width: 80%;
 	padding: 0px;
 	margin: 0px;
+	height: 80%;
+	background: #999999;
+	border: 1px solid #666666;
+	float: left;
 }
 #linea_alta_video {
 	padding: 0px;
@@ -126,6 +130,20 @@ body {
 	display: block;
 }
 
+.menu_li {
+	display: inline-block;
+	list-style: none;
+	padding: 3;
+	border-top-style: outset;
+	border-right-style: outset;
+	border-bottom-style: outset;
+	border-left-style: outset;
+	background-color: #FFFBB9;
+	margin: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
 #menu_li {
 	display: inline-block;
 	list-style: none;
