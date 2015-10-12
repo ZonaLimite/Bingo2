@@ -69,6 +69,7 @@ body {
 	margin-bottom: 0px;
 	margin-left: 8px;
 	text-align: center;
+	float: none;
 }
 #contador {
 	background-color: #333;

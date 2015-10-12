@@ -6,7 +6,6 @@ var boton_play;
 var boton_pause;
 
 function iniciar() {
-	alert("inicio");
 	video = document.getElementById("medio");
 	video.ontimeupdate = function() {refreshCount()};
     
