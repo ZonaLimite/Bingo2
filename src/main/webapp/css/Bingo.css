@@ -6,12 +6,16 @@ display: block;
 }
 
 body {
-	text-align: left;
+
 }
 #agrupar {
-	width: 960px;
-	margin: 15px auto;
+	width: 100%;
 	text-align: left;
+	margin-top: 15px;
+	margin-right: auto;
+	margin-bottom: 15px;
+	margin-left: auto;
+	float: left;
 }
 #cabecera1 {
 	display: inline;
@@ -21,12 +25,15 @@ body {
 #cabecera {
 	background: #FFFBB9;
 	border: 1px solid #999999;
-	padding: 20px;
+	padding: 0px;
+	display: block;
+	margin: 8px;
 }
 
 #logo {
 	text-align: left;
 	display: inline;
+	padding: 0px;
 }
 #menu {
 	display: inline-block;
@@ -35,15 +42,59 @@ body {
 	border-bottom-style: none;
 	border-left-style: none;
 	background-color: white;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 8px;
 }
+#player {
+	float: none;
+	display: block;
+	text-align: center;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+#medio {
+	width: 80%;
+	padding: 0px;
+	margin: 0px;
+}
+#linea_alta_video {
+	padding: 0px;
+	margin: 0px;
+	height: auto;
+}
+
+
+
+#seccion {
+	float: inherit;
+	width: 100%;
+	margin: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	padding: 0px;
+	text-align: center;
+	display: block;
+}
+
 #menu_li {
 	display: inline-block;
 	list-style: none;
-	padding: 0 px;
+	padding: 2;
 	font: bold 14px verdana, sans-serif;
 	border-top-style: outset;
 	border-right-style: outset;
 	border-bottom-style: outset;
 	border-left-style: outset;
 	background-color: #FFFBB9;
+	margin: 0px;
 }
