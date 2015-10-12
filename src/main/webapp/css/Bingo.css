@@ -52,6 +52,38 @@ body {
 	margin-bottom: 0px;
 	margin-left: 8px;
 }
+#botonera {
+	display: inline-block;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: white;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 8px;
+	float: none;
+	text-align: center;
+}
+#contador {
+	background-color: #333;
+	color: #C30;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	width: 50px;
+	padding-left: 4px;
+	height: 20px;
+	float: none;
+}
+
+
 #player {
 	float: none;
 	display: block;
@@ -59,7 +91,15 @@ body {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;	
 }
+#OTRO {
+	text-align: center;
+	float: none;
+}
+
 #medio {
 	width: 80%;
 	padding: 0px;
@@ -89,12 +129,14 @@ body {
 #menu_li {
 	display: inline-block;
 	list-style: none;
-	padding: 2;
-	font: bold 14px verdana, sans-serif;
+	padding: 3;
 	border-top-style: outset;
 	border-right-style: outset;
 	border-bottom-style: outset;
 	border-left-style: outset;
 	background-color: #FFFBB9;
 	margin: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
 }
