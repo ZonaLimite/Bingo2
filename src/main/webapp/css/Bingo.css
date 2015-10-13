@@ -158,3 +158,20 @@ body {
 	font-size: 14px;
 	font-weight: bold;
 }
+#Infotexto {
+	width: 80%;
+	text-align: center;
+	display: block;
+}
+#PanelInterface {
+	width: 80%;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	float: left;
+}
+#bola {
+	display: block;
+	float: left;
+}
