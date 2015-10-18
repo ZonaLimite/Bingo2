@@ -2,8 +2,12 @@
 <web-app metadata-complete="false" version="3.1"
  xmlns="http://xmlns.jcp.org/xml/ns/javaee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
- <context-param>
-  <param-name>video/mp4</param-name>
-  <param-value>.mp4</param-value>
- </context-param>
+  <mime-mapping>
+    <extension>mov</extension>
+    <mime-type>video/mp4</mime-type>
+ </mime-mapping>
+ <mime-mapping>
+    <extension>mp4</extension>
+    <mime-type>video/mp4</mime-type>
+</mime-mapping>
 </web-app>
