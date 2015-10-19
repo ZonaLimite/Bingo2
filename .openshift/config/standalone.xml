@@ -523,7 +523,7 @@
                 </host>
             </server>
             <servlet-container name="default">
-                <jsp-config/>
+                <jsp-config development="true" keep-generated="false" check-interval="1" modification-test-interval="1"/>
                 <websockets/>
             </servlet-container>
             <handlers>

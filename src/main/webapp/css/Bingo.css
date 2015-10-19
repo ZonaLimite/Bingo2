@@ -162,6 +162,7 @@ body {
 	width: 80%;
 	text-align: center;
 	display: block;
+	float: left;
 }
 #PanelInterface {
 	width: 80%;
@@ -169,7 +170,8 @@ body {
 	border-right-style: solid;
 	border-bottom-style: solid;
 	border-left-style: solid;
-	float: left;
+	float: none;
+	text-align: center;
 }
 #bola {
 	display: block;
