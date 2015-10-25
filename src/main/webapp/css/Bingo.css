@@ -29,6 +29,14 @@ body {
 	display: block;
 	margin: 8px;
 }
+#centro {
+	text-align: center;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+
 
 #logo {
 	text-align: left;
@@ -56,7 +64,6 @@ body {
 	display: inline-block;
 	border-top-style: none;
 	border-right-style: none;
-	border-bottom-style: none;
 	border-left-style: none;
 	background-color: white;
 	border-top-width: 0px;
@@ -69,7 +76,8 @@ body {
 	margin-bottom: 0px;
 	margin-left: 8px;
 	text-align: center;
-	float: none;
+	float: left;
+	border-bottom-style: none;
 }
 #contador {
 	background-color: #333;
@@ -82,10 +90,20 @@ body {
 	height: 20px;
 	float: none;
 }
+.tablaInfo {
+	text-align: left;
+	margin-top: 0px;
+	border-top-width: 0px;
+	border-style: inherit;
+	background-color: #000;
+	color: #FFF;
+	font-weight: bold;
+}
+
 
 
 #player {
-	float: none;
+	float: left;
 	display: block;
 	text-align: center;
 	width: 100%;
@@ -93,11 +111,7 @@ body {
 	padding: 0px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	border-radius: 5px;	
-}
-#OTRO {
-	text-align: center;
-	float: none;
+	border-radius: 5px;
 }
 
 #medio {
@@ -158,21 +172,7 @@ body {
 	font-size: 14px;
 	font-weight: bold;
 }
-#Infotexto {
-	width: 80%;
-	text-align: center;
-	display: block;
-	float: left;
-}
-#PanelInterface {
-	width: 80%;
-	border-top-style: solid;
-	border-right-style: solid;
-	border-bottom-style: solid;
-	border-left-style: solid;
-	float: none;
-	text-align: center;
-}
+
 #bola {
 	display: block;
 	float: left;
