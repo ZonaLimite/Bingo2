@@ -15,7 +15,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.jboss.logging.Logger;
 
-@ServerEndpoint("/example")
+@ServerEndpoint("/Endpoint")
 @Stateless
 public class WSEndpoint {
 	Logger log = Logger.getLogger(this.getClass());
@@ -32,7 +32,8 @@ public class WSEndpoint {
 	public void open(Session session) {
 		log.info("Open session:" + session.getId());
 		final Session s = session;
-				mes.execute(new Runnable() {
+		/*
+			mes.execute(new Runnable() {
 			@Override
 			public void run() {				
 				try {
@@ -44,7 +45,7 @@ public class WSEndpoint {
 					e.printStackTrace();
 				}
 			}			
-		});
+		});*/
 	}
 	
 	@OnClose
