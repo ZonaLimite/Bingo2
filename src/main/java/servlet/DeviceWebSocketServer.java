@@ -1,18 +1,23 @@
 package servlet;
 
+import java.io.IOException;
+
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
+import org.jboss.logging.Logger;
+
 @ServerEndpoint("/actions")
 public class DeviceWebSocketServer {
+Logger log = Logger.getLogger("MyLogger");
 @OnOpen
     public void open(Session session) {
-	System.out.print("Websocket abierto session =" + session.getId()) ;
+	log.info("Abierta Session :"+ session.getId());
 }
 
 @OnClose
     public void close(CloseReason reason) {
-	System.out.println("Closing a WebSocket due to " + reason.getReasonPhrase());
+	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
 }
 
 @OnError
@@ -21,6 +26,6 @@ public class DeviceWebSocketServer {
 
 @OnMessage
     public void handleMessage(String message, Session session) {
-	System.out.println("recibido mensaje:"+ message);
+	log.info("recibido mensaje:"+ message);
 }
 }
