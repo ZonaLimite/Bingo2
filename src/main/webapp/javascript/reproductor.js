@@ -33,7 +33,7 @@ function arrancar(){
 }
 function creaSocket(usuario){
 	alert("entrando en socket");
-	socket=new WebSocket("ws://localhost:8080/Endpoint");
+	socket=new WebSocket("ws://localhost:8080/actions");
 
 	socket.addEventListener('open', abierto, false);
 	socket.addEventListener('message', recibido, false);
@@ -41,7 +41,9 @@ function creaSocket(usuario){
 	socket.addEventListener('error', errores, false);	
 }
 
-
+function abierto(){
+	alert("socket abierto");
+}
 function recibido(e){
 	//manejador mensajes
 	cajadatos=document.getElementById('output');
