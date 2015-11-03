@@ -6,13 +6,14 @@ var boton_play;
 var boton_pause;
 var boton_iniciar;
 var boton_comando;
+var caja_output;
 function iniciar() {
 	video = document.getElementById("medio");
 	video.ontimeupdate = function() {refreshCount()};
     
 	boton_play = document.getElementById("play");
 	//boton_play.onclick = function() { reanudar()};
-	boton_play.addEventListener('click', reanudar, false);
+	boton_play.onclick = function() {reanudar()};
 
 	boton_pause = document.getElementById("pause");
 	boton_pause.onclick = function() { pausar()};
@@ -23,8 +24,14 @@ function iniciar() {
 	boton_comando = document.getElementById("comando");
 	boton_comando.onclick = function(){send_command()};
 	
+	caja_output = document.getElementById("output");
+	
+	
 }
 
+function show_InMessage(contenido){
+	caja_output.innerHTML=contenido;
+}
 function send_command(){
 		text_message = document.getElementById("text_comando").value;
 		socket_send(text_message);
@@ -40,7 +47,7 @@ function arrancar(){
 	creaSocket("paquito");
 }
 function creaSocket(usuario){
-	alert("entrando en socket");
+	show_InMessage("entrando en socket");
 	socket=new WebSocket("ws://localhost:8080/wildfly/actions");
 
 	socket.addEventListener('open', abierto, false);
@@ -50,18 +57,18 @@ function creaSocket(usuario){
 }
 
 function abierto(){
-	alert("socket abierto");
+	show_InMessage("socket abierto");
 }
 function cerrado(){
-	alert("El socket se ha cerrado");
+	show_InMessage("El socket se ha cerrado");
 }
 function errores(e){
-	alert("Error "+ e.ToString())
+	show_InMessage("Error "+ e.ToString())
 }
 function recibido(e){
 	//manejador mensajes
-	cajadatos=document.getElementById('output');
-	cajadatos.innerHTML='Recibido: '+e.data;
+	alert("recibiendo mensaje");
+	show_InMessage(e.data);
 }
 
 function socket_send(comanda){

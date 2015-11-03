@@ -177,3 +177,6 @@ body {
 	display: block;
 	float: left;
 }
+#output {
+	width: 80%;
+}
