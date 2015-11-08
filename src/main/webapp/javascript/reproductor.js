@@ -5,10 +5,18 @@ var video; /** el elemento video */
 var boton_play; 
 var boton_pause;
 var boton_iniciar;
+var boton_play_range;
 var boton_comando;
+var boton_notify;
 var caja_output;
+var contador;
+var seeking=false;
+var fin_seek=5;
+
 function iniciar() {
 	video = document.getElementById("medio");
+
+	contador=document.getElementById("contador");
 	video.ontimeupdate = function() {refreshCount()};
     
 	boton_play = document.getElementById("play");
@@ -24,23 +32,45 @@ function iniciar() {
 	boton_comando = document.getElementById("comando");
 	boton_comando.onclick = function(){send_command()};
 	
-	caja_output = document.getElementById("output");
+	boton_notify = document.getElementById("notify");
+	boton_notify.onclick = function(){
+		socket_send("secuenciaAcabada");
+	}
+		
+	comboTexto = document.getElementById("comboTexto");
 	
+	boton_play_range= document.getElementById("c_Range");
+	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	
 }
 
 function show_InMessage(contenido){
-	caja_output.innerHTML=contenido;
+	
+	inicial=comboTexto.innerHTML;
+	comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
+	
 }
 function send_command(){
 		text_message = document.getElementById("text_comando").value;
 		socket_send(text_message);
 }
 function refreshCount(){
-	contador=document.getElementById("contador");
-	contador.value=video.currentTime;
+	value_contador=video.currentTime;
+	if(seeking==true){
+		if(value_contador >= fin_seek){
+			seeking=false;
+			video.pause();
+			socket_send("secuenciaAcabada");
+		}
+	}
+	contador.value=value_contador;
 }
-
+function play_range(ini,fin){
+	seeking=true;
+	fin_seek=fin;
+	video.currentTime=ini;
+	video.play();
+}
 function arrancar(){
 	//creacion de webSocket y autenticacion
 	//autenticaUsuario();
@@ -67,7 +97,6 @@ function errores(e){
 }
 function recibido(e){
 	//manejador mensajes
-	alert("recibiendo mensaje");
 	show_InMessage(e.data);
 }
 
@@ -83,7 +112,6 @@ function pausar(){
 }
 
 function reanudar(){
-	alert("reanudar");
 	boton_play.style.borderBottomStyle = "inset";
 	boton_play.style.borderLeftStyle = "inset";
 	video.play();

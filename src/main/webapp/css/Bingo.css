@@ -180,3 +180,8 @@ body {
 #output {
 	width: 80%;
 }
+#comboTexto {
+	width: 100%;
+	list-style-type: none;
+	display: inherit;
+}

@@ -46,7 +46,11 @@
 	        <td>0</td>
 	        </tr>
 	      <tr>
-	        <td colspan="4" id="output">&nbsp;</td>
+	        <td colspan="4" id="output">
+            <select size=2 id="comboTexto">
+            	<option>OPCION1</option>
+            </select>
+            </td>
 	        </tr>
 	      </table>
 </article>
@@ -58,7 +62,16 @@
 	  <li id="pause" class="menu_li">PAUSE</li>
       <li class="menu_li">
 	  <input type="text" id="contador" value="00:00">
-	 </li>    
+	  </li>    
+      <li class="menu_li">
+	  <input type="text" id="seek_ini" value="00:00">
+	  </li>    
+      <li class="menu_li">
+	  <input type="text" id="seek_fin" value="00:00">
+	  </li>
+	  <li class="menu_li">    
+   		   <input id="c_Range" value="Play Range" type="button">
+   	  </li>
    </ul>
    </nav>
 </article>
@@ -73,6 +86,7 @@
     <input type="submit" name="comando" id="comando" value="Enviar">
     <label for="text_comando"></label>
     <input type="text" name="text_comando" id="text_comando">
+    <input type="button" id="notify">
  </div>   
   
 </footer>
