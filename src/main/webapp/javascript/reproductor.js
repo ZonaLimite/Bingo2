@@ -78,7 +78,7 @@ function arrancar(){
 }
 function creaSocket(usuario){
 	show_InMessage("entrando en socket");
-	socket=new WebSocket("ws://wildfly-bogatestjsp.rhcloud.com/actions");
+	socket=new WebSocket("wss://wildfly-bogatestjsp.rhcloud.com/actions");
 
 	socket.addEventListener('open', abierto, false);
 	socket.addEventListener('message', recibido, false);
