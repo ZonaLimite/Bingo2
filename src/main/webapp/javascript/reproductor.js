@@ -80,7 +80,7 @@ function creaSocket(usuario){
 	show_InMessage("entrando en socket");
 	socket=new WebSocket("ws://wildfly-bogatestjsp.rhcloud.com:8080/actions");
 	
-	socket=new WebSocket("ws://localhost:8080/wildfly/actions");
+	//socket=new WebSocket("ws://localhost:8080/wildfly/actions");
 	
 	socket.addEventListener('open', abierto, false);
 	socket.addEventListener('message', recibido, false);
