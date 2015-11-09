@@ -79,7 +79,7 @@ function arrancar(){
 function creaSocket(usuario){
 	var wsUri = getRootUri() + "/wildfly/actions";
 	alert("entrando en socket :" + wsUri);
-	socket=new WebSocket("ws://wildfly-bogatestjsp.rhcloud.com/actions");
+	socket=new WebSocket(wsUri);
 	
 	//socket=new WebSocket("ws://localhost:8080/wildfly/actions");
 	
@@ -94,8 +94,6 @@ function getRootUri() {
     (document.location.port == "" ? "8080" : document.location.port);    
 	alert(address);
     return address;
-}
-
 }
 
 function abierto(){
