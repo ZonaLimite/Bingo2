@@ -26,6 +26,7 @@ public class Hilo2 extends Thread{
     JTextArea area2;
     PocketBingo pb;
     Session session;
+    int maxNumbers = 6; 
     public Hilo2(Session sesion){
        this.session = sesion;
        
@@ -33,7 +34,7 @@ public class Hilo2 extends Thread{
     @Override
     public void run(){
         this.pb=(PocketBingo)session.getUserProperties().get("user");
-    	for(int i=1; i <91 ;i++)   {
+    	for(int i=1; i < maxNumbers+1 ;i++)   {
           log.log(Level.INFO, "Enviando mensaje de Hilo2 :{0}", i);
    
           synchronized(this){
@@ -41,7 +42,7 @@ public class Hilo2 extends Thread{
                 int number = calculaBolaNueva();
                 pb.setNewBola(number);
                 pb.setSecuenciaAcabada(false);
-                session.getBasicRemote().sendText("comando_cantar"+number);
+                enviarMensaje("cantarNumero_"+number);
                 wait(); 
 
             } catch (InterruptedException ex) {
@@ -49,7 +50,7 @@ public class Hilo2 extends Thread{
         	   String reasonInterrupt=pb.getReasonInterrupt();
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
-               			enviarMensaje("comando_EncenderNumero"+pb.getNewBola());
+               			enviarMensaje("EncenderNumero_"+pb.getNewBola());
                			pb.setLastNumber(pb.getNewBola());
                         pb.addNumerosCalled(pb.getNewBola());
                		
@@ -58,10 +59,6 @@ public class Hilo2 extends Thread{
                			enviarMensaje("No mas bolas para cantar");
                			return;
                }
-               
-           } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
            }
           
           }   
@@ -80,7 +77,7 @@ public class Hilo2 extends Thread{
         int number;
         
         boolean numeroValido=false;
-        number =  (new Random().nextInt(90))+1;
+        number =  (new Random().nextInt(maxNumbers))+1;
         while(numeroValido==false){
             Iterator itNumeros = pb.getNumerosCalled().iterator();
             numeroValido=true;            
@@ -89,7 +86,7 @@ public class Hilo2 extends Thread{
                if(compNumber==number){
                    log.info("Se produce coincidencia");
                    numeroValido=false;
-                   number =  (new Random().nextInt(90))+1;
+                   number =  (new Random().nextInt(maxNumbers))+1;
                    break;
                }
                

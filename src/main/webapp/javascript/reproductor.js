@@ -1,6 +1,7 @@
 /**
  * Codigo manejador player 
  */
+var rangos = ["1",0,2,"2",2,4,"3",4,6,"4",6,8,"5",8,10,"6",10,12];
 var video; /** el elemento video */
 var boton_play; 
 var boton_pause;
@@ -12,6 +13,7 @@ var caja_output;
 var contador;
 var seeking=false;
 var fin_seek=5;
+
 
 function iniciar() {
 	video = document.getElementById("medio");
@@ -57,10 +59,12 @@ function send_command(){
 }
 function refreshCount(){
 	value_contador=video.currentTime;
-	if(seeking==true){
+	if(seeking){
 		if(value_contador >= fin_seek){
-			seeking=false;
 			video.pause();
+			
+			seeking=false;
+			
 			socket_send("secuenciaAcabada");
 		}
 	}
@@ -70,6 +74,7 @@ function play_range(ini,fin){
 	seeking=true;
 	fin_seek=fin;
 	video.currentTime=ini;
+	
 	video.play();
 }
 function arrancar(){
@@ -79,7 +84,7 @@ function arrancar(){
 }
 function creaSocket(usuario){
 	var wsUri = getRootUri() + "actions";
-	alert("entrando en socket :" + wsUri);
+	
 	socket=new WebSocket(wsUri);
 	
 	//socket=new WebSocket("ws://localhost:8080/wildfly/actions");
@@ -119,8 +124,34 @@ function errores(e){
 function recibido(e){
 	//manejador mensajes
 	show_InMessage(e.data);
-}
 
+	mensaje=""+e.data;
+	
+	arrayMessages=mensaje.split("_");
+	
+	if(arrayMessages.length > 0){
+		 
+	comando=arrayMessages[0];
+		switch(comando) {
+		    case "cantarNumero":
+	    	    myRango=sacarRangos(arrayMessages[1]);
+				play_range(myRango[0],myRango[1]);	
+	    	    break;
+		   
+		    default:
+        		
+		} 
+	}
+}
+function sacarRangos(numerobase){
+	var rangoCanto= [];
+	indexSearch= rangos.indexOf(numerobase);
+	rangoCanto.push(rangos[indexSearch + 1]);
+	rangoCanto.push(rangos[indexSearch + 2]);
+	return rangoCanto;
+	//indexNumber= rangos.indexOf(numerobase):
+		
+}
 function socket_send(comanda){
 	socket.send(comanda);
 }
