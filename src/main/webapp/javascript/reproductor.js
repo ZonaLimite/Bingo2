@@ -60,6 +60,7 @@ function send_command(){
 function refreshCount(){
 	value_contador=video.currentTime;
 	if(seeking){
+		video.play();
 		if(value_contador >= fin_seek){
 			video.pause();
 			
@@ -75,7 +76,6 @@ function play_range(ini,fin){
 	fin_seek=fin;
 	video.currentTime=ini;
 	
-	video.play();
 }
 function arrancar(){
 	//creacion de webSocket y autenticacion
