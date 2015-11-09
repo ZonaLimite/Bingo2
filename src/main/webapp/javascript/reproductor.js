@@ -116,6 +116,7 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
+	socket_send("startGame");
 }
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");
