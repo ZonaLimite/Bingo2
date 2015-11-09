@@ -77,8 +77,9 @@ function arrancar(){
 	creaSocket("paquito");
 }
 function creaSocket(usuario){
-	show_InMessage("entrando en socket");
-	socket=new WebSocket("wss://wildfly-bogatestjsp.rhcloud.com/actions");
+	var wsUri = getRootUri() + "/wildfly/actions";
+	alert("entrando en socket :" + wsUri);
+	socket=new WebSocket("ws://wildfly-bogatestjsp.rhcloud.com/actions");
 	
 	//socket=new WebSocket("ws://localhost:8080/wildfly/actions");
 	
@@ -86,6 +87,15 @@ function creaSocket(usuario){
 	socket.addEventListener('message', recibido, false);
 	socket.addEventListener('close', cerrado, false);
 	socket.addEventListener('error', errores, false);	
+	
+
+function getRootUri() {
+    addrees="ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+    (document.location.port == "" ? "8080" : document.location.port);    
+	alert(address);
+    return address;
+}
+
 }
 
 function abierto(){
