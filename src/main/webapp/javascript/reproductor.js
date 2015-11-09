@@ -91,7 +91,7 @@ function creaSocket(usuario){
 }
 function getRootUri() {
     address="ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
-    (document.location.port == "" ? "8080" : document.location.port);    
+    (document.location.port == "" ? "8000" : document.location.port);    
 	alert(address);
     return address;
 }
