@@ -75,14 +75,16 @@ function play_range(ini,fin){
 	fin_seek=fin;
 	video.currentTime=ini;
 	seeking="true";
-	video.focus();
 	video.play();
 	
 }
 function arrancar(){
 	//creacion de webSocket y autenticacion
 	//autenticaUsuario();
+	video.play();
+	video.pause();
 	creaSocket("paquito");
+	
 }
 function creaSocket(usuario){
 	var wsUri = getRootUri() + "actions";
