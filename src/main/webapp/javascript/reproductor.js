@@ -17,6 +17,8 @@ var fin_seek;
 
 function iniciar() {
 	video = document.getElementById("medio");
+	video.play();
+	video.pause();
 
 	contador=document.getElementById("contador");
 	video.ontimeupdate = function() {refreshCount()};
