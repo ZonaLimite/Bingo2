@@ -77,7 +77,7 @@ function arrancar(){
 	creaSocket("paquito");
 }
 function creaSocket(usuario){
-	var wsUri = getRootUri() + "/wildfly/actions";
+	var wsUri = getRootUri() + "/actions";
 	alert("entrando en socket :" + wsUri);
 	socket=new WebSocket(wsUri);
 	
