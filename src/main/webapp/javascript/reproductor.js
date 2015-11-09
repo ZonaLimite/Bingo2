@@ -11,7 +11,7 @@ var boton_comando;
 var boton_notify;
 var caja_output;
 var contador;
-var seeking=false;
+var seeking="false";
 var fin_seek=5;
 
 
@@ -59,12 +59,11 @@ function send_command(){
 }
 function refreshCount(){
 	value_contador=video.currentTime;
-	if(seeking){
-		video.play();
+	if(seeking=="true"){
 		if(value_contador >= fin_seek){
 			video.pause();
 			
-			seeking=false;
+			seeking="false";
 			
 			socket_send("secuenciaAcabada");
 		}
@@ -72,9 +71,12 @@ function refreshCount(){
 	contador.value=value_contador;
 }
 function play_range(ini,fin){
-	seeking=true;
-	fin_seek=fin;
 	video.currentTime=ini;
+	fin_seek=fin;
+	seeking="true";
+	video.play();
+	
+	
 	
 }
 function arrancar(){
