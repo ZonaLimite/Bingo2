@@ -12,7 +12,7 @@ var boton_notify;
 var caja_output;
 var contador;
 var seeking="false";
-var fin_seek=5;
+var fin_seek;
 
 
 function iniciar() {
@@ -57,10 +57,10 @@ function send_command(){
 		socket_send(text_message);
 }
 function refreshCount(){
-	value_contador=video.currentTime;
+	
 	if(seeking=="true"){
-		
-		if(value_contador >= fin_seek){
+			
+		if(video.currentTime >= fin_seek){
 			video.pause();
 			
 			seeking="false";
@@ -68,15 +68,13 @@ function refreshCount(){
 			socket_send("secuenciaAcabada");
 		}
 	}
-	contador.value=value_contador;
+	contador.value=video.currentTime;
 }
 function play_range(ini,fin){
-	video.currentTime=ini;
 	fin_seek=fin;
+	video.currentTime=ini;
 	seeking="true";
 	video.play();
-	
-	
 	
 }
 function arrancar(){
