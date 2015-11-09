@@ -17,8 +17,7 @@ var fin_seek;
 
 function iniciar() {
 	video = document.getElementById("medio");
-	video.play();
-	
+		
 	contador=document.getElementById("contador");
 	video.ontimeupdate = function() {refreshCount()};
     
@@ -72,6 +71,7 @@ function refreshCount(){
 	contador.value=video.currentTime;
 }
 function play_range(ini,fin){
+	alert("Play "+ini+","+fin);
 	fin_seek=fin;
 	video.currentTime=ini;
 	seeking="true";
