@@ -75,6 +75,7 @@ function play_range(ini,fin){
 	fin_seek=fin;
 	video.currentTime=ini;
 	seeking="true";
+	video.focus();
 	video.play();
 	
 }
