@@ -88,9 +88,9 @@ function creaSocket(usuario){
 	socket.addEventListener('close', cerrado, false);
 	socket.addEventListener('error', errores, false);	
 	
-
+}
 function getRootUri() {
-    addrees="ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+    address="ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
     (document.location.port == "" ? "8080" : document.location.port);    
 	alert(address);
     return address;
