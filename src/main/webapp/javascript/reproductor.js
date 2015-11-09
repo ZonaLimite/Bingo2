@@ -22,7 +22,6 @@ function iniciar() {
 	video.ontimeupdate = function() {refreshCount()};
     
 	boton_play = document.getElementById("play");
-	//boton_play.onclick = function() { reanudar()};
 	boton_play.onclick = function() {reanudar()};
 
 	boton_pause = document.getElementById("pause");
@@ -60,6 +59,7 @@ function send_command(){
 function refreshCount(){
 	value_contador=video.currentTime;
 	if(seeking=="true"){
+		
 		if(value_contador >= fin_seek){
 			video.pause();
 			
