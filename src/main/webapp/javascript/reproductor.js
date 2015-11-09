@@ -48,6 +48,7 @@ function show_InMessage(contenido){
 	
 	inicial=comboTexto.innerHTML;
 	comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
+	comboTexto.value=contenido;
 	
 }
 function send_command(){
@@ -77,7 +78,7 @@ function arrancar(){
 	creaSocket("paquito");
 }
 function creaSocket(usuario){
-	var wsUri = getRootUri() + "/actions";
+	var wsUri = getRootUri() + "actions";
 	alert("entrando en socket :" + wsUri);
 	socket=new WebSocket(wsUri);
 	
@@ -90,10 +91,20 @@ function creaSocket(usuario){
 	
 }
 function getRootUri() {
-    address="ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
-    (document.location.port == "" ? "8000" : document.location.port);    
-	alert(address);
-    return address;
+	/*Web Sockets on OpenShift work over ports 8000 for ws and 8443 for wss,*/
+	    
+		if(document.location.hostname=="localhost"){
+			nameEndPoint = "/wildfly/";
+			port="8080";
+		}
+		else{
+			nameEndPoint="/";
+			port="8000";
+		}
+		
+        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+                (document.location.port == "" ? "8000" : document.location.port) + nameEndPoint;
+    
 }
 
 function abierto(){
