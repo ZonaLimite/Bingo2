@@ -8,11 +8,16 @@
         <meta charset="utf-8">
         <title>HelloWorld Web sockets</title>
         <script >
-            var wsUri = getRootUri() + "/wildfly/actions";
+            var wsUri = getRootUri() ;
  
             function getRootUri() {
+				if(document.location.hostname=="localhost")
+					nameEndPoint = "/wildfly/hello";
+				else{
+					nameEndPoint="/hello";
+				} 
                 return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
-                        (document.location.port == "" ? "8080" : document.location.port);
+                        (document.location.port == "" ? "8080" : document.location.port) + nameEndPoint;
             }
  
             function init() {
