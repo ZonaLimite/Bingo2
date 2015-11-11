@@ -124,7 +124,7 @@ private Session mySesion;
 	  		fichero=ruta+"\\"+user;
 	  	}else{
 				ruta = System.getenv("OPENSHIFT_DATA_DIR");
-				fichero=ruta+"/"+user;
+				fichero=ruta+user;
 	  	}
 	  try
       {
