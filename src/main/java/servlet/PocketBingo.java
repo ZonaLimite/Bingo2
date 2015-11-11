@@ -22,11 +22,22 @@ public class PocketBingo implements Serializable {
     private int newBola;
     private String reasonInterrupt;
     private boolean secuenciaAcabada=true;
-    
+    private String IdState = "NewGame";
+    /* 
+     * IdState :
+     *  NewGame,Paused,Started,Finalized
+     */
     public boolean getSecuenciaAcabada(){
         return secuenciaAcabada;
     }
-    public void setSecuenciaAcabada(boolean secAca){
+    public String getIdState() {
+		
+    	return IdState;
+	}
+	public void setIdState(String idState) {
+		IdState = idState;
+	}
+	public void setSecuenciaAcabada(boolean secAca){
         this.secuenciaAcabada = secAca;
     }
     public int getNumeroOrden() {

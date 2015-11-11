@@ -26,7 +26,9 @@ public class Hilo2 extends Thread{
     JTextArea area2;
     PocketBingo pb;
     Session session;
-    int maxNumbers = 6; 
+    String status;
+    int maxNumbers = 6;
+    int orden;
     public Hilo2(Session sesion){
        this.session = sesion;
        
@@ -34,15 +36,25 @@ public class Hilo2 extends Thread{
     @Override
     public void run(){
         this.pb=(PocketBingo)session.getUserProperties().get("user");
-    	for(int i=1; i < maxNumbers+1 ;i++)   {
+        status=pb.getIdState();
+        if(status.equals("NewGame")){
+        	orden =1;
+        	pb.setIdState("Started");
+        }else if(status.equals("Started")){
+        	//--->actualizar paneles
+        	orden= pb.getNumeroOrden();
+        }
+    	for(int i=orden; i < maxNumbers+1 ;i++)   {
           log.log(Level.INFO, "Enviando mensaje de Hilo2 :{0}", i);
    
           synchronized(this){
             try{
                 int number = calculaBolaNueva();
                 pb.setNewBola(number);
+                
+                pb.setNumeroOrden(i);
                 pb.setSecuenciaAcabada(false);
-                enviarMensaje("cantarNumero_"+number);
+                enviarMensaje("cantarNumero_"+number+"_"+pb.getNumeroOrden());
                 wait(); 
 
             } catch (InterruptedException ex) {
@@ -56,13 +68,14 @@ public class Hilo2 extends Thread{
                		
                		break;
                		case "offLine":
-               			enviarMensaje("No mas bolas para cantar");
+               			enviarMensaje("EndBalls");
                			return;
                }
            }
           
           }   
         }
+    	//pb.setIdState("Finalized");
     	return;
     }
     private void enviarMensaje(String textMessage){
@@ -84,7 +97,7 @@ public class Hilo2 extends Thread{
             while(itNumeros.hasNext()){
                int compNumber=(int) itNumeros.next();
                if(compNumber==number){
-                   log.info("Se produce coincidencia");
+                   //log.info("Se produce coincidencia");
                    numeroValido=false;
                    number =  (new Random().nextInt(maxNumbers))+1;
                    break;

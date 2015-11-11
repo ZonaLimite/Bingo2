@@ -10,7 +10,9 @@ var boton_play_range;
 var boton_comando;
 var boton_notify;
 var caja_output;
+var datoOrdenBola;
 var contador;
+
 var seeking="false";
 var fin_seek;
 
@@ -33,6 +35,7 @@ function iniciar() {
 	boton_comando = document.getElementById("comando");
 	boton_comando.onclick = function(){send_command()};
 	
+	datoOrdenBola= document.getElementById("datoOrdenBola")
 	boton_notify = document.getElementById("notify");
 	boton_notify.onclick = function(){
 		socket_send("secuenciaAcabada");
@@ -71,7 +74,8 @@ function refreshCount(){
 	contador.value=video.currentTime;
 }
 function play_range(ini,fin){
-	alert("Play "+ini+","+fin);
+	document.getElementById("seek_ini").value=ini;
+	document.getElementById("seek_fin").value=fin;
 	fin_seek=fin;
 	video.currentTime=ini;
 	seeking="true";
@@ -118,7 +122,7 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	socket_send("startGame");
+	//socket_send("startGame");
 }
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");
@@ -138,11 +142,22 @@ function recibido(e){
 		 
 	comando=arrayMessages[0];
 		switch(comando) {
-		    case "cantarNumero":
+		    
+		//Cantar numero y mostrar orden bola
+		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);
-				play_range(myRango[0],myRango[1]);	
+				datoOrdenBola.innerHTML=arrayMessages[2];
+	    	    play_range(myRango[0],myRango[1]);	
 	    	    break;
-		   
+		case "Info":
+				if(arrayMessages[1]="PocketAbierto"){
+					result=confirm("Hay una partida empezada,desea continuar(Yes) o empezar(No)")
+					if(result){
+						socket_send("resume");
+					}else{
+						socket_send("startGame")
+					}
+				}
 		    default:
         		
 		} 
