@@ -12,7 +12,7 @@ var boton_notify;
 var caja_output;
 var datoOrdenBola;
 var contador;
-
+var lienzo;
 var seeking="false";
 var fin_seek;
 
@@ -45,6 +45,9 @@ function iniciar() {
 	
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
+	canvas=document.getElementById('lienzo');
+	lienzo=canvas.getContext('2d');
+	
 	
 }
 
@@ -122,6 +125,12 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
+	var imagen=new Image();
+	imagen.src="./images/Bingo.png";
+	alert("Ancho canvas=" + canvas.width + ", alto="+ canvas.height);
+	imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0)}, false);
+	
+	
 	//socket_send("startGame");
 }
 function cerrado(){

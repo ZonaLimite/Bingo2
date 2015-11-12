@@ -7,12 +7,17 @@
 <script src="javascript/reproductor.js"></script>
 
 <link href="css/Bingo.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+body {
+	background-color: #000;
+}
+</style>
 </head>
 
 <body>
 <div id="agrupar">
 <header id="cabecera">
-      <img id="logo" src="images/IconoBola.jpg" width=			"74" height="70" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg">
+      <img id="logo" src="images/IconoBola.jpg" width=			"72" height="55" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg">
               <h1 id="cabecera1">BINGO 2016</h1>
 </header>
 <nav id="menu">
@@ -26,15 +31,9 @@
 
 
 <article id="centro">
-<video id="medio" controls>
-	<source src="http://boga.esy.es/video/ines2oo1.mov" type="video/mp4"> 
-	
-	HTML5 video is not supported by this browser
-</video>
-
-	
-	    <table border="1" align="center" class="tablaInfo">
-          <tr >
+  <canvas id="lienzo" > </canvas>
+<table border="1" align="center" class="tablaInfo">
+      <tr >
 	        <td>Orden Bola  :</td>
 	        <td id="datoOrdenBola">0</td>
 	        <td id="datoLinea">Premio Linea :</td>
@@ -88,7 +87,10 @@
     <label for="text_comando"></label>
     <input type="text" name="text_comando" id="text_comando">
     <input type="button" id="notify">
- </div>   
+    <video id="medio" controls>
+      <source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
+      HTML5 video is not supported by this browser </video>
+  </div>   
   
 </footer>
 
