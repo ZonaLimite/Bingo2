@@ -127,8 +127,8 @@ function abierto(){
 	show_InMessage("socket abierto");
 	var imagen=new Image();
 	imagen.src="./images/Bingo.png";
-	alert("Ancho canvas=" + canvas.width + ", alto="+ canvas.height);
-	imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0)}, false);
+	//alert("Ancho canvas=" + canvas.width + ", alto="+ canvas.height);
+	imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
 	
 	
 	//socket_send("startGame");
