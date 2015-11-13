@@ -7,24 +7,22 @@ display: block;
 #agrupar {
 	width: 100%;
 	text-align: left;
-	margin-top: 15px;
-	margin-right: auto;
-	margin-bottom: 15px;
-	margin-left: auto;
 	float: left;
+	margin: 0px;
 }
 
 #cabecera1 {
 	display: inline;
 	text-align: center;
 	vertical-align: 50%;
+	margin: 0px;
 }
 #cabecera {
 	background: #FFFBB9;
 	border: 1px solid #999999;
 	padding: 0px;
 	display: block;
-	margin: 8px;
+	margin: 0px;
 }
 #centro {
 	text-align: center;
@@ -56,6 +54,7 @@ display: block;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 8px;
+	height: 5%;
 }
 #botonera {
 	display: inline-block;
@@ -133,8 +132,9 @@ display: block;
 	border-bottom-style: groove;
 	border-left-style: groove;
 	position: relative;
-	height: 30%;
+	height: 500px;
 	width: 100%;
+	margin: 0px;
 
 }
 
@@ -157,7 +157,7 @@ display: block;
 .menu_li {
 	display: inline-block;
 	list-style: none;
-	padding: 3;
+	padding: 0;
 	border-top-style: outset;
 	border-right-style: outset;
 	border-bottom-style: outset;
@@ -170,7 +170,6 @@ display: block;
 }
 #menu_li {
 	display: inline-block;
-	list-style: none;
 	padding: 3;
 	border-top-style: outset;
 	border-right-style: outset;

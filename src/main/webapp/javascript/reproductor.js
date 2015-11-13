@@ -215,6 +215,6 @@ function reanudar(){
 function procesarCuadros(){
 	//lienzo.drawImage(video,0,0,video.width,video.height,(canvas.width/2)-30,(canvas.height/2)-30,30,30);
 	
-	lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-24,58,51);
+	lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
 }
 window.onload=iniciar;
