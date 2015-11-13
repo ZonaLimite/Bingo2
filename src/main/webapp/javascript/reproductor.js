@@ -49,6 +49,7 @@ function iniciar() {
 	lienzo=canvas.getContext('2d');
 	
 	
+	
 }
 
 function show_InMessage(contenido){
@@ -67,8 +68,9 @@ function refreshCount(){
 	if(seeking=="true"){
 			
 		if(video.currentTime >= fin_seek){
+			seeking="false";
 			video.pause();
-			
+			window.clearInterval(bucle);
 			seeking="false";
 			
 			socket_send("secuenciaAcabada");
@@ -82,6 +84,7 @@ function play_range(ini,fin){
 	fin_seek=fin;
 	video.currentTime=ini;
 	seeking="true";
+	bucle=setInterval(procesarCuadros, 33);
 	video.play();
 	
 }
@@ -125,10 +128,20 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	var imagen=new Image();
-	imagen.src="./images/Bingo.png";
+	var imageObj = new Image();
+        
+        imageObj.onload = function() {
+                    lienzo.drawImage(imageObj, 0, 0);
+        };
+ 		 // Calls the imageObj.onload function asynchronously
+         imageObj.src ="images/Bingo.png";
+	var imageObj2 = new Image();
+        
+       
+	
+	
 	//alert("Ancho canvas=" + canvas.width + ", alto="+ canvas.height);
-	imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
+	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
 	
 	
 	//socket_send("startGame");
@@ -199,5 +212,9 @@ function reanudar(){
 	   boton_pause.style.borderBottomStyle = "outset";
 	   boton_pause.style.borderLeftStyle = "outset";
 }
-
+function procesarCuadros(){
+	//lienzo.drawImage(video,0,0,video.width,video.height,(canvas.width/2)-30,(canvas.height/2)-30,30,30);
+	
+	lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-24,58,51);
+}
 window.onload=iniciar;

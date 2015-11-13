@@ -112,9 +112,7 @@ display: block;
 }
 
 #medio {
-	width: auto;
 	padding: 0px;
-	height: auto;
 	background: #999999;
 	border: 1px solid #666666;
 	text-align: justify;
@@ -130,11 +128,14 @@ display: block;
 	height: auto;
 }
 #lienzo {
-	background-image: url(../images/Bingo.png);
-	background-repeat: repeat;
-	height: 90%;
-	width: 90%;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
 	position: relative;
+	height: 100%;
+	width: 100%;
+
 }
 
 
