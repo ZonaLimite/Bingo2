@@ -12,10 +12,9 @@ display: block;
 }
 
 #cabecera1 {
-	display: inline;
-	text-align: center;
-	vertical-align: 50%;
+	display: block;
 	margin: 0px;
+	position: relative;
 }
 #cabecera {
 	background: #FFFBB9;
@@ -23,6 +22,7 @@ display: block;
 	padding: 0px;
 	display: block;
 	margin: 0px;
+	height: 58px;
 }
 #centro {
 	text-align: center;
@@ -132,9 +132,8 @@ display: block;
 	border-bottom-style: groove;
 	border-left-style: groove;
 	position: relative;
-	height: 500px;
-	width: 100%;
 	margin: 0px;
+	width: 100%;
 
 }
 
@@ -193,4 +192,7 @@ display: block;
 	width: 100%;
 	list-style-type: none;
 	display: inherit;
+}
+#cabecera {
+	text-align: center;
 }

@@ -11,14 +11,33 @@
 body {
 	background-color: #000;
 }
+#agrupar #cabecera table tr td p {
+	text-align: center;
+	font-weight: bold;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+#agrupar #cabecera table tr td {
+	text-align: center;
+	font-weight: bold;
+	font-size: 24px;
+}
+.año {
+	font-family: "Times New Roman", Times, serif;
+}
 </style>
 </head>
 
 <body>
 <div id="agrupar">
-<header id="cabecera">
-      <img id="logo" src="images/IconoBola.jpg" width=			"72" height="55" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg">
-              <h1 id="cabecera1">BINGO 2016</h1>
+<header id="cabecera"><table width="100%" border="1" cellspacing="2">
+  <tr>
+    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg"></td>
+    <td width="78%" class="año" >
+      FELIZ AÑO NUEVO</td>
+    <td width="10%">2016</td>
+  </tr>
+</table>
+     
 </header>
 <div class="menus">
 <nav id="menu">
@@ -34,7 +53,7 @@ body {
 
 <article id="centro">
   
-  <canvas id="lienzo" width="660" height="430"  >
+  <canvas id="lienzo" width="660" height="430" >
   Aqui esta el canvas
    </canvas>
 <table border="1" align="center" class="tablaInfo">
