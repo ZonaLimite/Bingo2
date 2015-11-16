@@ -53,6 +53,7 @@ function iniciar() {
 	
 	window.onresize= function(){
 		espacioTotal=canvas.scrollWidth;
+		document.getElementById("datiBingo").innerHTML=espacioTotal;
 	}
 	
 
@@ -61,9 +62,9 @@ function iniciar() {
 
 function show_InMessage(contenido){
 	
-	inicial=comboTexto.innerHTML;
-	comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
-	comboTexto.value=contenido;
+	//inicial=comboTexto.innerHTML;
+	//comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
+	//comboTexto.value=contenido;
 	
 }
 function send_command(){
@@ -141,7 +142,7 @@ function abierto(){
         imageObj.onload = function() {
                     lienzo.drawImage(imageObj, 0, 0);
 					espacioTotal=canvas.scrollWidth;
-			
+					document.getElementById("datiBingo").innerHTML=espacioTotal;
         };
  		 // Calls the imageObj.onload function asynchronously
          imageObj.src ="images/Bingo.png";
@@ -153,7 +154,7 @@ function abierto(){
 	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
 	
 	
-	//socket_send("startGame");
+	socket_send("startGame");
 }
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");
@@ -233,14 +234,14 @@ function colocaBola(nBola){
 //CalculaPosicion
 var StringNumero = ""+nBola;
 
-espacioPrivate= (espacioTotal*15)/100;
-espacioCante= Math.round(espacioPrivate);
+espacioPrivate= (espacioTotal*18)/100;
+espacioCante= Math.floor(espacioPrivate);
 espacioDoble= espacioTotal - espacioCante;
-espacioTramas = Math.round(espacioDoble/2);
-espacioColNumber= Math.round(espacioTramas/5);
+espacioTramas = Math.floor(espacioDoble/2);
+espacioColNumber= Math.floor(espacioTramas/5);
 ComienzoTrama1 = 0
-ComienzoTrama2 = espacioTramas + espacioPrivate;
-espacioOffset = Math.round(espacioColNumber/2);
+ComienzoTrama2 = espacioTramas + espacioCante;
+espacioOffset = Math.floor(espacioColNumber/2);
 if(StringNumero.length ==2){
 	MultiplicadorFila = StringNumero.substr(1, 1);
 	situacionCol = StringNumero.substr(0, 1);
@@ -250,14 +251,17 @@ if(StringNumero.length ==2){
 }
 if(nBola<50){
 	distanciaEntreBolasX = espacioColNumber ;
+	xNumero= (situacionCol * espacioColNumber) + espacioOffset ;
+	
 }else{
 	distanciaEntreBolasX = espacioCante + espacioColNumber;
+	situacionCol = situacionCol - 4;
+	xNumero= ComienzoTrama2 + (situacionCol * espacioColNumber) + espacioOffset ;
 }
 
-xNumero= (situacionCol * espacioOffset) + distanciaEntreBolasX;
-yNumero= (espacioOffset * MultiplicadorFila) + (espacioOffset/2)+2;
+yNumero= (espacioColNumber * MultiplicadorFila) + espacioOffset;
 // DibujaLaBola
-DibujaLaBola(xNumero,yNumero,espacioOffset/2,nBola);
+DibujaLaBola(xNumero,yNumero,espacioColNumber/3,nBola);
 }
 
 function DibujaLaBola(x,y,radio,bola){
@@ -274,7 +278,7 @@ function DibujaLaBola(x,y,radio,bola){
 	if(bola<10){
 		altoTexto=anchoTexto;
 	}else{
-		altoTexto=Math.round(anchoTexto/2 +2);
+		altoTexto=Math.floor(anchoTexto/2 +2);
 	}
 	
 	lienzo.beginPath();
