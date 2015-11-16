@@ -140,7 +140,12 @@ function abierto(){
 	var imageObj = new Image();
         
         imageObj.onload = function() {
-                    lienzo.drawImage(imageObj, 0, 0);
+                    anchoalto=window.innerWidth - ((window.innerWidth *2)/100);
+					canvas.width=anchoalto;
+                    canvas.height=anchoalto - ((window.innerWidth *31)/100);
+					lienzo.scale(1,1);
+					//lienzo.drawImage(imageObj, 0, 0)
+					lienzo.drawImage(imageObj, 0, 0,anchoalto,anchoalto);
 					espacioTotal=canvas.scrollWidth;
 					document.getElementById("datiBingo").innerHTML=espacioTotal;
         };
@@ -238,7 +243,7 @@ espacioPrivate= (espacioTotal*18)/100;
 espacioCante= Math.floor(espacioPrivate);
 espacioDoble= espacioTotal - espacioCante;
 espacioTramas = Math.floor(espacioDoble/2);
-espacioColNumber= Math.floor(espacioTramas/5);
+espacioColNumber= Math.floor(espacioTramas/6);
 ComienzoTrama1 = 0
 ComienzoTrama2 = espacioTramas + espacioCante;
 espacioOffset = Math.floor(espacioColNumber/2);
@@ -250,21 +255,21 @@ if(StringNumero.length ==2){
 	situacionCol=0;
 }
 if(nBola<50){
-	distanciaEntreBolasX = espacioColNumber ;
-	xNumero= (situacionCol * espacioColNumber) + espacioOffset ;
+	
+	xNumero= (situacionCol * espacioColNumber) + espacioOffset + 4;
 	
 }else{
-	distanciaEntreBolasX = espacioCante + espacioColNumber;
-	situacionCol = situacionCol - 4;
-	xNumero= ComienzoTrama2 + (situacionCol * espacioColNumber) + espacioOffset ;
+	situacionCol = situacionCol -4;
+	xNumero= ComienzoTrama2 + (situacionCol * espacioColNumber) + 4  ;
 }
 
-yNumero= (espacioColNumber * MultiplicadorFila) + espacioOffset;
+yNumero= (espacioColNumber * MultiplicadorFila) + espacioOffset + 4;
 // DibujaLaBola
-DibujaLaBola(xNumero,yNumero,espacioColNumber/3,nBola);
+DibujaLaBola(xNumero,yNumero,espacioColNumber/2,nBola);
 }
 
 function DibujaLaBola(x,y,radio,bola){
+	lienzo.scale(1,1);
 	lienzo.beginPath();
 	lienzo.arc(x,y,radio,0,2*Math.PI);
 	lienzo.stroke();
@@ -272,7 +277,7 @@ function DibujaLaBola(x,y,radio,bola){
 	lienzo.fill()
 
 	
-	lienzo.font="20px Arial";
+	lienzo.font="30px Arial";
 	texto=""+bola;
 	anchoTexto=(lienzo.measureText(texto).width);
 	if(bola<10){
@@ -282,7 +287,7 @@ function DibujaLaBola(x,y,radio,bola){
 	}
 	
 	lienzo.beginPath();
-	lienzo.arc(x,y,(anchoTexto/2)+2,0,2*Math.PI);
+	lienzo.arc(x,y,(anchoTexto),0,2*Math.PI);
 	lienzo.stroke();
 	lienzo.fillStyle="white";
 	lienzo.fill();

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-
+<meta name="vieport" content="width=device-width, initial-scale=1.0">
 <title>Bingo 2015</title>
 <script src="javascript/reproductor.js"></script>
 
@@ -68,14 +68,18 @@ body {
 
 <article id="centro">
   
-  <canvas id="lienzo" width="660" height="450" >
+  <canvas id="lienzo"  >
   Aqui esta el canvas
    </canvas>
 >
-</article>
+<span class="Comander">
+<video id="medio">
+  <source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
+  HTML5 video is not supported by this browser </video>
+</span></article>
 
-<article>	
-   <nav id="botonera">
+<article id="articulo">	
+  
    <ul>
 	  <li id="play" class="menu_li">PLAY</li>
 	  <li id="pause" class="menu_li">PAUSE</li>
@@ -92,7 +96,7 @@ body {
    		   <input id="c_Range" value="Play Range" type="button">
    	  </li>
    </ul>
-   </nav>
+  
 </article>
 </div>
     
@@ -109,13 +113,6 @@ body {
   </div>   
   
 </footer>
-<span class="Comander">
-<video id="medio" controls width="426" height="430">
-  <source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
-  HTML5 video is not supported by this browser </video>
-</span>
-
-
 </body>
 
 </html>

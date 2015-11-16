@@ -1,5 +1,8 @@
 @charset "utf-8";
-
+@viewport{
+	zoom:1.0;
+	width:extend-to-zoom;
+}
 header, section, footer, aside, nav, article, figure, figcaption,
 hgroup{
 display: block;
@@ -98,30 +101,20 @@ display: block;
 	float: right;
 }
 
-
-
-#player {
-	float: left;
-	display: block;
-	text-align: center;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-}
-
 #medio {
 	padding: 0px;
 	background: #999999;
 	border: 1px solid #666666;
-	text-align: justify;
+	text-align: right;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 1%;
 	visibility: hidden;
+	float: none;
+	position: relative;
+	height: 0px;
+	width: 0px;
 }
 #linea_alta_video {
 	padding: 0px;
@@ -135,8 +128,6 @@ display: block;
 	border-left-style: groove;
 	position: relative;
 	margin: 0px;
-	width: 100%;
-	height: 100%;
 
 }
 
@@ -169,6 +160,7 @@ display: block;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	font-weight: bold;
+	float: left;
 }
 #menu_li {
 	display: inline-block;
@@ -198,5 +190,10 @@ display: block;
 	visibility: hidden;
 }
 #cabecera {
+	text-align: center;
+}
+#articulo {
+	float: left;
+	position: relative;
 	text-align: center;
 }
