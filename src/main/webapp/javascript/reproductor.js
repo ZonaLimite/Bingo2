@@ -245,7 +245,7 @@ espacioDoble= espacioTotal - espacioCante;
 espacioTramas = Math.floor(espacioDoble/2);
 espacioColNumber= Math.floor(espacioTramas/6);
 ComienzoTrama1 = 0
-ComienzoTrama2 = espacioTramas + espacioCante;
+ComienzoTrama2 = espacioTramas + espacioCante + 8;
 espacioOffset = Math.floor(espacioColNumber/2);
 if(StringNumero.length ==2){
 	MultiplicadorFila = StringNumero.substr(1, 1);
@@ -287,7 +287,7 @@ function DibujaLaBola(x,y,radio,bola){
 	}
 	
 	lienzo.beginPath();
-	lienzo.arc(x,y,(anchoTexto),0,2*Math.PI);
+	lienzo.arc(x,y,(anchoTexto/2),0,2*Math.PI);
 	lienzo.stroke();
 	lienzo.fillStyle="white";
 	lienzo.fill();
