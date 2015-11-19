@@ -11,13 +11,11 @@ var boton_comando;
 var boton_notify;
 var caja_output;
 var datoOrdenBola;
-var ultimaBola;
 var contador;
 var lienzo;
 var seeking="false";
 var fin_seek;
-var canvas;
-var espacioTotal;
+
 
 function iniciar() {
 	video = document.getElementById("medio");
@@ -47,24 +45,18 @@ function iniciar() {
 	
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
-	
 	canvas=document.getElementById('lienzo');
 	lienzo=canvas.getContext('2d');
 	
-	window.onresize= function(){
-		espacioTotal=canvas.scrollWidth;
-		document.getElementById("datiBingo").innerHTML=espacioTotal;
-	}
 	
-
 	
 }
 
 function show_InMessage(contenido){
 	
-	//inicial=comboTexto.innerHTML;
-	//comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
-	//comboTexto.value=contenido;
+	inicial=comboTexto.innerHTML;
+	comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
+	comboTexto.value=contenido;
 	
 }
 function send_command(){
@@ -77,10 +69,10 @@ function refreshCount(){
 			
 		if(video.currentTime >= fin_seek){
 			seeking="false";
-			colocaBola(ultimaBola);	
 			video.pause();
 			window.clearInterval(bucle);
 			seeking="false";
+			
 			socket_send("secuenciaAcabada");
 		}
 	}
@@ -136,22 +128,15 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	
 	var imageObj = new Image();
         
         imageObj.onload = function() {
-                    anchoalto=window.innerWidth - ((window.innerWidth *2)/100);
-					canvas.width=anchoalto;
-                    canvas.height=anchoalto - ((window.innerWidth *31)/100);
-					lienzo.scale(1,1);
-					//lienzo.drawImage(imageObj, 0, 0)
-					lienzo.drawImage(imageObj, 0, 0,anchoalto,anchoalto);
-					espacioTotal=canvas.scrollWidth;
-					document.getElementById("datiBingo").innerHTML=espacioTotal;
+                    lienzo.drawImage(imageObj, 0, 0);
         };
  		 // Calls the imageObj.onload function asynchronously
          imageObj.src ="images/Bingo.png";
-	        
+	var imageObj2 = new Image();
+        
        
 	
 	
@@ -159,7 +144,7 @@ function abierto(){
 	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
 	
 	
-	socket_send("startGame");
+	//socket_send("startGame");
 }
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");
@@ -204,9 +189,7 @@ function sacarRangos(numerobase){
 	var rangoCanto= [];
 	indexSearch= rangos.indexOf(numerobase);
 	rangoCanto.push(rangos[indexSearch + 1]);
-	ultimaBola = numerobase;
 	rangoCanto.push(rangos[indexSearch + 2]);
-
 	return rangoCanto;
 	//indexNumber= rangos.indexOf(numerobase):
 		
@@ -231,73 +214,7 @@ function reanudar(){
 }
 function procesarCuadros(){
 	//lienzo.drawImage(video,0,0,video.width,video.height,(canvas.width/2)-30,(canvas.height/2)-30,30,30);
+	
 	lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
-
 }
-
-function colocaBola(nBola){
-//CalculaPosicion
-var StringNumero = ""+nBola;
-
-espacioPrivate= (espacioTotal*18)/100;
-espacioCante= Math.floor(espacioPrivate);
-espacioDoble= espacioTotal - espacioCante;
-espacioTramas = Math.floor(espacioDoble/2);
-espacioColNumber= Math.floor(espacioTramas/6);
-ComienzoTrama1 = 0
-ComienzoTrama2 = espacioTramas + espacioCante + 8;
-espacioOffset = Math.floor(espacioColNumber/2);
-if(StringNumero.length ==2){
-	MultiplicadorFila = StringNumero.substr(1, 1);
-	situacionCol = StringNumero.substr(0, 1);
-}else{
-	MultiplicadorFila=nBola;
-	situacionCol=0;
-}
-if(nBola<50){
-	
-	xNumero= (situacionCol * espacioColNumber) + espacioOffset + 4;
-	
-}else{
-	situacionCol = situacionCol -4;
-	xNumero= ComienzoTrama2 + (situacionCol * espacioColNumber) + 4  ;
-}
-
-yNumero= (espacioColNumber * MultiplicadorFila) + espacioOffset + 4;
-// DibujaLaBola
-DibujaLaBola(xNumero,yNumero,espacioColNumber/2,nBola);
-}
-
-function DibujaLaBola(x,y,radio,bola){
-	lienzo.scale(1,1);
-	lienzo.beginPath();
-	lienzo.arc(x,y,radio,0,2*Math.PI);
-	lienzo.stroke();
-	lienzo.fillStyle="red";
-	lienzo.fill()
-
-	
-	lienzo.font="30px Arial";
-	texto=""+bola;
-	anchoTexto=(lienzo.measureText(texto).width);
-	if(bola<10){
-		altoTexto=anchoTexto;
-	}else{
-		altoTexto=Math.floor(anchoTexto/2 +2);
-	}
-	
-	lienzo.beginPath();
-	lienzo.arc(x,y,(anchoTexto/2),0,2*Math.PI);
-	lienzo.stroke();
-	lienzo.fillStyle="white";
-	lienzo.fill();
-
-	lienzo.beginPath();
-	lienzo.fillStyle="black";	
-	lienzo.fillText(texto,x - (anchoTexto/2),(y + altoTexto)- (altoTexto/2) + 1);
-	lienzo.fill();
-	
-
-}
-
 window.onload=iniciar;
