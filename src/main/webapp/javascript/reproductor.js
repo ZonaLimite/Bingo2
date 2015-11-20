@@ -21,7 +21,7 @@ function iniciar() {
 	video = document.getElementById("medio");
 		
 	contador=document.getElementById("contador");
-	video.ontimeupdate = function() {refreshCount()};
+	//video.ontimeupdate = function() {refreshCount()};
     
 	boton_play = document.getElementById("play");
 	boton_play.onclick = function() {reanudar()};
@@ -219,5 +219,17 @@ function procesarCuadros(){
 	//lienzo.drawImage(video,0,0,video.width,video.height,(canvas.width/2)-30,(canvas.height/2)-30,30,30);
 	
 	lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
+	if(seeking=="true"){
+		
+		if(video.currentTime >= fin_seek){
+			seeking="false";
+			video.pause();
+			window.clearInterval(bucle);
+			seeking="false";
+			
+			socket_send("secuenciaAcabada");
+		}
+	}
+	contador.value=video.currentTime;
 }
 window.onload=iniciar;
