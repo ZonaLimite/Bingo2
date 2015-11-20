@@ -53,10 +53,9 @@ function iniciar() {
 }
 
 function show_InMessage(contenido){
+
+	comboTexto.innerHTML=contenido;
 	
-	inicial=comboTexto.innerHTML;
-	comboTexto.innerHTML="<option value='"+ contenido+"'>"+contenido+"</option>"+inicial;
-	comboTexto.value=contenido;
 	
 }
 function send_command(){
@@ -131,12 +130,16 @@ function abierto(){
 	var imageObj = new Image();
         
         imageObj.onload = function() {
-                    lienzo.drawImage(imageObj, 0, 0);
+
+					lienzo.scale(1,1);
+					ancho=(window.innerWidth*90)/100;
+					alto=(ancho*50)/100;
+					canvas.width=ancho;
+					canvas.height=alto;
+                    lienzo.drawImage(imageObj, 0, 0,ancho,alto);
         };
  		 // Calls the imageObj.onload function asynchronously
-         imageObj.src ="images/Bingo.png";
-	var imageObj2 = new Image();
-        
+       imageObj.src="images/Bingo.png";
        
 	
 	

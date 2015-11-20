@@ -183,12 +183,6 @@ display: block;
 #output {
 	width: 80%;
 }
-#comboTexto {
-	width: 100%;
-	list-style-type: none;
-	display: inherit;
-	visibility: hidden;
-}
 #cabecera {
 	text-align: center;
 }
