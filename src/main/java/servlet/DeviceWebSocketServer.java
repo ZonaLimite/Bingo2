@@ -39,7 +39,7 @@ private Session mySesion;
 
 @OnClose
     public void close(CloseReason reason) {
-	//serializar PocketBingo
+	//serializar Pocke33tBingo
 	guardaPocket("user",mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
 	

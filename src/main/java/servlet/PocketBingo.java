@@ -25,7 +25,7 @@ public class PocketBingo implements Serializable {
     private String IdState = "NewGame";
     /* 
      * IdState :
-     *  NewGame,Paused,Started,Finalized
+     *  NewGame,Paused,Started,Finalized.
      */
     public boolean getSecuenciaAcabada(){
         return secuenciaAcabada;

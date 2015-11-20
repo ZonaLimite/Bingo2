@@ -75,7 +75,7 @@ public class Hilo2 extends Thread{
           
           }   
         }
-    	//pb.setIdState("Finalized");
+    	//pb.setIdState("Finalized"2);
     	return;
     }
     private void enviarMensaje(String textMessage){

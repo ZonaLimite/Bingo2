@@ -191,7 +191,7 @@ function sacarRangos(numerobase){
 	rangoCanto.push(rangos[indexSearch + 1]);
 	rangoCanto.push(rangos[indexSearch + 2]);
 	return rangoCanto;
-	//indexNumber= rangos.indexOf(numerobase):
+	//windexNumber= rangos.indexOf(numerobase):
 		
 }
 function socket_send(comanda){
