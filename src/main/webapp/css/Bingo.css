@@ -80,23 +80,31 @@ display: block;
 #contador {
 	background-color: #333;
 	color: #C30;
-	font-size: 16px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
-	width: 50px;
 	padding-left: 4px;
-	height: 20px;
-	float: none;
 }
 .tablaInfo {
-	text-align: center;
+	text-align: left;
 	margin-top: 0px;
 	border-top-width: 0px;
-	border-style: inherit;
 	background-color: #000;
-	color: #00F;
+	color: #CCCCCC;
 	font-weight: bold;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	border-top-color: #339;
+	border-right-color: #339;
+	border-bottom-color: #339;
+	border-left-color: #339;
+	font-family: "Courier New", Courier, monospace;
 }
+.valorInfo {
+	color: #CCCCCC;
+}
+
 #linea_alta_video {
 	padding: 0px;
 	margin: 0px;
@@ -174,7 +182,7 @@ display: block;
 }
 
 .numeros{
-	color: #CC0000;
+	color: #3E0000;
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 24px;
@@ -192,7 +200,7 @@ display: block;
 }
 .panel{
 	background-color: #000000;
-	border: 2px solid #0066CC;
+	border: 1px solid #339;
 	padding: 2px;
 	text-align: center;
 	visibility: visible;

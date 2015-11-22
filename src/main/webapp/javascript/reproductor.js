@@ -1,7 +1,7 @@
 /**
  * Codigo manejador player 
  */
-var rangos = ["BuenasNoches",0.8930,5.5210,"linea",5.5210,8.6588,"bingo",8.6588,11.746,"lineaOk",11.746,14.798,"bingoOk",14.798,18.396,"1",18.407,22.029,"2",22.029,23.363,"3",23.363,25.917,"4",25.917,27.960,"5",27.960,30.770,"6",30.770,33.543,"7",33.543,35.945,"8",35.945,38.545,"9",38.545,41.202,"10",41.202,43.446,"11",43.446,47.028,"12",47.028,49.772,"13",49.772,49.772,"14",49.772,54.506,"15",54.506,57.594,"16",57.594,59.620,"17",59.620,62.022,"18",62.022,65.492,"19",65.492,67.976,"20",67.976,69.774,"21",69.774,72.548,"22",72.548,75.948,"23",75.948,78.187,"24",78.187,80.811,"25",80.811,83.140,"26",83.140,85.816,"27",85.816,87.823,"28",87.823,90.520,"29",90.520,93.000,"30",93.000,95.035,"31",95.035,98.296,"32",98.296,100.40,"33",100.40,102.89,"34",102.89,105.84,"35",105.84,108.69,"36",108.69,110.67,"37",110.67,113.97,"38",113.97,116.60,"39",116.60,118.48,"40",118.48,121.16,"41",121.16,123.77,"42",123.77,126.35,"43",126.35,128.65,"44",128.65,131.00,"45",131.00,134.46,"46",134.46,137.27];
+var rangos = ["BuenasNoches",0.8930,5.5210,"linea",5.5210,8.6588,"bingo",8.6588,11.746,"lineaOk",11.746,14.798,"bingoOk",14.798,18.396,"1",18.407,22.029,"2",22.029,23.363,"3",23.363,25.917,"4",25.917,27.960,"5",27.960,30.770,"6",30.770,33.543,"7",33.543,35.945,"8",35.945,38.545,"9",38.545,41.202,"10",41.202,43.446,"11",43.446,47.028,"12",47.028,49.772,"13",49.772,52.54,"14",52.54,54.506,"15",54.506,57.594,"16",57.594,59.620,"17",59.620,62.022,"18",62.022,65.492,"19",65.492,67.976,"20",67.976,69.774,"21",69.774,72.548,"22",72.548,75.948,"23",75.948,78.187,"24",78.187,80.811,"25",80.811,83.140,"26",83.140,85.816,"27",85.816,87.823,"28",87.823,90.520,"29",90.520,93.000,"30",93.000,95.035,"31",95.035,98.296,"32",98.296,100.40,"33",100.40,102.89,"34",102.89,105.84,"35",105.84,108.69,"36",108.69,110.67,"37",110.67,113.97,"38",113.97,116.60,"39",116.60,118.48,"40",118.48,121.16,"41",121.16,123.77,"42",123.77,126.35,"43",126.35,128.65,"44",128.65,131.00,"45",131.00,134.46,"46",134.46,137.27];
 var video; /** el elemento video */
 var boton_play; 
 var boton_pause;
@@ -78,10 +78,11 @@ function refreshCount(){
 	contador.value=video.currentTime;
 }
 function play_range(ini,fin){
+	video.currentTime=ini;
 	document.getElementById("seek_ini").value=ini;
 	document.getElementById("seek_fin").value=fin;
 	fin_seek=fin;
-	video.currentTime=ini;
+	
 	seeking="true";
 	bucle=setInterval(procesarCuadros, 33);
 	video.play();
@@ -174,6 +175,9 @@ function recibido(e){
 				datoOrdenBola.innerHTML=arrayMessages[2];
 	    	    play_range(myRango[0],myRango[1]);	
 	    	    break;
+		case "EncenderNumero":
+					encenderNumero(arrayMessages[1]);
+				break;
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					result=confirm("Hay una partida empezada,desea continuar(Yes) o empezar(No)")
@@ -188,6 +192,11 @@ function recibido(e){
 		} 
 	}
 }
+function encenderNumero(numero){
+	
+	document.getElementById(numero).style.color="#FF5B5B";
+}
+
 function sacarRangos(numerobase){
 	var rangoCanto= [];
 	indexSearch= rangos.indexOf(numerobase);
@@ -216,19 +225,18 @@ function reanudar(){
 	   boton_pause.style.borderLeftStyle = "outset";
 }
 function procesarCuadros(){
-	
+	contador.value=video.currentTime;
 	//lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
 	if(seeking=="true"){
 		
 		if(video.currentTime >= fin_seek){
-			seeking="false";
-			video.pause();
 			window.clearInterval(bucle);
 			seeking="false";
-			
+			video.pause();
+					
 			socket_send("secuenciaAcabada");
 		}
 	}
-	contador.value=video.currentTime;
+	
 }
 window.onload=iniciar;
