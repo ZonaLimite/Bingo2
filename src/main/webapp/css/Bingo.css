@@ -41,23 +41,22 @@ display: block;
 	display: inline;
 	padding: 0px;
 }
+.menusmain {
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+}
+
 #menu {
-	display: inline-block;
+	display: inline;
 	border-top-style: none;
 	border-right-style: none;
 	border-bottom-style: none;
 	border-left-style: none;
 	background-color: #000;
-	border-top-width: 0px;
-	border-right-width: 0px;
-	border-bottom-width: 0px;
-	border-left-width: 0px;
 	padding: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 8px;
-	height: 5%;
+	margin: 0px;
 }
 #botonera {
 	display: inline-block;
@@ -90,31 +89,13 @@ display: block;
 	float: none;
 }
 .tablaInfo {
-	text-align: left;
+	text-align: center;
 	margin-top: 0px;
 	border-top-width: 0px;
 	border-style: inherit;
 	background-color: #000;
-	color: #FFF;
+	color: #00F;
 	font-weight: bold;
-	display: block;
-	float: right;
-}
-
-#medio {
-	padding: 0px;
-	background: #999999;
-	border: 1px solid #666666;
-	text-align: right;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	margin-left: 1%;
-	visibility: hidden;
-	float: none;
-	position: relative;
-	height: 0px;
-	width: 0px;
 }
 #linea_alta_video {
 	padding: 0px;
@@ -190,4 +171,41 @@ display: block;
 	float: left;
 	position: relative;
 	text-align: center;
+}
+
+.numeros{
+	color: #CC0000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 100%;
+}
+.pagina{
+	background-color: #000;
+  
+}
+.tablero{
+	background-size: 100% 100%;
+	width: 100%;
+  }
+.video{
+  border: 1px solid red;
+}
+.panel{
+	background-color: #000000;
+	border: 2px solid #0066CC;
+	padding: 2px;
+	text-align: center;
+	visibility: visible;
+	opacity: 0.9;
+}
+.fotom{
+	background-color: #000000;
+	-moz-border-radius: 50px / 50px;
+	-webkit-border-radius: 50px / 50px;
+	border-radius: 50px / 50px;
+	padding: 0px;
+	text-align: center;
+	visibility: visible;
+	opacity: 0.9;
+	width: 100%;
 }

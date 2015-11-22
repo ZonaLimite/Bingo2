@@ -7,27 +7,10 @@
 <script src="javascript/reproductor.js"></script>
 
 <link href="css/Bingo.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-body {
-	background-color: #000;
-}
-#agrupar #cabecera table tr td p {
-	text-align: center;
-	font-weight: bold;
-	font-family: Georgia, "Times New Roman", Times, serif;
-}
-#agrupar #cabecera table tr td {
-	text-align: center;
-	font-weight: bold;
-	font-size: 24px;
-}
-.año {
-	font-family: "Times New Roman", Times, serif;
-}
-</style>
+
 </head>
 
-<body>
+<body class="pagina">
 <div id="agrupar">
 <header id="cabecera"><table width="100%" border="1" cellspacing="2">
   <tr>
@@ -37,10 +20,7 @@ body {
     <td width="10%">2016</td>
   </tr>
 </table>
-     
-</header>
-<div class="menus">
-<nav id="menu">
+ <nav id="menu">
   <ul>
   <li id="iniciar" class="menu_li">INICIAR</li>
   <li class="menu_li" >CARTONES</li>
@@ -48,38 +28,382 @@ body {
   <li class="menu_li" >OPCIONES</li>
   </ul>
 </nav>
+     
+</header>
+
+
+
+
+
+
+<table class="tablero">
+    
+    <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >01</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >10</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      <td rowspan="10" class="panel" > 
+            <span class="Comander">
+   		  <video id="medio" class="fotom" controls>
+   		    <source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
+   		    HTML5 video is not supported by this browser </video>
+   		  </span>      
+         
+            <article>
 <table border="1" align="center" class="tablaInfo">
      		<tr>
-	        <td>Orden Bola  :</td>
+	        <td>BOLA Nº :</td>
 	        <td id="datoOrdenBola">0</td>
-	        <td id="datoLinea">Premio Linea :</td>
+	        <td id="datoLinea">PREMIO LINEA:</td>
 	        <td>200 Euros</td>
 	        </tr>
 	      <tr>
-	        <td >Cartones :</td>
+	        <td >Nº CARTONES:</td>
 	        <td id="datoCartones">0</td>
-	        <td>Premio Bingo :</td>
+	        <td>PREMIO BINGO :</td>
 	        <td  id="datiBingo">0</td>
-	        </tr>
+    </tr>
 	      <tr>
 	        <td colspan="4" id="comboTexto">texo</td>
 	        
-	        </tr>
-</table
-></div>
+    </tr>
+</table>
+</article>      
+            <label id="1" class="numeros" >1</label>             
+        </td>
+      <td class="panel">
+      	<label id="2" class="numeros" >14</label>
+      </td >
+      <td class="panel">
+            <label id="2" class="numeros" >60</label>              
+     </td >
 
+        <td class="panel">
+            <label id="2" class="numeros" >50</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
 
-<article id="centro">
-  
-  <canvas id="lienzo"  >
-  Aqui esta el canvas
-   </canvas>
->
-<span class="Comander">
-<video id="medio">
-  <source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
-  HTML5 video is not supported by this browser </video>
-</span></article>
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+
+  </tr>
+    <tr>
+         <td class="panel"><label id="1" class="numeros" >02</label></td>
+               <td class="panel"> 
+            <label id="1" class="numeros" >11</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+
+  <tr>
+         <td class="panel"><label id="1" class="numeros" >03</label></td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >12</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >04</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >13</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >05</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >14</label>             
+      </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+      </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+      </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+      </td>
+      
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+      </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+	<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+      </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"><label id="1" class="numeros" >06</label></td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >15</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >07</label>
+            </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >16</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >09</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >08</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >17</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >09</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >18</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      
+      <td class="panel"> 
+            <label id="1" class="numeros" >1</label>             
+        </td>
+    
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+  <tr>
+         <td class="panel"> 
+            <label id="1" class="numeros" >09</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >18</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >20</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >30</label>             
+        </td>
+      <td class="panel"> 
+            <label id="1" class="numeros" >40</label>             
+        </td>
+      
+      <td class="panel">
+          <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+<td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+        <td class="panel">
+            <label id="2" class="numeros" >14</label>              
+        </td >
+  </tr>
+</table>
+
+ 
+
 
 <article id="articulo">	
   
