@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -56,7 +57,18 @@ private Session mySesion;
 	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
+		pb= this.leePocket("user", session);
 		session.getUserProperties().put("user",pb);
+		Vector listaNumeros=(Vector)pb.getNumerosCalled();
+		for(int i=0;i<listaNumeros.size()-1;i++){
+			this.enviarMensaje("EncenderNumero_"+i);
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;

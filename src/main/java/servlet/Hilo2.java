@@ -45,7 +45,7 @@ public class Hilo2 extends Thread{
         	orden= pb.getNumeroOrden();
         }
     	for(int i=orden; i < maxNumbers+1 ;i++)   {
-          log.log(Level.INFO, "Enviando mensaje de Hilo2 :{0}", i);
+          //log.log(Level.INFO, "Enviando mensaje de Hilo2 :{0}", i);
    
           synchronized(this){
             try{

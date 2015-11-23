@@ -130,13 +130,17 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	var imageObj = new Image();
-        /*
+	ancho=window.innerWidth;
+	alto=window.innerHeight;
+	caja_spy=document.getElementById("text_comando");
+	caja_spy.value=""+ancho+"x"+alto;
+	socket_send("startGame");
+	        /*
         imageObj.onload = function() {
 
 					lienzo.scale(1,1);
-					ancho=(window.innerWidth*90)/100;
-					alto=(ancho*50)/100;
+					ancho=window.innerWidth;
+					alto=windows.innerHeight;
 					canvas.width=ancho;
 					canvas.height=alto;
                     lienzo.drawImage(imageObj, 0, 0,ancho,alto);
@@ -180,19 +184,31 @@ function recibido(e){
 		case "EncenderNumero":
 					encenderNumero(arrayMessages[1]);
 				break;
+		case "ApagarNumero":
+			apagarNumero(arrayMessages[1]);
+			break;
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
-					result=confirm("Hay una partida empezada,desea continuar(Yes) o empezar(No)")
+					result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")
 					if(result){
+						for(i=1;i<91;i++){
+							apagarNumero(""+i);
+						}
 						socket_send("resume");
 					}else{
-						socket_send("startGame")
+						for(i=1;i<91;i++){
+							apagarNumero(""+i);
+						}
+						socket_send("startGame");
 					}
 				}
 		    default:
         		
 		} 
 	}
+}
+function apagarNumero(n){
+	document.getElementById(n).style.color="#280000";
 }
 function encenderNumero(numero){
 	
