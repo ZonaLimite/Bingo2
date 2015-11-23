@@ -83,7 +83,8 @@ function play_range(ini,fin){
 	document.getElementById("seek_fin").value=fin;
 	fin_seek=fin;
 	seeking="true";
-	esPrimeraVez= true;
+	//esPrimeraVez= true;
+	video.play();
 	bucle=setInterval(procesarCuadros, 33);
 	
 	
@@ -229,13 +230,13 @@ function procesarCuadros(){
 	contador.value=video.currentTime;
 	//lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
 	if(seeking=="true"){
-		if(esPrimeraVez){
+		/*if(esPrimeraVez){
 			if(!video.seeking){
 				video.play();
 				esPrimeraVez = false;
 			}
 
-		}
+		}*/
 		if(video.currentTime >= fin_seek){
 			window.clearInterval(bucle);
 			seeking="false";
