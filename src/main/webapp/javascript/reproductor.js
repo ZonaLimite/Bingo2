@@ -16,6 +16,7 @@ var lienzo;
 var seeking="false";
 var fin_seek;
 var esPrimeraVez;
+var anchoPantalla;
 
 function iniciar() {
 	video = document.getElementById("medio");
@@ -47,7 +48,7 @@ function iniciar() {
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	//canvas=document.getElementById('lienzo');
 	//lienzo=canvas.getContext('2d');
-	
+	window.onresize = function(){resizeBolas()};
 	
 	
 }
@@ -130,10 +131,11 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	ancho=window.innerWidth;
+	anchoPantalla=window.innerWidth;
+	resizeBolas();
 	alto=window.innerHeight;
 	caja_spy=document.getElementById("text_comando");
-	caja_spy.value=""+ancho+"x"+alto;
+	caja_spy.value=""+anchoPantalla+"x"+alto;
 	socket_send("startGame");
 	        /*
         imageObj.onload = function() {
@@ -155,6 +157,15 @@ function abierto(){
 	
 	
 	//socket_send("startGame");
+}
+function resizeBolas(){
+	alert("olas");
+	anchoPantalla=window.innerWidth;
+	nuevoTamano=Math.floor(anchoPantalla/26);
+	for(i=1;i<91;i++){
+		elemento=document.getElementById(""+i);
+		elemento.style.fontSize=nuevoTamano+"px";
+	}
 }
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");

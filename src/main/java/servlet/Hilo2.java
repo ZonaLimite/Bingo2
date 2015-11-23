@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
@@ -41,7 +42,16 @@ public class Hilo2 extends Thread{
         	orden =1;
         	pb.setIdState("Started");
         }else if(status.equals("Started")){
-        	//--->actualizar paneles
+        	Vector listaNumeros=(Vector)pb.getNumerosCalled();
+    		for(int i=0;i<listaNumeros.size()-1;i++){
+    			this.enviarMensaje("EncenderNumero_"+listaNumeros.elementAt(i));
+    			try {
+    				Thread.sleep(300);
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    		}
         	orden= pb.getNumeroOrden();
         }
     	for(int i=orden; i < maxNumbers+1 ;i++)   {
