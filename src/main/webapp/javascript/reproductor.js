@@ -85,7 +85,7 @@ function play_range(ini,fin){
 	seeking="true";
 	//esPrimeraVez= true;
 	video.play();
-	bucle=setInterval(procesarCuadros, 33);
+	bucle=setInterval(procesarCuadros, 100);
 	
 	
 	
