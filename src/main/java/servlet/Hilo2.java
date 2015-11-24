@@ -65,6 +65,8 @@ public class Hilo2 extends Thread{
                 pb.setNumeroOrden(i);
                 pb.setSecuenciaAcabada(false);
                 enviarMensaje("cantarNumero_"+number+"_"+pb.getNumeroOrden());
+                pb.setLastNumber(pb.getNewBola());
+                pb.addNumerosCalled(pb.getNewBola());
                 wait(); 
 
             } catch (InterruptedException ex) {
@@ -73,8 +75,7 @@ public class Hilo2 extends Thread{
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
-               			pb.setLastNumber(pb.getNewBola());
-                        pb.addNumerosCalled(pb.getNewBola());
+               			
                		
                		break;
                		case "offLine":
