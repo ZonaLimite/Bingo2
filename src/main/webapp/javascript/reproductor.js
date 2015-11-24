@@ -159,9 +159,9 @@ function abierto(){
 	//socket_send("startGame");
 }
 function resizeBolas(){
-	alert("olas");
+	//alert("olas");
 	anchoPantalla=window.innerWidth;
-	nuevoTamano=Math.floor(anchoPantalla/26);
+	nuevoTamano=Math.floor(anchoPantalla/30);
 	for(i=1;i<91;i++){
 		elemento=document.getElementById(""+i);
 		elemento.style.fontSize=nuevoTamano+"px";
