@@ -132,7 +132,7 @@ function getRootUri() {
 function abierto(){
 	show_InMessage("socket abierto");
 	anchoPantalla=window.innerWidth;
-	resizeBolas();
+	//resizeBolas();
 	alto=window.innerHeight;
 	caja_spy=document.getElementById("text_comando");
 	caja_spy.value=""+anchoPantalla+"x"+alto;
