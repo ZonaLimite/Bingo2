@@ -131,7 +131,7 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	anchoPantalla=window.innerWidth;
+	/*anchoPantalla=window.innerWidth;
 	//resizeBolas();
 	alto=window.innerHeight;
 	caja_spy=document.getElementById("text_comando");
@@ -156,7 +156,7 @@ function abierto(){
 	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
 	
 	
-	//socket_send("startGame");
+	socket_send("startGame");
 }
 function resizeBolas(){
 	//alert("olas");
