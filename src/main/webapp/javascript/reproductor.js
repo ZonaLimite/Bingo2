@@ -48,7 +48,7 @@ function iniciar() {
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	//canvas=document.getElementById('lienzo');
 	//lienzo=canvas.getContext('2d');
-	window.onresize = function(){resizeBolas()};
+	//window.onresize = function(){resizeBolas()};
 	
 	
 }
