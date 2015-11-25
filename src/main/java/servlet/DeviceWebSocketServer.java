@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,7 +33,7 @@ private Session mySesion;
 	this.mySesion=session;
 	pb=leePocket("user",session);
 	if( pb==null){
-		
+		this.handleMessage("newGame", session);
 	}else if(pb.getIdState().equals("Started")|| pb.getIdState().equals("Paused")){
 		this.enviarMensaje("Info_PocketAbierto");
 	}
@@ -62,7 +63,8 @@ private Session mySesion;
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;
-	case "startGame":
+	case "newGame":
+		this.borraPocket("user", session);
 		pb= new PocketBingo();
 		session.getUserProperties().put("user",pb);
 		Hilo2 = new Hilo2(session);
@@ -134,7 +136,7 @@ private Session mySesion;
                   new FileOutputStream(fichero));
           
               oos.writeObject(pb);
-          
+              
           oos.close();
       } catch (Exception e)
       {
@@ -142,5 +144,20 @@ private Session mySesion;
     	  e.printStackTrace();
       }  
 	  
+  }
+  private void borraPocket(String user, Session sesion){
+	  String ruta,fichero;
+	  	
+	  	String uri=sesion.getRequestURI().toString();
+	  	if(uri.equals("/wildfly/actions")){
+	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
+	  		fichero=ruta+"\\"+user;
+	  	}else{
+				ruta = System.getenv("OPENSHIFT_DATA_DIR");
+				fichero=ruta+user;
+	  	}
+	  	File fileUser= new File(fichero);
+	  	fileUser.delete();
+	  	
   }
 }

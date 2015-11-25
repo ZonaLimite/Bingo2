@@ -201,16 +201,17 @@ function recibido(e){
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")
-					if(result){
+					alert(result);
+					if(result==true){
 						for(i=1;i<91;i++){
 							apagarNumero(""+i);
 						}
 						socket_send("resume");
-					}else{
+					}else if(result==false){
 						for(i=1;i<91;i++){
 							apagarNumero(""+i);
 						}
-						socket_send("startGame");
+						socket_send("newGame");
 					}
 				}
 		    default:
