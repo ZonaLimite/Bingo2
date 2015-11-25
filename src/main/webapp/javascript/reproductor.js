@@ -201,7 +201,7 @@ function recibido(e){
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")
-					alert(result);
+					
 					if(result==true){
 						for(i=1;i<91;i++){
 							apagarNumero(""+i);

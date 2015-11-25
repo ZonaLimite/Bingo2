@@ -31,12 +31,7 @@ private Session mySesion;
     public void open(Session session) {
 	log.info("Abierta Session :"+ session.getId());
 	this.mySesion=session;
-	pb=leePocket("user",session);
-	if( pb==null){
-		this.handleMessage("newGame", session);
-	}else if(pb.getIdState().equals("Started")|| pb.getIdState().equals("Paused")){
-		this.enviarMensaje("Info_PocketAbierto");
-	}
+	
 }
 
 @OnClose
@@ -54,7 +49,7 @@ private Session mySesion;
 }
 
 @OnMessage
-    public void handleMessage(String message, Session session) {
+    public void handleMessage(String message, Session session){ 
 	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
@@ -63,9 +58,18 @@ private Session mySesion;
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;
+	case "startGame":
+		pb=leePocket("user",session);
+		if( pb!=null){
+			this.enviarMensaje("Info_PocketAbierto");
+		}else{
+			this.handleMessage("newGame", session);
+		}
+		break;
 	case "newGame":
 		this.borraPocket("user", session);
 		pb= new PocketBingo();
+		//this.guardaPocket("user", session);
 		session.getUserProperties().put("user",pb);
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();

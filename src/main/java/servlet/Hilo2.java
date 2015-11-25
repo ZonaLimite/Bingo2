@@ -38,9 +38,18 @@ public class Hilo2 extends Thread{
     public void run(){
         this.pb=(PocketBingo)session.getUserProperties().get("user");
         status=pb.getIdState();
+        synchronized(this){
         if(status.equals("NewGame")){
         	orden =1;
         	pb.setIdState("Started");
+    		this.enviarMensaje("cantarNumero_BuenasNoches_0");
+    		try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
         }else if(status.equals("Started")){
         	Vector listaNumeros=(Vector)pb.getNumerosCalled();
     		for(int i=0;i<listaNumeros.size();i++){
@@ -53,6 +62,7 @@ public class Hilo2 extends Thread{
     			}
     		}
         	orden= pb.getNumeroOrden();
+        }
         }
     	for(int i=orden; i < maxNumbers+1 ;i++)   {
           //log.log(Level.INFO, "Enviando mensaje de Hilo2 :{0}", i);
