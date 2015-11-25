@@ -48,7 +48,7 @@ function iniciar() {
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	//canvas=document.getElementById('lienzo');
 	//lienzo=canvas.getContext('2d');
-	//window.onresize = function(){resizeBolas()};
+	window.onresize = function(){resizeBolas()};
 	
 	
 }
@@ -131,8 +131,8 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
-	/*anchoPantalla=window.innerWidth;
-	//resizeBolas();
+	anchoPantalla=window.innerWidth;
+	resizeBolas();
 	alto=window.innerHeight;
 	caja_spy=document.getElementById("text_comando");
 	caja_spy.value=""+anchoPantalla+"x"+alto;
@@ -156,7 +156,7 @@ function abierto(){
 	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
 	
 	
-	socket_send("startGame");
+	//socket_send("startGame");
 }
 function resizeBolas(){
 	//alert("olas");
@@ -193,11 +193,11 @@ function recibido(e){
 	    	    play_range(myRango[0],myRango[1]);	
 	    	    break;
 		case "EncenderNumero":
-					encenderNumero(arrayMessages[1]);
+				encenderNumero(arrayMessages[1]);
 				break;
 		case "ApagarNumero":
-			apagarNumero(arrayMessages[1]);
-			break;
+				apagarNumero(arrayMessages[1]);
+				break;
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")

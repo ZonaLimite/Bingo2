@@ -43,7 +43,7 @@ public class Hilo2 extends Thread{
         	pb.setIdState("Started");
         }else if(status.equals("Started")){
         	Vector listaNumeros=(Vector)pb.getNumerosCalled();
-    		for(int i=0;i<listaNumeros.size()-1;i++){
+    		for(int i=0;i<listaNumeros.size();i++){
     			this.enviarMensaje("EncenderNumero_"+listaNumeros.elementAt(i));
     			try {
     				Thread.sleep(300);
