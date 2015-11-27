@@ -95,10 +95,10 @@ display: block;
 	border-right-style: groove;
 	border-bottom-style: groove;
 	border-left-style: groove;
-	border-top-color: #339;
-	border-right-color: #339;
-	border-bottom-color: #339;
-	border-left-color: #339;
+	border-top-color: #333399;
+	border-right-color: #333399;
+	border-bottom-color: #333399;
+	border-left-color: #333399;
 	font-family: "Courier New", Courier, monospace;
 }
 .valorInfo {

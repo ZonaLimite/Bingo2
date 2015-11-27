@@ -56,7 +56,7 @@ public class PocketBingo implements Serializable {
         this.idPlayer = idPlayer;
     }
 
-    public List getNumerosCalled() {
+    public List<Integer> getNumerosCalled() {
         return numerosCalled;
     }
 
