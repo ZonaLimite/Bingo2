@@ -28,7 +28,7 @@ public class Hilo2 extends Thread{
     PocketBingo pb;
     Session session;
     String status;
-    int maxNumbers = 46;
+    int maxNumbers = 90;
     int orden;
     public Hilo2(Session sesion){
        this.session = sesion;
