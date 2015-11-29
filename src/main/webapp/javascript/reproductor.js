@@ -263,7 +263,7 @@ function procesarCuadros(){
 	contador.value=video.currentTime;
 	//lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
 	if(seeking=="true"){
-		if(esPrimeraVez){
+		if(esPrimeraVez=="true"){
 			if(!video.seeking){
 				video.play();
 				esPrimeraVez = false;

@@ -54,28 +54,24 @@ private Session mySesion;
 	switch(message){
 	case "resume":
 		pb= this.leePocket("user", session);
+		if(pb==null)pb=new PocketBingo();
 		session.getUserProperties().put("user",pb);
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;
 	case "startGame":
-		pb=leePocket("user",session);
-		if( pb!=null){
-			this.enviarMensaje("Info_PocketAbierto");
-		}else{
-			this.handleMessage("newGame", session);
-		}
-		break;
+		this.enviarMensaje("Info_PocketAbierto");
 	case "newGame":
-		this.borraPocket("user", session);
+		//this.borraPocket("user", session);
 		pb= new PocketBingo();
-		//this.guardaPocket("user", session);
+		this.guardaPocket("user", session);
 		session.getUserProperties().put("user",pb);
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;
 	case "secuenciaAcabada":
 		pb.setReasonInterrupt("secuenciaAcabada");
+		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
 	case "Finalize":
@@ -127,12 +123,14 @@ private Session mySesion;
 	  	String ruta,fichero;
 	  	
 	  	String uri=sesion.getRequestURI().toString();
+	  	log.info("la uri es:"+uri);
 	  	if(uri.equals("/wildfly/actions")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
 	  		fichero=ruta+"\\"+user;
 	  	}else{
 				ruta = System.getenv("OPENSHIFT_DATA_DIR");
 				fichero=ruta+user;
+				log.info("ghuaradndo Pocket"+ fichero);
 	  	}
 	  try
       {
