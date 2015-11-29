@@ -47,7 +47,7 @@ public class Hilo2 extends Thread{
 				wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
 			}
 
         }else if(status.equals("Started")){
@@ -82,7 +82,7 @@ public class Hilo2 extends Thread{
                 wait(); 
 
             } catch (InterruptedException ex) {
-        	   log.info("He sido interrumpido");
+        	   //log.info("He sido interrumpido");
         	   String reasonInterrupt=pb.getReasonInterrupt();
                switch(reasonInterrupt){
                		case "secuenciaAcabada":

@@ -125,14 +125,14 @@ private Session mySesion;
 	  	String ruta,fichero;
 	  	
 	  	String uri=sesion.getRequestURI().toString();
-	  	log.info("la uri es:"+uri);
+	  	//log.info("la uri es:"+uri);
 	  	if(uri.equals("/wildfly/actions")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
 	  		fichero=ruta+"\\"+user;
 	  	}else{
 				ruta = System.getenv("OPENSHIFT_DATA_DIR");
 				fichero=ruta+user;
-				log.info("ghuaradndo Pocket"+ fichero);
+				//log.info("ghuaradndo Pocket"+ fichero);
 	  	}
 	  try
       {
