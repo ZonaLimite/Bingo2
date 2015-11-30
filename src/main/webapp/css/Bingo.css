@@ -101,6 +101,15 @@ display: block;
 	border-left-color: #333399;
 	font-family: "Courier New", Courier, monospace;
 }
+.canvasBola {
+	height: 100%;
+	width: 100%;
+	border-top-color: #903;
+	border-right-color: #903;
+	border-bottom-color: #903;
+	border-left-color: #903;
+}
+
 .valorInfo {
 	color: #CCCCCC;
 }
@@ -213,7 +222,7 @@ display: block;
 	border-radius: 50px / 50px;
 	padding: 0px;
 	text-align: center;
-	visibility: visible;
+	visibility: hidden;
 	opacity: 0.9;
 	width: 100%;
 }

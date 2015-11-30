@@ -53,9 +53,9 @@ private Session mySesion;
 	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
+		this.enviarMensaje("EnciendeVideo");
 		pb= this.leePocket("user", session);
 		if(pb==null)pb=new PocketBingo();
-		log.info("el stado en resume es:"+ pb.getIdState());
 		session.getUserProperties().put("user",pb);
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
@@ -65,6 +65,7 @@ private Session mySesion;
 		break;
 	case "newGame":
 		//this.borraPocket("user", session);
+		this.enviarMensaje("EnciendeVideo");
 		pb= new PocketBingo();
 		this.guardaPocket("user", session);
 		session.getUserProperties().put("user",pb);

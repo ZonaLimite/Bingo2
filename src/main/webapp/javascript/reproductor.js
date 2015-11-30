@@ -17,11 +17,16 @@ var seeking="false";
 var fin_seek;
 var esPrimeraVez;
 var anchoPantalla;
+var elementCanvas;
+var ctxCanvas;
 var bucle;
+var npat=1;
+var nuevoTamano;
 
 function iniciar() {
 	video = document.getElementById("medio");
-		
+	elementCanvas = document.getElementById("canvas_bola");	
+	ctxCanvas = elementCanvas.getContext("2d");
 	contador=document.getElementById("contador");
 	//video.ontimeupdate = function() {refreshCount()};
     
@@ -47,9 +52,11 @@ function iniciar() {
 	
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
-	//canvas=document.getElementById('lienzo');
-	//lienzo=canvas.getContext('2d');
+	canvas=document.getElementById('canvas_bola');
+	lienzo=canvas.getContext('2d');
 	window.onresize = function(){resizeBolas()};
+	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
+		
 	
 	
 }
@@ -142,6 +149,7 @@ function abierto(){
 	caja_spy=document.getElementById("text_comando");
 	caja_spy.value=""+anchoPantalla+"x"+alto;
 	socket_send("startGame");
+	
 	        /*
         imageObj.onload = function() {
 
@@ -195,8 +203,12 @@ function recibido(e){
 		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);
 				datoOrdenBola.innerHTML=arrayMessages[2];
-	    	    play_range(myRango[0],myRango[1]);	
+	    	    draw(arrayMessages[1]);
+				play_range(myRango[0],myRango[1]);	
 	    	    break;
+		case "EnciendeVideo":
+				video.style.visibility="visible";
+				break;
 		case "EncenderNumero":
 				encenderNumero(arrayMessages[1]);
 				break;
@@ -279,5 +291,56 @@ function procesarCuadros(){
 		}
 	}
 	
+}
+function draw(numero) {
+  ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
+  if((numero+"").length > 2)return;  
+  // create new image object to use as pattern
+  var img = new Image();
+  varX=Math.floor((elementCanvas.width)/2);
+  varY=Math.floor((elementCanvas.height)/2);
+  miRadio= Math.floor(varX/3);
+  mySrc="images/pattern"+npat+".jpg";
+  npat++;
+  if(npat>4) npat=1;
+  img.src = mySrc;
+  img.onload = function(){
+	//borrar previo
+	
+    // create pattern
+    var ptrn = ctxCanvas.createPattern(img,"repeat");
+    ctxCanvas.beginPath();
+    ctxCanvas.fillStyle = ptrn;
+    ctxCanvas.arc(varX, varY,miRadio, 0,Math.PI * 2,false);
+    ctxCanvas.fill();
+	var sumador=1;
+    factorX=(Math.random()*(Math.floor(miRadio/3)))+1;
+	factorSigno = (Math.random()*1)+1;
+	if (factorSigno==1){
+		sumador=+1;
+	}else{
+		sumador=-1;		
+	}
+	varX = (varX + (factorX*sumador));
+    ctxCanvas.beginPath();
+    ctxCanvas.fillStyle ="white";
+    ctxCanvas.arc(varX, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
+    ctxCanvas.fill();
+    
+	ctxCanvas.beginPath();
+    Fuente = nuevoTamano+"px Arial";
+    ctxCanvas.font = Fuente;
+	var textMeter = ctxCanvas.measureText(""+numero);
+    anchoTexto= textMeter.width;
+    ctxCanvas.fillStyle="black";
+    if(numero<10){
+    	yText=varY + (Math.floor(anchoTexto/3))+ Math.floor(anchoTexto/3);
+    }else{
+    	yText=varY + (Math.floor(anchoTexto/3));
+    }
+    ctxCanvas.fillText(""+numero,varX-(Math.floor(anchoTexto/2)),yText );
+    ctxCanvas.fill();
+  }
+  
 }
 window.onload=iniciar;
