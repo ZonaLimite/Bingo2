@@ -174,7 +174,7 @@ function abierto(){
 function resizeBolas(){
 	//alert("olas");
 	anchoPantalla=window.innerWidth;
-	nuevoTamano=Math.floor(anchoPantalla/30);
+	nuevoTamano=Math.floor(anchoPantalla/25);
 	for(i=1;i<91;i++){
 		elemento=document.getElementById(""+i);
 		elemento.style.fontSize=nuevoTamano+"px";
@@ -208,6 +208,13 @@ function recibido(e){
 	    	    break;
 		case "EnciendeVideo":
 				video.style.visibility="visible";
+				break;
+		case "ApagaVideo":
+				video.style.visibility="hidden";
+				break;
+		case "EndBalls":
+				video.style.visibility="hidden";
+				
 				break;
 		case "EncenderNumero":
 				encenderNumero(arrayMessages[1]);

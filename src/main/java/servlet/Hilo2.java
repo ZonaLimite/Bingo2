@@ -92,13 +92,15 @@ public class Hilo2 extends Thread{
                		break;
                		case "offLine":
                			enviarMensaje("EndBalls");
+               			pb.setIdState("Finalized");
                			return;
                }
            }
           
           }   
         }
-    	//pb.setIdState("Finalized"2);
+    	enviarMensaje("EndBalls");
+    	pb.setIdState("Finalized");
     	return;
     }
     private void enviarMensaje(String textMessage){
