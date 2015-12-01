@@ -202,7 +202,7 @@ function recibido(e){
 		//Cantar numero y mostrar orden bola
 		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);
-				datoOrdenBola.innerHTML=arrayMessages[2];
+				datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
 	    	    draw(arrayMessages[1]);
 				play_range(myRango[0],myRango[1]);	
 	    	    break;
@@ -335,7 +335,8 @@ function draw(numero) {
     ctxCanvas.fill();
     
 	ctxCanvas.beginPath();
-    Fuente = nuevoTamano+"px Arial";
+	tamanoLetras = Math.floor((nuevoTamano/1.3));
+    Fuente = tamanoLetras+"px bold Console";
     ctxCanvas.font = Fuente;
 	var textMeter = ctxCanvas.measureText(""+numero);
     anchoTexto= textMeter.width;

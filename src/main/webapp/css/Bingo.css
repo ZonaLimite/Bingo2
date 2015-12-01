@@ -1,4 +1,6 @@
 @charset "utf-8";
+@import url("../webfonts/AgainstMyself/stylesheet.css");
+@import url("../webfonts/almosnow/stylesheet.css");
 @viewport{
 	zoom:1.0;
 	width:extend-to-zoom;
@@ -22,6 +24,8 @@ display: block;
 #cabecera {
 	background: #FFFBB9;
 	border: 1px solid #999999;
+	
+}
 	padding: 0px;
 	display: block;
 	margin: 0px;
@@ -49,14 +53,16 @@ display: block;
 }
 
 #menu {
-	display: inline;
+	display: inline-table;
 	border-top-style: none;
 	border-right-style: none;
 	border-bottom-style: none;
 	border-left-style: none;
-	background-color: #000;
+	background-color: #1D3841;
 	padding: 0px;
 	margin: 0px;
+	position: relative;
+	top: auto;
 }
 #botonera {
 	display: inline-block;
@@ -87,20 +93,24 @@ display: block;
 .tablaInfo {
 	text-align: left;
 	margin-top: 0px;
-	border-top-width: 0px;
+	border-top-width: medium;
 	background-color: #000;
-	color: #CCCCCC;
+	color: #FFFBB9;
 	font-weight: bold;
 	border-top-style: groove;
 	border-right-style: groove;
 	border-bottom-style: groove;
 	border-left-style: groove;
-	border-top-color: #333399;
-	border-right-color: #333399;
-	border-bottom-color: #333399;
-	border-left-color: #333399;
+	border-top-color: #1D3841;
+	border-right-color: #1D3841;
+	border-bottom-color: #1D3841;
+	border-left-color: #1D3841;
 	font-family: "Courier New", Courier, monospace;
 }
+.celdaInfo {
+	font-size: large;
+}
+
 .canvasBola {
 	height: 100%;
 	width: 100%;
@@ -111,7 +121,7 @@ display: block;
 }
 
 .valorInfo {
-	color: #CCCCCC;
+	color: #FF5B5B;
 }
 
 #linea_alta_video {
@@ -155,10 +165,11 @@ display: block;
 	border-left-style: outset;
 	background-color: #FFFBB9;
 	margin: 0px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 18px;
 	font-weight: bold;
 	float: left;
+	color: #000;
 }
 #menu_li {
 	display: inline-block;
@@ -183,6 +194,7 @@ display: block;
 }
 #cabecera {
 	text-align: center;
+	background-color: #1D3841;
 }
 #articulo {
 	float: left;
@@ -200,6 +212,10 @@ display: block;
 	background-color: #000;
   
 }
+.Comander {
+
+}
+
 .tablero{
 	background-size: 100% 100%;
 	width: 100%;
@@ -209,7 +225,7 @@ display: block;
 }
 .panel{
 	background-color: #000000;
-	border: 1px solid #339;
+	border: 1px solid #1D3841;
 	padding: 2px;
 	text-align: center;
 	visibility: visible;
@@ -225,4 +241,14 @@ display: block;
 	visibility: hidden;
 	opacity: 0.9;
 	width: 100%;
+}
+
+
+
+.ano {
+	font-size: 36px;
+	font-weight: lighter;
+	background-color: #1D3841;
+	color: #FFFFFF;
+	font-family: almosnow;
 }

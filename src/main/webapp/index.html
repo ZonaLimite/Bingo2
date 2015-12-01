@@ -12,23 +12,26 @@
 
 <body class="pagina">
 <div id="agrupar">
-<header id="cabecera"><table width="100%" border="1" cellspacing="2">
+<header id="cabecera">
+
+<table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg"></td>
-    <td width="78%" class="año" >
-      FELIZ AÑO NUEVO</td>
-    <td width="10%">2016</td>
-  </tr>
-</table>
- <nav id="menu">
+    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></td>
+    <td width="78%" class="ano" >
+     <nav id="menu">
   <ul>
   <li id="iniciar" class="menu_li">INICIAR</li>
   <li class="menu_li" >CARTONES</li>
   <li class="menu_li"> HISTORICO</li>
   <li class="menu_li" >OPCIONES</li>
   </ul>
-</nav>
-     
+</nav>  </td>
+    <td width="10%">2016</td>
+  </tr>
+   
+</table>
+ 
+  
 </header>
 
 
@@ -55,39 +58,47 @@
             <label id="40" class="numeros" >40</label>             
         </td>
       <td rowspan="10" class="panel" > 
-            <article>
-            <span class="Comander">
-   		  <video id="medio" class="fotom" preload="auto" >
+            <article class="Comander" > <span >
+              <video id="medio" class="fotom" preload="auto" >
    		    <source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
    		    HTML5 video is not supported by this browser </video>
    		      
          
 
-<table border="1" align="center" class="tablaInfo">
+            </span>
+              <table border="1" align="center" class="tablaInfo">
      		<tr>
-	        <td width="90" class="celdaInfo">BOLA Nº </td>
-	        <td width="13" id="datoOrdenBola"class="celdaInfo"  ><label class="valorInfo">0</label></td>
-	        <td width="133" id="datoLinea" class="celdaInfo" >PREMIO LINEA</td>
-	        <td width="79" class="celdaInfo"><label class="valorInfo">20 PTAS</label></td>
+	        <td width="90" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA Nº </span></span></td>
+	        <td width="13" id="datoOrdenBola"class="celdaInfo"  ><span class="Comander"><span class="Comander">
+	          <label class="valorInfo">0</label>
+	        </span></span></td>
+	        <td width="133" id="datoLinea" class="celdaInfo" ><span class="Comander"><span class="Comander">PREMIO LINEA</span></span></td>
+	        <td width="79" class="celdaInfo"><span class="Comander"><span class="Comander">
+	          <label class="valorInfo">20 PTAS</label>
+	        </span></span></td>
 	        </tr>
 	      <tr>
-	        <td class="celdaInfo"> CARTONES</td>
-	        <td id="datoCartones" class="celdaInfo" ><label class="valorInfo">0</label></td>
-	        <td class="celdaInfo">PREMIO BINGO </td>
-	        <td  id="datoBingo" class="celdaInfo" ><label class="valorInfo">0 PTAS</label></td>
+	        <td class="celdaInfo"><span class="Comander"><span class="Comander"> CARTONES</span></span></td>
+	        <td id="datoCartones" class="celdaInfo" ><span class="Comander"><span class="Comander">
+	          <label class="valorInfo">0</label>
+	        </span></span></td>
+	        <td class="celdaInfo"><span class="Comander"><span class="Comander">PREMIO BINGO </span></span></td>
+	        <td  id="datoBingo" class="celdaInfo" ><span class="Comander"><span class="Comander">
+	          <label class="valorInfo">0 PTAS</label>
+	        </span></span></td>
     </tr>
 	      <tr>
-	        <td colspan="4" class="celdaInfo" id="comboTexto">&nbsp;</td>
+	        <td colspan="4" class="valorInfo" id="comboTexto">&nbsp;</td>
 	        
     	</tr>
 </table>
 	
-	<canvas id="canvas_bola" class="canvasBola">
-    Aqui va el canvas
-	</canvas>
+	          <span class="Comander"><span class="Comander">
+	          <canvas id="canvas_bola" class="canvasBola">
+	            Aqui va el canvas
+              </canvas>
 	
-            </span> 
-</article>      
+        </span></span> </article>      
              
       </td>
       <td class="panel">
