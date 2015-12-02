@@ -72,9 +72,9 @@
 	        <td width="13" id="datoOrdenBola"class="celdaInfo"  ><span class="Comander"><span class="Comander">
 	          <label class="valorInfo">0</label>
 	        </span></span></td>
-	        <td width="133" id="datoLinea" class="celdaInfo" ><span class="Comander"><span class="Comander">PREMIO LINEA</span></span></td>
-	        <td width="79" class="celdaInfo"><span class="Comander"><span class="Comander">
-	          <label class="valorInfo">20 PTAS</label>
+	        <td width="133" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA</label></td>
+	        <td width="120" class="celdaInfo"><span class="Comander"><span class="Comander">
+	          <label class="valorInfo">20 €</label>
 	        </span></span></td>
 	        </tr>
 	      <tr>
@@ -82,9 +82,9 @@
 	        <td id="datoCartones" class="celdaInfo" ><span class="Comander"><span class="Comander">
 	          <label class="valorInfo">0</label>
 	        </span></span></td>
-	        <td class="celdaInfo"><span class="Comander"><span class="Comander">PREMIO BINGO </span></span></td>
+	        <td class="celdaInfo"><label id="labelBingo">BINGO</label></td>
 	        <td  id="datoBingo" class="celdaInfo" ><span class="Comander"><span class="Comander">
-	          <label class="valorInfo">0 PTAS</label>
+	          <label class="valorInfo">0 €</label>
 	        </span></span></td>
     </tr>
 	      <tr>
@@ -434,7 +434,7 @@
 	  <input type="text" id="contador" value="00:00">
 	  </li>    
       <li class="menu_li">
-	  <input type="text" id="seek_ini" value="00:00">
+	  <input type="text" id="seek_ini" value="00:00" size="20">
 	  </li>    
       <li class="menu_li">
 	  <input type="text" id="seek_fin" value="00:00">
@@ -442,6 +442,11 @@
 	  <li class="menu_li">    
    		   <input id="c_Range" value="Play Range" type="button">
    	  </li>
+      <li id="boton_Linea" class="menu_li">LINEA</li>
+	  <li id="boton_Bingo" class="menu_li">BINGO</li>
+      <li id="boton_LineaOk" class="menu_li">LINEA OK</li>
+	  <li id="boton_BingoOk" class="menu_li">BINGO OK</li>
+      
    </ul>
   
 </article>

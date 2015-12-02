@@ -15,17 +15,31 @@ import java.util.Vector;
  * @author hormigueras
  */
 public class PocketBingo implements Serializable {
-    private int numeroOrden = 0;
+    public boolean isLineaCantada() {
+		return lineaCantada;
+	}
+	public void setLineaCantada(boolean lineaCantada) {
+		this.lineaCantada = lineaCantada;
+	}
+	public boolean isBingoCantado() {
+		return bingoCantado;
+	}
+	public void setBingoCantado(boolean bingoCantado) {
+		this.bingoCantado = bingoCantado;
+	}
+	private int numeroOrden = 0;
     private String idPlayer = "";
     private Vector numerosCalled = new Vector() ;
     private int lastNumber;
     private int newBola;
     private String reasonInterrupt;
     private boolean secuenciaAcabada=true;
+    private boolean lineaCantada=false;
+    private boolean bingoCantado=false;
     private String IdState = "NewGame";
     /* 
      * IdState :
-     *  NewGame,Paused,Started,Finalized.
+     *  NewGame,Linea,Bingo,Started,Finalized.
      */
     public boolean getSecuenciaAcabada(){
         return secuenciaAcabada;

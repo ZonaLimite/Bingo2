@@ -71,14 +71,29 @@ public class Hilo2 extends Thread{
    
           synchronized(this){
             try{
-                int number = calculaBolaNueva();
-                pb.setNewBola(number);
+                if(pb.getIdState().equals("Linea")){
+                	enviarMensaje("ComprobarLinea");
+                	i--;
+                }else if(pb.getIdState().equals("Linea_OK")){
+                	pb.setIdState("Linea_OK_out");
+                	//enviarMensaje("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden());
+                	enviarMensaje("cantarNumero_lineaOk_"+pb.getNumeroOrden());
+                	i--;
+                }else if(pb.getIdState().equals("Linea_OK_out")){
+                	pb.setIdState("Started");
+                	enviarMensaje("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden());
+                	i--;
+                }
+                else{
+            	
+                	int number = calculaBolaNueva();
                 
-                pb.setNumeroOrden(i);
-                pb.setSecuenciaAcabada(false);
-                enviarMensaje("cantarNumero_"+number+"_"+pb.getNumeroOrden());
-                pb.setLastNumber(pb.getNewBola());
-                pb.addNumerosCalled(pb.getNewBola());
+                	pb.setNumeroOrden(i);
+                	pb.setSecuenciaAcabada(false);
+                	enviarMensaje("cantarNumero_"+number+"_"+pb.getNumeroOrden());
+                	pb.setNewBola(number);//bola en pantalla
+                }
+                log.info("orden antes del wait "+ i);
                 wait(); 
 
             } catch (InterruptedException ex) {
@@ -86,10 +101,15 @@ public class Hilo2 extends Thread{
         	   String reasonInterrupt=pb.getReasonInterrupt();
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
+               			if(pb.getIdState().equals("Linea") || pb.getIdState().equals("Linea_OK") ){
+               				break;
+               			}
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
-               			
-               		
+               			pb.setLastNumber(pb.getNewBola());
+               			pb.addNumerosCalled(pb.getNewBola());
                		break;
+               		
+               			
                		case "offLine":
                			enviarMensaje("EndBalls");
                			pb.setIdState("Finalized");
