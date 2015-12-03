@@ -24,12 +24,19 @@ var ctxCanvas;
 var bucle;
 var npat=1;
 var nuevoTamano;
+var palabraLinea;
+var palabraBingo;
+var triggerBingo;
+var triggerLinea="false";
+var colorTriggerLinea=900;
 
 function iniciar() {
 	video = document.getElementById("medio");
 	elementCanvas = document.getElementById("canvas_bola");	
 	ctxCanvas = elementCanvas.getContext("2d");
 	contador=document.getElementById("contador");
+	palabraLinea = document.getElementById("labelLinea");
+	palabraBingo = document.getElementById("labelBingo");
 	//video.ontimeupdate = function() {refreshCount()};
     
 	boton_play = document.getElementById("play");
@@ -39,17 +46,31 @@ function iniciar() {
 	boton_pause.onclick = function() { pausar()};
 	
 	boton_Linea= document.getElementById("boton_Linea");
-	boton_Linea.onclick = function(){ socket_send("Linea")};
-	
-	boton_Linea= document.getElementById("boton_Linea");
-	boton_Linea.onclick = function(){
+	boton_Linea.onclick = function(){ 
 		socket_send("Linea");
+		triggerLinea="true";
+	};
+	
+	boton_Bingo= document.getElementById("boton_Bingo");
+	boton_Bingo.onclick = function(){
+		socket_send("Bingo");
+		triggerBingo="true";
 	};
 
 	boton_LineaOk= document.getElementById("boton_LineaOk");
 	boton_LineaOk.onclick = function(){
+		palabraLinea.style.visibility="hidden";
+		triggerLinea="false";
 		video.style.visibility="visible";
 		socket_send("Linea_OK");
+	};
+	
+	boton_BingoOk= document.getElementById("boton_BingoOk");
+	boton_BingoOk.onclick = function(){
+		palabraBingo.style.visibility="hidden";
+		triggerBingo="false";
+		video.style.visibility="visible";
+		socket_send("Bingo_OK");
 	};
 		
 	boton_iniciar = document.getElementById("iniciar");
@@ -118,6 +139,18 @@ function play_range(ini,fin){
 	
 	
 	
+}
+function initInterface(){
+	palabraLinea.style.backgroundColor="#000000";
+	palabraBingo.style.backgroundColor="#000000";
+	palabraLinea.style.visibility="visible";
+	palabraBingo.style.visibility="visible";
+	for(i=1;i<91;i++){
+		apagarNumero(""+i);
+	}
+	//borrar canvas
+	alert("canvas "+ canvas.width);
+	lienzo.clearRect(0,0,canvas.width,canvas.heigth); 
 }
 function arrancar(){
 	//creacion de webSocket y autenticacion
@@ -230,10 +263,15 @@ function recibido(e){
 				break;
 		case "EndBalls":
 				video.style.visibility="hidden";
+				break;
 		case "Linea":
 				myRango=sacarRangos(arrayMessages[1]);
 				play_range(myRango[0],myRango[1]);
 				break;
+		case "Bingo":
+			myRango=sacarRangos(arrayMessages[1]);
+			play_range(myRango[0],myRango[1]);
+			break
 		case "ComprobarLinea":
 				video.style.visibility="hidden";
 				//Se deberia escribir en el canvas 	
@@ -241,6 +279,13 @@ function recibido(e){
 				//etqLinea=document.getElementById("labelLinea");
 				//etqLinea.style.
 				break;
+		case "ComprobarBingo":
+			video.style.visibility="hidden";
+			//Se deberia escribir en el canvas 	
+			show_InMessage("COMPROBANDO BINGO ....");
+			//etqLinea=document.getElementById("labelLinea");
+			//etqLinea.style.
+			break;				
 		case "EncenderNumero":
 				encenderNumero(arrayMessages[1]);
 				break;
@@ -250,16 +295,10 @@ function recibido(e){
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")
-					
+					initInterface();
 					if(result==true){
-						for(i=1;i<91;i++){
-							apagarNumero(""+i);
-						}
 						socket_send("resume");
 					}else if(result==false){
-						for(i=1;i<91;i++){
-							apagarNumero(""+i);
-						}
 						socket_send("newGame");
 					}
 				}
@@ -306,6 +345,18 @@ function reanudar(){
 function procesarCuadros(){
 	contador.value=video.currentTime;
 	//lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
+	if(triggerLinea=="true"){
+		if(colorTriggerLinea >999)colorTriggerLinea=900;
+		color="#"+colorTriggerLinea;
+		palabraLinea.style.backgroundColor=color;
+		colorTriggerLinea++;
+	}
+	if(triggerBingo=="true"){
+		if(colorTriggerLinea >999)colorTriggerLinea=900;
+		color="#"+colorTriggerLinea;
+		palabraBingo.style.backgroundColor=color;
+		colorTriggerLinea++;
+	}
 	if(seeking=="true"){
 		if(esPrimeraVez=="true"){
 			if(!video.seeking){

@@ -42,6 +42,7 @@ public class Hilo2 extends Thread{
         if(status.equals("NewGame")){
         	orden =1;
         	pb.setIdState("Started");
+        	pb.setNumeroOrden(1);
     		this.enviarMensaje("cantarNumero_BuenasNoches_0");
     		try {
 				wait();
@@ -72,26 +73,41 @@ public class Hilo2 extends Thread{
           synchronized(this){
             try{
                 if(pb.getIdState().equals("Linea")){
+                	enviarMensaje("Linea_linea");
+                	//enviarMensaje("ComprobarLinea");
+                	pb.setIdState("ComprobandoLinea");
+                	i--;
+                }else if(pb.getIdState().equals("ComprobandoLinea")){
                 	enviarMensaje("ComprobarLinea");
                 	i--;
-                }else if(pb.getIdState().equals("Linea_OK")){
-                	pb.setIdState("Linea_OK_out");
-                	//enviarMensaje("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden());
+                }else if(pb.getIdState().equals("LineaOk")){
+                	pb.setIdState("Started");
                 	enviarMensaje("cantarNumero_lineaOk_"+pb.getNumeroOrden());
                 	i--;
-                }else if(pb.getIdState().equals("Linea_OK_out")){
-                	pb.setIdState("Started");
-                	enviarMensaje("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden());
+                
+                }else if(pb.getIdState().equals("Bingo")){
+                	enviarMensaje("Bingo_bingo");
+                	//enviarMensaje("ComprobarLinea");
+                	pb.setIdState("ComprobandoBingo");
+                	i--;
+                }else if(pb.getIdState().equals("ComprobandoBingo")){
+                	enviarMensaje("ComprobarBingo");
+                	i--;
+                }else if(pb.getIdState().equals("BingoOk")){
+                	pb.setIdState("Finalized");
+                	enviarMensaje("cantarNumero_bingoOk_"+pb.getNumeroOrden());
                 	i--;
                 }
+                
                 else{
             	
                 	int number = calculaBolaNueva();
                 
-                	pb.setNumeroOrden(i);
-                	pb.setSecuenciaAcabada(false);
-                	enviarMensaje("cantarNumero_"+number+"_"+pb.getNumeroOrden());
+                	
+                	//pb.setSecuenciaAcabada(false);
+                	enviarMensaje("cantarNumero_"+number+"_"+i);
                 	pb.setNewBola(number);//bola en pantalla
+                	pb.setNumeroOrden(i);
                 }
                 log.info("orden antes del wait "+ i);
                 wait(); 
@@ -101,12 +117,19 @@ public class Hilo2 extends Thread{
         	   String reasonInterrupt=pb.getReasonInterrupt();
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
-               			if(pb.getIdState().equals("Linea") || pb.getIdState().equals("Linea_OK") ){
-               				break;
-               			}
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
                			pb.setLastNumber(pb.getNewBola());
+               			
+               			if(pb.getIdState().equals("Linea") || pb.getIdState().equals("Comprobando")|| pb.getIdState().equals("LineaOk")||pb.getIdState().equals("Bingo") || pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("BingoOk")){
+               				break;
+               			}
+               			
                			pb.addNumerosCalled(pb.getNewBola());
+               			if(pb.getIdState().equals("Finalized")){
+               				enviarMensaje("EndBalls");
+               				log.info("Voy ha hacer return");
+               				return;
+               			}
                		break;
                		
                			

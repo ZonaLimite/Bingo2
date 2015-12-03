@@ -77,25 +77,28 @@ private Session mySesion;
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
+	
 	case "Linea":
 		pb.setIdState("Linea");
-		//pb.setReasonInterrupt("Linea");
-		this.enviarMensaje("Linea_linea");
 		this.guardaPocket("user", session);
-		//Hilo2.interrupt();
 		break;
+
 	case "Linea_OK":
 		pb.setLineaCantada(true);
-		pb.setIdState("Linea_OK");
+		pb.setIdState("LineaOk");
+		pb.setReasonInterrupt("secuenciaAcabada");
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
-	case "Linea_OK_out":
-		pb.setIdState("Linea_OK_out");
-		this.guardaPocket("user", session);
-		Hilo2.interrupt();
-		break;	
+	
 	case "Bingo":
+		pb.setIdState("Bingo");
+		this.guardaPocket("user", session);
+		break;
+	
+	case "Bingo_OK":
+		pb.setBingoCantado(true);
+		pb.setIdState("BingoOk");
 		pb.setReasonInterrupt("secuenciaAcabada");
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
