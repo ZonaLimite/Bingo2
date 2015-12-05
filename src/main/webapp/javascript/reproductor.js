@@ -15,6 +15,7 @@ var boton_play_range;
 var boton_comando;
 var boton_notify;
 var caja_output;
+var caja_spy;
 var datoOrdenBola;
 var contador;
 var lienzo;
@@ -27,14 +28,16 @@ var ctxCanvas;
 var bucle;
 var npat=1;
 var nuevoTamano;
+var tamanoMenu=null;
 var palabraLinea;
 var palabraBingo;
 var triggerBingo;
 var triggerLinea="false";
 var colorTriggerLinea=900;
-var nombreRangos="rangosLola";
+//var nombreRangos="rangosLola";
+var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
-var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
+var nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 
 function iniciar() {
 	rangos=eval(nombreRangos);
@@ -93,7 +96,9 @@ function iniciar() {
 	boton_notify.onclick = function(){
 		socket_send("secuenciaAcabada");
 	}
-		
+	caja_spy=document.getElementById("text_comando");
+	
+	
 	comboTexto = document.getElementById("comboTexto");
 	
 	boton_play_range= document.getElementById("c_Range");
@@ -204,10 +209,8 @@ function abierto(){
 	anchoPantalla=window.innerWidth;
 	resizeBolas();
 	alto=window.innerHeight;
-	caja_spy=document.getElementById("text_comando");
-	caja_spy.value=""+anchoPantalla+"x"+alto;
 	socket_send("startGame");
-	
+	caja_spy.value=""+anchoPantalla+"x"+alto;
 	        /*
         imageObj.onload = function() {
 
@@ -229,10 +232,16 @@ function abierto(){
 	
 	//socket_send("startGame");
 }
-function resizeBolas(){
+function resizeBolas(tamanoMenu){
 	//alert("olas");
+	if(tamanoMenu==null){
 	anchoPantalla=window.innerWidth;
+	alto=window.innerHeight;
 	nuevoTamano=Math.floor(anchoPantalla/25);
+	}else{
+		nuevoTamano=tamanoMenu;
+	}
+	caja_spy.value=""+anchoPantalla+"x"+alto +" -->"+nuevoTamano;
 	for(i=1;i<91;i++){
 		elemento=document.getElementById(""+i);
 		elemento.style.fontSize=nuevoTamano+"px";
