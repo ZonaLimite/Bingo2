@@ -145,9 +145,9 @@ function play_range(ini,fin){
 	document.getElementById("seek_fin").value=fin;
 	fin_seek=fin;
 	seeking="true";
-	esPrimeraVez= true;
-	video.play();
-	bucle = setInterval(function(){ procesarCuadros() }, 100);
+	esPrimeraVez= "true";
+	//video.play();
+	bucle = setInterval(function(){ procesarCuadros() }, 50);
 
 	//bucle=setInterval(procesarCuadros, 100);
 	
@@ -163,7 +163,7 @@ function initInterface(){
 		apagarNumero(""+i);
 	}
 	//borrar canvas
-	alert("canvas "+ canvas.width);
+	//alert("canvas "+ canvas.width);
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth); 
 }
 function arrancar(){
@@ -377,9 +377,10 @@ function procesarCuadros(){
 	}
 	if(seeking=="true"){
 		if(esPrimeraVez=="true"){
+			
 			if(!video.seeking){
 				video.play();
-				esPrimeraVez = false;
+				esPrimeraVez = "false";
 			}
 
 		}
