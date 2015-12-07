@@ -103,6 +103,11 @@ private Session mySesion;
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
+	case "Continue":
+		pb.setIdState("Started");
+		this.enviarMensaje("EnciendeVideo");
+		this.guardaPocket("user", session);
+		break;
 	case "Finalize":
 		pb.setIdState("Finalized");
 		pb.setReasonInterrupt("offLine");

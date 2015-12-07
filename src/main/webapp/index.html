@@ -4,8 +4,11 @@
 <meta charset="utf-8">
 <meta name="vieport" content="width=device-width, initial-scale=1.0">
 <title>Bingo 2015</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  
 <script src="javascript/reproductor.js"></script>
-
 <link href="css/Bingo.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -16,9 +19,9 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc=	"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></td>
+    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></td>
     <td width="78%" class="ano" >
-     <nav id="menu">
+    <nav id="menu">
   <ul>
   <li id="iniciar" class="menu_li">INICIAR</li>
   <li class="menu_li" >CARTONES</li>
@@ -426,29 +429,16 @@
 
 
 <article id="articulo">	
-  
-   <ul>
-	  <li id="play" class="menu_li">PLAY</li>
-	  <li id="pause" class="menu_li">PAUSE</li>
-      <li class="menu_li">
-	  <input type="text" id="contador" value="00:00">
-	  </li>    
-      <li class="menu_li">
-	  <input type="text" id="seek_ini" value="00:00" size="20">
-	  </li>    
-      <li class="menu_li">
-	  <input type="text" id="seek_fin" value="00:00">
-	  </li>
-	  <li class="menu_li">    
-   		   <input id="c_Range" value="Play Range" type="button">
-   	  </li>
-      <li id="boton_Linea" class="menu_li">LINEA</li>
-	  <li id="boton_Bingo" class="menu_li">BINGO</li>
-      <li id="boton_LineaOk" class="menu_li">LINEA OK</li>
-	  <li id="boton_BingoOk" class="menu_li">BINGO OK</li>
-      
-   </ul>
-  
+<div align="center">  
+ 
+<input value="PLAY" id="play" class="menu_li">
+<input value="PAUSE" id="pause" class="menu_li">
+<input value="LINEA"id="boton_Linea" class="menu_li">
+<input value="BINGO" id="boton_Bingo" class="menu_li">
+<input value="LINEA OK" id="boton_LineaOk" class="menu_li">
+<input value="BINGO OK" id="boton_BingoOk" class="menu_li">
+   
+</div>  
 </article>
 </div>
     
@@ -456,15 +446,33 @@
 
 
 <footer>
-  <div class="Comander">
+  <div class="Comander2">
   
     <input type="submit" name="comando" id="comando" value="Enviar">
     <label for="text_comando"></label>
     <input type="text" name="text_comando" id="text_comando">
     <input type="button" id="notify">
+      
+      
+	  <input type="text" id="seek_ini" value="00:00" size="20">
+	  
+      
+	  <input type="text" id="seek_fin" value="00:00">
+	  
+	  
+	  <input type="password" id="contador" value="00:00">
+	  
+	  
+	    <input id="c_Range" value="Play Range" type="button">
+   	  
   </div>   
   
 </footer>
+<div id="dialog" title="Partida Abierta">
+	
+Se ha encontrado una partida empezeda,¿Quiere continuar la partida o empezar una nueva?
+
+</div>
 </body>
 
 </html>

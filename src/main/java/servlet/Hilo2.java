@@ -51,12 +51,12 @@ public class Hilo2 extends Thread{
 				
 			}
 
-        }else if(status.equals("Started")){
+        }else {//else if(status.equals("Started"))
         	Vector listaNumeros=(Vector)pb.getNumerosCalled();
     		int i;
         	for(i=0;i<listaNumeros.size();i++){
     			this.enviarMensaje("EncenderNumero_"+listaNumeros.elementAt(i));
-    			this.enviarMensaje("bolaJuego_"+(i+1));
+    			//this.enviarMensaje("bolaJuego_"+(i+1));
     			try {
     				Thread.sleep(300);
     			} catch (InterruptedException e) {
@@ -64,7 +64,20 @@ public class Hilo2 extends Thread{
     				e.printStackTrace();
     			}
     		}
-        	orden=i+1;;
+        	orden=pb.getNumeroOrden();;
+        	int number= pb.getNewBola();
+        	//this.enviarMensaje("bolaJuego_"+orden);
+        	enviarMensaje("cantarNumero_"+number+"_"+orden);
+        	enviarMensaje("EncenderNumero_"+number);
+        	pb.addNumerosCalled(pb.getNewBola());
+        	try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	orden=i+2;;
         }
         }
     	for(int i=orden; i < maxNumbers+1 ;i++)   {
