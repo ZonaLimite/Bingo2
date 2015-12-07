@@ -60,6 +60,7 @@ function iniciar() {
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
+		event.preventDefault();
 		socket_send("Linea");
 		triggerLinea="true";
 	};
