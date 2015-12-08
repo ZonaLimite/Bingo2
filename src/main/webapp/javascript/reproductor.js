@@ -29,6 +29,7 @@ var bucle;
 var npat=1;
 var nuevoTamano;
 var maxTamano=75;
+var cajaTamano;
 var tamanoMenu=null;
 var palabraLinea;
 var palabraBingo;
@@ -108,6 +109,8 @@ function iniciar() {
 	
 	comboTexto = document.getElementById("comboTexto");
 	
+	cajaTamano = document.getElementById("maxTamano");
+	
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	
@@ -153,6 +156,7 @@ function iniciar() {
 	selectCantaor= document.getElementsByName("cantaor");
 	
 	$( "#opciones" ).dialog({ autoOpen: false , modal: true });
+	
 	$("select[name=cantaor]").change(function(){
 		valor=$("select[name=cantaor]").val();
 		elegirCantaor(valor);
@@ -168,19 +172,20 @@ function iniciar() {
 	});
 	
 	$( "#slider" ).slider();
-	$( ".selector" ).slider({
+	$( "#slider" ).slider({
 		  max: 75
 		});
-	$( ".selector" ).slider({
+	$( "#slider" ).slider({
 		  min: 5
 		});
-	$( ".selector" ).slider({
+	$( "#slider" ).slider({
 		range: true
 	});
 	$( "#slider").slider({
 		  slide: function( event, ui ) {}
 		});
 	$( "#slider" ).on( "slide", function( event, ui ) {
+		cajaTamano.value=ui.value;
 		nuevoTamano=ui.value;
 		resizeBolas(nuevoTamano);
 	} );

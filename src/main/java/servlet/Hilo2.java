@@ -133,14 +133,13 @@ public class Hilo2 extends Thread{
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
                			pb.setLastNumber(pb.getNewBola());
                			
-               			if(pb.getIdState().equals("Linea") || pb.getIdState().equals("Comprobando")|| pb.getIdState().equals("LineaOk")||pb.getIdState().equals("Bingo") || pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("BingoOk")){
+               			if(pb.getIdState().equals("Linea") || pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("LineaOk")||pb.getIdState().equals("Bingo") || pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("BingoOk")){
                				break;
                			}
                			
                			pb.addNumerosCalled(pb.getNewBola());
                			if(pb.getIdState().equals("Finalized")){
                				enviarMensaje("EndBalls");
-               				log.info("Voy ha hacer return");
                				return;
                			}
                		break;
