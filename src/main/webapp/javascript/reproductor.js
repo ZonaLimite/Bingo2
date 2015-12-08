@@ -28,6 +28,7 @@ var ctxCanvas;
 var bucle;
 var npat=1;
 var nuevoTamano;
+var maxTamano=75;
 var tamanoMenu=null;
 var palabraLinea;
 var palabraBingo;
@@ -35,6 +36,7 @@ var triggerBingo;
 var triggerLinea="false";
 var colorTriggerLinea=900;
 var resultDialogo="Empezar";
+var videoEnable=false;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
@@ -74,7 +76,7 @@ function iniciar() {
 	boton_LineaOk.onclick = function(){
 		palabraLinea.style.visibility="hidden";
 		triggerLinea="false";
-		video.style.visibility="visible";
+		enciendeVideo();
 		socket_send("Linea_OK");
 	};
 	
@@ -82,12 +84,15 @@ function iniciar() {
 	boton_BingoOk.onclick = function(){
 		palabraBingo.style.visibility="hidden";
 		triggerBingo="false";
-		video.style.visibility="visible";
+		enciendeVideo();
 		socket_send("Bingo_OK");
 	};
 		
 	boton_iniciar = document.getElementById("iniciar");
 	boton_iniciar.onclick = function(){ arrancar()};
+	
+	boton_opciones=document.getElementById("preferencias");
+	boton_opciones.onclick = function(){$( "#opciones" ).dialog( "open" );}
 	
 	boton_comando = document.getElementById("comando");
 	boton_comando.onclick = function(){send_command()};
@@ -145,12 +150,64 @@ function iniciar() {
 			 }
 		  ]
 		});
+	selectCantaor= document.getElementsByName("cantaor");
 	
+	$( "#opciones" ).dialog({ autoOpen: false , modal: true });
+	$("select[name=cantaor]").change(function(){
+		valor=$("select[name=cantaor]").val();
+		elegirCantaor(valor);
+	});
+	$("input[name=videoON]").change(function(){
+		if($("input[name=videoON]").is(':checked')){
+			videoEnable="true";
+			enciendeVideo();
+	}else{
+			videoEnable="false";
+			apagaVideo();
+	}
+	});
+	
+	$( "#slider" ).slider();
+	$( ".selector" ).slider({
+		  max: 75
+		});
+	$( ".selector" ).slider({
+		  min: 5
+		});
+	$( ".selector" ).slider({
+		range: true
+	});
+	$( "#slider").slider({
+		  slide: function( event, ui ) {}
+		});
+	$( "#slider" ).on( "slide", function( event, ui ) {
+		nuevoTamano=ui.value;
+		resizeBolas(nuevoTamano);
+	} );
+
 	
 	
 	
 }
-
+function enciendeVideo(){
+	if(videoEnable=="true")video.style.visibility="visible";
+}
+function apagaVideo(){
+	video.style.visibility="hidden";
+}
+function elegirCantaor(cantaor){
+		
+		if(cantaor=="Lola"){
+			nombreRangos="rangosLola";
+			nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
+		}
+		if(cantaor=="Ines"){
+			nombreRangos="rangosInes";
+			nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
+		}
+		rangos=eval(nombreRangos);
+		video.src=nombreFileVideo;
+}
 function show_InMessage(contenido){
 
 	comboTexto.innerHTML=contenido;
@@ -204,8 +261,8 @@ function initInterface(){
 	//borrar canvas
 	//alert("canvas "+ canvas.width);
 	canvas=document.getElementById('canvas_bola');
+	canvas.width=canvas.width;
 	lienzo=canvas.getContext('2d');
-	lienzo.beginPath();
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth); 
 }
 function arrancar(){
@@ -316,13 +373,13 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);	
 	    	    break;
 		case "EnciendeVideo":
-				video.style.visibility="visible";
+				enciendeVideo();
 				break;
 		case "ApagaVideo":
-				video.style.visibility="hidden";
+				apagaVideo();
 				break;
 		case "EndBalls":
-				video.style.visibility="hidden";
+				apagaVideo();
 				break;
 		case "Linea":
 				myRango=sacarRangos(arrayMessages[1]);
@@ -333,14 +390,14 @@ function recibido(e){
 			play_range(myRango[0],myRango[1]);
 			break
 		case "ComprobarLinea":
-				video.style.visibility="hidden";
+				apagaVideo();
 				//Se deberia escribir en el canvas 	
 				show_InMessage("COMPROBANDO LINEA ....");
 				//etqLinea=document.getElementById("labelLinea");
 				//etqLinea.style.
 				break;
 		case "ComprobarBingo":
-			video.style.visibility="hidden";
+			apagaVideo();
 			//Se deberia escribir en el canvas 	
 			show_InMessage("COMPROBANDO BINGO ....");
 			//etqLinea=document.getElementById("labelLinea");
