@@ -268,7 +268,7 @@ display: block;
 	font-size: 36px;
 	font-weight: lighter;
 	background-color: #1D3841;
-	color: #FFFFFF;
+	color: #7986FD;
 	font-family: almosnow;
 }
 .pagina #agrupar .tablero tr .panel .Comander .tablaInfo tr #datoLinea .Comander .Comander {
@@ -280,5 +280,5 @@ display: block;
 
 }
 #label-1 {
-	color: #CCA009;
+	color: #7986FD;
 }

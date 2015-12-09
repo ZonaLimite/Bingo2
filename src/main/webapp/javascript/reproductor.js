@@ -37,7 +37,7 @@ var triggerBingo;
 var triggerLinea="false";
 var colorTriggerLinea=900;
 var resultDialogo="Empezar";
-var videoEnable=false;
+var videoEnable="true";
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";

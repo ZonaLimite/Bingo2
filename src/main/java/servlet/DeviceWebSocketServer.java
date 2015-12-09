@@ -50,9 +50,10 @@ private Session mySesion;
 
 @OnMessage
     public void handleMessage(String message, Session session){ 
-	log.info("recibido mensaje:"+ message);
+	//log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
+		if(pb!=null)this.guardaPocket("user", session);
 		this.enviarMensaje("EnciendeVideo");
 		pb= this.leePocket("user", session);
 		if(pb==null)pb=new PocketBingo();
