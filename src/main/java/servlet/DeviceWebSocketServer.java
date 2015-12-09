@@ -58,6 +58,17 @@ private Session mySesion;
 		pb= this.leePocket("user", session);
 		if(pb==null)pb=new PocketBingo();
 		session.getUserProperties().put("user",pb);
+		if(pb.isLineaCantada()){
+			this.enviarMensaje("ApagaLinea");
+		}else{
+			
+		}
+		if(pb.isBingoCantado()){
+			this.enviarMensaje("ApagaLinea");
+		}else{
+			
+		}
+		
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;
@@ -107,7 +118,9 @@ private Session mySesion;
 	case "Continue":
 		pb.setIdState("Started");
 		this.enviarMensaje("EnciendeVideo");
+		pb.setReasonInterrupt("secuenciaAcabada");
 		this.guardaPocket("user", session);
+		Hilo2.interrupt();
 		break;
 	case "Finalize":
 		pb.setIdState("Finalized");

@@ -11,6 +11,7 @@ var boton_pause;
 var boton_Linea;
 var boton_Bingo
 var boton_iniciar;
+var boton_Continuar;
 var boton_play_range;
 var boton_comando;
 var boton_notify;
@@ -38,6 +39,8 @@ var triggerLinea="false";
 var colorTriggerLinea=900;
 var resultDialogo="Empezar";
 var videoEnable="true";
+var lineaCantada="false";
+var bingoCantado="false";
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
@@ -63,32 +66,54 @@ function iniciar() {
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
+		if(lineaCantada=="true" || lineaCantada=="comprobando")return;
+		lineaCantada="comprobando";
 		socket_send("Linea");
 		triggerLinea="true";
 	};
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
 	boton_Bingo.onclick = function(){
+		if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
+		bingoCantado="comprobando";
 		socket_send("Bingo");
 		triggerBingo="true";
 	};
 
 	boton_LineaOk= document.getElementById("boton_LineaOk");
 	boton_LineaOk.onclick = function(){
-		palabraLinea.style.visibility="hidden";
-		triggerLinea="false";
+		if(lineaCantada!="comprobando")return;
+		apagaLinea();
 		enciendeVideo();
 		socket_send("Linea_OK");
 	};
 	
 	boton_BingoOk= document.getElementById("boton_BingoOk");
 	boton_BingoOk.onclick = function(){
+		if(bingoCantado!="comprobando")return;
 		palabraBingo.style.visibility="hidden";
-		triggerBingo="false";
+		apagaBingo();
 		enciendeVideo();
 		socket_send("Bingo_OK");
 	};
+	
+	boton_Continuar = document.getElementById("boton_Continuar");
+	boton_Continuar.onclick = function(){
 		
+		if(lineaCantada=="comprobando"){
+			lineaCantada="false";
+			triggerLinea="false";
+			socket_send("Continue");
+		}
+		if(bingoCantado=="comprobando"){
+			bingoCantado="false";
+			triggerBingo="false";
+			socket_send("Continue");
+		}
+		
+
+		
+	}
 	boton_iniciar = document.getElementById("iniciar");
 	boton_iniciar.onclick = function(){ arrancar()};
 	
@@ -197,8 +222,20 @@ function iniciar() {
 function enciendeVideo(){
 	if(videoEnable=="true")video.style.visibility="visible";
 }
+
 function apagaVideo(){
 	video.style.visibility="hidden";
+}
+
+function apagaLinea(){
+	document.getElementById("labelLinea").style.visibility="hidden";
+	triggerLinea="false";
+	lineaCantada="true";
+}
+function apagaBingo(){
+	document.getElementById("labelLinea").style.visibility="hidden";
+	triggerBingo="false";
+	bingoCantado="true";
 }
 function elegirCantaor(cantaor){
 		
@@ -256,6 +293,8 @@ function play_range(ini,fin){
 	
 }
 function initInterface(){
+	lineaCantada="false";
+	bingoCantado="false";
 	palabraLinea.style.backgroundColor="#000000";
 	palabraBingo.style.backgroundColor="#000000";
 	palabraLinea.style.visibility="visible";
@@ -420,6 +459,9 @@ function recibido(e){
 					
 					$( "#dialog" ).dialog( "open" );
 				}
+		case "ApagaLinea":
+				apagaLinea();
+				break;
 		default:
         		
 		} 
