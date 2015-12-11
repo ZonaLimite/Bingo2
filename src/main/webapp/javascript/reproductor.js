@@ -501,9 +501,11 @@ function resizeBolas(tamanoMenu){
 	anchoPantalla=window.innerWidth;
 	alto=window.innerHeight;
 	nuevoTamano=Math.floor(anchoPantalla/25);
+	if(nuevoTamano>82)nuevoTamano=82;
 	}else{
 		nuevoTamano=tamanoMenu;
 	}
+	if(nuevoTamano>82)nuevoTamano=82;
 	caja_spy.value=""+anchoPantalla+"x"+alto +" -->"+nuevoTamano;
 	for(i=1;i<91;i++){
 		elemento=document.getElementById(""+i);
@@ -669,7 +671,7 @@ function procesarCuadros(){
 function draw(numero) {
   if((numero+"").length > 2)return;  
   ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
-  
+  ctxCanvas.width=ctxCanvas.width;
   // create new image object to use as pattern
   var img = new Image();
   varX=Math.floor((elementCanvas.width)/2);
