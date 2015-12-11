@@ -51,6 +51,7 @@ var porCientoBingo=0;
 var porCientoCantaor=0;
 var sumaTantos=0;
 var sumaCaja=0;
+var flagVideoReady="false";
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
@@ -61,6 +62,9 @@ function iniciar() {
 	video = document.getElementById("medio");
 	video.src=nombreFileVideo;
 	video.type="video/mp4";
+	vid.oncanplay = function() {
+	    flagVideoReady="true";
+	};
 	elementCanvas = document.getElementById("canvas_bola");	
 	ctxCanvas = elementCanvas.getContext("2d");
 	contador=document.getElementById("contador");
@@ -336,11 +340,13 @@ function elegirCantaor(cantaor){
 		rangos=eval(nombreRangos);
 		myRango=sacarRangos(arrayMessages[1]);
 		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
+		
+		flagVideoReady="false"
 		bucle2 = setInterval(function(){ esperarReadyState() }, 100);
 }
 function esperarReadyState(){
-	alert(video.readyState);
-	if(video.readyState<1)return;
+	
+	if(flagVideoReady=="false")return;
 	window.clearInterval(bucle2);
 	play_range(myRango[0],myRango[1]);
 }
