@@ -341,7 +341,7 @@ function elegirCantaor(cantaor){
 		myRango=sacarRangos(arrayMessages[1]);
 		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
 		
-		flagVideoReady="false"
+		flagVideoReady="false";
 		bucle2 = setInterval(function(){ esperarReadyState() }, 100);
 }
 function esperarReadyState(){
