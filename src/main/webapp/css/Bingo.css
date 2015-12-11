@@ -92,24 +92,16 @@ display: block;
 }
 .tablaInfo {
 	text-align: left;
-	margin-top: 0px;
-	border-top-width: medium;
 	background-color: #000;
 	color: #FFFBB9;
 	font-weight: bold;
-	border-top-style: groove;
-	border-right-style: groove;
-	border-bottom-style: groove;
-	border-left-style: groove;
-	border-top-color: #1D3841;
-	border-right-color: #1D3841;
-	border-bottom-color: #1D3841;
-	border-left-color: #1D3841;
 	font-family: "Courier New", Courier, monospace;
+	border: 2px solid #1D3841;
 }
 .celdaInfo {
 	font-size: large;
 	text-align: right;
+	border: 2px groove #1D3841;
 }
 
 .canvasBola {
