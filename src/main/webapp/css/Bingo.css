@@ -109,6 +109,7 @@ display: block;
 }
 .celdaInfo {
 	font-size: large;
+	text-align: right;
 }
 
 .canvasBola {
@@ -237,6 +238,7 @@ display: block;
 }
 #labelLinea {
 	color: #FFFBB9;
+	text-align: right;
 
 
 
@@ -281,4 +283,6 @@ display: block;
 }
 #label-1 {
 	color: #7986FD;
+	font-size: 40px;
+	vertical-align: middle;
 }

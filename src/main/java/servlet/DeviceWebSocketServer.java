@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.annotation.Resource;
@@ -31,7 +32,9 @@ private Session mySesion;
     public void open(Session session) {
 	log.info("Abierta Session :"+ session.getId());
 	this.mySesion=session;
-	
+	pb=this.leePocket("user", session);
+	if(pb==null)pb= new PocketBingo();
+	session.getUserProperties().put("user",pb);
 }
 
 @OnClose
@@ -56,7 +59,6 @@ private Session mySesion;
 		if(pb!=null)this.guardaPocket("user", session);
 		this.enviarMensaje("EnciendeVideo");
 		pb= this.leePocket("user", session);
-		if(pb==null)pb=new PocketBingo();
 		session.getUserProperties().put("user",pb);
 		if(pb.isLineaCantada()){
 			this.enviarMensaje("ApagaLinea");
@@ -64,7 +66,7 @@ private Session mySesion;
 			
 		}
 		if(pb.isBingoCantado()){
-			this.enviarMensaje("ApagaLinea");
+			this.enviarMensaje("ApagaBingo");
 		}else{
 			
 		}
@@ -73,12 +75,18 @@ private Session mySesion;
 		Hilo2.start();
 		break;
 	case "startGame":
+		//Se deberia checkear si hay partidas abiertas,
+		//Si hay un singleton inyectado (con scope Session)verificar su IdState.
+		//Si no hay inyeccion, leerPocket's en directorio "DATA" 
+		// Si las hay: se envia Info_PocketAbierto
+		// Si no es un newGame
 		this.enviarMensaje("Info_PocketAbierto");
 		break;
 	case "newGame":
 		//this.borraPocket("user", session);
 		this.enviarMensaje("EnciendeVideo");
-		pb= new PocketBingo();
+		//pb= new PocketBingo();
+		pb.initPocket();
 		this.guardaPocket("user", session);
 		session.getUserProperties().put("user",pb);
 		Hilo2 = new Hilo2(session);
@@ -128,6 +136,41 @@ private Session mySesion;
 		Hilo2.interrupt();
 		break;
 	}
+	//manejar POJOS en el formato JSON#comando#dato1#datox....
+	if(message.startsWith("JSON")){
+		StringTokenizer mySToken= new StringTokenizer(message,"#");
+		Vector<String> arrayMessage = new Vector<String>();
+		while(mySToken.hasMoreTokens()){
+			arrayMessage.add(mySToken.nextToken());
+		}
+		if(arrayMessage.size()>0){
+			String comando=arrayMessage.elementAt(1);
+			switch (comando){
+			case "SET_DATOS_CARTONES"://JSON#SET_DATOS_CARTONES#.........
+				//String precioCarton,nCartones,porCientoLinea,porCientoBingo,porCientoCantaor;
+				pb.setPrecioCarton(arrayMessage.elementAt(2));
+				pb.setnCartones(arrayMessage.elementAt(3));
+				pb.setPorcientoLinea(arrayMessage.elementAt(4));
+				pb.setPorcientoBingo(arrayMessage.elementAt(5));
+				pb.setPorcientoCantaor(arrayMessage.elementAt(6));
+				this.guardaPocket("user", session);
+				break;
+			
+			case "GET_DATOS_CARTONES"://JSON#GET_DATOS_CARTONES#.........
+				String precioCarton,nCartones,porCientoLinea,porCientoBingo,porCientoCantaor;
+				precioCarton=pb.getPrecioCarton();
+				nCartones=pb.getnCartones();
+				porCientoLinea=pb.getPorcientoLinea();
+				porCientoBingo=pb.getPorcientoBingo();
+				porCientoCantaor=pb.getPorcientoCantaor();
+				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
+				enviarMensaje(construirScript);
+			}
+		
+
+		}
+	}
+	
 	
 }
   private PocketBingo leePocket(String user, Session sesion){

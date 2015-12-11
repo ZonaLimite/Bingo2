@@ -22,7 +22,7 @@
     <td width="78%" class="ano" ><label id="label-1">FELIZ AÑO NUEVO</label>
     <nav id="menu">
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
-	<label id="cartones" CLASS="menu_li" >CARTONES</label>
+	<label id="lab_cartones" CLASS="menu_li" >CARTONES</label>
 	<label id="historico" CLASS="menu_li" >HISTORICO</label>
 	<label id="preferencias" CLASS="menu_li" >OPCIONES</label>	
 	</nav>
@@ -62,22 +62,22 @@
               <table border="1" align="center" class="tablaInfo">
      		<tr>
 	        <td width="90" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA Nº </span></span></td>
-	        <td width="13" id="datoOrdenBola"class="celdaInfo"  ><span class="Comander"><span class="Comander">
+	        <td width="13" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander"><span class="Comander">
 	          <label class="valorInfo">0</label>
 	        </span></span></td>
-	        <td width="133" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA</label></td>
+	        <td width="133" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
 	        <td width="120" class="celdaInfo"><span class="Comander"><span class="Comander">
-	          <label class="valorInfo">20 €</label>
+	          <label id="valorLinea" class="valorInfo">0 €</label>
 	        </span></span></td>
 	        </tr>
 	      <tr>
 	        <td class="celdaInfo"><span class="Comander"><span class="Comander"> CARTONES</span></span></td>
 	        <td id="datoCartones" class="celdaInfo" ><span class="Comander"><span class="Comander">
-	          <label class="valorInfo">0</label>
+	          <label id="valorCartones" class="valorInfo">0</label>
 	        </span></span></td>
-	        <td class="celdaInfo"><label id="labelBingo">BINGO</label></td>
+	        <td class="celdaInfo"><label id="labelBingo">BINGO:</label></td>
 	        <td  id="datoBingo" class="celdaInfo" ><span class="Comander"><span class="Comander">
-	          <label class="valorInfo">0 €</label>
+	          <label id="valorBingo" class="valorInfo">0 €</label>
 	        </span></span></td>
     </tr>
 	      <tr>
@@ -464,6 +464,7 @@
 Se ha encontrado una partida empezeda,¿Quiere continuar la partida o empezar una nueva?
 
 </div>
+
 <div id="opciones" title="Preferencias">
 <form>
 ELEGIR CANTAOR
@@ -473,12 +474,25 @@ ELEGIR CANTAOR
 <option value="Ines">Ines (velocida Rapida)<option>
 </select>
 <p>
-<input name="videoON" type="checkbox" value="true">Activar Video
+<input name="videoON" type="checkbox" value="true" checked>Activar Video
 </p>
-<hr width=75%"/>
+
+<hr width="75%"/>
+
 <label>Tamano Maximo numeros</label>
-<div id="slider"></div>
+<div id="slider">
 <input type="text" id="maxTamano">
+</form>
+</div>
+
+<div id="cartones" title="Configuracion cartones"> 
+<form>
+<label >Precio Carton(€):</label><input type="text" id="PrecioCarton">
+<label >Nº Cartones en Juego:</label><input type="text" id="NCartonesJuego">
+<label >Asignacion % Premio Linea:</label><input type="text" id="porcientoLinea">
+<label >Asignacion % Premio Bingo:</label><input type="text" id="porcientoBingo">
+<label >Asignacion % Cantaor     :</label><input type="text" id="porcientoCantaor">
+<hr width="75%">
 </form>
 </div>
 </body>

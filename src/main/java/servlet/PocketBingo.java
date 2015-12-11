@@ -15,6 +15,41 @@ import java.util.Vector;
  * @author hormigueras
  */
 public class PocketBingo implements Serializable {
+    
+	
+	private int numeroOrden = 0;
+    private String idPlayer = "";
+    private Vector numerosCalled = new Vector() ;
+    private int lastNumber;
+    private int newBola;
+    private String reasonInterrupt;
+    private boolean secuenciaAcabada=true;
+    private boolean lineaCantada=false;
+    private boolean bingoCantado=false;
+    private String IdState = "NewGame";
+    private String precioCarton="0";
+    private String nCartones="0";
+    private String porcientoLinea="0";
+    private String porcientoBingo="0";
+    private String porcientoCantaor="0";
+    
+    /* 
+     * IdState :
+     *  NewGame,Linea,Bingo,Started,Finalized.
+     */
+    public void initPocket(){
+    	numeroOrden=0;
+    	idPlayer="";
+    	numerosCalled= new Vector();
+    	lastNumber=0;
+    	newBola=0;
+    	reasonInterrupt="";
+    	secuenciaAcabada=true;
+    	lineaCantada=false;
+    	bingoCantado=false;
+    	IdState="NewGame";
+
+    }
     public boolean isLineaCantada() {
 		return lineaCantada;
 	}
@@ -27,20 +62,6 @@ public class PocketBingo implements Serializable {
 	public void setBingoCantado(boolean bingoCantado) {
 		this.bingoCantado = bingoCantado;
 	}
-	private int numeroOrden = 0;
-    private String idPlayer = "";
-    private Vector numerosCalled = new Vector() ;
-    private int lastNumber;
-    private int newBola;
-    private String reasonInterrupt;
-    private boolean secuenciaAcabada=true;
-    private boolean lineaCantada=false;
-    private boolean bingoCantado=false;
-    private String IdState = "NewGame";
-    /* 
-     * IdState :
-     *  NewGame,Linea,Bingo,Started,Finalized.
-     */
     public boolean getSecuenciaAcabada(){
         return secuenciaAcabada;
     }
@@ -98,5 +119,35 @@ public class PocketBingo implements Serializable {
 	}
 	public void setReasonInterrupt(String reasonInterrupt) {
 		this.reasonInterrupt = reasonInterrupt;
+	}
+	public String getPrecioCarton() {
+		return precioCarton;
+	}
+	public void setPrecioCarton(String precioCarton) {
+		this.precioCarton = precioCarton;
+	}
+	public String getnCartones() {
+		return nCartones;
+	}
+	public void setnCartones(String nCartones) {
+		this.nCartones = nCartones;
+	}
+	public String getPorcientoLinea() {
+		return porcientoLinea;
+	}
+	public void setPorcientoLinea(String porcientoLinea) {
+		this.porcientoLinea = porcientoLinea;
+	}
+	public String getPorcientoBingo() {
+		return porcientoBingo;
+	}
+	public void setPorcientoBingo(String porcientoBingo) {
+		this.porcientoBingo = porcientoBingo;
+	}
+	public String getPorcientoCantaor() {
+		return porcientoCantaor;
+	}
+	public void setPorcientoCantaor(String porcientoCantaor) {
+		this.porcientoCantaor = porcientoCantaor;
 	}
 }

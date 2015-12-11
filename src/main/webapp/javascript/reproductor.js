@@ -14,6 +14,7 @@ var boton_iniciar;
 var boton_Continuar;
 var boton_play_range;
 var boton_comando;
+var boton_cartones;
 var boton_notify;
 var caja_output;
 var caja_spy;
@@ -37,10 +38,19 @@ var palabraBingo;
 var triggerBingo;
 var triggerLinea="false";
 var colorTriggerLinea=900;
+var datoCartones,datoLinea,datoBingo
+
 var resultDialogo="Empezar";
 var videoEnable="true";
 var lineaCantada="false";
 var bingoCantado="false";
+var precioCarton=0;
+var nCartones=0;
+var porCientoLinea=0;
+var porCientoBingo=0;
+var porCientoCantaor=0;
+var sumaTantos=0;
+var sumaCaja=0;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
@@ -57,7 +67,9 @@ function iniciar() {
 	palabraLinea = document.getElementById("labelLinea");
 	palabraBingo = document.getElementById("labelBingo");
 	//video.ontimeupdate = function() {refreshCount()};
-    
+    datoCartones=document.getElementById("valorCartones");
+    datoLinea=document.getElementById("valorLinea");
+    datoBingo=document.getElementById("valorBingo");
 	boton_play = document.getElementById("play");
 	boton_play.onclick = function() {reanudar()};
 
@@ -120,6 +132,9 @@ function iniciar() {
 	boton_opciones=document.getElementById("preferencias");
 	boton_opciones.onclick = function(){$( "#opciones" ).dialog( "open" );}
 	
+    boton_cartones=document.getElementById("lab_cartones");
+	boton_cartones.onclick = function(){$( "#cartones" ).dialog( "open" );}
+	
 	boton_comando = document.getElementById("comando");
 	boton_comando.onclick = function(){send_command()};
 	
@@ -178,8 +193,8 @@ function iniciar() {
 			 }
 		  ]
 		});
+	//Plantilla JQuery para Opciones 
 	selectCantaor= document.getElementsByName("cantaor");
-	
 	$( "#opciones" ).dialog({ autoOpen: false , modal: true });
 	
 	$("select[name=cantaor]").change(function(){
@@ -215,9 +230,64 @@ function iniciar() {
 		resizeBolas(nuevoTamano);
 	} );
 
-	
-	
-	
+	//Plantilla JQuery para Dialogo Cartones
+	$( "#cartones" ).dialog({ autoOpen: false , modal: true });
+	$( "#cartones" ).dialog({
+		  create: function( event, ui ) {
+			  mensaje="JSON#GET_DATOS_CARTONES#";
+			  socket_send(mensaje);
+		  }
+		});
+	$( "#cartones" ).dialog({
+		  open: function( event, ui ) {
+			  $("#PrecioCarton").val(precioCarton);
+			  $("#NCartonesJuego").val(nCartones);
+			  $("#porcientoLinea").val(porCientoLinea);
+			  $("#porcientoBingo").val(porCientoBingo);
+			  $("#porcientoCantaor").val(porCientoCantaor);
+			  
+		  }
+		});
+
+	$( "#cartones" ).dialog({
+		  buttons: [
+		    {
+		      text: "UPDATE",
+		      icons: {
+		        primary: "ui-icon-heart"
+		      },
+		      click: function() {
+		    	  precioCarton=parseInt($("#PrecioCarton").val());
+		    	  nCartones=parseInt($("#NCartonesJuego").val());
+		    	  porCientoLinea=parseInt($("#porcientoLinea").val());
+		    	  porCientoBingo=parseInt($("#porcientoBingo").val());
+				  porCientoCantaor=parseInt($("#porcientoCantaor").val());
+		    	  mensaje="JSON#SET_DATOS_CARTONES#"+precioCarton+"#"+nCartones+"#"+porCientoLinea+"#"+porCientoBingo+"#"+porCientoCantaor;
+		    	  visualizaDatosCartones();
+		    	  socket_send(mensaje);
+		    	  $( this ).dialog( "close" );
+		      }
+		    },
+		      // Uncommenting the following line would hide the text,
+		      // resulting in the label being used as a tooltip
+		      //showText: false
+		    
+		    {
+			      text: "CANCEL",
+			      icons: {
+			        primary: "ui-icon-heart"
+			      },
+			      click: function() {
+			    	  $( this ).dialog( "close" );
+			      }
+			 
+			      // Uncommenting the following line would hide the text,
+			      // resulting in the label being used as a tooltip
+			      //showText: false
+			 }
+		  ]
+		});
+	//Podriamos hacer autenticaUsuario() aqui;
 }
 function enciendeVideo(){
 	if(videoEnable=="true")video.style.visibility="visible";
@@ -233,7 +303,7 @@ function apagaLinea(){
 	lineaCantada="true";
 }
 function apagaBingo(){
-	document.getElementById("labelLinea").style.visibility="hidden";
+	document.getElementById("labelBingo").style.visibility="hidden";
 	triggerBingo="false";
 	bingoCantado="true";
 }
@@ -302,18 +372,22 @@ function initInterface(){
 	for(i=1;i<91;i++){
 		apagarNumero(""+i);
 	}
-	//borrar canvas
-	//alert("canvas "+ canvas.width);
 	canvas=document.getElementById('canvas_bola');
 	canvas.width=canvas.width;
 	lienzo=canvas.getContext('2d');
-	lienzo.clearRect(0,0,canvas.width,canvas.heigth); 
+	lienzo.clearRect(0,0,canvas.width,canvas.heigth);
+	//refresca los valores de estos enteros desde el servidor y los visualiza 
+	// en el manejador de vuelta, como si un callback se tratara.
+	refreshDatosCartones();
+	
 }
 function arrancar(){
-	//creacion de webSocket y autenticacion
-	//autenticaUsuario();
+	//El socket ya esta creado
+	
 	video.play();
 	video.pause();
+	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
+	//
 	socket_send("startGame");
 	
 }
@@ -374,6 +448,24 @@ function abierto(){
 	
 	
 	//socket_send("startGame");
+}
+function refreshDatosCartones(){
+	//Envia al servidor una peticion de refresco de datos
+	// el servidor envia un mensaje de respuesta con los datos y en 
+	// el manejador (Case DATOSCARTONES), ya con las variables actualizadas
+	// se visualzia el dato en la tabla llamando a visualizaDatosCartones.
+	socket_send("JSON#GET_DATOS_CARTONES");
+	
+}
+function visualizaDatosCartones(){
+	sumaCaja = precioCarton*nCartones;
+	sumaTantos = porCientoLinea+porCientoBingo+porCientoCantaor;
+	xLinea=Math.floor((sumaCaja*porCientoLinea)/sumaTantos);
+	xBingo=Math.floor((sumaCaja*porCientoBingo)/sumaTantos);
+	zCantaor=Math.floor((sumaCaja*porCientoCantaor)/sumaTantos);
+	datoCartones.innerHTML=""+nCartones;
+	datoLinea.innerHTML=xLinea+" €";
+	datoBingo.innerHTML=xBingo+" €";
 }
 function resizeBolas(tamanoMenu){
 	//alert("olas");
@@ -459,9 +551,18 @@ function recibido(e){
 					
 					$( "#dialog" ).dialog( "open" );
 				}
+				break;
 		case "ApagaLinea":
 				apagaLinea();
 				break;
+		case "DATOSCARTONES":
+				precioCarton=parseInt(arrayMessages[1]);
+				nCartones=parseInt(arrayMessages[2]);
+				porCientoLinea=parseInt(arrayMessages[3]);
+				porCientoBingo=parseInt(arrayMessages[4]);
+				porCientoCantaor=parseInt(arrayMessages[5]);
+				//callback
+				visualizaDatosCartones();
 		default:
         		
 		} 
