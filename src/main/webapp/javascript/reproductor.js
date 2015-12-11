@@ -62,7 +62,7 @@ function iniciar() {
 	video = document.getElementById("medio");
 	video.src=nombreFileVideo;
 	video.type="video/mp4";
-	vid.oncanplay = function() {
+	video.oncanplay = function() {
 	    flagVideoReady="true";
 	};
 	elementCanvas = document.getElementById("canvas_bola");	
