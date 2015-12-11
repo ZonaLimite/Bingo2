@@ -340,7 +340,8 @@ function elegirCantaor(cantaor){
 		rangos=eval(nombreRangos);
 		myRango=sacarRangos(arrayMessages[1]);
 		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
-		
+		video.play();
+		video.pause();
 		flagVideoReady="false";
 		bucle2 = setInterval(function(){ esperarReadyState() }, 100);
 }
@@ -348,8 +349,7 @@ function esperarReadyState(){
 	
 	if(flagVideoReady=="false")return;
 	window.clearInterval(bucle2);
-	video.play();
-	video.pause();
+	
 	play_range(myRango[0],myRango[1]);
 }
 
