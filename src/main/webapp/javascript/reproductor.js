@@ -348,6 +348,8 @@ function esperarReadyState(){
 	
 	if(flagVideoReady=="false")return;
 	window.clearInterval(bucle2);
+	video.play();
+	video.pause();
 	play_range(myRango[0],myRango[1]);
 }
 
