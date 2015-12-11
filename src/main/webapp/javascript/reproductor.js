@@ -66,8 +66,7 @@ function iniciar() {
 	contador=document.getElementById("contador");
 	palabraLinea = document.getElementById("labelLinea");
 	palabraBingo = document.getElementById("labelBingo");
-	//video.ontimeupdate = function() {refreshCount()};
-    datoCartones=document.getElementById("valorCartones");
+	datoCartones=document.getElementById("valorCartones");
     datoLinea=document.getElementById("valorLinea");
     datoBingo=document.getElementById("valorBingo");
 	boton_play = document.getElementById("play");
@@ -337,9 +336,14 @@ function elegirCantaor(cantaor){
 		rangos=eval(nombreRangos);
 		myRango=sacarRangos(arrayMessages[1]);
 		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
-		
-		play_range(myRango[0],myRango[1]);	
+		bucle2 = setInterval(function(){ esperarReadyState() }, 100);
 }
+function esperarReadyState(){
+	if(video.readyState<4)return;
+	window.clearInterval(bucle2);
+	play_range(myRango[0],myRango[1]);
+}
+
 function show_InMessage(contenido,activoMarquee){
 	if(activoMarquee!=null){
 		comboTexto.innerHTML="<marquee behavior='scroll' direction='left' scrollamount='4'>"+contenido+"</marquee>";
@@ -353,32 +357,17 @@ function send_command(){
 		text_message = document.getElementById("text_comando").value;
 		socket_send(text_message);
 }
-function refreshCount(){
-	
-	if(seeking=="true"){
-			
-		if(video.currentTime >= fin_seek){
-			seeking="false";
-			video.pause();
-			//window.clearInterval(bucle);
-			clearInterval(bucle);
-			
-			seeking="false";
-			
-			socket_send("secuenciaAcabada");
-		}
-	}
-	contador.value=video.currentTime;
-}
+
+
 function play_range(ini,fin){
 	video.currentTime=ini;
 	document.getElementById("seek_ini").value=ini;
 	document.getElementById("seek_fin").value=fin;
 	fin_seek=fin;
 	seeking="true";
-	esPrimeraVez= "true";
+	esPrimeraVez="true";
 	//video.play();
-	bucle = setInterval(function(){ procesarCuadros() }, 50);
+	bucle = setInterval(function(){ procesarCuadros() }, 60);
 
 	//bucle=setInterval(procesarCuadros, 100);
 	
