@@ -331,8 +331,14 @@ function elegirCantaor(cantaor){
 			nombreRangos="rangosInes";
 			nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 		}
-		rangos=eval(nombreRangos);
+		clearInterval(bucle);
+		video.pause();
 		video.src=nombreFileVideo;
+		rangos=eval(nombreRangos);
+		myRango=sacarRangos(arrayMessages[1]);
+		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
+		
+		play_range(myRango[0],myRango[1]);	
 }
 function show_InMessage(contenido,activoMarquee){
 	if(activoMarquee!=null){
@@ -553,9 +559,9 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);
 				break;
 		case "Bingo":
-			myRango=sacarRangos(arrayMessages[1]);
-			play_range(myRango[0],myRango[1]);
-			break
+				myRango=sacarRangos(arrayMessages[1]);
+				play_range(myRango[0],myRango[1]);
+				break
 		case "ComprobarLinea":
 				apagaVideo();
 				//Se deberia escribir en el canvas 	
@@ -564,12 +570,12 @@ function recibido(e){
 				//etqLinea.style.
 				break;
 		case "ComprobarBingo":
-			apagaVideo();
-			//Se deberia escribir en el canvas 	
-			show_InMessage("COMPROBANDO BINGO ....",true);
-			//etqLinea=document.getElementById("labelLinea");
-			//etqLinea.style.
-			break;				
+				apagaVideo();
+				//	Se deberia escribir en el canvas 	
+				show_InMessage("COMPROBANDO BINGO ....",true);
+				//	etqLinea=document.getElementById("labelLinea");
+				//etqLinea.style.
+				break;				
 		case "EncenderNumero":
 				encenderNumero(arrayMessages[1]);
 				break;
@@ -706,7 +712,7 @@ function draw(numero) {
     
 	ctxCanvas.beginPath();
 	tamanoLetras = Math.floor((nuevoTamano/1.3));
-    Fuente = tamanoLetras+"px bold Console";
+    Fuente = Math.floor(miRadio)-4+"px bold Console";
     ctxCanvas.font = Fuente;
 	var textMeter = ctxCanvas.measureText(""+numero);
     anchoTexto= textMeter.width;
