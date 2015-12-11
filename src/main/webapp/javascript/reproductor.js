@@ -347,6 +347,7 @@ function elegirCantaor(cantaor){
 }
 function esperarReadyState(){
 	video.play();
+	video.pause();
 	if(flagVideoReady=="false")return;
 	window.clearInterval(bucle2);
 	
