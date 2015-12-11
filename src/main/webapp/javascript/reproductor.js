@@ -337,21 +337,22 @@ function elegirCantaor(cantaor){
 		clearInterval(bucle);
 		video.pause();
 		video.src=nombreFileVideo;
+		
 		rangos=eval(nombreRangos);
 		myRango=sacarRangos(arrayMessages[1]);
 		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
+		flagVideoReady="false";
+		video.load();
 		video.play();
 		video.pause();
-		flagVideoReady="false";
 		bucle2 = setInterval(function(){ esperarReadyState() }, 100);
 }
 function esperarReadyState(){
-	video.play();
-	video.pause();
 	if(flagVideoReady=="false")return;
 	window.clearInterval(bucle2);
 	
 	play_range(myRango[0],myRango[1]);
+	video.play();
 }
 
 function show_InMessage(contenido,activoMarquee){
