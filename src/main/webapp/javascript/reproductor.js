@@ -352,7 +352,7 @@ function esperarReadyState(){
 	window.clearInterval(bucle2);
 	
 	play_range(myRango[0],myRango[1]);
-	video.play();
+	
 }
 
 function show_InMessage(contenido,activoMarquee){
