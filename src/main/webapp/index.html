@@ -81,7 +81,7 @@
 	        </span></span></td>
     </tr>
 	      <tr>
-	        <td colspan="4" class="valorInfo" id="comboTexto">&nbsp;</td>
+	        <td colspan="4" class="valorInfo" id="comboTexto"></td>
 	        
     	</tr>
 </table>
@@ -466,7 +466,7 @@ Se ha encontrado una partida empezeda,¿Quiere continuar la partida o empezar un
 </div>
 
 <div id="opciones" title="Preferencias">
-<form>
+
 ELEGIR CANTAOR
 <select name="cantaor">
 <option value="0">Seleccione un cantaor</option>
@@ -480,9 +480,12 @@ ELEGIR CANTAOR
 <hr width="75%"/>
 
 <label>Tamano Maximo numeros</label>
-<div id="slider">
+<div id="slider"></div>
+<p>
 <input type="text" id="maxTamano">
-</form>
+<input type="button" id="aplicarSize" value="Aplicar Tamaño">
+
+
 </div>
 
 <div id="cartones" title="Configuracion cartones"> 
@@ -492,7 +495,7 @@ ELEGIR CANTAOR
 <label >Asignacion % Premio Linea:</label><input type="text" id="porcientoLinea">
 <label >Asignacion % Premio Bingo:</label><input type="text" id="porcientoBingo">
 <label >Asignacion % Cantaor     :</label><input type="text" id="porcientoCantaor">
-<hr width="75%">
+
 </form>
 </div>
 </body>

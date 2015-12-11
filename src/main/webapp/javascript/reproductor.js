@@ -130,8 +130,15 @@ function iniciar() {
 	boton_iniciar.onclick = function(){ arrancar()};
 	
 	boton_opciones=document.getElementById("preferencias");
-	boton_opciones.onclick = function(){$( "#opciones" ).dialog( "open" );}
-	
+	boton_opciones.onclick = function(){
+		$( "#opciones" ).dialog( "open" );
+		$( "#aplicarSize" ).focus();
+	}
+	$( "#aplicarSize" ).click(function() {
+		nuevoTamano=cajaTamano.value;
+		resizeBolas(nuevoTamano);
+		});
+
     boton_cartones=document.getElementById("lab_cartones");
 	boton_cartones.onclick = function(){$( "#cartones" ).dialog( "open" );}
 	
@@ -154,7 +161,10 @@ function iniciar() {
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	
-	window.onresize = function(){resizeBolas()};
+	window.onresize = function(e){
+		e.preventDefault();
+		resizeBolas();
+		};
 	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
 	creaSocket("paquito");	
 	
@@ -221,14 +231,18 @@ function iniciar() {
 	$( "#slider" ).slider({
 		range: true
 	});
-	$( "#slider").slider({
-		  slide: function( event, ui ) {}
-		});
+	
 	$( "#slider" ).on( "slide", function( event, ui ) {
 		cajaTamano.value=ui.value;
 		nuevoTamano=ui.value;
 		resizeBolas(nuevoTamano);
+		
 	} );
+	$("#masTamano").change(function (){
+		alert("entro");
+		nuevoTamano=ui.value;
+		resizeBolas(nuevoTamano);
+	});		
 
 	//Plantilla JQuery para Dialogo Cartones
 	$( "#cartones" ).dialog({ autoOpen: false , modal: true });
@@ -320,9 +334,12 @@ function elegirCantaor(cantaor){
 		rangos=eval(nombreRangos);
 		video.src=nombreFileVideo;
 }
-function show_InMessage(contenido){
-
+function show_InMessage(contenido,activoMarquee){
+	if(activoMarquee!=null){
+		comboTexto.innerHTML="<marquee behavior='scroll' direction='up' scrollamount='2'>"+contenido+"</marquee>";
+	}else{
 	comboTexto.innerHTML=contenido;
+	}	
 	
 	
 }
@@ -463,6 +480,17 @@ function visualizaDatosCartones(){
 	xLinea=Math.floor((sumaCaja*porCientoLinea)/sumaTantos);
 	xBingo=Math.floor((sumaCaja*porCientoBingo)/sumaTantos);
 	zCantaor=Math.floor((sumaCaja*porCientoCantaor)/sumaTantos);
+	if(xLinea+xBingo+zCantaor<sumaCaja){
+		dif=sumaCaja-(xLinea+xBingo+zCantaor);
+		if(dif=2){
+			xBingo++;
+			zCantaor++;
+		}else if(dif=1){
+			xBingo++;
+		}else{
+			xBingo=xBingo +dif;
+		}
+	}
 	datoCartones.innerHTML=""+nCartones;
 	datoLinea.innerHTML=xLinea+" €";
 	datoBingo.innerHTML=xBingo+" €";
@@ -516,6 +544,7 @@ function recibido(e){
 				break;
 		case "EndBalls":
 				apagaVideo();
+				show_InMessage("HAGAN SUS APUESTAS...FELIZ 2016",true)
 				break;
 		case "Linea":
 				myRango=sacarRangos(arrayMessages[1]);
@@ -528,14 +557,14 @@ function recibido(e){
 		case "ComprobarLinea":
 				apagaVideo();
 				//Se deberia escribir en el canvas 	
-				show_InMessage("COMPROBANDO LINEA ....");
+				show_InMessage("COMPROBANDO LINEA ....",true);
 				//etqLinea=document.getElementById("labelLinea");
 				//etqLinea.style.
 				break;
 		case "ComprobarBingo":
 			apagaVideo();
 			//Se deberia escribir en el canvas 	
-			show_InMessage("COMPROBANDO BINGO ....");
+			show_InMessage("COMPROBANDO BINGO ....",true);
 			//etqLinea=document.getElementById("labelLinea");
 			//etqLinea.style.
 			break;				
