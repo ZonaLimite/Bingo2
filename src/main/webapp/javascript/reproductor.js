@@ -340,7 +340,7 @@ function elegirCantaor(cantaor){
 }
 function esperarReadyState(){
 	alert(video.readyState);
-	if(video.readyState<4)return;
+	if(video.readyState<1)return;
 	window.clearInterval(bucle2);
 	play_range(myRango[0],myRango[1]);
 }
