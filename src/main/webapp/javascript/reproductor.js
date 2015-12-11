@@ -336,7 +336,7 @@ function elegirCantaor(cantaor){
 }
 function show_InMessage(contenido,activoMarquee){
 	if(activoMarquee!=null){
-		comboTexto.innerHTML="<marquee behavior='scroll' direction='up' scrollamount='2'>"+contenido+"</marquee>";
+		comboTexto.innerHTML="<marquee behavior='scroll' direction='left' scrollamount='4'>"+contenido+"</marquee>";
 	}else{
 	comboTexto.innerHTML=contenido;
 	}	
