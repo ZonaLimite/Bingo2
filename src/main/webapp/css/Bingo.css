@@ -244,6 +244,12 @@ display: block;
 	visibility: visible;
 	opacity: 0.9;
 }
+#marquesina {
+	font-family: AgainstMyself;
+	letter-spacing: 2px;
+	font-size: 24px;
+}
+
 .fotom{
 	background-color: #000000;
 	-moz-border-radius: 50px / 50px;

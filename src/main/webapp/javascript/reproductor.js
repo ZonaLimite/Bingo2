@@ -357,7 +357,7 @@ function esperarReadyState(){
 
 function show_InMessage(contenido,activoMarquee){
 	if(activoMarquee!=null){
-		comboTexto.innerHTML="<marquee behavior='scroll' direction='left' scrollamount='4'>"+contenido+"</marquee>";
+		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'>"+contenido+"</marquee>";
 	}else{
 	comboTexto.innerHTML=contenido;
 	}	
@@ -714,9 +714,9 @@ function draw(numero) {
     
     if(v==1 || v==3){
     	grd = ctxCanvas.createRadialGradient(varX, varY - miRadio, Math.floor(miRadio/2)+Math.floor(miRadio/4), varX + miRadio,varY, miRadio*3);
-    	var c1=Math.floor((Math.random() * 180) + 1);
-    	var c2=Math.floor((Math.random() * 100) + 1);
-    	var c3=Math.floor((Math.random() * 180) + 1);
+    	var c1=Math.floor((Math.random() * 255) + 1);
+    	var c2=Math.floor((Math.random() * 255) + 1);
+    	var c3=Math.floor((Math.random() * 255) + 1);
     	var c4 =Math.floor((Math.random() * 10) + 1);
     	var alfa = "0."+c4;
     	if(c4==10)alfa=1;
@@ -730,6 +730,7 @@ function draw(numero) {
     	ctxCanvas.fillStyle = grd;
     	ctxCanvas.fill();
     }
+    
     var sumador=1;
     factorX=(Math.random()*(Math.floor(miRadio/3)));
 	factorSigno = (Math.random()*1)+1;
