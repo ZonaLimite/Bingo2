@@ -371,6 +371,7 @@ function send_command(){
 
 
 function play_range(ini,fin){
+	video.pause();
 	video.currentTime=ini;
 	document.getElementById("seek_ini").value=ini;
 	document.getElementById("seek_fin").value=fin;
