@@ -162,7 +162,7 @@ function iniciar() {
 	cajaTamano = document.getElementById("maxTamano");
 	
 	boton_play_range= document.getElementById("c_Range");
-	boton_play_range.onclick = function(){play_range(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
+	boton_play_range.onclick = function(){play_range2(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	
 	window.onresize = function(e){
 		e.preventDefault();
@@ -371,20 +371,29 @@ function send_command(){
 
 
 function play_range(ini,fin){
-	video.pause();
+	//video.pause();
 	video.currentTime=ini;
 	document.getElementById("seek_ini").value=ini;
 	document.getElementById("seek_fin").value=fin;
 	fin_seek=fin;
 	seeking="true";
 	esPrimeraVez="true";
-	//video.play();
+	//bucle=setInterval(procesarCuadros, 100);
 	bucle = setInterval(function(){ procesarCuadros() }, 60);
+	
+	
+}
+function play_range2(ini,fin){
+	//video.currentTime=ini;
+	video.currentTime=ini;
+	fin_seek=fin;
+	seeking="true";
+	esPrimeraVez="true";
+	//video.play();
+	//bucle = setInterval(function(){ procesarCuadros() }, 60);
+	
 
 	//bucle=setInterval(procesarCuadros, 100);
-	
-	
-	
 }
 function initInterface(){
 	lineaCantada="false";
@@ -684,6 +693,9 @@ function draw(numero) {
   varX=Math.floor((elementCanvas.width)/2);
   varY=Math.floor((elementCanvas.height)/2);
   miRadio= Math.floor(varX/3);
+  copyVarx=varX;
+  copyVary=varY;
+  copyRadio=miRadio;
   mySrc="images/pattern"+npat+".jpg";
   npat++;
   if(npat>4) npat=1;
@@ -692,26 +704,47 @@ function draw(numero) {
 	//borrar previo
 	
     // create pattern
-    var ptrn = ctxCanvas.createPattern(img,"repeat");
+	v= Math.floor((Math.random() * 3) + 1);
+	
+	var ptrn = ctxCanvas.createPattern(img,"repeat");
     ctxCanvas.beginPath();
     ctxCanvas.fillStyle = ptrn;
     ctxCanvas.arc(varX, varY,miRadio, 0,Math.PI * 2,false);
     ctxCanvas.fill();
-	var sumador=1;
-    factorX=(Math.random()*(Math.floor(miRadio/3)))+1;
+    
+    if(v==1 || v==3){
+    	grd = ctxCanvas.createRadialGradient(varX, varY - miRadio, Math.floor(miRadio/2)+Math.floor(miRadio/4), varX + miRadio,varY, miRadio*3);
+    	var c1=Math.floor((Math.random() * 180) + 1);
+    	var c2=Math.floor((Math.random() * 100) + 1);
+    	var c3=Math.floor((Math.random() * 180) + 1);
+    	var c4 =Math.floor((Math.random() * 10) + 1);
+    	var alfa = "0."+c4;
+    	if(c4==10)alfa=1;
+    	if(v==1){
+    		color = 'rgba(' + c1+ ',' +c2 + ',+'+c3+","+alfa+')';
+    	}else if(v==3){
+    		color = 'rgba(' + c1+ ',' +c2 + ',+'+c3+',1)';
+    	}
+    	grd.addColorStop(0, color);
+    	grd.addColorStop(1, "white");
+    	ctxCanvas.fillStyle = grd;
+    	ctxCanvas.fill();
+    }
+    var sumador=1;
+    factorX=(Math.random()*(Math.floor(miRadio/3)));
 	factorSigno = (Math.random()*1)+1;
 	if (factorSigno==1){
 		sumador=+1;
 	}else{
 		sumador=-1;		
 	}
-	varX = (varX + (factorX*sumador));
+	varX = (varX + (factorX*sumador))+1;
     ctxCanvas.beginPath();
     ctxCanvas.fillStyle ="white";
     ctxCanvas.arc(varX, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
     ctxCanvas.fill();
-    
-	ctxCanvas.beginPath();
+
+    ctxCanvas.beginPath();
 	tamanoLetras = Math.floor((nuevoTamano/1.3));
     Fuente = Math.floor(miRadio)-4+"px bold Console";
     ctxCanvas.font = Fuente;
@@ -725,6 +758,17 @@ function draw(numero) {
     }
     ctxCanvas.fillText(""+numero,varX-(Math.floor(anchoTexto/2)),yText );
     ctxCanvas.fill();
+    
+    //ctxCanvas.beginPath();
+    ctxCanvas.arc(copyVarx, copyVary,miRadio+5, 0,Math.PI * 2,false);
+    miRadio= Math.floor(varX/3);
+    color = "rgba(255,255,255,0)";
+    grd = ctxCanvas.createRadialGradient(copyVarx, copyVary ,0,copyVarx,copyVary,copyRadio+ 5);
+    grd.addColorStop(0,color);
+	grd.addColorStop(1, "black");
+	ctxCanvas.fillStyle = grd;
+	ctxCanvas.fill();
+	
   }
   
 }
