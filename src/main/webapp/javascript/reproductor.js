@@ -690,14 +690,15 @@ function procesarCuadros(){
 	if(seeking=="true"){
 		if(esPrimeraVez=="true"){
 			
-			/*if(!video.seeking){
+			if(!video.seeking){
 				video.play();
 				esPrimeraVez = "false";
-			}*/
+			}
+			/*
 			video.oncanplay = function() {
 			    video.play();
 			    esPrimeraVez = "false";
-			};
+			};*/
 			
 
 		}
