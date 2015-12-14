@@ -389,6 +389,8 @@ function send_command(){
 
 function play_range(ini,fin){
 	//video.pause();
+	if(ini==null)return;
+	if(fin==null)return;
 	video.currentTime=ini;
 	document.getElementById("seek_ini").value=ini;
 	document.getElementById("seek_fin").value=fin;
@@ -688,10 +690,15 @@ function procesarCuadros(){
 	if(seeking=="true"){
 		if(esPrimeraVez=="true"){
 			
-			if(!video.seeking){
+			/*if(!video.seeking){
 				video.play();
 				esPrimeraVez = "false";
-			}
+			}*/
+			video.oncanplay = function() {
+			    video.play();
+			    esPrimeraVez = "false";
+			};
+			
 
 		}
 		if(video.currentTime >= fin_seek){
