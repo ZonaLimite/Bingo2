@@ -587,6 +587,7 @@ function recibido(e){
 				//etqLinea.style.
 				break;				
 		case "EncenderNumero":
+				if(arrayMessages[1] == null || (arrayMessages[1]+"").length >2)return;
 				encenderNumero(arrayMessages[1]);
 				break;
 		case "ApagarNumero":
