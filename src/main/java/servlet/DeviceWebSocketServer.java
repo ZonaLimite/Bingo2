@@ -86,6 +86,7 @@ private Session mySesion;
 		//this.borraPocket("user", session);
 		this.enviarMensaje("EnciendeVideo");
 		//pb= new PocketBingo();
+		pb= this.leePocket("user", session);
 		pb.initPocket();
 		this.guardaPocket("user", session);
 		session.getUserProperties().put("user",pb);

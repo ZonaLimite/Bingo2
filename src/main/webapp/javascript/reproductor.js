@@ -38,7 +38,7 @@ var palabraBingo;
 var triggerBingo;
 var triggerLinea="false";
 var colorTriggerLinea=900;
-var datoCartones,datoLinea,datoBingo
+var datoCartones,datoLinea,datoBingo,etiquetaOrden
 
 var resultDialogo="Empezar";
 var videoEnable="true";
@@ -74,7 +74,7 @@ function iniciar() {
     datoLinea=document.getElementById("valorLinea");
     datoBingo=document.getElementById("valorBingo");
     cajaFecha = document.getElementById("CajaDcha");
-    
+    etiquetaOrden = document.getElementById("labelOrden");
 	boton_play = document.getElementById("play");
 	boton_play.onclick = function() {reanudar()};
 
@@ -571,7 +571,7 @@ function recibido(e){
 		//Cantar numero y mostrar orden bola
 		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);
-				datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
+				if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
 	    	    draw(arrayMessages[1]);
 				play_range(myRango[0],myRango[1]);	
 	    	    break;

@@ -38,6 +38,7 @@ public class Hilo2 extends Thread{
     public void run(){
         this.pb=(PocketBingo)session.getUserProperties().get("user");
         status=pb.getIdState();
+        log.info("IdState en 'run' bucle:" +status);
         synchronized(this){
         if(status.equals("NewGame")){
         	orden =1;
@@ -129,7 +130,7 @@ public class Hilo2 extends Thread{
             } catch (InterruptedException ex) {
         	   //log.info("He sido interrumpido");
         	   String reasonInterrupt=pb.getReasonInterrupt();
-        	   log.info("Interrupt recibido (reason):"+ reasonInterrupt);
+        	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + "IdState:" + pb.getIdState());
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
