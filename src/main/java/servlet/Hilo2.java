@@ -123,7 +123,7 @@ public class Hilo2 extends Thread{
                 	pb.setNewBola(number);//bola en pantalla
                 	pb.setNumeroOrden(i);
                 }
-                log.info("Nº orden antes del wait "+ pb.getNumeroOrden());
+                log.info("Orden antes del wait "+ pb.getNumeroOrden());
                 
                 wait(); 
 

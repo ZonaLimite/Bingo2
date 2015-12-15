@@ -167,7 +167,7 @@ function iniciar() {
 	boton_play_range.onclick = function(){play_range2(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	
 	window.onresize = function(e){
-		e.preventDefault();
+		//e.preventDefault();
 		resizeBolas();
 		};
 	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
@@ -331,7 +331,7 @@ function mostrarFecha(){
 	}else{
 		segundos=f.getSeconds();
 	}
-	HTML+= f.getHours()+":"+f.getHours()+":"+ segundos;
+	HTML+= f.getHours()+":"+f.getMinutes()+":"+ segundos;
 	cajaFecha.innerHTML=HTML;
 	
 	
@@ -528,9 +528,9 @@ function visualizaDatosCartones(){
 			xBingo=xBingo +dif;
 		}
 	}
-	datoCartones.innerHTML=""+nCartones;
-	datoLinea.innerHTML=xLinea+" €";
-	datoBingo.innerHTML=xBingo+" €";
+	datoCartones.textContent=""+nCartones;
+	datoLinea.textContent=xLinea+" €";
+	datoBingo.textContent=xBingo+" €";
 }
 function resizeBolas(tamanoMenu){
 	//alert("olas");
