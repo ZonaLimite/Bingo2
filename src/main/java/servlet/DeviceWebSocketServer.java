@@ -53,7 +53,7 @@ private Session mySesion;
 
 @OnMessage
     public void handleMessage(String message, Session session){ 
-	//log.info("recibido mensaje:"+ message);
+	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
 		if(pb!=null)this.guardaPocket("user", session);
@@ -205,6 +205,7 @@ private Session mySesion;
   private void enviarMensaje(String textMessage){
   	try {
 			mySesion.getBasicRemote().sendText(textMessage);
+			log.info("Enviando desde servidor a navegador:"+textMessage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -221,7 +222,7 @@ private Session mySesion;
 	  	}else{
 				ruta = System.getenv("OPENSHIFT_DATA_DIR");
 				fichero=ruta+user;
-				//log.info("ghuaradndo Pocket"+ fichero);
+				log.info("ghuaradndo Pocket"+ fichero);
 	  	}
 	  try
       {
@@ -233,7 +234,7 @@ private Session mySesion;
           oos.close();
       } catch (Exception e)
       {
-          log.error("Guarda Pocket "+ fichero);
+          log.error("Excepcion Guarda Pocket "+ fichero);
     	  e.printStackTrace();
       }  
 	  

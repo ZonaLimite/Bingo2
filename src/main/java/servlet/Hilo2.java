@@ -23,7 +23,7 @@ import javax.websocket.Session;
  * @author hormigueras
  */
 public class Hilo2 extends Thread{
-    Logger log = Logger.getLogger("test");
+    Logger log = Logger.getLogger("Hilo");
     JTextArea area2;
     PocketBingo pb;
     Session session;
@@ -81,7 +81,7 @@ public class Hilo2 extends Thread{
         }
         }
     	for(int i=orden; i < maxNumbers+1 ;i++)   {
-          //log.log(Level.INFO, "Enviando mensaje de Hilo2 :{0}", i);
+          log.info("IdState en inicio bucle"+pb.getIdState()); 
    
           synchronized(this){
             try{
@@ -122,13 +122,14 @@ public class Hilo2 extends Thread{
                 	pb.setNewBola(number);//bola en pantalla
                 	pb.setNumeroOrden(i);
                 }
-                //log.info("orden antes del wait "+ i);
+                log.info("Nº orden antes del wait "+ pb.getNumeroOrden());
                 
                 wait(); 
 
             } catch (InterruptedException ex) {
         	   //log.info("He sido interrumpido");
         	   String reasonInterrupt=pb.getReasonInterrupt();
+        	   log.info("Interrupt recibido (reason):"+ reasonInterrupt);
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
@@ -167,10 +168,13 @@ public class Hilo2 extends Thread{
     }
     private void enviarMensaje(String textMessage){
     	try {
-			session.getBasicRemote().sendText(textMessage);
+    		log.info("Enviando mensaje desde Hilo:" + textMessage);
+    		session.getBasicRemote().sendText(textMessage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			log.info("Fallo al mandar mesaje desde hilo");
 			e.printStackTrace();
+			
 		}
     }
     public int calculaBolaNueva(){
