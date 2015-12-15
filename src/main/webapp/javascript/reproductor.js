@@ -357,7 +357,7 @@ function elegirCantaor(cantaor){
 		
 		rangos=eval(nombreRangos);
 		myRango=sacarRangos(arrayMessages[1]);
-		datoOrdenBola.innerHTML="<label class='valorInfo'>"+arrayMessages[2]+"</label>";
+		if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
 		flagVideoReady="false";
 		video.load();
 		video.play();
