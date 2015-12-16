@@ -62,9 +62,7 @@ function iniciar() {
 	video = document.getElementById("medio");
 	video.src=nombreFileVideo;
 	video.type="video/mp4";
-	video.oncanplay = function() {
-	    flagVideoReady="true";
-	};
+	
 	elementCanvas = document.getElementById("canvas_bola");	
 	ctxCanvas = elementCanvas.getContext("2d");
 	contador=document.getElementById("contador");
@@ -326,12 +324,22 @@ function mostrarFecha(){
 	var f = new Date();
 	HTML=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 	HTML+="<br>";
+	if(f.getHours()<10){
+		horas="0+f.getHours();"
+	}else{
+		horas=f.getHours();
+	}
+	if(f.getMinutes()<10){
+		minutos="0"+f.getMinutes();
+	}else{
+		minutos=f.getMinutes();
+	}
 	if(f.getSeconds()<10){
 		segundos="0"+f.getSeconds();
 	}else{
 		segundos=f.getSeconds();
 	}
-	HTML+= f.getHours()+":"+f.getMinutes()+":"+ segundos;
+	HTML+= horas+":"+minutos+":"+ segundos;
 	cajaFecha.innerHTML=HTML;
 	
 	
@@ -351,6 +359,9 @@ function elegirCantaor(cantaor){
 			nombreRangos="rangosInes";
 			nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 		}
+		video.oncanplay = function() {
+		    flagVideoReady="true";
+		};
 		clearInterval(bucle);
 		video.pause();
 		video.src=nombreFileVideo;
@@ -366,6 +377,7 @@ function elegirCantaor(cantaor){
 }
 function esperarReadyState(){
 	if(flagVideoReady=="false")return;
+	video.oncanplay = null;
 	window.clearInterval(bucle2);
 	
 	play_range(myRango[0],myRango[1]);
