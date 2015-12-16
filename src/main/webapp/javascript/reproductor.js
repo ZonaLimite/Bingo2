@@ -374,7 +374,7 @@ function elegirCantaor(cantaor){
 		video.load();
 		video.play();
 		video.pause();
-		bucle2 = setInterval(function(){ esperarReadyState() }, 100);
+		bucle2 = setInterval(function(){ esperarReadyState() }, 1000);
 }
 function esperarReadyState(){
 	if(flagVideoReady=="false")return;
@@ -411,7 +411,7 @@ function play_range(ini,fin){
 	seeking="true";
 	esPrimeraVez="true";
 	//bucle=setInterval(procesarCuadros, 100);
-	bucle = setInterval(function(){ procesarCuadros() }, 60);
+	bucle = setInterval(function(){ procesarCuadros() }, 100);
 	
 	
 }
