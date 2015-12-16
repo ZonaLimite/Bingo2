@@ -130,7 +130,7 @@ public class Hilo2 extends Thread{
             } catch (InterruptedException ex) {
         	   //log.info("He sido interrumpido");
         	   String reasonInterrupt=pb.getReasonInterrupt();
-        	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + "IdState:" + pb.getIdState());
+        	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());

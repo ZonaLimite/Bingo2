@@ -721,6 +721,7 @@ function procesarCuadros(){
 			video.pause();
 					
 			socket_send("secuenciaAcabada");
+			socket_send("refresh_refresh_refresh");
 		}
 	}
 	
