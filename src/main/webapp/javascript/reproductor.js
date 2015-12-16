@@ -411,7 +411,7 @@ function play_range(ini,fin){
 	seeking="true";
 	esPrimeraVez="true";
 	//bucle=setInterval(procesarCuadros, 100);
-	bucle = setInterval(function(){ procesarCuadros() }, 100);
+	bucle = setInterval(function(){ procesarCuadros() }, 60);
 	
 	
 }
