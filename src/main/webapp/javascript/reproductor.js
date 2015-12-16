@@ -62,7 +62,10 @@ function iniciar() {
 	video = document.getElementById("medio");
 	video.src=nombreFileVideo;
 	video.type="video/mp4";
-	
+	video.oncanplay = function() {
+	    flagVideoReady="true";
+	};
+	video.load();
 	elementCanvas = document.getElementById("canvas_bola");	
 	ctxCanvas = elementCanvas.getContext("2d");
 	contador=document.getElementById("contador");
@@ -359,9 +362,7 @@ function elegirCantaor(cantaor){
 			nombreRangos="rangosInes";
 			nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 		}
-		video.oncanplay = function() {
-		    flagVideoReady="true";
-		};
+		
 		clearInterval(bucle);
 		video.pause();
 		video.src=nombreFileVideo;
@@ -377,7 +378,7 @@ function elegirCantaor(cantaor){
 }
 function esperarReadyState(){
 	if(flagVideoReady=="false")return;
-	video.oncanplay = null;
+	flagVideoReady=false;
 	window.clearInterval(bucle2);
 	
 	play_range(myRango[0],myRango[1]);
