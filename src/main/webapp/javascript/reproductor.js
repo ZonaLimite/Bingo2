@@ -788,8 +788,8 @@ function draw(numero) {
     ctxCanvas.fill();
 
     ctxCanvas.beginPath();
-	tamanoLetras = Math.floor((nuevoTamano/1.3));
-    Fuente = Math.floor(miRadio)-6+"px bold Console";
+	//tamanoLetras = Math.flor((nuevoTamano/1.3));
+    Fuente = Math.floor(miRadio/1.3)+"px bold Console";
     ctxCanvas.font = Fuente;
 	var textMeter = ctxCanvas.measureText(""+numero);
     anchoTexto= textMeter.width;
