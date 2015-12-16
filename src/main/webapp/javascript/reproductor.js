@@ -720,7 +720,7 @@ function procesarCuadros(){
 			seeking="false";
 			video.pause();
 					
-			socket_send("secuenciaAcabada");
+			socket_send("seekingFinished");
 			socket_send("refresh_refresh_refresh");
 		}
 	}

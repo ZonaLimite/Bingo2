@@ -93,7 +93,7 @@ private Session mySesion;
 		Hilo2 = new Hilo2(session);
 		Hilo2.start();
 		break;
-	case "secuenciaAcabada":
+	case "seekingFinished":
 		pb.setReasonInterrupt("secuenciaAcabada");
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
