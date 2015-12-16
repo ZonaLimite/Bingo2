@@ -789,7 +789,7 @@ function draw(numero) {
 
     ctxCanvas.beginPath();
 	tamanoLetras = Math.floor((nuevoTamano/1.3));
-    Fuente = Math.floor(miRadio)-4+"px bold Console";
+    Fuente = Math.floor(miRadio)-5+"px bold Console";
     ctxCanvas.font = Fuente;
 	var textMeter = ctxCanvas.measureText(""+numero);
     anchoTexto= textMeter.width;
