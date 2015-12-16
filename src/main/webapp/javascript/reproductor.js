@@ -719,9 +719,9 @@ function procesarCuadros(){
 			window.clearInterval(bucle);
 			seeking="false";
 			video.pause();
-					
+			socket_send("refresh_refresh_refresh1");		
 			socket_send("seekingFinished");
-			socket_send("refresh_refresh_refresh");
+			socket_send("refresh_refresh_refresh2");
 		}
 	}
 	
