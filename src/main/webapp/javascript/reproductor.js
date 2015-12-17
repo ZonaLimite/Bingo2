@@ -328,7 +328,7 @@ function mostrarFecha(){
 	HTML=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 	HTML+="<br>";
 	if(f.getHours()<10){
-		horas="0+f.getHours();"
+		horas="0"+f.getHours();
 	}else{
 		horas=f.getHours();
 	}
@@ -353,15 +353,61 @@ function apagaBingo(){
 	bingoCantado="true";
 }
 function elegirCantaor(cantaor){
+	
+	 if (video.canPlayType) {
+		    // CanPlayType returns maybe, probably, or an empty string.
+		    var playMsg = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
+		    //alert(playMsg);
+		    if ("" != playMsg) {
+		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
+		    	if(cantaor=="Lola"){
+					nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
+					nombreRangos="rangosLola";
+					
+		    	}
+		    	if(cantaor=="Ines"){
+					nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
+					nombreRangos="rangosInes";
+				}
+
+		    }
+		    playMsg = video.canPlayType('video/ogg; codecs="theora"');
+		    //alert(playMsg);
+		    if ("" != playMsg) {
+		      //msg.innerHTML += "ogg is " + playMsg + " supported<br/>";
+				if(cantaor=="Lola"){
+					nombreFileVideo="http://boga.esy.es/video/BingoLola.ogv";
+					nombreRangos="rangosLola";
+				}
+		    	if(cantaor=="Ines"){
+					nombreFileVideo="http://boga.esy.es/video/BingoInes.ogv";
+							
+					nombreRangos="rangosInes";
+				}
+		    	
+		    	
+		    }
+		    playMsg = video.canPlayType('video/webm; codecs="vp8, vorbis"');
+		    //alert(playMsg);	
+		    if ("" != playMsg) {
+		    	if(cantaor=="Lola"){
+					nombreFileVideo="http://boga.esy.es/video/BingoLola.webm";
+									
+					nombreRangos="rangosLola";
+				}
+		    	if(cantaor=="Ines"){
+					nombreFileVideo="http://boga.esy.es/video/BingoInes.webm";
+										
+					nombreRangos="rangosInes";
+				}
+
+		    }
+		  }
+		  else {
+		   ALERT("no video support");
+		  }
+	 		
 		
-		if(cantaor=="Lola"){
-			nombreRangos="rangosLola";
-			nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
-		}
-		if(cantaor=="Ines"){
-			nombreRangos="rangosInes";
-			nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
-		}
 		
 		clearInterval(bucle);
 		video.pause();
