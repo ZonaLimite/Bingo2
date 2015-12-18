@@ -27,7 +27,8 @@ var esPrimeraVez;
 var anchoPantalla;
 var elementCanvas;
 var ctxCanvas;
-var bucle;
+var bucle=null;
+var bucle2=null;
 var npat=1;
 var nuevoTamano;
 var maxTamano=75;
@@ -39,7 +40,7 @@ var triggerBingo;
 var triggerLinea="false";
 var colorTriggerLinea=900;
 var datoCartones,datoLinea,datoBingo,etiquetaOrden
-
+var valCodecs="MP4";
 var resultDialogo="Empezar";
 var videoEnable="true";
 var lineaCantada="false";
@@ -57,10 +58,11 @@ var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
 var nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 var cajaFecha;
+var arrayMessages=null;
 function iniciar() {
 	rangos=eval(nombreRangos);
 	video = document.getElementById("medio");
-	video.src=nombreFileVideo;
+	//video.src=nombreFileVideo;
 	video.type="video/mp4";
 	video.oncanplay = function() {
 	    flagVideoReady="true";
@@ -213,14 +215,21 @@ function iniciar() {
 	selectCantaor= document.getElementsByName("cantaor");
 	$( "#opciones" ).dialog({ autoOpen: false , modal: true });
 	
+	$( "input" ).on( "click", function() {
+		  valCodecs = $( "input:checked" ).val();
+	});
+	
 	$("select[name=cantaor]").change(function(){
 		valor=$("select[name=cantaor]").val();
+		
 		elegirCantaor(valor);
 	});
 	$("input[name=videoON]").change(function(){
 		if($("input[name=videoON]").is(':checked')){
 			videoEnable="true";
-			enciendeVideo();
+			enciendeVideo();$( "input" ).on( "click", function() {
+  $( "#log" ).html( $( "input:checked" ).val() + " is checked!" );
+});
 	}else{
 			videoEnable="false";
 			apagaVideo();
@@ -354,11 +363,9 @@ function apagaBingo(){
 }
 function elegirCantaor(cantaor){
 	
-	 if (video.canPlayType) {
-		    // CanPlayType returns maybe, probably, or an empty string.
-		    var playMsg = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
-		    //alert(playMsg);
-		    if ("" != playMsg) {
+		    //var playMsg = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
+		    
+		    if (valCodecs=="MP4") {
 		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
 		    	if(cantaor=="Lola"){
 					nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
@@ -371,9 +378,9 @@ function elegirCantaor(cantaor){
 				}
 
 		    }
-		    playMsg = video.canPlayType('video/ogg; codecs="theora"');
-		    //alert(playMsg);
-		    if ("" != playMsg) {
+		    
+		    
+		    if (valCodecs=="OGG") {
 		      //msg.innerHTML += "ogg is " + playMsg + " supported<br/>";
 				if(cantaor=="Lola"){
 					nombreFileVideo="http://boga.esy.es/video/BingoLola.ogv";
@@ -387,9 +394,7 @@ function elegirCantaor(cantaor){
 		    	
 		    	
 		    }
-		    playMsg = video.canPlayType('video/webm; codecs="vp8, vorbis"');
-		    //alert(playMsg);	
-		    if ("" != playMsg) {
+		    if (valCodecs=="WEBM") {
 		    	if(cantaor=="Lola"){
 					nombreFileVideo="http://boga.esy.es/video/BingoLola.webm";
 									
@@ -402,22 +407,20 @@ function elegirCantaor(cantaor){
 				}
 
 		    }
-		  }
-		  else {
-		   ALERT("no video support");
-		  }
-	 		
-		
-		
-		clearInterval(bucle);
+		  
 		video.pause();
+		flagVideoReady="false";
+		if(bucle!=null)clearInterval(bucle);
+		if(bucle2!=null)clearInterval(bucle2);
+		
 		video.src=nombreFileVideo;
 		
 		rangos=eval(nombreRangos);
+		if (arrayMessages==null)return;
 		myRango=sacarRangos(arrayMessages[1]);
 		if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
-		flagVideoReady="false";
 		video.load();
+		
 		video.play();
 		video.pause();
 		bucle2 = setInterval(function(){ esperarReadyState() }, 1000);

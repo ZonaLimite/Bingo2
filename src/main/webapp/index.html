@@ -55,7 +55,9 @@
       <td rowspan="10" class="panel" > 
             <article class="Comander" > <span >
               <video id="medio" class="fotom" preload="auto" >
-   		    //<source src="http://boga.esy.es/video/Bingo.mov" type="video/mp4">
+   		    <source src="http://boga.esy.es/video/BingoInes.mov" type="video/mp4">
+   		    <source src="http://boga.esy.es/video/BingoInes.ogv" type="video/ogg">
+			<source src="http://boga.esy.es/video/BingoInes.webm" type="video/webm">
    		    HTML5 video is not supported by this browser </video>
    		      
          
@@ -475,8 +477,29 @@ ELEGIR CANTAOR
 <option value="Lola">Lola (velocida Lenta)</option>
 <option value="Ines">Ines (velocida Rapida)<option>
 </select>
+<p>&nbsp;
+</p>
+<form >
+  <table width="200">
+    <tr>
+      <td><label>
+        <input type="radio" name="Codecs" value="MP4" id="Codecs_0" checked>
+        MP4</label></td>
+    </tr>
+    <tr>
+      <td><label>
+        <input type="radio" name="Codecs" value="OGG" id="Codecs_1">
+        OGG</label></td>
+    </tr>
+    <tr>
+      <td><label>
+        <input type="radio" name="Codecs" value="WEBM" id="Codecs_2">
+        WebM</label></td>
+    </tr>
+  </table>
+</form>
 <p>
-<input name="videoON" type="checkbox" value="true" checked>Activar Video
+  <input name="videoON" type="checkbox" value="true" checked>Activar Video
 </p>
 
 <hr width="75%"/>
