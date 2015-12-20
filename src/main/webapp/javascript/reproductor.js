@@ -53,12 +53,16 @@ var porCientoCantaor=0;
 var sumaTantos=0;
 var sumaCaja=0;
 var flagVideoReady="false";
+var myV=1;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
 var nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 var cajaFecha;
 var arrayMessages=null;
+var copYColor;
+var copymyV;
+var copynpat;
 function iniciar() {
 	rangos=eval(nombreRangos);
 	video = document.getElementById("medio");
@@ -634,7 +638,11 @@ function recibido(e){
 		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);
 				if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
-	    	    draw(arrayMessages[1]);
+	    	    if(arrayMessages[3]!=null){
+	    	    	subDraw(arrayMessages[3],arrayMessages[1]);
+	    	    }else{
+	    	    	subDraw(0,arrayMessages[1]);
+	    	    }
 				play_range(myRango[0],myRango[1]);	
 	    	    break;
 		case "EnciendeVideo":
@@ -775,27 +783,28 @@ function procesarCuadros(){
 	}
 	
 }
-function draw(numero) {
+//numero,ejeX,ejeY,radio,gradiente(Si-no),modoPatttern,colorPattern,selectorPattern
+function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisnpat) {
   if((numero+"").length > 2)return;  
-  ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
-  ctxCanvas.width=ctxCanvas.width;
+  //ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
+  //ctxCanvas.width=ctxCanvas.width;
   // create new image object to use as pattern
   var img = new Image();
-  varX=Math.floor((elementCanvas.width)/2);
-  varY=Math.floor((elementCanvas.height)/2);
-  miRadio= Math.floor(varX/3);
-  copyVarx=varX;
-  copyVary=varY;
-  copyRadio=miRadio;
-  mySrc="images/pattern"+npat+".jpg";
-  npat++;
-  if(npat>4) npat=1;
+  //varX=Math.floor((elementCanvas.width)/2);
+  //varY=Math.floor((elementCanvas.height)/2);
+  //miRadio= Math.floor(varX/3);
+  
+  //copyVary=varY;
+  //copyRadio=miRadio;
+  mySrc="images/pattern"+thisnpat+".jpg";
+  //npat++;
+  //if(npat>4) npat=1;
   img.src = mySrc;
   img.onload = function(){
 	//borrar previo
 	
     // create pattern
-	v= Math.floor((Math.random() * 3) + 1);
+	//v= Math.floor((Math.random() * 3) + 1);
 	
 	var ptrn = ctxCanvas.createPattern(img,"repeat");
     ctxCanvas.beginPath();
@@ -805,17 +814,7 @@ function draw(numero) {
     
     if(v==1 || v==3){
     	grd = ctxCanvas.createRadialGradient(varX, varY - miRadio, Math.floor(miRadio/2)+Math.floor(miRadio/4), varX + miRadio,varY, miRadio*3);
-    	var c1=Math.floor((Math.random() * 255) + 1);
-    	var c2=Math.floor((Math.random() * 255) + 1);
-    	var c3=Math.floor((Math.random() * 255) + 1);
-    	var c4 =Math.floor((Math.random() * 10) + 1);
-    	var alfa = "0."+c4;
-    	if(c4==10)alfa=1;
-    	if(v==1){
-    		color = 'rgba(' + c1+ ',' +c2 + ',+'+c3+","+alfa+')';
-    	}else if(v==3){
-    		color = 'rgba(' + c1+ ',' +c2 + ',+'+c3+',1)';
-    	}
+    	
     	grd.addColorStop(0, color);
     	grd.addColorStop(1, "white");
     	ctxCanvas.fillStyle = grd;
@@ -830,10 +829,10 @@ function draw(numero) {
 	}else{
 		sumador=-1;		
 	}
-	varX = (varX + (factorX*sumador))+1;
+	varXTexto = (varX + (factorX*sumador))+1;
     ctxCanvas.beginPath();
     ctxCanvas.fillStyle ="white";
-    ctxCanvas.arc(varX, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
+    ctxCanvas.arc(varXTexto, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
     ctxCanvas.fill();
 
     ctxCanvas.beginPath();
@@ -848,20 +847,63 @@ function draw(numero) {
     }else{
     	yText=varY + (Math.floor(anchoTexto/3));
     }
-    ctxCanvas.fillText(""+numero,varX-(Math.floor(anchoTexto/2)),yText );
+    ctxCanvas.fillText(""+numero,varXTexto-(Math.floor(anchoTexto/2)),yText );
     ctxCanvas.fill();
     
     //ctxCanvas.beginPath();
-    ctxCanvas.arc(copyVarx, copyVary,miRadio+5, 0,Math.PI * 2,false);
-    miRadio= Math.floor(varX/3);
-    color = "rgba(255,255,255,0)";
-    grd = ctxCanvas.createRadialGradient(copyVarx, copyVary ,0,copyVarx,copyVary,copyRadio+ 5);
-    grd.addColorStop(0,color);
-	grd.addColorStop(1, "black");
-	ctxCanvas.fillStyle = grd;
-	ctxCanvas.fill();
-	
+    if(booleanGrad=="true"){
+    	ctxCanvas.arc(varX, varY,miRadio+1, 0,Math.PI * 2,false);
+    	//miRadio= Math.floor(varX/3);
+    	color = "rgba("+c1+","+c2+","+c3+",0)";
+    	grd = ctxCanvas.createRadialGradient(varX,varY ,0,varX,varY,miRadio+1);
+    	//grd.addColorStop(0,"rgba(255,255,255,0)");
+    	grd.addColorStop(0,color);
+    	grd.addColorStop(1, "black");
+    	ctxCanvas.fillStyle = grd;
+    	ctxCanvas.fill();
+  	}
   }
-  
+}
+function subDraw(subNumero,Numero) {
+		//varX,varY,miRadio
+	
+	  myVarX=Math.floor((elementCanvas.width)/2);
+	  myVarY=Math.floor((elementCanvas.height)/2);
+	  mi_Radio= Math.floor(myVarX/3);
+	  ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
+	  ctxCanvas.width=ctxCanvas.width;
+	  //ctxCanvas.save();
+	  
+	  //varX=Math.floor((elementCanvas.width)/4);
+	  //varY=Math.floor((elementCanvas.height)/2.5);
+	  //ctxCanvas.translate(varX-miRadio, varY-(Math.floor(miRadio/2)));
+	  
+	  	//ctxCanvas.restore();
+	  	if(subNumero!=0){
+		  draw(subNumero,myVarX-Math.floor((mi_Radio*2)),myVarY-(Math.floor(mi_Radio/2)),mi_Radio/2,"true",copymyV,copYColor,copynpat);
+	  	}
+	  	//calculo color	
+	  	c1=Math.floor((Math.random() * 255) + 1);
+		c2=Math.floor((Math.random() * 255) + 1);
+		c3=Math.floor((Math.random() * 255) + 1);
+		c4 =Math.floor((Math.random() * 10) + 1);
+		myV= Math.floor((Math.random() * 3) + 1);
+		var alfa = "0."+c4;
+    	if(c4==10)alfa=1;
+    	if(myV==1){
+    		my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+","+alfa+')';
+    	}else if(myV==3 || myV==2){
+    		my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+',1)';
+    	}
+		
+		npat++;
+		if(npat>4) npat=1;
+		copYColor=my_color;
+		copymyV=myV;
+		copynpat=npat;
+		
+		
+		draw(Numero,myVarX ,myVarY,mi_Radio,"true",myV,my_color,npat);
 }
 window.onload=iniciar;
+

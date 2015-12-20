@@ -72,7 +72,7 @@ public class Hilo2 extends Thread{
         	enviarMensaje("EncenderNumero_"+number);
         	pb.addNumerosCalled(pb.getNewBola());
         	try {
-				Thread.sleep(3000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -119,7 +119,7 @@ public class Hilo2 extends Thread{
                 
                 	
                 	//pb.setSecuenciaAcabada(false);
-                	enviarMensaje("cantarNumero_"+number+"_"+i);
+                	enviarMensaje("cantarNumero_"+number+"_"+i+"_"+pb.getLastNumber());
                 	pb.setNewBola(number);//bola en pantalla
                 	pb.setNumeroOrden(i);
                 }
