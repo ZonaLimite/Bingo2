@@ -54,6 +54,10 @@ var sumaTantos=0;
 var sumaCaja=0;
 var flagVideoReady="false";
 var myV=1;
+var bucle4;
+var flagBucle4=0;
+var contBackground=255;
+var contBackground2=91;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
@@ -84,7 +88,7 @@ function iniciar() {
     etiquetaOrden = document.getElementById("labelOrden");
 	boton_play = document.getElementById("play");
 	boton_play.onclick = function() {reanudar()};
-
+	
 	boton_pause = document.getElementById("pause");
 	boton_pause.onclick = function() { pausar()};
 	
@@ -141,6 +145,9 @@ function iniciar() {
 	boton_iniciar = document.getElementById("iniciar");
 	boton_iniciar.onclick = function(){ arrancar()};
 	
+	boton_resume = document.getElementById("resume");
+	boton_resume.onclick = function(){ resumir()};
+	
 	boton_opciones=document.getElementById("preferencias");
 	boton_opciones.onclick = function(){
 		$( "#opciones" ).dialog( "open" );
@@ -190,7 +197,7 @@ function iniciar() {
 		      },
 		      click: function() {
 		    	  socket_send("resume");
-		    	  initInterface();
+		    	  
 		    	  $( this ).dialog( "close" );
 		      }
 		    },
@@ -205,7 +212,6 @@ function iniciar() {
 			      },
 			      click: function() {
 			    	  socket_send("newGame");
-			    	  initInterface();
 			    	  $( this ).dialog( "close" );
 			      }
 			 
@@ -258,11 +264,18 @@ function iniciar() {
 		
 	} );
 	$("#masTamano").change(function (){
-		alert("entro");
 		nuevoTamano=ui.value;
 		resizeBolas(nuevoTamano);
 	});		
 
+	
+	$( "#aplicarDelay" ).click(function() {
+		nuevoDelay=$("#delay").val();
+		socket_send("JSON#SET_DATOS_DELAY#"+nuevoDelay);
+		$( "#opciones" ).dialog("close");
+		});
+
+	
 	//Plantilla JQuery para Dialogo Cartones
 	$( "#cartones" ).dialog({ autoOpen: false , modal: true });
 	$( "#cartones" ).dialog({
@@ -508,9 +521,21 @@ function arrancar(){
 	video.pause();
 	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
 	//
-	socket_send("startGame");
+	socket_send("newGame");
+	initInterface();
+}
+function resumir(){
+	//El socket ya esta creado
+	
+	video.play();
+	video.pause();
+	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
+	//
+	socket_send("resume");
+	initInterface();
 	
 }
+
 function creaSocket(usuario){
 	var wsUri = getRootUri() + "actions";
 	
@@ -709,10 +734,38 @@ function recibido(e){
 }
 function apagarNumero(n){
 	document.getElementById(n).style.color="#280000";
+	document.getElementById(n).style.backgroundColor="#000000";
 }
 function encenderNumero(numero){
+	if(numero=="0")return;
+	if(bucle4!=null){
+		window.clearInterval(bucle4);
+		bucle4=null;
+		contBackground=0;
+		contBackground2=0;
+		recrearFondo(numero);
+		
+	}
+
+	document.getElementById(numero).style.color="#FF5B5B";//255,91,91
+	flagBucle4=0;
+	contBackground=255;
+	contBackground2=91;
+	bucle4 = setInterval(function(){ recrearFondo(numero) }, 50);
 	
-	document.getElementById(numero).style.color="#FF5B5B";
+}
+function recrearFondo(num){
+	if(contBackground==0 && contBackground2==0){
+		window.clearInterval(bucle4);
+		bucle4=null;
+	}
+	contBackground=contBackground-6;
+	contBackground2=contBackground2-5;
+	if(contBackground<0)contBackground=0;
+	if(contBackground2<0)contBackground2=0;
+	_color = 'rgba(' + contBackground+ ',' +contBackground2 + ','+contBackground2+',1)';
+	document.getElementById(num).style.backgroundColor=_color;
+	
 }
 
 function sacarRangos(numerobase){
@@ -880,7 +933,7 @@ function subDraw(subNumero,Numero) {
 	  
 	  	//ctxCanvas.restore();
 	  	if(subNumero!=0){
-		  draw(subNumero,myVarX-Math.floor((mi_Radio*2)),myVarY-(Math.floor(mi_Radio/2)),mi_Radio/2,"true",copymyV,copYColor,copynpat);
+		  draw(subNumero,myVarX-Math.floor((mi_Radio)),myVarY-(Math.floor(mi_Radio/2)),mi_Radio/3,"true",copymyV,copYColor,copynpat);
 	  	}
 	  	//calculo color	
 	  	c1=Math.floor((Math.random() * 255) + 1);

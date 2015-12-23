@@ -27,6 +27,7 @@ private ManagedThreadFactory threadFactory;
 private PocketBingo pb; 
 private Thread Hilo2 = null;
 private Session mySesion;
+private int delay=1500;//ms
 
 @OnOpen
     public void open(Session session) {
@@ -52,7 +53,7 @@ private Session mySesion;
 }
 
 @OnMessage
-    public void handleMessage(String message, Session session){ 
+    public void handleMessage(String message, Session session) throws InterruptedException{ 
 	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
@@ -94,14 +95,17 @@ private Session mySesion;
 		Hilo2.start();
 		break;
 	case "seekingFinished":
+		enviarMensaje("EncenderNumero_"+pb.getNewBola());
 		pb.setReasonInterrupt("secuenciaAcabada");
 		this.guardaPocket("user", session);
+		Thread.sleep(delay);
 		Hilo2.interrupt();
 		break;
 	
 	case "Linea":
 		pb.setIdState("Linea");
 		this.guardaPocket("user", session);
+		//Hilo2.interrupt();
 		break;
 
 	case "Linea_OK":
@@ -115,6 +119,7 @@ private Session mySesion;
 	case "Bingo":
 		pb.setIdState("Bingo");
 		this.guardaPocket("user", session);
+		Hilo2.interrupt();
 		break;
 	
 	case "Bingo_OK":
@@ -131,6 +136,7 @@ private Session mySesion;
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
+	
 	case "Finalize":
 		pb.setIdState("Finalized");
 		pb.setReasonInterrupt("offLine");
@@ -166,7 +172,13 @@ private Session mySesion;
 				porCientoCantaor=pb.getPorcientoCantaor();
 				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
 				enviarMensaje(construirScript);
+				break;
+				
+			case "SET_DATOS_DELAY"://JSON#SET_DATOS_DELAY#delay
+				this.delay=new Integer(arrayMessage.elementAt(2)).intValue();
+
 			}
+				
 		
 
 		}

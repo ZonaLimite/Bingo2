@@ -133,7 +133,7 @@ public class Hilo2 extends Thread{
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
-               			enviarMensaje("EncenderNumero_"+pb.getNewBola());
+               			
                			pb.setLastNumber(pb.getNewBola());
                			
                			if(pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("LineaOk")|| pb.getIdState().equals("BingoOk")){
