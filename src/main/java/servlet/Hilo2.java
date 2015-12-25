@@ -146,6 +146,10 @@ public class Hilo2 extends Thread{
                			if( pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("LineaOk")|| pb.getIdState().equals("BingoOk")){
                				break;
                			}
+               			if(pb.getIdState().equals("Bingo") && pb.getNumeroOrden()==90){
+           					i--;
+           					break;
+           				}
                			
                			pb.addNumerosCalled(pb.getNewBola());
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
