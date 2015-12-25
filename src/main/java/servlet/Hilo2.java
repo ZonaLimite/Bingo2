@@ -30,14 +30,17 @@ public class Hilo2 extends Thread{
     String status;
     int maxNumbers = 90;
     int orden;
-    public Hilo2(Session sesion){
+    int delay= 1500;
+    public Hilo2(Session sesion, int ndelay){
        this.session = sesion;
+       this.delay = ndelay;
        
     }
     @Override
     public void run(){
         this.pb=(PocketBingo)session.getUserProperties().get("user");
         status=pb.getIdState();
+        
         log.info("IdState en 'run' bucle:" +status);
         synchronized(this){
         if(status.equals("NewGame")){
@@ -56,10 +59,10 @@ public class Hilo2 extends Thread{
         	Vector listaNumeros=(Vector)pb.getNumerosCalled();
     		int i;
         	for(i=0;i<listaNumeros.size();i++){
-    			this.enviarMensaje("EncenderNumero_"+listaNumeros.elementAt(i));
+    			this.enviarMensaje("EncenderNumero_"+listaNumeros.elementAt(i)+"_simple");
     			//this.enviarMensaje("bolaJuego_"+(i+1));
     			try {
-    				Thread.sleep(300);
+    				Thread.sleep(400);
     			} catch (InterruptedException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -97,6 +100,10 @@ public class Hilo2 extends Thread{
                 }else if(pb.getIdState().equals("LineaOk")){
                 	pb.setIdState("Started");
                 	enviarMensaje("cantarNumero_lineaOk_"+pb.getNumeroOrden());
+                	i--;
+                }else if(pb.getIdState().equals("Continue")){
+                	pb.setIdState("Started");
+                	enviarMensaje("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden());
                 	i--;
                 
                 }else if(pb.getIdState().equals("Bingo")){
@@ -136,14 +143,20 @@ public class Hilo2 extends Thread{
                			
                			pb.setLastNumber(pb.getNewBola());
                			
-               			if(pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("LineaOk")|| pb.getIdState().equals("BingoOk")){
+               			if( pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("LineaOk")|| pb.getIdState().equals("BingoOk")){
                				break;
                			}
-               			if(pb.getIdState().equals("Bingo") && pb.getNumeroOrden()==90){
-               				i--;
-               				break;
-               			}
+               			
                			pb.addNumerosCalled(pb.getNewBola());
+               			enviarMensaje("EncenderNumero_"+pb.getNewBola());
+               			
+               			try {
+               				delay=pb.getDelay();
+               				Thread.sleep(delay);
+               			} catch (InterruptedException e) {
+               				// 	TODO Auto-generated catch block
+               				e.printStackTrace();
+               			}
 
                			if(pb.getIdState().equals("Finalized")){
                				enviarMensaje("EndBalls");
@@ -152,6 +165,11 @@ public class Hilo2 extends Thread{
                		break;
                		
                		case "continuar":
+               				break;
+               		case "Bingo":
+               				if(pb.getIdState().equals("Bingo") && pb.getNumeroOrden()==90){
+               					i--;
+               				}
                				break;
                				
                		case "offLine":

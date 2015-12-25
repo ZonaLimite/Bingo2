@@ -32,6 +32,8 @@ public class PocketBingo implements Serializable {
     private String porcientoLinea="0";
     private String porcientoBingo="0";
     private String porcientoCantaor="0";
+    private int delay = 1500;
+    
     
     /* 
      * IdState :
@@ -149,5 +151,11 @@ public class PocketBingo implements Serializable {
 	}
 	public void setPorcientoCantaor(String porcientoCantaor) {
 		this.porcientoCantaor = porcientoCantaor;
+	}
+	public int getDelay() {
+		return delay;
+	}
+	public void setDelay(int delay) {
+		this.delay = delay;
 	}
 }

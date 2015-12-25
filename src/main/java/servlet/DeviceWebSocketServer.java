@@ -60,6 +60,10 @@ private int delay=1500;//ms
 		if(pb!=null)this.guardaPocket("user", session);
 		this.enviarMensaje("EnciendeVideo");
 		pb= this.leePocket("user", session);
+		if(pb==null){
+			this.enviarMensaje("No encontrado fichero Pocket");
+			break;
+		}
 		session.getUserProperties().put("user",pb);
 		if(pb.isLineaCantada()){
 			this.enviarMensaje("ApagaLinea");
@@ -72,7 +76,7 @@ private int delay=1500;//ms
 			
 		}
 		
-		Hilo2 = new Hilo2(session);
+		Hilo2 = new Hilo2(session,delay);
 		Hilo2.start();
 		break;
 	case "startGame":
@@ -88,17 +92,21 @@ private int delay=1500;//ms
 		this.enviarMensaje("EnciendeVideo");
 		//pb= new PocketBingo();
 		pb= this.leePocket("user", session);
+		if(pb==null){
+			pb= new PocketBingo();
+		}
 		pb.initPocket();
+		pb.setDelay(delay);
 		this.guardaPocket("user", session);
 		session.getUserProperties().put("user",pb);
-		Hilo2 = new Hilo2(session);
+		Hilo2 = new Hilo2(session,delay);
 		Hilo2.start();
 		break;
 	case "seekingFinished":
-		enviarMensaje("EncenderNumero_"+pb.getNewBola());
+		//enviarMensaje("EncenderNumero_"+pb.getNewBola());
 		pb.setReasonInterrupt("secuenciaAcabada");
 		this.guardaPocket("user", session);
-		Thread.sleep(delay);
+		//Thread.sleep(delay);
 		Hilo2.interrupt();
 		break;
 	
@@ -118,6 +126,7 @@ private int delay=1500;//ms
 	
 	case "Bingo":
 		pb.setIdState("Bingo");
+		pb.setReasonInterrupt("Bingo");
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
@@ -130,9 +139,9 @@ private int delay=1500;//ms
 		Hilo2.interrupt();
 		break;
 	case "Continue":
-		pb.setIdState("Started");
+		pb.setIdState("Continue");
 		this.enviarMensaje("EnciendeVideo");
-		pb.setReasonInterrupt("secuenciaAcabada");
+		pb.setReasonInterrupt("continuar");
 		this.guardaPocket("user", session);
 		Hilo2.interrupt();
 		break;
@@ -176,6 +185,7 @@ private int delay=1500;//ms
 				
 			case "SET_DATOS_DELAY"://JSON#SET_DATOS_DELAY#delay
 				this.delay=new Integer(arrayMessage.elementAt(2)).intValue();
+				if(pb!=null)pb.setDelay(delay);
 
 			}
 				

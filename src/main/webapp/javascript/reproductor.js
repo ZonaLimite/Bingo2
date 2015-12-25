@@ -704,7 +704,11 @@ function recibido(e){
 				break;				
 		case "EncenderNumero":
 				if(arrayMessages[1] == null || (arrayMessages[1]+"").length >2)return;
-				encenderNumero(arrayMessages[1]);
+				if(arrayMessages[2] == "simple"){
+					encenderNumero(arrayMessages[1],"simple");
+				}else{
+					encenderNumero(arrayMessages[1]);
+				}
 				break;
 		case "ApagarNumero":
 				apagarNumero(arrayMessages[1]);
@@ -736,22 +740,18 @@ function apagarNumero(n){
 	document.getElementById(n).style.color="#280000";
 	document.getElementById(n).style.backgroundColor="#000000";
 }
-function encenderNumero(numero){
+function encenderNumero(numero,modo){
 	if(numero=="0")return;
-	if(bucle4!=null){
-		window.clearInterval(bucle4);
-		bucle4=null;
-		contBackground=0;
-		contBackground2=0;
-		recrearFondo(numero);
-		
-	}
+	
 
 	document.getElementById(numero).style.color="#FF5B5B";//255,91,91
 	flagBucle4=0;
-	contBackground=255;
+	contBackground=200;
 	contBackground2=91;
-	bucle4 = setInterval(function(){ recrearFondo(numero) }, 50);
+	if(modo=="simple"){
+	}else{
+		bucle4 = setInterval(function(){ recrearFondo(numero) }, 50);
+	}
 	
 }
 function recrearFondo(num){
@@ -760,7 +760,7 @@ function recrearFondo(num){
 		bucle4=null;
 	}
 	contBackground=contBackground-6;
-	contBackground2=contBackground2-5;
+	contBackground2=contBackground2-6;
 	if(contBackground<0)contBackground=0;
 	if(contBackground2<0)contBackground2=0;
 	_color = 'rgba(' + contBackground+ ',' +contBackground2 + ','+contBackground2+',1)';
@@ -908,7 +908,7 @@ function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisnpat) {
     	ctxCanvas.arc(varX, varY,miRadio+1, 0,Math.PI * 2,false);
     	//miRadio= Math.floor(varX/3);
     	color = "rgba("+c1+","+c2+","+c3+",0)";
-    	grd = ctxCanvas.createRadialGradient(varX,varY ,0,varX,varY,miRadio+1);
+    	grd = ctxCanvas.createRadialGradient(varX,varY ,0,varX,varY,miRadio);
     	//grd.addColorStop(0,"rgba(255,255,255,0)");
     	grd.addColorStop(0,color);
     	grd.addColorStop(1, "black");
@@ -933,7 +933,7 @@ function subDraw(subNumero,Numero) {
 	  
 	  	//ctxCanvas.restore();
 	  	if(subNumero!=0){
-		  draw(subNumero,myVarX-Math.floor((mi_Radio)),myVarY-(Math.floor(mi_Radio/2)),mi_Radio/3,"true",copymyV,copYColor,copynpat);
+		  draw(subNumero,myVarX-Math.floor((mi_Radio*2)),mi_Radio+1,mi_Radio/3,"true",copymyV,copYColor,copynpat);
 	  	}
 	  	//calculo color	
 	  	c1=Math.floor((Math.random() * 255) + 1);

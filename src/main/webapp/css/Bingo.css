@@ -265,11 +265,11 @@ display: block;
 
 
 .ano {
-	font-size: 36px;
-	font-weight: lighter;
+	font-size: 24px;
+	font-weight: bold;
 	background-color: #1D3841;
-	color: #7986FD;
-	font-family: almosnow;
+	color: #CC0000;
+	font-family: "Courier New", Courier, monospace;
 }
 .pagina #agrupar .tablero tr .panel .Comander .tablaInfo tr #datoLinea .Comander .Comander {
 	text-align: right;
@@ -280,7 +280,7 @@ display: block;
 
 }
 #label-1 {
-	color: #7986FD;
+	color: #CCCC33;
 	font-size: 40px;
 	vertical-align: middle;
 }
