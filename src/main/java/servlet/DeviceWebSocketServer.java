@@ -128,7 +128,7 @@ private int delay=1500;//ms
 		pb.setIdState("Bingo");
 		pb.setReasonInterrupt("Bingo");
 		this.guardaPocket("user", session);
-		Hilo2.interrupt();
+		//Hilo2.interrupt();
 		break;
 	
 	case "Bingo_OK":

@@ -742,8 +742,6 @@ function apagarNumero(n){
 }
 function encenderNumero(numero,modo){
 	if(numero=="0")return;
-	
-
 	document.getElementById(numero).style.color="#FF5B5B";//255,91,91
 	flagBucle4=0;
 	contBackground=200;
