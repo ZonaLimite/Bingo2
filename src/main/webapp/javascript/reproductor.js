@@ -64,9 +64,23 @@ var nombreRangos="rangosInes";
 var nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 var cajaFecha;
 var arrayMessages=null;
-var copYColor;
+var copYColor,my_color;
 var copymyV;
 var copynpat;
+var MAX_DEPTH = 32;
+var stars = new Array(512);
+var puntoEstrella=0;
+var ctx;
+var numero,subNumero;
+var ptrn;
+var myVarX;
+var myVarY;
+var mi_Radio;
+var c1,c2,c3,c4;
+var varXTexto;
+var MAX_DEPTH = 32;
+var copy_my_pattern,my_pattern
+
 function iniciar() {
 	rangos=eval(nombreRangos);
 	video = document.getElementById("medio");
@@ -512,6 +526,7 @@ function initInterface(){
 	//refresca los valores de estos enteros desde el servidor y los visualiza 
 	// en el manejador de vuelta, como si un callback se tratara.
 	refreshDatosCartones();
+	iniciarFondoEstrellas();
 	
 }
 function arrancar(){
@@ -663,13 +678,21 @@ function recibido(e){
 		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);
 				if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
-	    	    if(arrayMessages[3]!=null){
-	    	    	subDraw(arrayMessages[3],arrayMessages[1]);
+	    	   
+				
+				if(arrayMessages[3]!=null){
+					subNumero=arrayMessages[3];
+					numero=arrayMessages[1];
+	    	    	//subDraw(arrayMessages[3],arrayMessages[1]);
 	    	    }else{
-	    	    	subDraw(0,arrayMessages[1]);
+	    	    	subNumero=0;
+	    	    	numero=arrayMessages[1];
+	    	    	//subDraw(0,arrayMessages[1]);
 	    	    }
+				subDraw(subNumero,numero);
 				play_range(myRango[0],myRango[1]);	
-	    	    break;
+	    	    
+				break;
 		case "EnciendeVideo":
 				enciendeVideo();
 				break;
@@ -678,6 +701,7 @@ function recibido(e){
 				break;
 		case "EndBalls":
 				apagaVideo();
+				detenerFondoEstrellas();
 				show_InMessage("HAGAN SUS APUESTAS...FELIZ 2016",true)
 				break;
 		case "Linea":
@@ -794,6 +818,7 @@ function reanudar(){
 	   boton_pause.style.borderLeftStyle = "outset";
 }
 function procesarCuadros(){
+	
 	contador.value=video.currentTime;
 	//lienzo.drawImage(video,(canvas.width/2)-22,(canvas.height/2)-26,58,51);
 	if(triggerLinea=="true"){
@@ -835,31 +860,11 @@ function procesarCuadros(){
 	
 }
 //numero,ejeX,ejeY,radio,gradiente(Si-no),modoPatttern,colorPattern,selectorPattern
-function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisnpat) {
-  if((numero+"").length > 2)return;  
-  //ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
-  //ctxCanvas.width=ctxCanvas.width;
-  // create new image object to use as pattern
-  var img = new Image();
-  //varX=Math.floor((elementCanvas.width)/2);
-  //varY=Math.floor((elementCanvas.height)/2);
-  //miRadio= Math.floor(varX/3);
-  
-  //copyVary=varY;
-  //copyRadio=miRadio;
-  mySrc="images/pattern"+thisnpat+".jpg";
-  //npat++;
-  //if(npat>4) npat=1;
-  img.src = mySrc;
-  img.onload = function(){
-	//borrar previo
+function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisPattern) {
 	
-    // create pattern
-	//v= Math.floor((Math.random() * 3) + 1);
-	
-	var ptrn = ctxCanvas.createPattern(img,"repeat");
-    ctxCanvas.beginPath();
-    ctxCanvas.fillStyle = ptrn;
+	if(numero==0 || (numero+"".lenght >2))return;
+	ctxCanvas.beginPath();
+    ctxCanvas.fillStyle = thisPattern;
     ctxCanvas.arc(varX, varY,miRadio, 0,Math.PI * 2,false);
     ctxCanvas.fill();
     
@@ -872,18 +877,9 @@ function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisnpat) {
     	ctxCanvas.fill();
     }
     
-    var sumador=1;
-    factorX=(Math.random()*(Math.floor(miRadio/3)));
-	factorSigno = (Math.random()*1)+1;
-	if (factorSigno==1){
-		sumador=+1;
-	}else{
-		sumador=-1;		
-	}
-	varXTexto = (varX + (factorX*sumador))+1;
     ctxCanvas.beginPath();
     ctxCanvas.fillStyle ="white";
-    ctxCanvas.arc(varXTexto, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
+    ctxCanvas.arc(varX, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
     ctxCanvas.fill();
 
     ctxCanvas.beginPath();
@@ -898,41 +894,42 @@ function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisnpat) {
     }else{
     	yText=varY + (Math.floor(anchoTexto/3));
     }
-    ctxCanvas.fillText(""+numero,varXTexto-(Math.floor(anchoTexto/2)),yText );
+    ctxCanvas.fillText(""+numero,varX-(Math.floor(anchoTexto/2)),yText );
     ctxCanvas.fill();
     
     //ctxCanvas.beginPath();
     if(booleanGrad=="true"){
     	ctxCanvas.arc(varX, varY,miRadio+1, 0,Math.PI * 2,false);
     	//miRadio= Math.floor(varX/3);
-    	color = "rgba("+c1+","+c2+","+c3+",0)";
-    	grd = ctxCanvas.createRadialGradient(varX,varY ,0,varX,varY,miRadio);
+    	grdColor = "rgba("+c1+","+c2+","+c3+",0)";
+    	grd = ctxCanvas.createRadialGradient(varX,varY ,0,varX,varY,Math.floor(miRadio));
     	//grd.addColorStop(0,"rgba(255,255,255,0)");
-    	grd.addColorStop(0,color);
+    	grd.addColorStop(0,grdColor);
     	grd.addColorStop(1, "black");
     	ctxCanvas.fillStyle = grd;
     	ctxCanvas.fill();
   	}
-  }
 }
+function refreshBolas(){
+	if((numero+"").length < 3){
+		draw(numero,myVarX,myVarY,mi_Radio,"true",myV,my_color,my_pattern);
+	}
+	
+	
+	if(subNumero!=0){
+		  draw(subNumero,myVarX-Math.floor((mi_Radio*2)),mi_Radio+1,mi_Radio/2,"true",copymyV,copYColor,copy_my_pattern);
+	  	}
+}	
 function subDraw(subNumero,Numero) {
 		//varX,varY,miRadio
-	
+	  //Preparar ejes bolas
 	  myVarX=Math.floor((elementCanvas.width)/2);
 	  myVarY=Math.floor((elementCanvas.height)/2);
 	  mi_Radio= Math.floor(myVarX/3);
-	  ctxCanvas.clearRect(0,0,elementCanvas.Width,elementCanvas.Heigth); 
-	  ctxCanvas.width=ctxCanvas.width;
-	  //ctxCanvas.save();
-	  
-	  //varX=Math.floor((elementCanvas.width)/4);
-	  //varY=Math.floor((elementCanvas.height)/2.5);
-	  //ctxCanvas.translate(varX-miRadio, varY-(Math.floor(miRadio/2)));
-	  
-	  	//ctxCanvas.restore();
-	  	if(subNumero!=0){
-		  draw(subNumero,myVarX-Math.floor((mi_Radio*2)),mi_Radio+1,mi_Radio/3,"true",copymyV,copYColor,copynpat);
-	  	}
+	  	copYColor=my_color;
+		copymyV=myV;
+		
+		copy_my_pattern=my_pattern;
 	  	//calculo color	
 	  	c1=Math.floor((Math.random() * 255) + 1);
 		c2=Math.floor((Math.random() * 255) + 1);
@@ -940,21 +937,96 @@ function subDraw(subNumero,Numero) {
 		c4 =Math.floor((Math.random() * 10) + 1);
 		myV= Math.floor((Math.random() * 3) + 1);
 		var alfa = "0."+c4;
-    	if(c4==10)alfa=1;
-    	if(myV==1){
-    		my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+","+alfa+')';
-    	}else if(myV==3 || myV==2){
-    		my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+',1)';
-    	}
+		if(c4==10)alfa=1;
+		if(myV==1){
+			my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+","+alfa+')';
+		}else if(myV==3 || myV==2){
+			my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+',1)';
+		}
 		
 		npat++;
 		if(npat>4) npat=1;
-		copYColor=my_color;
-		copymyV=myV;
-		copynpat=npat;
-		
-		
-		draw(Numero,myVarX ,myVarY,mi_Radio,"true",myV,my_color,npat);
+		if((numero+"").length > 2)return;  
+		  var img = new Image();
+		  mySrc="images/pattern"+npat+".jpg";
+		  img.src = mySrc;
+		  img.onload = function(){
+			  my_Pattern = ctxCanvas.createPattern(img,"repeat");
+		  }
+		var sumador=1;
+		factorX=(Math.random()*(Math.floor(mi_Radio/3)));
+		factorSigno = (Math.random()*1)+1;
+		if (factorSigno==1){
+				sumador=+1;
+			}else{
+				sumador=-1;		
+		}
+		varXTexto = (myVarX + (factorX*sumador))+1;
+
 }
+function iniciarFondoEstrellas(){
+	 
+	 initStars();
+	 ctx = canvas.getContext("2d");
+     bucle6=setInterval(loop,33);
+     
+}
+function detenerFondoEstrellas(){
+	window.clearInterval(bucle6);	
+}
+
+	 
+   
+   
+ 
+
+ 
+     /* Returns a random number in the range [minVal,maxVal] */
+    function randomRange(minVal,maxVal) {
+      return Math.floor(Math.random() * (maxVal - minVal - 1)) + minVal;
+    }
+ 
+    function initStars() {
+      for( var i = 0; i < stars.length; i++ ) {
+        stars[i] = {
+          x: randomRange(-25,25),
+          y: randomRange(-25,25),
+          z: randomRange(1,MAX_DEPTH)
+         }
+      }
+    }
+ 
+    function loop() {
+      ctx.save();
+      var halfWidth  = canvas.width / 2;
+      var halfHeight = canvas.height / 2;
+ 
+      ctx.fillStyle = "rgb(0,0,0)";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+ 
+      for( var i = 0; i < stars.length; i++ ) {
+        stars[i].z -= 0.2;
+ 
+        if( stars[i].z <= 0 ) {
+          stars[i].x = randomRange(-25,25);
+          stars[i].y = randomRange(-25,25);
+          stars[i].z = MAX_DEPTH;
+        }
+ 
+        var k  = 128.0 / stars[i].z;
+        var px = stars[i].x * k + halfWidth;
+        var py = stars[i].y * k + halfHeight;
+ 
+        if( px >= 0 && px <= 500 && py >= 0 && py <= 400 ) {
+          var size = (1 - stars[i].z / 32.0) * 5;
+          var shade = parseInt((1 - stars[i].z / 32.0) * 255);
+          ctx.fillStyle = "rgb(" + shade + "," + shade + "," + shade + ")";
+          ctx.fillRect(px,py,size,size);
+        }
+      }
+    ctx.restore();
+    refreshBolas();
+    
+    }
 window.onload=iniciar;
 

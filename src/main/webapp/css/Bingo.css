@@ -2,6 +2,11 @@
 @import url("../webfonts/AgainstMyself/stylesheet.css");
 @import url("../webfonts/almosnow/stylesheet.css");
 @import url("../webfonts/Iapetus_Chrome/stylesheet.css");
+@import url("../webfonts/Kingthings_Christmas_22/stylesheet.css");
+@import url("../webfonts/Airstrike_3d/stylesheet.css");
+
+
+
 
 @viewport{
 	zoom:1.0;
@@ -12,9 +17,10 @@ hgroup{
 display: block;
 }
 #CajaDcha {
-	font-family: almosnow;
 	color: #C6FFFF;
 	font-size: 30px;
+	font-family: "Airstrike 3d";
+	
 }
 
 #agrupar {
@@ -124,7 +130,7 @@ display: block;
 .valorInfo {
 	color: #FFE479;
 	font-weight: bolder;
-	font-size: 20px;
+	font-size: x-large;
 	font-family: "Courier New", Courier, monospace;
 }
 
@@ -272,7 +278,7 @@ display: block;
 	border-radius: 50px / 50px;
 	padding: 0px;
 	text-align: center;
-	visibility: hidden;
+	visibility: visible;
 	opacity: 0.9;
 	width: 100%;
 }
@@ -292,12 +298,14 @@ display: block;
 }
 .pagina #agrupar .tablero tr .panel .Comander .tablaInfo tr .celdaInfo .Comander .Comander {
 	text-align: right;
+	font-size: x-large;
 
 }
 #label-1 {
 	color: #CCCC33;
 	font-size: 40px;
 	vertical-align: middle;
+	font-family: "Iapetus Chrome";
 }
 #cartones {
 	background-color: #339;
