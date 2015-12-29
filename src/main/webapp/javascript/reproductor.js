@@ -1032,7 +1032,7 @@ function iniciarFondoEstrellas(){
 	
 	 initStars();
 	 ctx = canvas.getContext("2d");
-     bucle6=setInterval(loop,33);
+     bucle6=setInterval(loop,66);
      
 }
 function detenerFondoEstrellas(){
