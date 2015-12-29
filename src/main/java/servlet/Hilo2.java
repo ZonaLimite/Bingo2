@@ -30,7 +30,7 @@ public class Hilo2 extends Thread{
     String status;
     int maxNumbers = 90;
     int orden;
-    int delay= 1500;
+    int delay= 0;
     public Hilo2(Session sesion, int ndelay){
        this.session = sesion;
        this.delay = ndelay;

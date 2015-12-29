@@ -168,11 +168,11 @@ display: block;
 	display: inline-block;
 	list-style: none;
 	padding: 0;
-	border-top-style: outset;
-	border-right-style: outset;
-	border-bottom-style: outset;
-	border-left-style: outset;
-	background-color: #FFFBB9;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	background-color: #B93CB9;
 	margin: 0px;
 	font-family: "Courier New", Courier, monospace;
 	font-size: 18px;
@@ -183,7 +183,27 @@ display: block;
 	text-align: center;
 	position: relative;
 }
-#menu_li {
+.menu_li2 {
+	display: inline-block;
+	list-style: none;
+	padding: 0;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	background-color: #B93CB9;
+	margin: 0px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 18px;
+	font-weight: bold;
+	float: none;
+	color: #000;
+	width: 100px;
+	text-align: center;
+	position: relative;
+	border-color: #682268;
+}
+#menu_li1 {
 	display: inline-block;
 	padding: 3;
 	border-top-style: outset;
@@ -215,7 +235,7 @@ display: block;
 }
 
 .numeros{
-	color: #280000;
+	color: #3E0210;
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	font-size: 50px;

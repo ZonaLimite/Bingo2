@@ -43,6 +43,7 @@ var datoCartones,datoLinea,datoBingo,etiquetaOrden
 var valCodecs="MP4";
 var resultDialogo="Empezar";
 var videoEnable="true";
+var starsEnable="true";
 var lineaCantada="false";
 var bingoCantado="false";
 var precioCarton=0;
@@ -256,13 +257,24 @@ function iniciar() {
 	$("input[name=videoON]").change(function(){
 		if($("input[name=videoON]").is(':checked')){
 			videoEnable="true";
-			enciendeVideo();$( "input" ).on( "click", function() {
-  $( "#log" ).html( $( "input:checked" ).val() + " is checked!" );
-});
+			enciendeVideo();
+			$( "input" ).on( "click", function() {
+		$( "#log" ).html( $( "input:checked" ).val() + " is checked!" );
+		});
 	}else{
 			videoEnable="false";
 			apagaVideo();
 	}
+	});
+	
+	$("input[name=starsON]").change(function(){
+		if($("input[name=starsON]").is(':checked')){
+			starsEnable="true";
+			iniciarFondoEstrellas();
+		}else{
+			starsEnable="false";
+			//detenerFondoEstrellas();
+		}
 	});
 	
 	$( "#slider" ).slider();
@@ -322,7 +334,7 @@ function iniciar() {
 		        primary: "ui-icon-heart"
 		      },
 		      click: function() {
-		    	  precioCarton=parseInt($("#PrecioCarton").val());
+		    	  precioCarton=parseFloat($("#PrecioCarton").val()).toFixed(2);
 		    	  nCartones=parseInt($("#NCartonesJuego").val());
 		    	  porCientoLinea=parseInt($("#porcientoLinea").val());
 		    	  porCientoBingo=parseInt($("#porcientoBingo").val());
@@ -534,6 +546,10 @@ function initInterface(){
 	// en el manejador de vuelta, como si un callback se tratara.
 	refreshDatosCartones();
 	iniciarFondoEstrellas();
+	numin=Math.floor((Math.random()*2))+1;
+	if(numin==1)cantaor="Lola";
+	if(numin==2)cantaor="Ines";
+	elegirCantaor(cantaor);
 	
 }
 function arrancar(){
@@ -627,9 +643,15 @@ function refreshDatosCartones(){
 function visualizaDatosCartones(){
 	sumaCaja = precioCarton*nCartones;
 	sumaTantos = porCientoLinea+porCientoBingo+porCientoCantaor;
+	/*
 	xLinea=Math.floor((sumaCaja*porCientoLinea)/sumaTantos);
 	xBingo=Math.floor((sumaCaja*porCientoBingo)/sumaTantos);
 	zCantaor=Math.floor((sumaCaja*porCientoCantaor)/sumaTantos);
+	*/
+	xLinea=parseFloat((sumaCaja*porCientoLinea)/sumaTantos).toFixed(2);
+	xBingo=parseFloat((sumaCaja*porCientoBingo)/sumaTantos).toFixed(2);
+	zCantaor=parseFloat((sumaCaja*porCientoCantaor)/sumaTantos).toFixed(2);
+	//xLinea=(sumaCaja*porCientoLinea)/sumaTantos).toFixed(2);
 	if(xLinea+xBingo+zCantaor<sumaCaja){
 		dif=sumaCaja-(xLinea+xBingo+zCantaor);
 		if(dif=2){
@@ -714,12 +736,20 @@ function recibido(e){
 				apagaVideo();
 				break;
 		case "EndBalls":
-				numerin = Math.floor((Math.random()*10))+1;
-				poster="url('images/EndBalls"+numerin+".gif')";
-				div.style.backgroundImage=poster;
-				apagaVideo();
 				show_InMessage("HAGAN SUS APUESTAS...HABRA UNA PARTIDA ESPECIAL CADA HORA Y MEDIA",true)
-				div.style.visibility="visible";
+				numerin = Math.floor((Math.random()*10))+1;
+				if (numerin==2){
+					video.src="http://boga.esy.es/video/punky.mp4";
+					video.load();
+					video.play();
+					
+				}else{
+					poster="url('images/EndBalls"+numerin+".gif')";
+					div.style.backgroundImage=poster;
+					apagaVideo();
+					div.style.visibility="visible";
+					detenerFondoEstrellas();
+				}
 				break;
 		case "Linea":
 				myRango=sacarRangos(arrayMessages[1]);
@@ -738,14 +768,6 @@ function recibido(e){
 				apagaVideo();
 				show_InMessage("COMPROBANDO LINEA ....",true);
 				div.style.visibility="visible";
-				
-				
-				
-				
-				//Se deberia escribir en el canvas 	
-				
-				//etqLinea=document.getElementById("labelLinea");
-				//etqLinea.style.
 				break;
 		case "ComprobarBingo":
 				numerin = Math.floor((Math.random()*10))+1;
@@ -781,7 +803,7 @@ function recibido(e){
 				apagaLinea();
 				break;
 		case "DATOSCARTONES":
-				precioCarton=parseInt(arrayMessages[1]);
+				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);
 				porCientoLinea=parseInt(arrayMessages[3]);
 				porCientoBingo=parseInt(arrayMessages[4]);
@@ -793,13 +815,21 @@ function recibido(e){
 		} 
 	}
 }
+function detectarFinVideo(){
+	if(video.ended){
+		apagarVideo();
+		window.clearInterval(bucle8);
+		bucle8=null;
+		
+	}
+}
 function apagarNumero(n){
 	document.getElementById(n).style.color="#280000";
 	document.getElementById(n).style.backgroundColor="#000000";
 }
 function encenderNumero(numero,modo){
 	if(numero=="0")return;
-	document.getElementById(numero).style.color="#FF5B5B";//255,91,91
+	document.getElementById(numero).style.color="#FF3333";//255,91,91
 	flagBucle4=0;
 	contBackground=200;
 	contBackground2=91;
@@ -999,7 +1029,7 @@ function subDraw(subNumero,Numero) {
 
 }
 function iniciarFondoEstrellas(){
-	 
+	
 	 initStars();
 	 ctx = canvas.getContext("2d");
      bucle6=setInterval(loop,33);
@@ -1031,33 +1061,35 @@ function detenerFondoEstrellas(){
     }
  
     function loop() {
-      ctx.save();
-      var halfWidth  = canvas.width / 2;
-      var halfHeight = canvas.height / 2;
+      if(starsEnable=="true"){
+    	  ctx.save();
+    	  var halfWidth  = canvas.width / 2;
+    	  var halfHeight = canvas.height / 2;
+    	  
+    	  ctx.fillStyle = "rgb(0,0,0)";
+    	  ctx.fillRect(0,0,canvas.width,canvas.height);
  
-      ctx.fillStyle = "rgb(0,0,0)";
-      ctx.fillRect(0,0,canvas.width,canvas.height);
+    	  for( var i = 0; i < stars.length; i++ ) {
+    		  stars[i].z -= 0.2;
  
-      for( var i = 0; i < stars.length; i++ ) {
-        stars[i].z -= 0.2;
+    		  if( stars[i].z <= 0 ) {
+    			  stars[i].x = randomRange(-25,25);
+    			  stars[i].y = randomRange(-25,25);
+    			  stars[i].z = MAX_DEPTH;
+    		  }
  
-        if( stars[i].z <= 0 ) {
-          stars[i].x = randomRange(-25,25);
-          stars[i].y = randomRange(-25,25);
-          stars[i].z = MAX_DEPTH;
-        }
+    		  var k  = 128.0 / stars[i].z;
+    		  var px = stars[i].x * k + halfWidth;
+    		  var py = stars[i].y * k + halfHeight;
  
-        var k  = 128.0 / stars[i].z;
-        var px = stars[i].x * k + halfWidth;
-        var py = stars[i].y * k + halfHeight;
- 
-        if( px >= 0 && px <= 500 && py >= 0 && py <= 400 ) {
-          var size = (1 - stars[i].z / 32.0) * 5;
-          var shade = parseInt((1 - stars[i].z / 32.0) * 255);
-          ctx.fillStyle = "rgb(" + shade + "," + shade + "," + shade + ")";
-          ctx.fillRect(px,py,size,size);
-        }
-      }
+    		  if( px >= 0 && px <= 500 && py >= 0 && py <= 400 ) {
+    			  var size = (1 - stars[i].z / 32.0) * 5;
+    			  var shade = parseInt((1 - stars[i].z / 32.0) * 255);
+    			  ctx.fillStyle = "rgb(" + shade + "," + shade + "," + shade + ")";
+    			  ctx.fillRect(px,py,size,size);
+    		  }
+    	  }
+    }
     ctx.restore();
     if(!isNaN(myVarX)){
     	refreshBolas();

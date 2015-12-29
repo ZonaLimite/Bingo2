@@ -27,7 +27,7 @@ private ManagedThreadFactory threadFactory;
 private PocketBingo pb; 
 private Thread Hilo2 = null;
 private Session mySesion;
-private int delay=1500;//ms
+private int delay=0;//ms
 
 @OnOpen
     public void open(Session session) {
