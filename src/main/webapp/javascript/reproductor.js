@@ -55,6 +55,8 @@ var sumaCaja=0;
 var flagVideoReady="false";
 var myV=1;
 var bucle4;
+var bucle7;
+var div;
 var flagBucle4=0;
 var contBackground=255;
 var contBackground2=91;
@@ -79,7 +81,10 @@ var mi_Radio;
 var c1,c2,c3,c4;
 var varXTexto;
 var MAX_DEPTH = 32;
-var copy_my_pattern,my_pattern
+var copy_my_pattern,my_pattern;
+var factorX;
+var sumador=1;
+var bolaPreparada="false";
 
 function iniciar() {
 	rangos=eval(nombreRangos);
@@ -193,7 +198,7 @@ function iniciar() {
 	
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range2(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
-	
+	div=document.getElementById("my_poster");
 	window.onresize = function(e){
 		//e.preventDefault();
 		resizeBolas();
@@ -352,10 +357,12 @@ function iniciar() {
 }
 function enciendeVideo(){
 	if(videoEnable=="true")video.style.visibility="visible";
+	div.style.visibility="hidden";
 }
 
 function apagaVideo(){
 	video.style.visibility="hidden";
+
 }
 
 function apagaLinea(){
@@ -640,6 +647,7 @@ function visualizaDatosCartones(){
 }
 function resizeBolas(tamanoMenu){
 	//alert("olas");
+	
 	if(tamanoMenu==null){
 	anchoPantalla=window.innerWidth;
 	alto=window.innerHeight;
@@ -654,6 +662,12 @@ function resizeBolas(tamanoMenu){
 		elemento=document.getElementById(""+i);
 		elemento.style.fontSize=nuevoTamano+"px";
 	}
+	/*
+	anchoDiv=div.offsetHeight;
+	altoDiv=div.offsetWidth;
+	div.style.height=altoDiv;
+	div.style.width=anchoDiv;
+	*/
 }
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");
@@ -700,9 +714,12 @@ function recibido(e){
 				apagaVideo();
 				break;
 		case "EndBalls":
+				numerin = Math.floor((Math.random()*10))+1;
+				poster="url('images/EndBalls"+numerin+".gif')";
+				div.style.backgroundImage=poster;
 				apagaVideo();
-				detenerFondoEstrellas();
-				show_InMessage("HAGAN SUS APUESTAS...FELIZ 2016",true)
+				show_InMessage("HAGAN SUS APUESTAS...HABRA UNA PARTIDA ESPECIAL CADA HORA Y MEDIA",true)
+				div.style.visibility="visible";
 				break;
 		case "Linea":
 				myRango=sacarRangos(arrayMessages[1]);
@@ -713,16 +730,32 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);
 				break
 		case "ComprobarLinea":
+				
+				numerin = Math.floor((Math.random()*10))+1;
+				poster="url('images/gifLinea"+numerin+".gif')";
+				div.style.backgroundImage=poster;
+				
 				apagaVideo();
-				//Se deberia escribir en el canvas 	
 				show_InMessage("COMPROBANDO LINEA ....",true);
+				div.style.visibility="visible";
+				
+				
+				
+				
+				//Se deberia escribir en el canvas 	
+				
 				//etqLinea=document.getElementById("labelLinea");
 				//etqLinea.style.
 				break;
 		case "ComprobarBingo":
+				numerin = Math.floor((Math.random()*10))+1;
+				poster="url('images/gifBingo"+numerin+".gif')";
+				div.style.backgroundImage=poster;
 				apagaVideo();
-				//	Se deberia escribir en el canvas 	
 				show_InMessage("COMPROBANDO BINGO ....",true);
+				div.style.visibility="visible";
+				//	Se deberia escribir en el canvas 	
+				
 				//	etqLinea=document.getElementById("labelLinea");
 				//etqLinea.style.
 				break;				
@@ -861,7 +894,7 @@ function procesarCuadros(){
 }
 //numero,ejeX,ejeY,radio,gradiente(Si-no),modoPatttern,colorPattern,selectorPattern
 function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisPattern) {
-	
+	if(bolaPreparada!="true")return;
 	if(numero==0 || (numero+"".lenght >2))return;
 	ctxCanvas.beginPath();
     ctxCanvas.fillStyle = thisPattern;
@@ -877,9 +910,10 @@ function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisPattern) {
     	ctxCanvas.fill();
     }
     
+	varXTexto = (varX + (factorX*sumador)-1);
     ctxCanvas.beginPath();
     ctxCanvas.fillStyle ="white";
-    ctxCanvas.arc(varX, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
+    ctxCanvas.arc(varXTexto, varY,Math.floor(miRadio/2)+2 , 0,Math.PI * 2,false);
     ctxCanvas.fill();
 
     ctxCanvas.beginPath();
@@ -894,7 +928,7 @@ function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisPattern) {
     }else{
     	yText=varY + (Math.floor(anchoTexto/3));
     }
-    ctxCanvas.fillText(""+numero,varX-(Math.floor(anchoTexto/2)),yText );
+    ctxCanvas.fillText(""+numero,varXTexto-(Math.floor(anchoTexto/2)),yText );
     ctxCanvas.fill();
     
     //ctxCanvas.beginPath();
@@ -923,6 +957,7 @@ function refreshBolas(){
 function subDraw(subNumero,Numero) {
 		//varX,varY,miRadio
 	  //Preparar ejes bolas
+	  
 	  myVarX=Math.floor((elementCanvas.width)/2);
 	  myVarY=Math.floor((elementCanvas.height)/2);
 	  mi_Radio= Math.floor(myVarX/3);
@@ -944,6 +979,13 @@ function subDraw(subNumero,Numero) {
 			my_color = 'rgba(' + c1+ ',' +c2 + ','+c3+',1)';
 		}
 		
+		factorX=((Math.random()*2)+1);
+		factorSigno = (Math.random()*10)+1;
+		if (factorSigno>5){
+				sumador=+1;
+			}else{
+				sumador=-1;		
+		}
 		npat++;
 		if(npat>4) npat=1;
 		if((numero+"").length > 2)return;  
@@ -951,17 +993,9 @@ function subDraw(subNumero,Numero) {
 		  mySrc="images/pattern"+npat+".jpg";
 		  img.src = mySrc;
 		  img.onload = function(){
-			  my_Pattern = ctxCanvas.createPattern(img,"repeat");
+			  my_pattern = ctxCanvas.createPattern(img,"repeat");
 		  }
-		var sumador=1;
-		factorX=(Math.random()*(Math.floor(mi_Radio/3)));
-		factorSigno = (Math.random()*1)+1;
-		if (factorSigno==1){
-				sumador=+1;
-			}else{
-				sumador=-1;		
-		}
-		varXTexto = (myVarX + (factorX*sumador))+1;
+		 bolaPreparada="true";	
 
 }
 function iniciarFondoEstrellas(){
@@ -1025,8 +1059,9 @@ function detenerFondoEstrellas(){
         }
       }
     ctx.restore();
-    refreshBolas();
-    
+    if(!isNaN(myVarX)){
+    	refreshBolas();
+    }
     }
 window.onload=iniciar;
 
