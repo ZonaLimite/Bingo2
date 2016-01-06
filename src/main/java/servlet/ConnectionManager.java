@@ -18,8 +18,8 @@ public class ConnectionManager {
    static Logger log = Logger.getLogger("ConnectionDatabase");
          
    static Connection getConnection(){
-	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS"; 
-	   //String DATASOURCE_CONTEXT = "java:/portal";
+ 
+	   String DATASOURCE_CONTEXT = "java:/portal";
 	    
 	    Connection result = null;
 	    try {
