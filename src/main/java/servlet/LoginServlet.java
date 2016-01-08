@@ -32,7 +32,7 @@ try
 	        
           HttpSession session = request.getSession(true);	    
           session.setAttribute("currentSessionUser",user); 
-          response.sendRedirect("userLogged.jsp"); //logged-in page      		
+          response.sendRedirect("bingo.jsp"); //logged-in page      		
      }
 	        
      else 

@@ -2,6 +2,11 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
 %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="servlet.UserBean" %>
+<%! HttpSession mySession = null;%>
+<%! UserBean myUser = null;%>
+<%! String user = null;%>
 <!doctype html>
 <html>
 <head>
@@ -21,7 +26,11 @@
 
 <body class="pagina">
 <%
+	mySession = request.getSession();
+	if(mySession!=null){
+		myUser = (UserBean)mySession.getAttribute("currentSessionUser"); 
 	}
+	
 %>
 <div id="agrupar">
 <header id="cabecera">
@@ -29,7 +38,7 @@
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
     <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></td>
-    <td width="68%" class="ano" ><label id="label-1">FELIZ Aأ‘O NUEVO</label>
+    <td width="68%" class="ano" ><label id="label-1">FELIZ AÑO NUEVO<%= " "+ myUser.getUsername()%> </label>
     <nav id="menu">
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
     <label id="resume" CLASS="menu_li" >RESUMIR</label>
