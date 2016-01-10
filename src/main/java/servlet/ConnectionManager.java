@@ -19,7 +19,7 @@ public class ConnectionManager {
          
    static Connection getConnection(){
  
-	   String DATASOURCE_CONTEXT = "java:/portal";
+	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS";
 	    
 	    Connection result = null;
 	    try {
