@@ -37,8 +37,8 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></td>
-    <td width="68%" class="ano" ><label id="label-1">FELIZ AÑO NUEVO<%= " "+ myUser.getUsername()%> </label>
+    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><%= " "+ myUser.getUsername()%></td>
+    <td width="68%" class="ano" ><label id="label-1">FELIZ AÑO NUEVO </label>
     <nav id="menu">
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
     <label id="resume" CLASS="menu_li" >RESUMIR</label>
@@ -84,13 +84,13 @@
             </span>
               <table  align="center" class="tablaInfo">
      		<tr>
-	        <td width="90" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA Nآ؛ </span></span></td>
+	        <td width="90" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA N:</span></span></td>
 	        <td width="13" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander"><span class="Comander">
 	          <label id="labelOrden" class="valorInfo">0</label>
 	        </span></span></td>
 	        <td width="133" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
 	        <td width="120" class="celdaInfo"><span class="Comander"><span class="Comander">
-	          <label id="valorLinea" class="valorInfo">0 â‚¬</label>
+	          <label id="valorLinea" class="valorInfo">0 €</label>
 	        </span></span></td>
 	        </tr>
 	      <tr>
@@ -100,7 +100,7 @@
 	        </span></span></td>
 	        <td class="celdaInfo"><label id="labelBingo">BINGO:</label></td>
 	        <td  id="datoBingo" class="celdaInfo" ><span class="Comander"><span class="Comander">
-	          <label id="valorBingo" class="valorInfo">0 â‚¬</label>
+	          <label id="valorBingo" class="valorInfo">0 €</label>
 	        </span></span></td>
     </tr>
 	      <tr>
@@ -486,7 +486,7 @@
 
 <div id="dialog" title="Partida Abierta">
 	
-Se ha encontrado una partida empezeda,آ؟Quiere continuar la partida o empezar una nueva?
+Se ha encontrado una partida empezeda ؟Quiere continuar la partida o empezar una nueva?
 
 </div>
 
@@ -531,7 +531,7 @@ ELEGIR CANTAOR
 <div id="slider"></div>
 <p>
 <input type="text" id="maxTamano">
-<input type="button" id="aplicarSize" value="Aplicar Tamaأ±o">
+<input type="button" id="aplicarSize" value="Aplicar Tamaño">
 <hr width="75%"/>
 <input type="text" id="delay" value="0">
 <input type="button" id="aplicarDelay" value="Aplicar Delay">
@@ -539,8 +539,8 @@ ELEGIR CANTAOR
 
 <div id="cartones" title="Configuracion cartones"> 
 <form>
-<label >Precio Carton(â‚¬):</label><input type="text" id="PrecioCarton">
-<label >Nآ؛ Cartones en Juego:</label><input type="text" id="NCartonesJuego">
+<label >Precio Carton(€):</label><input type="text" id="PrecioCarton">
+<label >N: Cartones en Juego:</label><input type="text" id="NCartonesJuego">
 <label >Asignacion % Premio Linea:</label><input type="text" id="porcientoLinea">
 <label >Asignacion % Premio Bingo:</label><input type="text" id="porcientoBingo">
 <label >Asignacion % Cantaor     :</label><input type="text" id="porcientoCantaor">
