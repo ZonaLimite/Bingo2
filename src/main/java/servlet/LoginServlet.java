@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.inject.Inject;
 
 /**
  * Servlet implementation class LoginServlet
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
+@Inject
+private Mailing mail;
 
 public void doGet(HttpServletRequest request, HttpServletResponse response) 
 			           throws ServletException, java.io.IOException {
@@ -32,7 +35,8 @@ try
 	        
           HttpSession session = request.getSession(true);	    
           session.setAttribute("currentSessionUser",user); 
-          response.sendRedirect("bingo.jsp"); //logged-in page      		
+          response.sendRedirect("bingo.jsp"); //logged-in page 
+          //mail.sendEmail("javier.boga.rioja@gmail.com","javier.boga.rioja@gmail.com", "prueba", "Has accedido al portal.Gracias");
      }
 	        
      else 
