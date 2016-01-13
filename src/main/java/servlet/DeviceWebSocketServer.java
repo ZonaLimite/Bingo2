@@ -26,7 +26,7 @@ Logger log = Logger.getLogger("MyLogger");
 private ManagedThreadFactory threadFactory;
 private PocketBingo pb; 
 private Thread Hilo2 = null;
-private Session mySesion;
+private Session mySesion;//
 private int delay=0;//ms
 
 @OnOpen
