@@ -22,7 +22,7 @@ import org.jboss.logging.Logger;
 public class Mailing {
  private static final Logger log = Logger.getLogger(Mailing.class);
  
- @Resource(mappedName="java:jboss/mail/Gmail")
+ @Resource(mappedName="java:jboss/mail/Default")
  Session gmailSession;
  
  /**
