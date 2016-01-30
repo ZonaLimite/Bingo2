@@ -24,7 +24,7 @@
 <link href="css/Bingo.css" rel="stylesheet" type="text/css">
 </head>
 
-<body class="pagina">
+<body class="pagina" id="content">
 <%
 	mySession = request.getSession();
 	if(mySession!=null){

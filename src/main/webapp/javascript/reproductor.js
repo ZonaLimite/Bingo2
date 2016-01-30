@@ -366,6 +366,16 @@ function iniciar() {
 		});
 		bucle3 = setInterval(function(){ mostrarFecha() }, 1000);
 	//Podriamos hacer autenticaUsuario() aqui;
+
+
+		
+}
+function fullscreen(e){
+    if (e.webkitRequestFullScreen) {
+      e.webkitRequestFullScreen();
+    } else if(e.mozRequestFullScreen) {
+      e.mozRequestFullScreen();
+    }
 }
 function enciendeVideo(){
 	if(videoEnable=="true")video.style.visibility="visible";
@@ -555,6 +565,8 @@ function initInterface(){
 function arrancar(){
 	//El socket ya esta creado
 	
+	fullscreen(document.getElementById("content"));
+
 	video.play();
 	video.pause();
 	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
