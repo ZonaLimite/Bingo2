@@ -56,7 +56,7 @@ public class Hilo2 extends Thread{
 			}
 
         }else {//else if(status.equals("Started"))
-        	Vector listaNumeros=(Vector)pb.getNumerosCalled();
+        	Vector listaNumeros=(Vector) pb.getNumerosCalled();
     		int i;
         	for(i=0;i<listaNumeros.size();i++){
     			this.enviarMensaje("EncenderNumero_"+listaNumeros.elementAt(i)+"_simple");
@@ -206,7 +206,7 @@ public class Hilo2 extends Thread{
         boolean numeroValido=false;
         number =  (new Random().nextInt(maxNumbers))+1;
         while(numeroValido==false){
-            Iterator itNumeros = pb.getNumerosCalled().iterator();
+            Iterator<?> itNumeros = pb.getNumerosCalled().iterator();
             numeroValido=true;            
             while(itNumeros.hasNext()){
                int compNumber=(int) itNumeros.next();

@@ -15,7 +15,7 @@
 	<body>
 		<form action="LoginServlet">
 
-			Please enter your username 		
+			Please enter your nombre de Usuario 		
 			<input type="text" name="un"/><br>		
 		
 			Please enter your password
