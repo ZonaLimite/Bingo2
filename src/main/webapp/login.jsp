@@ -18,7 +18,7 @@
 			Please enter your nombre de Usuario 		
 			<input type="text" name="un"/><br>		
 		
-			Please enter your password
+			La  password
 			<input type="text" name="pw"/>
 			
 			<input type="submit" value="submit">			
