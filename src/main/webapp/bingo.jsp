@@ -38,7 +38,7 @@
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
     <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><%= " "+ myUser.getUsername()%></td>
-    <td width="68%" class="ano" ><label id="label-1">FELIZ AÑO NUEVO </label>
+    <td width="68%" class="ano" ><label id="label-1">FELIZ AÑO NUEVs </label>
     <nav id="menu">
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
     <label id="resume" CLASS="menu_li" >RESUMIR</label>
