@@ -1,0 +1,9 @@
+@charset "utf-8";
+.FondoCelda {
+	background-color: #9FF;
+	background-image: url(../images/EndBalls9.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	padding: 0px;
+	position: fixed;
+}

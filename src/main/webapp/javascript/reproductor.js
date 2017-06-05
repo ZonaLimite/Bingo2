@@ -603,7 +603,7 @@ function getRootUri() {
 	/*Web Sockets on OpenShift work over ports 8000 for ws and 8443 for wss,*/
 	    
 		if(document.location.hostname=="localhost"){
-			nameEndPoint = "/wildfly-1.0/";
+			nameEndPoint = "/wildfly-1.0/";//haber
 			port="8080";
 		}
 		else{
