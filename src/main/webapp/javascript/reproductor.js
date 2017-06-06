@@ -534,7 +534,7 @@ function play_range2(ini,fin){
 	//bucle = setInterval(function(){ procesarCuadros() }, 60);
 	
 
-	//bucle=setInterval(procesarCuadros, 100);
+	bucle=setInterval(procesarCuadros, 100);
 }
 function initInterface(){
 	triggerBingo="false";
