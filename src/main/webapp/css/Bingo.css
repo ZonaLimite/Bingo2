@@ -241,8 +241,8 @@ display: block;
 .numeros{
 	color: #3E0210;
 	font-family: "Hotel Coral Essex";
-	font-weight: bold;
-	font-size: 40px;
+	font-weight: normal;
+	font-size: 55px;
 	text-align: center;
 	vertical-align: middle;
 }
@@ -313,7 +313,7 @@ display: block;
 
 .ano {
 	font-size: 24px;
-	font-weight: bold;
+	font-weight: normal;
 	background-color: #1D3841;
 	color: #CC0000;
 	font-family: "Iapetus Chrome";

@@ -280,7 +280,7 @@ function iniciar() {
 	
 	$( "#slider" ).slider();
 	$( "#slider" ).slider({
-		  max: 75
+		  max: maxTamano
 		});
 	$( "#slider" ).slider({
 		  min: 5
@@ -688,11 +688,11 @@ function resizeBolas(tamanoMenu){
 	anchoPantalla=window.innerWidth;
 	alto=window.innerHeight;
 	nuevoTamano=Math.floor(anchoPantalla/27);
-	if(nuevoTamano>82)nuevoTamano=82;
+	if(nuevoTamano>82)nuevoTamano=maxTamano;
 	}else{
 		nuevoTamano=tamanoMenu;
 	}
-	if(nuevoTamano>82)nuevoTamano=82;
+	if(nuevoTamano>82)nuevoTamano=maxTamano;
 	caja_spy.value=""+anchoPantalla+"x"+alto +" -->"+nuevoTamano;
 	for(i=1;i<91;i++){
 		elemento=document.getElementById(""+i);
