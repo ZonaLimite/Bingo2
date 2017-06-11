@@ -482,8 +482,8 @@ function elegirCantaor(cantaor){
 		if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
 		video.load();
 		
-		video.play();
-		video.pause();
+		//video.play();
+		//video.pause();
 		bucle2 = setInterval(function(){ esperarReadyState() }, 1000);
 }
 function esperarReadyState(){
@@ -569,8 +569,8 @@ function arrancar(){
 	
 	fullscreen(document.getElementById("content"));
 
-	video.play();
-	video.pause();
+	//video.play();
+	//video.pause();
 	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
 	//
 	socket_send("newGame");
@@ -578,9 +578,9 @@ function arrancar(){
 }
 function resumir(){
 	//El socket ya esta creado
-	
-	video.play();
-	video.pause();
+	fullscreen(document.getElementById("content"));
+	//video.play();
+	//video.pause();
 	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
 	//
 	socket_send("resume");

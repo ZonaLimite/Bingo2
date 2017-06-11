@@ -200,7 +200,7 @@ private int delay=0;//ms
 	  	String ruta,fichero;
 	  	PocketBingo aux=null;
 	  	String uri=sesion.getRequestURI().toString();
-	  	if(uri.equals("/wildfly/actions")){
+	  	if(uri.equals("/wildfly-1.0/actions")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
 	  		fichero=ruta+"\\"+user;
 	  	}else{
@@ -239,7 +239,7 @@ private int delay=0;//ms
 	  	
 	  	String uri=sesion.getRequestURI().toString();
 	  	//log.info("la uri es:"+uri);
-	  	if(uri.equals("/wildfly/actions")){
+	  	if(uri.equals("/wildfly-1.0/actions")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
 	  		fichero=ruta+"\\"+user;
 	  	}else{
@@ -266,7 +266,7 @@ private int delay=0;//ms
 	  String ruta,fichero;
 	  	
 	  	String uri=sesion.getRequestURI().toString();
-	  	if(uri.equals("/wildfly/actions")){
+	  	if(uri.equals("/wildfly-1.0/actions")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
 	  		fichero=ruta+"\\"+user;
 	  	}else{

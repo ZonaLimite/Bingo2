@@ -104,7 +104,7 @@
 	        </span></span></td>
     </tr>
 	      <tr>
-	        <td colspan="4" class="valorInfo" id="comboTexto"></td>
+	        <td colspan="4" class="valorInfo" id="comboTexto">comboTexto</td>
 	        
     	</tr>
 </table>

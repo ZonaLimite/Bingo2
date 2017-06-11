@@ -150,7 +150,11 @@ public class Hilo2 extends Thread{
            					i--;
            					break;
            				}
-               			
+               			if(pb.getIdState().equals("Finalized")){
+               				enviarMensaje("EndBalls");
+               				return;
+               			}
+
                			pb.addNumerosCalled(pb.getNewBola());
                			enviarMensaje("EncenderNumero_"+pb.getNewBola());
                			
@@ -162,10 +166,6 @@ public class Hilo2 extends Thread{
                				e.printStackTrace();
                			}
 
-               			if(pb.getIdState().equals("Finalized")){
-               				enviarMensaje("EndBalls");
-               				return;
-               			}
                		break;
                		
                		case "continuar":

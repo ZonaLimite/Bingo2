@@ -2,8 +2,11 @@
 @import url("../webfonts/AgainstMyself/stylesheet.css");
 @import url("../webfonts/almosnow/stylesheet.css");
 @import url("../webfonts/Iapetus_Chrome/stylesheet.css");
-@import url("../webfonts/Kingthings_Christmas_22/stylesheet.css");
 @import url("../webfonts/Airstrike_3d/stylesheet.css");
+@import url("../webfonts/Hotel_Coral_Essex/stylesheet.css");
+
+
+
 
 
 
@@ -19,7 +22,8 @@ display: block;
 #CajaDcha {
 	color: #C6FFFF;
 	font-size: 30px;
-	font-family: "Airstrike 3d";
+	font-family: "Hotel Coral Essex";
+	background-color: #1D3841;
 }
 
 #agrupar {
@@ -236,9 +240,11 @@ display: block;
 
 .numeros{
 	color: #3E0210;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Hotel Coral Essex";
 	font-weight: bold;
-	font-size: 50px;
+	font-size: 45px;
+	text-align: center;
+	vertical-align: middle;
 }
 .pagina{
 	background-color: #000;
@@ -277,6 +283,7 @@ display: block;
 	text-align: center;
 	visibility: visible;
 	opacity: 0.9;
+	vertical-align: middle;
 }
 #marquesina {
 	font-family: AgainstMyself;
