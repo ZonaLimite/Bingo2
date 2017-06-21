@@ -1,11 +1,19 @@
 package servlet;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
 public class UserBean {
 	
     private String username;
     private String password;
     private String firstName;
     private String lastName;
+    private String perfil;
+    private String statusPlayer;
+    private String salonInUse;
+    private HttpSession sesionHttp;
+    private Session sesionSocket;
     public boolean valid;
 	
 	
@@ -51,6 +59,46 @@ public class UserBean {
 
     public void setValid(boolean newValid) {
        valid = newValid;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
+	public String getStatusPlayer() {
+		return statusPlayer;
+	}
+
+	public void setStatusPlayer(String statusPlayer) {
+		this.statusPlayer = statusPlayer;
+	}
+
+	public String getSalonInUse() {
+		return salonInUse;
+	}
+
+	public void setSalonInUse(String salonInUse) {
+		this.salonInUse = salonInUse;
+	}
+
+	public HttpSession getSesionHttp() {
+		return sesionHttp;
+	}
+
+	public void setSesionHttp(HttpSession sesionHttp) {
+		this.sesionHttp = sesionHttp;
+	}
+
+	public Session getSesionSocket() {
+		return sesionSocket;
+	}
+
+	public void setSesionSocket(Session sesionSocket) {
+		this.sesionSocket = sesionSocket;
 	}	
 }
 

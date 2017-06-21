@@ -204,9 +204,11 @@ function iniciar() {
 	window.onresize = function(e){
 		//e.preventDefault();
 		resizeBolas();
-		};
+	}
 	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
-	creaSocket("paquito");	
+	creaSocket("paquito");
+
+
 	
 	$( "#dialog" ).dialog({ autoOpen: false , modal: true });
 	$( "#dialog" ).dialog({
@@ -589,7 +591,7 @@ function resumir(){
 }
 
 function creaSocket(usuario){
-	var wsUri = getRootUri() + "actions";
+	var wsUri = getRootUri() + "sala1";
 	
 	socket=new WebSocket(wsUri);
 	

@@ -28,7 +28,7 @@
 <%
 	mySession = request.getSession();
 	if(mySession!=null){
-		myUser = (UserBean)mySession.getAttribute("currentSessionUser"); 
+		myUser = (UserBean)mySession.getAttribute("userBean"); 
 	}
 	
 %>
@@ -38,8 +38,8 @@
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
     <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><%= " "+ myUser.getUsername()%></td>
-    <td width="68%" class="ano" ><label id="label-1">FELICIDADES PABLO Y NAIRA </label>
-    <nav id="menu">
+    <td width="68%" class="ano" >! ENHORABUENA SAMUEL Y  
+    DAMARIS ¡<nav id="menu">
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
     <label id="resume" CLASS="menu_li" >RESUMIR</label>
 	<label id="lab_cartones" CLASS="menu_li" >CARTONES</label>
@@ -495,12 +495,12 @@ Se ha encontrado una partida empezeda ؟Quiere continuar la partida o empezar un
 ELEGIR CANTAOR
 <select name="cantaor">
 <option value="0">Seleccione un cantaor</option>
-<option value="Lola">Lola (velocida Lenta)</option>
-<option value="Ines">Ines (velocida Rapida)<option>
+<!--<option value="Lola">Lola (velocida Lenta)</option>-->
+	<option value="Ines">Ines (velocida Rapida)<option>
 </select>
 <p>&nbsp;
 </p>
-<form >
+<form > 
   <table width="200">
     <tr>
       <td><label>

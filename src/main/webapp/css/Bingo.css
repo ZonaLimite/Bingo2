@@ -20,7 +20,7 @@ hgroup{
 display: block;
 }
 #CajaDcha {
-	color: #C6FFFF;
+	color: #00DDDD;
 	font-size: 30px;
 	font-family: "Hotel Coral Essex";
 	background-color: #1D3841;
@@ -245,6 +245,7 @@ display: block;
 	font-size: 55px;
 	text-align: center;
 	vertical-align: middle;
+	padding: 0px;
 }
 .pagina{
 	background-color: #000;
@@ -312,8 +313,8 @@ display: block;
 
 
 .ano {
-	font-size: 24px;
-	font-weight: normal;
+	font-size: 32px;
+	font-weight: bold;
 	background-color: #1D3841;
 	color: #CC0000;
 	font-family: "Iapetus Chrome";

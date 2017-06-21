@@ -32,11 +32,12 @@ try
 	   		    
      if (user.isValid())
      {
-	        
-          HttpSession session = request.getSession(true);	    
-          session.setAttribute("currentSessionUser",user); 
+          
+    	 HttpSession session = request.getSession(true);
+    	  user.setSesionHttp(session);
+          session.setAttribute("userBean",user); 
           response.sendRedirect("bingo.jsp"); //logged-in page 
-          mail.sendEmail("javier.boga.rioja@gmail.com","javier.boga.rioja@gmail.com", "prueba", "Has accedido al portal.Gracias");
+          //mail.sendEmail("javier.boga.rioja@gmail.com","javier.boga.rioja@gmail.com", "prueba", "Has accedido al portal.Gracias");
      }
 	        
      else 

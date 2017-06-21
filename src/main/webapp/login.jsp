@@ -8,7 +8,7 @@
 
 <html>
 	<head>
-                                <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Login Page</title>
 	</head>
 
@@ -18,8 +18,7 @@
 			Please enter your nombre de Usuario 		
 			<input type="text" name="un"/><br>		
 		
-			La  password 1234
-			<input type="text" name="pw"/>
+		    <input type="text" name="pw"/>
 			
 			<input type="submit" value="submit">			
 		

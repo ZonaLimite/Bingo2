@@ -8,41 +8,88 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.concurrent.ManagedThreadFactory;
+import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import org.jboss.logging.Logger;
 
-@ServerEndpoint("/actions")
+@ServerEndpoint(value="/sala1",configurator=UserAwareConfigurator.class)
 public class DeviceWebSocketServer {
 Logger log = Logger.getLogger("MyLogger");
+ 
+@Inject
+private GestorSessions gestorSesions;
+
 @Resource
 private ManagedThreadFactory threadFactory;
+
 private PocketBingo pb; 
-private Thread Hilo2 = null;
+private Thread hilo3 = null;
+private Runnable3 runnable3;//
 private Session mySesion;//
 private int delay=0;//ms
 
 @OnOpen
-    public void open(Session session) {
-	log.info("Abierta Session :"+ session.getId());
-	this.mySesion=session;
-	pb=this.leePocket("user", session);
-	if(pb==null)pb= new PocketBingo();
-	session.getUserProperties().put("user",pb);
+    public void open(Session session, EndpointConfig config) {
+	UserBean userBean = (UserBean) config.getUserProperties().get("userBean");
+	//Comprobar si la corriente sesionHttp ya esta presente(cosa que no deberia porque al morir el websocket capturamos ese evento y kill la sesion
+	//vinculada, pero por si acaso.
+	//Lo que si puede ocurrir es que se repita una sesionHttp de un usuario que utilice mas de un recurso del contenedor, entonces tendra la misma
+	//Http Session, distinto perfil, y distinta WebsocketSession.
+	//Que como identificamos un usuario, por su nombre de usuario, independientemente de su perfil,y sessiones asociadas.
+	//Solo habra un univoco usuario en juego.
+	//vincular sesion web socket a UserBean.
+	/*Aqui, sabemos el  nombre del user
+						el perfil del user
+						su Http Session
+						su WebSockeSession	
+	*/
+	userBean.setSesionSocket(session);
+	
+	String perfil = userBean.getPerfil();
+	HttpSession userHttpSession = userBean.getSesionHttp();
+	String idSesionHttp = userHttpSession.getId();
+	log.info("Abierta Session WebSocket:"+ session.getId() + "del Usuario "+userBean.getUsername()+" ,perfil="+userBean.getPerfil()+" y nueva sessionHttp:"+idSesionHttp);
+
+	//	Manejo perfil supervisor
+	if(perfil.equals("supervisor")){
+		this.mySesion=session;
+		pb=this.leePocket("sala1", session);
+		if(pb==null)pb= new PocketBingo();
+		session.getUserProperties().put("sala1",pb);
+		gestorSesions.add(userBean.getUsername(), userBean);
+		Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
+		session.getUserProperties().put("gestorSesiones",gestorSesions);
+		log.info("Grabados userBeans en sesion");//
+		
+	}
+	if(perfil.equals("jugador")){
+		this.mySesion=session;
+		userBean.setStatusPlayer("OnLine");
+		userBean.setSalonInUse("sala1");
+		gestorSesions.add(userBean.getUsername(), userBean);
+
+	}
 }
 
 @OnClose
     public void close(CloseReason reason) {
 	//serializar Pocke33tBingo
-	guardaPocket("user",mySesion);
+	guardaPocket("sala1",mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
+	gestorSesions.remove(mySesion);
 	
 }
 
@@ -57,27 +104,30 @@ private int delay=0;//ms
 	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
-		if(pb!=null)this.guardaPocket("user", session);
-		this.enviarMensaje("EnciendeVideo");
-		pb= this.leePocket("user", session);
+		if(pb!=null)this.guardaPocket("sala1", session);
+		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
+		pb= this.leePocket("sala1", session);
 		if(pb==null){
-			this.enviarMensaje("No encontrado fichero Pocket");
+			this.enviarMensajeAPerfil("No encontrado fichero Pocket","supervisor");
 			break;
 		}
-		session.getUserProperties().put("user",pb);
+		session.getUserProperties().put("sala1",pb);
 		if(pb.isLineaCantada()){
-			this.enviarMensaje("ApagaLinea");
+			this.enviarMensajeAPerfil("ApagaLinea","supervisor");
 		}else{
 			
 		}
 		if(pb.isBingoCantado()){
-			this.enviarMensaje("ApagaBingo");
+			this.enviarMensajeAPerfil("ApagaBingo","supervisor");
 		}else{
 			
 		}
+		//Runnable2 runnable2 = new Runnable2(session,delay);
+        //Hilo2 = threadFactory.newThread(runnable2 );
+       
+		hilo3 = new Hilo2(session,delay);
 		
-		Hilo2 = new Hilo2(session,delay);
-		Hilo2.start();
+		hilo3.start();
 		break;
 	case "startGame":
 		//Se deberia checkear si hay partidas abiertas,
@@ -85,34 +135,45 @@ private int delay=0;//ms
 		//Si no hay inyeccion, leerPocket's en directorio "DATA" 
 		// Si las hay: se envia Info_PocketAbierto
 		// Si no es un newGame
-		this.enviarMensaje("Info_PocketAbierto");
+		this.enviarMensajeAPerfil("Info_PocketAbierto","supervisor");
 		break;
 	case "newGame":
-		//this.borraPocket("user", session);
-		this.enviarMensaje("EnciendeVideo");
+		//this.borraPocket("user", session);vcfb
+		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
 		//pb= new PocketBingo();
-		pb= this.leePocket("user", session);
+		pb= this.leePocket("sala1", this.mySesion);
 		if(pb==null){
 			pb= new PocketBingo();
 		}
 		pb.initPocket();
 		pb.setDelay(delay);
-		this.guardaPocket("user", session);
-		session.getUserProperties().put("user",pb);
-		Hilo2 = new Hilo2(session,delay);
-		Hilo2.start();
+		this.guardaPocket("sala1", this.mySesion);
+		this.mySesion.getUserProperties().put("sala1",pb);
+		runnable3 = new Runnable3(this.mySesion,delay);
+		//runnable2 = new Runnable2(session,delay);
+		try {
+			threadFactory = InitialContext.doLookup("java:comp/DefaultManagedThreadFactory");
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		hilo3 = threadFactory.newThread(runnable3);
+		log.info("Antes de arrancar hilo3");
+		pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
+		
+		hilo3.start();
 		break;
 	case "seekingFinished":
-		//enviarMensaje("EncenderNumero_"+pb.getNewBola());
+		//enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola());
 		pb.setReasonInterrupt("secuenciaAcabada");
-		this.guardaPocket("user", session);
+		this.guardaPocket("sala1", session);
 		//Thread.sleep(delay);
-		Hilo2.interrupt();
+		hilo3.interrupt();
 		break;
 	
 	case "Linea":
 		pb.setIdState("Linea");
-		this.guardaPocket("user", session);
+		this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
 
@@ -120,14 +181,14 @@ private int delay=0;//ms
 		pb.setLineaCantada(true);
 		pb.setIdState("LineaOk");
 		pb.setReasonInterrupt("secuenciaAcabada");
-		this.guardaPocket("user", session);
-		Hilo2.interrupt();
+		this.guardaPocket("sala1", session);
+		hilo3.interrupt();
 		break;
 	
 	case "Bingo":
 		pb.setIdState("Bingo");
 		pb.setReasonInterrupt("Bingo");
-		this.guardaPocket("user", session);
+		this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
 	
@@ -135,21 +196,21 @@ private int delay=0;//ms
 		pb.setBingoCantado(true);
 		pb.setIdState("BingoOk");
 		pb.setReasonInterrupt("secuenciaAcabada");
-		this.guardaPocket("user", session);
-		Hilo2.interrupt();
+		this.guardaPocket("sala1", session);
+		hilo3.interrupt();
 		break;
 	case "Continue":
 		pb.setIdState("Continue");
-		this.enviarMensaje("EnciendeVideo");
+		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
 		pb.setReasonInterrupt("continuar");
-		this.guardaPocket("user", session);
-		Hilo2.interrupt();
+		this.guardaPocket("sala1", session);
+		hilo3.interrupt();
 		break;
 	
 	case "Finalize":
 		pb.setIdState("Finalized");
 		pb.setReasonInterrupt("offLine");
-		Hilo2.interrupt();
+		hilo3.interrupt();
 		break;
 	}
 	//manejar POJOS en el formato JSON#comando#dato1#datox....
@@ -169,7 +230,7 @@ private int delay=0;//ms
 				pb.setPorcientoLinea(arrayMessage.elementAt(4));
 				pb.setPorcientoBingo(arrayMessage.elementAt(5));
 				pb.setPorcientoCantaor(arrayMessage.elementAt(6));
-				this.guardaPocket("user", session);
+				this.guardaPocket("sala1", session);
 				break;
 			
 			case "GET_DATOS_CARTONES"://JSON#GET_DATOS_CARTONES#.........
@@ -180,7 +241,7 @@ private int delay=0;//ms
 				porCientoBingo=pb.getPorcientoBingo();
 				porCientoCantaor=pb.getPorcientoCantaor();
 				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
-				enviarMensaje(construirScript);
+				enviarMensajeAPerfil(construirScript,"supervisor");
 				break;
 				
 			case "SET_DATOS_DELAY"://JSON#SET_DATOS_DELAY#delay
@@ -196,16 +257,16 @@ private int delay=0;//ms
 	
 	
 }
-  private PocketBingo leePocket(String user, Session sesion){
+  private PocketBingo leePocket(String sala, Session sesion){
 	  	String ruta,fichero;
 	  	PocketBingo aux=null;
 	  	String uri=sesion.getRequestURI().toString();
-	  	if(uri.equals("/wildfly-1.0/actions")){
+	  	if(uri.equals("/wildfly-1.0/sala1")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
-	  		fichero=ruta+"\\"+user;
+	  		fichero=ruta+"\\"+sala;
 	  	}else{
   				ruta = System.getenv("OPENSHIFT_DATA_DIR");
-  				fichero=ruta+user;
+  				fichero=ruta+sala;
 	  	}
         try
         	{
@@ -225,26 +286,31 @@ private int delay=0;//ms
 	    
 	    return aux; 
   }
-  private void enviarMensaje(String textMessage){
+  private void enviarMensajeAPerfil(String textMessage,String perfil){
   	try {
-			mySesion.getBasicRemote().sendText(textMessage);
+		Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
+		Iterator<UserBean> itBeans= myUsersbean.iterator();
+		while (itBeans.hasNext()){
+			Session sesionActiva = itBeans.next().getSesionSocket();
+			sesionActiva.getBasicRemote().sendText(textMessage);
+		}
 			log.info("Enviando desde servidor a navegador:"+textMessage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
   }
-  private void guardaPocket(String user, Session sesion){
+  private void guardaPocket(String sala, Session sesion){
 	  	String ruta,fichero;
 	  	
 	  	String uri=sesion.getRequestURI().toString();
 	  	//log.info("la uri es:"+uri);
-	  	if(uri.equals("/wildfly-1.0/actions")){
+	  	if(uri.equals("/wildfly-1.0/sala1")){
 	  		ruta="C:\\\\put\\HTML5\\PocketBingo";
-	  		fichero=ruta+"\\"+user;
+	  		fichero=ruta+"\\"+sala;
 	  	}else{
 				ruta = System.getenv("OPENSHIFT_DATA_DIR");
-				fichero=ruta+user;
+				fichero=ruta+sala;
 				log.info("ghuaradndo Pocket"+ fichero);
 	  	}
 	  try
