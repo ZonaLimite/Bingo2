@@ -82,14 +82,14 @@
    	         </video>
    	         </div>
             </span>
-              <table  align="center" class="tablaInfo">
+              <table width="90%"  align="center" class="tablaInfo">
      		<tr>
-	        <td width="90" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA N:</span></span></td>
-	        <td width="13" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander"><span class="Comander">
+	        <td width="26%" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA N:</span></span></td>
+	        <td width="4%" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander"><span class="Comander">
 	          <label id="labelOrden" class="valorInfo">0</label>
 	        </span></span></td>
-	        <td width="133" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
-	        <td width="120" class="celdaInfo"><span class="Comander"><span class="Comander">
+	        <td width="37%" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
+	        <td width="33%" class="celdaInfo"><span class="Comander"><span class="Comander">
 	          <label id="valorLinea" class="valorInfo">0 €</label>
 	        </span></span></td>
 	        </tr>
