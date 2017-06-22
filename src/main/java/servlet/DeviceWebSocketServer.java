@@ -122,10 +122,17 @@ private int delay=0;//ms
 		}else{
 			
 		}
-		//Runnable2 runnable2 = new Runnable2(session,delay);
-        //Hilo2 = threadFactory.newThread(runnable2 );
-       
-		hilo3 = new Hilo2(session,delay);
+		runnable3 = new Runnable3(this.mySesion,delay);
+		//runnable2 = new Runnable2(session,delay);
+		try {
+			threadFactory = InitialContext.doLookup("java:comp/DefaultManagedThreadFactory");
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		hilo3 = threadFactory.newThread(runnable3);
+		log.info("Antes de arrancar hilo3 en resume");
+		pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
 		
 		hilo3.start();
 		break;
