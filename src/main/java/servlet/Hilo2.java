@@ -20,10 +20,11 @@ import javax.websocket.Session;
 
 /**
  *
- * @author hormigueras
+ * @author Paco Boga
  */
+//public class Hilo2 extends Thread{
 public class Hilo2 extends Thread{
-    Logger log = Logger.getLogger("Hilo");
+    Logger log = Logger.getLogger("HiloSala1");
     JTextArea area2;
     PocketBingo pb;
     Session session;
