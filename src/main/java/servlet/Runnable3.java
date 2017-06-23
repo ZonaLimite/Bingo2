@@ -33,8 +33,7 @@ public class Runnable3 implements Runnable{
     int orden;
     int delay= 0;
 	
-   //
-    //private GestorSessions gestorSesions;
+    private GestorSessions gestorSesions;
     
     public Runnable3(Session sesion, int ndelay){
        this.session = sesion;
@@ -43,8 +42,10 @@ public class Runnable3 implements Runnable{
     }
     @Override
     public void run(){
-    	log.info("IdState en 'run' putobucle3:" );
-        this.pb=(PocketBingo)session.getUserProperties().get("sala1");
+    	log.info("IdState en 'run' putobucle5:" );
+    	gestorSesions = (GestorSessions) session.getUserProperties().get("gestorSesiones");
+    	
+        this.pb=(PocketBingo)gestorSesions.getJugadasSalas("sala1");
         status=pb.getIdState();
         
         

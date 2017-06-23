@@ -40,6 +40,7 @@ private Thread hilo3 = null;
 private Runnable3 runnable3;//
 private Session mySesion;//
 private int delay=0;//ms
+private String salaInUse;
 
 @OnOpen
     public void open(Session session, EndpointConfig config) {
@@ -59,6 +60,7 @@ private int delay=0;//ms
 	userBean.setSesionSocket(session);
 	
 	String perfil = userBean.getPerfil();
+	salaInUse = userBean.getSalonInUse();
 	HttpSession userHttpSession = userBean.getSesionHttp();
 	String idSesionHttp = userHttpSession.getId();
 	log.info("Abierta Session WebSocket:"+ session.getId() + "del Usuario "+userBean.getUsername()+" ,perfil="+userBean.getPerfil()+" y nueva sessionHttp:"+idSesionHttp);
@@ -66,19 +68,19 @@ private int delay=0;//ms
 	//	Manejo perfil supervisor
 	if(perfil.equals("supervisor")){
 		this.mySesion=session;
-		pb=this.leePocket("sala1", session);
-		if(pb==null)pb= new PocketBingo();
-		session.getUserProperties().put("sala1",pb);
+		pb=gestorSesions.getJugadasSalas(salaInUse);
+		//if(pb==null)pb= new PocketBingo();
+		//session.getUserProperties().put("sala1",pb);
 		gestorSesions.add(userBean.getUsername(), userBean);
-		Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
-		session.getUserProperties().put("gestorSesiones",gestorSesions);
+		//Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
+		mySesion.getUserProperties().put("gestorSesiones",gestorSesions);
 		log.info("Grabados userBeans en sesion");//
 		
 	}
 	if(perfil.equals("jugador")){
 		this.mySesion=session;
 		userBean.setStatusPlayer("OnLine");
-		userBean.setSalonInUse("sala1");
+		pb=gestorSesions.getJugadasSalas(salaInUse);
 		gestorSesions.add(userBean.getUsername(), userBean);
 
 	}
@@ -87,7 +89,7 @@ private int delay=0;//ms
 @OnClose
     public void close(CloseReason reason) {
 	//serializar Pocke33tBingo
-	guardaPocket("sala1",mySesion);
+	guardaPocket(salaInUse,mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
 	gestorSesions.remove(mySesion);
 	
@@ -95,6 +97,7 @@ private int delay=0;//ms
 
 @OnError
     public void onError(Throwable error) {
+	guardaPocket(salaInUse,mySesion);
 	log.info("Ocurrido error : "+ error.getMessage());
 	error.printStackTrace();
 }
@@ -104,11 +107,11 @@ private int delay=0;//ms
 	log.info("recibido mensaje:"+ message);
 	switch(message){
 	case "resume":
-		if(pb!=null)this.guardaPocket("sala1", session);
+		//if(pb!=null)this.guardaPocket("sala1", session);
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
-		pb= this.leePocket("sala1", session);
+		pb= gestorSesions.getJugadasSalas(salaInUse);
 		if(pb==null){
-			this.enviarMensajeAPerfil("No encontrado fichero Pocket","supervisor");
+			this.enviarMensajeAPerfil("No registrado Pocket","supervisor");
 			break;
 		}
 		session.getUserProperties().put("sala1",pb);
@@ -122,7 +125,7 @@ private int delay=0;//ms
 		}else{
 			
 		}
-		runnable3 = new Runnable3(this.mySesion,delay);
+		runnable3 = new Runnable3(mySesion,delay);
 		//runnable2 = new Runnable2(session,delay);
 		try {
 			threadFactory = InitialContext.doLookup("java:comp/DefaultManagedThreadFactory");
@@ -132,7 +135,7 @@ private int delay=0;//ms
 		}
 		hilo3 = threadFactory.newThread(runnable3);
 		log.info("Antes de arrancar hilo3 en resume");
-		pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
+		//pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
 		
 		hilo3.start();
 		break;
@@ -148,14 +151,14 @@ private int delay=0;//ms
 		//this.borraPocket("user", session);vcfb
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
 		//pb= new PocketBingo();
-		pb= this.leePocket("sala1", this.mySesion);
+		pb= gestorSesions.getJugadasSalas(salaInUse);
 		if(pb==null){
 			pb= new PocketBingo();
 		}
 		pb.initPocket();
 		pb.setDelay(delay);
-		this.guardaPocket("sala1", this.mySesion);
-		this.mySesion.getUserProperties().put("sala1",pb);
+		//this.guardaPocket("sala1", this.mySesion);
+		gestorSesions.setJugadasSalas(salaInUse,pb);
 		runnable3 = new Runnable3(this.mySesion,delay);
 		//runnable2 = new Runnable2(session,delay);
 		try {
@@ -166,21 +169,21 @@ private int delay=0;//ms
 		}
 		hilo3 = threadFactory.newThread(runnable3);
 		log.info("Antes de arrancar hilo3");
-		pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
+		//pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
 		
 		hilo3.start();
 		break;
 	case "seekingFinished":
 		//enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola());
 		pb.setReasonInterrupt("secuenciaAcabada");
-		this.guardaPocket("sala1", session);
+		//this.guardaPocket("sala1", session);
 		//Thread.sleep(delay);
 		hilo3.interrupt();
 		break;
 	
 	case "Linea":
 		pb.setIdState("Linea");
-		this.guardaPocket("sala1", session);
+		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
 
@@ -188,14 +191,14 @@ private int delay=0;//ms
 		pb.setLineaCantada(true);
 		pb.setIdState("LineaOk");
 		pb.setReasonInterrupt("secuenciaAcabada");
-		this.guardaPocket("sala1", session);
+		//this.guardaPocket("sala1", session);
 		hilo3.interrupt();
 		break;
 	
 	case "Bingo":
 		pb.setIdState("Bingo");
 		pb.setReasonInterrupt("Bingo");
-		this.guardaPocket("sala1", session);
+		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
 	
@@ -203,14 +206,14 @@ private int delay=0;//ms
 		pb.setBingoCantado(true);
 		pb.setIdState("BingoOk");
 		pb.setReasonInterrupt("secuenciaAcabada");
-		this.guardaPocket("sala1", session);
+		//this.guardaPocket("sala1", session);
 		hilo3.interrupt();
 		break;
 	case "Continue":
 		pb.setIdState("Continue");
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
 		pb.setReasonInterrupt("continuar");
-		this.guardaPocket("sala1", session);
+		//this.guardaPocket("sala1", session);
 		hilo3.interrupt();
 		break;
 	
@@ -237,7 +240,7 @@ private int delay=0;//ms
 				pb.setPorcientoLinea(arrayMessage.elementAt(4));
 				pb.setPorcientoBingo(arrayMessage.elementAt(5));
 				pb.setPorcientoCantaor(arrayMessage.elementAt(6));
-				this.guardaPocket("sala1", session);
+				//this.guardaPocket("sala1", session);
 				break;
 			
 			case "GET_DATOS_CARTONES"://JSON#GET_DATOS_CARTONES#.........
@@ -249,6 +252,8 @@ private int delay=0;//ms
 				porCientoCantaor=pb.getPorcientoCantaor();
 				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
 				enviarMensajeAPerfil(construirScript,"supervisor");
+				enviarMensajeAPerfil(construirScript,"jugador");
+				
 				break;
 				
 			case "SET_DATOS_DELAY"://JSON#SET_DATOS_DELAY#delay

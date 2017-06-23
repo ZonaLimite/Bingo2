@@ -19,6 +19,8 @@
 			<input type="text" name="un"/><br>		
 		
 		    <input type="text" name="pw"/>
+		    
+			<input type="text" name="sala" value="sala1">
 			
 			<input type="submit" value="submit">			
 		

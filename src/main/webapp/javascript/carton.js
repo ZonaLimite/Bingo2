@@ -1,22 +1,12 @@
 /**
  * Codigo manejador player 
  */
-var numeroCantaores = 1; // De momento solo hay un cantaor
-var rangosLola = ["BuenasNoches",0.8930,5.5210,"linea",6,8.6588,"bingo",8.6588,11.746,"lineaOk",11.746,14.798,"bingoOk",14.798,18.396,"1",18.407,22.029,"2",22.029,23.363,"3",23.363,25.917,"4",25.917,27.960,"5",27.960,30.770,"6",30.770,33.543,"7",33.543,35.945,"8",35.945,38.545,"9",38.545,41.202,"10",41.202,43.446,"11",43.446,47.028,"12",47.028,49.772,"13",49.772,52.54,"14",52.54,54.506,"15",54.506,57.594,"16",57.594,59.620,"17",59.620,62.022,"18",62.022,65.492,"19",65.492,67.976,"20",67.976,69.774,"21",69.774,72.548,"22",72.548,75.948,"23",75.948,78.187,"24",78.187,80.811,"25",80.811,83.140,"26",83.140,85.816,"27",85.816,87.823,"28",87.823,90.520,"29",90.520,93.000,"30",93.000,95.035,"31",95.035,98.296,"32",98.296,100.40,"33",100.40,102.89,"34",102.89,105.84,"35",105.84,108.69,"36",108.69,110.67,"37",110.67,113.97,"38",113.97,116.60,"39",116.60,118.48,"40",118.48,121.16,"41",121.16,123.77,"42",123.77,126.35,"43",126.35,128.65,"44",128.65,131.00,"45",131.00,134.46,"46",134.46,137.27,"47",137.27,139.83,"48",139.83,142.76,"49",142.76,145,"50",145,148,"51",148,150.93,"52",150.93,154,"53",154,155.68,"54",155.68,158.82,"55",158.82,161.43,"56",161.43,163.80,"57",163.80,166.68,"58",166.68,169.80,"59",169.80,172.10,"60",172.10,175.42,"61",175.42,178.65,"62",178.65,181.53,"63",181.53,184.79,"64",184.79,187.42,"65",187.42,190.26,"66",190.26,192.68,"67",192.68,195.30,"68",195.30,197.81,"69",197.81,200.42,"70",200.42,202.12,"71",202.12,204.87,"72",204.87,207.87,"73",207.87,209.73,"74",209.73,212.55,"75",212.55,216.15,"76",216.15,218.11,"77",218.11,221.44,"78",221.44,224.83,"79",224.83,227.62,"80",227.62,229.85,"81",229.85,232.39,"82",232.39,235.53,"83",235.53,237.42,"84",237.42,240.51,"85",240.51,243.21,"86",243.21,246.30,"87",246.30,249.58,"88",249.58,252.26,"89",252.26,254.05,"90",254.05,256.75];
-var rangosInes = ["1",39.42,41.70,"2",41.70,44.11,"3",44.11,47.11,"4",47.11,49.70,"5",49.70,52,"6",53.20,55.20,"7",55.20,56.88,"8",56.88,59.74,"9",59.74,61.47,"10",61.47,63.43,"11",64.40,67.00,"12",67.00,69.68,"13",69.68,71.42,"14",71.42,74.41,"15",74.41,76.78,"16",76.78,78.36,"17",78.36,80.82,"18",80.82,83.19,"19",83.19,86.15,"20",86.15,88.45,"21",88.45,91.18,"22",91.18,93.98,"23",93.98,95.66,"24",95.66,98.76,"25",98.76,100.79,"26",101,103.5,"27",103.5,107.10,"28",107.10,109.04,"29",109.04,111.33,"30",111.33,112.65,"31",112.65,114.75,"32",114.75,116.61,"33",117.8,118.99,"34",120,122.39,"35",123,124.53,"36",125.00,127.00,"37",127.00,129.4,"38",129.4,131.6,"39",131.6,134.00,"40",134,136.60,"41",136.60,139.01,"42",139.01,141.30,"43",141.30,144.36,"44",144.36,145.97,"45",145.97,148.60,"46",148.60,151.11,"47",151.11,153.80,"48",153.80,155.58,"49",155.58,158.03,"50",158.60,160.66,"51",160.66,163.24,"52",163.24,165.60,"53",165.60,167.80,"54",167.80,170.21,"55",170.21,173,"56",173.00,174.48,"57",175,177.06,"58",177.06,179.16,"59",179.16,182.2,"60",182.2,184,"61",184,186.7,"62",186.7,189.03,"63",189.03,190.88,"64",190.88,193.66,"65",193.66,196.157,"66",196.157,198.57,"67",198.57,200.4,"68",200.6,203.85,"69",203.85,206.25,"70",206.25,208.70,"71",208.70,211.57,"72",211.57,213.70,"73",213.70,215.45,"74",215.45,218.004,"75",218.004,220.75,"76",220.75,223.3,"77",223.3,224.89,"78",224.89,226.69,"79",226.69,229.02,"80",229.02,230.69,"81",230.69,233.195,"82",233.195,235.425,"83",235.425,237.565,"84",237.565,239.1,"85",239.1,241.29,"86",241.29,243.6,"87",243.8,245.55,"88",245.55,247.64,"89",247.64,249.755,"90",250,252.23,"linea",253,255.6,"bingo",265,271.95,"lineaOk",260,263.85,"bingoOk",271.95,292,"BuenasNoches",18.00,37.3]
 
-var rangos;
 var video; /** el elemento video */
-var boton_play; 
-var boton_pause;
+
 var boton_Linea;
 var boton_Bingo
-var boton_iniciar;
 var boton_Continuar;
-var boton_play_range;
-var boton_comando;
-var boton_cartones;
-var boton_notify;
 var caja_output;
 var caja_spy;
 var datoOrdenBola;
@@ -91,14 +81,6 @@ var salaInUse;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
-	rangos=eval(nombreRangos);
-	video = document.getElementById("medio");
-	//video.src=nombreFileVideo;
-	video.type="video/webm";
-	video.oncanplay = function() {
-	    flagVideoReady="true";
-	};
-	video.load();
 	elementCanvas = document.getElementById("canvas_bola");	
 	ctxCanvas = elementCanvas.getContext("2d");
 	contador=document.getElementById("contador");
@@ -109,11 +91,6 @@ function iniciar() {
     datoBingo=document.getElementById("valorBingo");
     cajaFecha = document.getElementById("CajaDcha");
     etiquetaOrden = document.getElementById("labelOrden");
-	boton_play = document.getElementById("play");
-	boton_play.onclick = function() {reanudar()};
-	
-	boton_pause = document.getElementById("pause");
-	boton_pause.onclick = function() { pausar()};
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
@@ -131,22 +108,6 @@ function iniciar() {
 		triggerBingo="true";
 	};
 
-	boton_LineaOk= document.getElementById("boton_LineaOk");
-	boton_LineaOk.onclick = function(){
-		if(lineaCantada!="comprobando")return;
-		apagaLinea();
-		enciendeVideo();
-		socket_send("Linea_OK");
-	};
-	
-	boton_BingoOk= document.getElementById("boton_BingoOk");
-	boton_BingoOk.onclick = function(){
-		if(bingoCantado!="comprobando")return;
-		palabraBingo.style.visibility="hidden";
-		apagaBingo();
-		enciendeVideo();
-		socket_send("Bingo_OK");
-	};
 	
 	boton_Continuar = document.getElementById("boton_Continuar");
 	boton_Continuar.onclick = function(){
@@ -165,216 +126,26 @@ function iniciar() {
 
 		
 	}
-	boton_iniciar = document.getElementById("iniciar");
-	boton_iniciar.onclick = function(){ arrancar()};
+	//boton_iniciar = document.getElementById("iniciar");
+	//boton_iniciar.onclick = function(){ arrancar()};
 	
-	boton_resume = document.getElementById("resume");
-	boton_resume.onclick = function(){ resumir()};
-	
-	boton_opciones=document.getElementById("preferencias");
-	boton_opciones.onclick = function(){
-		$( "#opciones" ).dialog( "open" );
-		$( "#aplicarSize" ).focus();
-	}
-	$( "#aplicarSize" ).click(function() {
-		nuevoTamano=cajaTamano.value;
-		resizeBolas(nuevoTamano);
-		});
-
-    boton_cartones=document.getElementById("lab_cartones");
-	boton_cartones.onclick = function(){$( "#cartones" ).dialog( "open" );}
-	
-	boton_comando = document.getElementById("comando");
-	boton_comando.onclick = function(){send_command()};
+	//boton_resume = document.getElementById("resume");
+	//boton_resume.onclick = function(){ resumir()};
 	
 	datoOrdenBola= document.getElementById("datoOrdenBola")
-	boton_notify = document.getElementById("notify");
-	boton_notify.onclick = function(){
-		socket_send("secuenciaAcabada");
-	}
-	caja_spy=document.getElementById("text_comando");
 	canvas=document.getElementById('canvas_bola');
 	lienzo=canvas.getContext('2d');
 	
 	comboTexto = document.getElementById("comboTexto");
 	
-	cajaTamano = document.getElementById("maxTamano");
-	
-	boton_play_range= document.getElementById("c_Range");
-	boton_play_range.onclick = function(){play_range2(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
-	posterImage=document.getElementById("my_poster");
+	/*
 	window.onresize = function(e){
 		//e.preventDefault();
 		resizeBolas();
-	}
-	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
+	}*/
 	creaSocket(salaInUse.textContent);
-
-
-	
-	$( "#dialog" ).dialog({ autoOpen: false , modal: true });
-	$( "#dialog" ).dialog({
-		  buttons: [
-		    {
-		      text: "Continuar",
-		      icons: {
-		        primary: "ui-icon-heart"
-		      },
-		      click: function() {
-		    	  socket_send("resume");
-		    	  
-		    	  $( this ).dialog( "close" );
-		      }
-		    },
-		      // Uncommenting the following line would hide the text,
-		      // resulting in the label being used as a tooltip
-		      //showText: false
-		    
-		    {
-			      text: "Empezar",
-			      icons: {
-			        primary: "ui-icon-heart"
-			      },
-			      click: function() {
-			    	  socket_send("newGame");
-			    	  $( this ).dialog( "close" );
-			      }
-			 
-			      // Uncommenting the following line would hide the text,
-			      // resulting in the label being used as a tooltip
-			      //showText: false
-			 }
-		  ]
-		});
-	//Plantilla JQuery para Opciones 
-	selectCantaor= document.getElementsByName("cantaor");
-	$( "#opciones" ).dialog({ autoOpen: false , modal: true });
-	
-	$( "input" ).on( "click", function() {
-		  valCodecs = $( "input:checked" ).val();
-	});
-	
-	$("select[name=cantaor]").change(function(){
-		valor=$("select[name=cantaor]").val();
-		
-		elegirCantaor(valor);
-	});
-	$("input[name=videoON]").change(function(){
-		if($("input[name=videoON]").is(':checked')){
-			videoEnable="true";
-			enciendeVideo();
-			$( "input" ).on( "click", function() {
-		$( "#log" ).html( $( "input:checked" ).val() + " is checked!" );
-		});
-	}else{
-			videoEnable="false";
-			apagaVideo();
-	}
-	});
-	
-	$("input[name=starsON]").change(function(){
-		if($("input[name=starsON]").is(':checked')){
-			starsEnable="true";
-			iniciarFondoEstrellas();
-		}else{
-			starsEnable="false";
-			//detenerFondoEstrellas();
-		}
-	});
-	
-	$( "#slider" ).slider();
-	$( "#slider" ).slider({
-		  max: maxTamano
-		});
-	$( "#slider" ).slider({
-		  min: 5
-		});
-	$( "#slider" ).slider({
-		range: true
-	});
-	
-	$( "#slider" ).on( "slide", function( event, ui ) {
-		cajaTamano.value=ui.value;
-		nuevoTamano=ui.value;
-		resizeBolas(nuevoTamano);
-		
-	} );
-	$("#masTamano").change(function (){
-		nuevoTamano=ui.value;
-		resizeBolas(nuevoTamano);
-	});		
-
-	
-	$( "#aplicarDelay" ).click(function() {
-		nuevoDelay=$("#delay").val();
-		socket_send("JSON#SET_DATOS_DELAY#"+nuevoDelay);
-		$( "#opciones" ).dialog("close");
-		});
-
-	
-	//Plantilla JQuery para Dialogo Cartones
-	$( "#cartones" ).dialog({ autoOpen: false , modal: true });
-	$( "#cartones" ).dialog({
-		  create: function( event, ui ) {
-			  mensaje="JSON#GET_DATOS_CARTONES#";
-			  socket_send(mensaje);
-		  }
-		});
-	$( "#cartones" ).dialog({
-		  open: function( event, ui ) {
-			  $("#PrecioCarton").val(precioCarton);
-			  $("#NCartonesJuego").val(nCartones);
-			  $("#porcientoLinea").val(porCientoLinea);
-			  $("#porcientoBingo").val(porCientoBingo);
-			  $("#porcientoCantaor").val(porCientoCantaor);
-			  
-		  }
-		});
-
-	$( "#cartones" ).dialog({
-		  buttons: [
-		    {
-		      text: "UPDATE",
-		      icons: {
-		        primary: "ui-icon-heart"
-		      },
-		      click: function() {
-		    	  precioCarton=parseFloat($("#PrecioCarton").val()).toFixed(2);
-		    	  nCartones=parseInt($("#NCartonesJuego").val());
-		    	  porCientoLinea=parseInt($("#porcientoLinea").val());
-		    	  porCientoBingo=parseInt($("#porcientoBingo").val());
-				  porCientoCantaor=parseInt($("#porcientoCantaor").val());
-		    	  mensaje="JSON#SET_DATOS_CARTONES#"+precioCarton+"#"+nCartones+"#"+porCientoLinea+"#"+porCientoBingo+"#"+porCientoCantaor;
-		    	  visualizaDatosCartones();
-		    	  socket_send(mensaje);
-		    	  $( this ).dialog( "close" );
-		      }
-		    },
-		      // Uncommenting the following line would hide the text,
-		      // resulting in the label being used as a tooltip
-		      //showText: false
-		    
-		    {
-			      text: "CANCEL",
-			      icons: {
-			        primary: "ui-icon-heart"
-			      },
-			      click: function() {
-			    	  $( this ).dialog( "close" );
-			      }
-			 
-			      // Uncommenting the following line would hide the text,
-			      // resulting in the label being used as a tooltip
-			      //showText: false
-			 }
-		  ]
-		});
-		bucle3 = setInterval(function(){ mostrarFecha() }, 1000);
-	//Podriamos hacer autenticaUsuario() aqui;
-
-
-		
 }
+
 function fullscreen(e){
     if (e.webkitRequestFullScreen) {
       e.webkitRequestFullScreen();
@@ -625,10 +396,10 @@ function getRootUri() {
 function abierto(){
 	show_InMessage("socket abierto");
 	anchoPantalla=window.innerWidth;
-	resizeBolas();
+	//resizeBolas();
 	alto=window.innerHeight;
-	
-	caja_spy.value=""+anchoPantalla+"x"+alto;
+	refreshDatosCartones();
+	//caja_spy.value=""+anchoPantalla+"x"+alto;
 	        /*
         imageObj.onload = function() {
 

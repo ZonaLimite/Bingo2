@@ -1,9 +1,371 @@
 @charset "utf-8";
-.FondoCelda {
-	background-color: #9FF;
-	background-image: url(../images/EndBalls9.gif);
-	background-repeat: no-repeat;
-	background-position: center center;
+@import url("../webfonts/AgainstMyself/stylesheet.css");
+@import url("../webfonts/almosnow/stylesheet.css");
+@import url("../webfonts/Iapetus_Chrome/stylesheet.css");
+@import url("../webfonts/Airstrike_3d/stylesheet.css");
+@import url("../webfonts/Hotel_Coral_Essex/stylesheet.css");
+
+
+
+
+
+
+
+@viewport{
+	zoom:1.0;
+	width:extend-to-zoom;
+}
+header, section, footer, aside, nav, article, figure, figcaption,
+hgroup{
+display: block;
+}
+#CajaDcha {
+	color: #00DDDD;
+	font-size: 30px;
+	font-family: "Hotel Coral Essex";
+	background-color: #1D3841;
+}
+
+#agrupar {
+	width: 100%;
+	text-align: left;
+	float: left;
+	margin: 0px;
+}
+
+#cabecera1 {
+	display: block;
+	margin: 0px;
+	position: relative;
+}
+#cabecera {
+	background: #FFFBB9;
+	border: 1px solid #999999;
+	
+}
 	padding: 0px;
-	position: fixed;
+	display: block;
+	margin: 0px;
+	height: 58px;
+}
+#centro {
+	text-align: center;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+
+
+#logo {
+	text-align: left;
+	display: inline;
+	padding: 0px;
+}
+.menusmain {
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+}
+
+#menu {
+	display: compact;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #1D3841;
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	top: auto;
+}
+#botonera {
+	display: inline-block;
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: none;
+	background-color: #000;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 8px;
+	text-align: center;
+	float: left;
+	border-bottom-style: none;
+}
+#contador {
+	background-color: #333;
+	color: #C30;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	padding-left: 4px;
+}
+.tablaInfo {
+	text-align: left;
+	background-color: #000;
+	color: #FF0000;
+	font-weight: bold;
+	font-family: "Courier New", Courier, monospace;
+	border: 2px solid #1D3841;
+	font-size: 20px;
+}
+.celdaInfo {
+	font-size: large;
+	text-align: right;
+	border: 1px solid #1D3841;
+}
+
+.canvasBola {
+	border-top-color: #903;
+	border-right-color: #903;
+	border-bottom-color: #903;
+	border-left-color: #903;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	height: 60%;
+}
+
+.valorInfo {
+	color: #FFE479;
+	font-weight: bolder;
+	font-size: x-large;
+	font-family: "Courier New", Courier, monospace;
+	text-align: center;
+}
+
+#linea_alta_video {
+	padding: 0px;
+	margin: 0px;
+	height: auto;
+}
+#lienzo {
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	position: relative;
+	margin: 0px;
+
+}
+
+
+
+
+#seccion {
+	float: inherit;
+	width: 100%;
+	margin: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	padding: 0px;
+	text-align: center;
+	display: block;
+}
+
+.menu_li {
+	display: inline-block;
+	list-style: none;
+	padding: 0;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	background-color: #B93CB9;
+	margin: 0px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 18px;
+	font-weight: bold;
+	float: none;
+	color: #000;
+	width: 100px;
+	text-align: center;
+	position: relative;
+}
+.menu_li2 {
+	display: inline-block;
+	list-style: none;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	background-color: #B93CB9;
+	margin: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	float: none;
+	color: #000;
+	width: auto;
+	text-align: center;
+	position: relative;
+	border-color: #682268;
+	height: auto;
+	vertical-align: middle;
+}
+#menu_li1 {
+	display: inline-block;
+	padding: 3;
+	border-top-style: outset;
+	border-right-style: outset;
+	border-bottom-style: outset;
+	border-left-style: outset;
+	background-color: #FFFBB9;
+	margin: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#bola {
+	display: block;
+	float: left;
+}
+#output {
+	width: 80%;
+}
+#cabecera {
+	text-align: center;
+	background-color: #1D3841;
+}
+#articulo {
+	float: none;
+	position: relative;
+	text-align: center;
+}
+
+.numeros{
+	color: #0099FF;
+	font-family: "Hotel Coral Essex";
+	font-weight: bold;
+	font-size: 50px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 10px;
+}
+.pagina{
+	background-color: #000;
+	text-align: center;
+  
+}
+.Comander {
+
+
+}
+.Comander2 {
+	visibility: hidden;
+
+
+}
+
+.tablero{
+	background-size: 100% 100%;
+	width: 100%;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium;
+	background-color: #960;
+  }
+.video{
+  border: 1px solid red;
+}
+#labelLinea {
+	color: #FF0000;
+	text-align: right;
+
+
+
+}
+
+.panel{
+	background-color: #FFFFFF;
+	border: 1px solid #1D3841;
+	padding: 2px;
+	text-align: center;
+	visibility: visible;
+	opacity: 0.9;
+	vertical-align: middle;
+	height: 65px;
+	background-image: none;
+}
+#marquesina {
+	font-family: AgainstMyself;
+	letter-spacing: 2px;
+	font-size: 24px;
+}
+#foot {
+	font-family: "Iapetus Chrome";
+	font-size: 36px;
+	color: #CC3;
+}
+
+
+.fotom{
+	background-color: #000000;
+	-moz-border-radius: 50px / 50px;
+	-webkit-border-radius: 50px / 50px;
+	border-radius: 50px / 50px;
+	padding: 0px;
+	text-align: center;
+	visibility: hidden;
+	opacity: 0.9;
+	width: 100%;
+}
+
+
+
+.ano {
+	font-size: 32px;
+	font-weight: bold;
+	background-color: #1D3841;
+	color: #CC0000;
+	font-family: "Iapetus Chrome";
+}
+.pagina #agrupar .tablero tr .panel .Comander .tablaInfo tr #datoLinea .Comander .Comander {
+	text-align: right;
+
+}
+.pagina #agrupar .tablero tr .panel .Comander .tablaInfo tr .celdaInfo .Comander .Comander {
+	text-align: right;
+	font-size: x-large;
+
+}
+#label-1 {
+	color: #CCCC33;
+	font-size: 40px;
+	vertical-align: middle;
+	font-family: "Iapetus Chrome";
+}
+#cartones {
+	background-color: #339;
+	color: #FFCC00;
+}
+#dialog {
+	background-color: #339;
+	color: #FFCC00;
+}
+#opciones {
+	background-color: #339;
+	color: #FFCC00;
+}
+#my_poster {
+	background-image: url(../images/gifs-animados-bingo-1084917.gif);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }

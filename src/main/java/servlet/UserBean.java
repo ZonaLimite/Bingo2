@@ -1,5 +1,7 @@
 package servlet;
 
+import java.util.Vector;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -12,9 +14,24 @@ public class UserBean {
     private String perfil;
     private String statusPlayer;
     private String salonInUse;
+    private Integer numeroCartones=0;
     private HttpSession sesionHttp;
     private Session sesionSocket;
-    public boolean valid;
+    private Vector<Carton> vCarton;
+    
+    public Integer getNumeroCartones() {
+		return numeroCartones;
+	}
+
+	public void setNumeroCartones(Integer numeroCartones) {
+		this.numeroCartones = numeroCartones;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public boolean valid;
 	
 	
     public String getFirstName() {
@@ -99,6 +116,14 @@ public class UserBean {
 
 	public void setSesionSocket(Session sesionSocket) {
 		this.sesionSocket = sesionSocket;
+	}
+
+	public Vector<Carton> getvCarton() {
+		return vCarton;
+	}
+
+	public void setvCarton(Vector<Carton> vCarton) {
+		this.vCarton = vCarton;
 	}	
 }
 

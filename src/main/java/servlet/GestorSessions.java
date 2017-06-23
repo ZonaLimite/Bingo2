@@ -1,5 +1,10 @@
 package servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -10,6 +15,7 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
@@ -20,13 +26,36 @@ import org.jboss.logging.Logger;
 	public class GestorSessions {
 		Logger log = Logger.getLogger("GestorSessions");
 	    private Map<String, Vector<UserBean>> sessions;
+	    
+	    //Mapa seguimiento jugadas Bingo por Sala (Sala,PocketBingo)
+	    private Map<String, PocketBingo> jugadasSalas;
 
-	    @PostConstruct
+	    public PocketBingo getJugadasSalas(String sala) {
+			PocketBingo pb = jugadasSalas.get(sala);
+			return pb;
+		}
+
+		public void setJugadasSalas(String sala,PocketBingo pb) {
+			jugadasSalas.put(sala, pb) ;
+		}
+
+		@PostConstruct
 	    public void init() {
 	        sessions = new ConcurrentHashMap<>();
 	        
+	      //se crea un mapa temporal al inicio
+	      //cuando haya tiempo hay que leerlo del disco con LeeContext
+	        jugadasSalas = new ConcurrentHashMap<>();
+	        
+	        
 	        log.info("Gestor inicializado2");
 	    }
+		
+		@PreDestroy
+		public void finalize(){
+			
+			log.info("Guardando contexto pockets bingo");
+		}
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
 	  
 	    void add(String user,UserBean userBean) {
@@ -130,6 +159,79 @@ import org.jboss.logging.Logger;
 	         }
 	        
 	    }
+	    
+	    private PocketBingo leePocket(String sala, Session sesion){
+		  	String ruta,fichero;
+		  	PocketBingo aux=null;
+		  	String uri=sesion.getRequestURI().toString();
+		  	if(uri.equals("/wildfly-1.0/sala1")){
+		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
+		  		fichero=ruta+"\\"+sala;
+		  	}else{
+	  				ruta = System.getenv("OPENSHIFT_DATA_DIR");
+	  				fichero=ruta+sala;
+		  	}
+	        try
+	        	{
+		            // Se crea un ObjectInputStream
+		            ObjectInputStream ois = new ObjectInputStream(
+		                    new FileInputStream(fichero));
+		            
+		            // Se lee el primer objeto
+		            aux = (PocketBingo)ois.readObject();
+		            
+		            ois.close();
+		        }catch (Exception e1){
+		           log.error("Problem serializacion File="+fichero);
+		           e1.printStackTrace();
+		        }
+		        
+		    
+		    return aux; 
+	  }
+	    private void guardaContext(String sala, Session sesion, PocketBingo pb){
+		  	String ruta,fichero;
+		  	
+		  	String uri=sesion.getRequestURI().toString();
+		  	//log.info("la uri es:"+uri);
+		  	if(uri.equals("/wildfly-1.0/sala1")){
+		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
+		  		fichero=ruta+"\\"+sala;
+		  	}else{
+					ruta = System.getenv("OPENSHIFT_DATA_DIR");
+					fichero=ruta+sala;
+					log.info("ghuaradndo Pocket"+ fichero);
+		  	}
+		  try
+	      {
+	          ObjectOutputStream oos = new ObjectOutputStream(
+	                  new FileOutputStream(fichero));
+	          
+	              oos.writeObject(pb);
+	              
+	          oos.close();
+	      } catch (Exception e)
+	      {
+	          log.error("Excepcion Guarda Pocket "+ fichero);
+	    	  e.printStackTrace();
+	      }  
+		  
+	  }
+	  private void borraPocket(String user, Session sesion){
+		  String ruta,fichero;
+		  	
+		  	String uri=sesion.getRequestURI().toString();
+		  	if(uri.equals("/wildfly-1.0/actions")){
+		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
+		  		fichero=ruta+"\\"+user;
+		  	}else{
+					ruta = System.getenv("OPENSHIFT_DATA_DIR");
+					fichero=ruta+user;
+		  	}
+		  	File fileUser= new File(fichero);
+		  	fileUser.delete();
+		  	
+	  }
 
 	}
 
