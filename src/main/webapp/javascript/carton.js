@@ -398,6 +398,7 @@ function abierto(){
 	anchoPantalla=window.innerWidth;
 	//resizeBolas();
 	alto=window.innerHeight;
+	fullscreen(document.getElementById("content"))
 	refreshDatosCartones();
 	//caja_spy.value=""+anchoPantalla+"x"+alto;
 	        /*
