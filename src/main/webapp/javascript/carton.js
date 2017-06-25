@@ -109,25 +109,9 @@ function iniciar() {
 	};
 
 	
-	boton_Continuar = document.getElementById("boton_Continuar");
-	boton_Continuar.onclick = function(){
-		
-		if(lineaCantada=="comprobando"){
-			lineaCantada="false";
-			triggerLinea="false";
-			socket_send("Continue");
-		}
-		if(bingoCantado=="comprobando"){
-			bingoCantado="false";
-			triggerBingo="false";
-			socket_send("Continue");
-		}
-		
-
-		
-	}
-	//boton_iniciar = document.getElementById("iniciar");
-	//boton_iniciar.onclick = function(){ arrancar()};
+	
+	boton_iniciar = document.getElementById("boton_Jugar");
+	boton_iniciar.onclick = function(){ arrancar()};
 	
 	//boton_resume = document.getElementById("resume");
 	//boton_resume.onclick = function(){ resumir()};
@@ -322,9 +306,7 @@ function initInterface(){
 	palabraBingo.style.backgroundColor="#000000";
 	palabraLinea.style.visibility="visible";
 	palabraBingo.style.visibility="visible";
-	for(i=1;i<91;i++){
-		apagarNumero(""+i);
-	}
+
 	canvas=document.getElementById('canvas_bola');
 	canvas.width=canvas.width;
 	lienzo=canvas.getContext('2d');
@@ -332,11 +314,8 @@ function initInterface(){
 	//refresca los valores de estos enteros desde el servidor y los visualiza 
 	// en el manejador de vuelta, como si un callback se tratara.
 	refreshDatosCartones();
-	iniciarFondoEstrellas();
-	numin=Math.floor((Math.random()*numeroCantaores))+1;
-	if(numin==1)cantaor="Ines";
-	if(numin==2)cantaor="Lola";
-	elegirCantaor(cantaor);
+	
+
 	
 }
 function arrancar(){
@@ -398,7 +377,7 @@ function abierto(){
 	anchoPantalla=window.innerWidth;
 	//resizeBolas();
 	alto=window.innerHeight;
-	fullscreen(document.getElementById("content"))
+	
 	refreshDatosCartones();
 	//caja_spy.value=""+anchoPantalla+"x"+alto;
 	        /*
@@ -502,7 +481,7 @@ function recibido(e){
 		    
 		//Cantar numero y mostrar orden bola
 		case "cantarNumero":
-	    	    myRango=sacarRangos(arrayMessages[1]);
+	    	    //myRango=sacarRangos(arrayMessages[1]);
 				if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
 	    	   
 				
@@ -516,7 +495,8 @@ function recibido(e){
 	    	    	//subDraw(0,arrayMessages[1]);
 	    	    }
 				subDraw(subNumero,numero);
-				play_range(myRango[0],myRango[1]);	
+				refreshBolas();
+				//play_range(myRango[0],myRango[1]);	
 	    	    
 				break;
 		case "EnciendeVideo":
@@ -575,9 +555,9 @@ function recibido(e){
 		case "EncenderNumero":
 				if(arrayMessages[1] == null || (arrayMessages[1]+"").length >2)return;
 				if(arrayMessages[2] == "simple"){
-					encenderNumero(arrayMessages[1],"simple");
+					//encenderNumero(arrayMessages[1],"simple");
 				}else{
-					encenderNumero(arrayMessages[1]);
+					//encenderNumero(arrayMessages[1]);
 				}
 				break;
 		case "ApagarNumero":
@@ -779,7 +759,7 @@ function subDraw(subNumero,Numero) {
 		//varX,varY,miRadio
 	  //Preparar ejes bolas
 	  
-	  myVarX=Math.floor((elementCanvas.width)/2);
+	  myVarX=Math.floor((elementCanvas.width)/2 + ((elementCanvas.width)/2)/2 );
 	  myVarY=Math.floor((elementCanvas.height)/2);
 	  mi_Radio= Math.floor(myVarX/3);
 	  	copYColor=my_color;

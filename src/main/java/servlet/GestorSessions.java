@@ -16,13 +16,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.jboss.logging.Logger;
 
-@ApplicationScoped
+	@Startup
+	@ApplicationScoped
 	public class GestorSessions {
 		Logger log = Logger.getLogger("GestorSessions");
 	    private Map<String, Vector<UserBean>> sessions;

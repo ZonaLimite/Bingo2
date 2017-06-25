@@ -23,7 +23,7 @@ display: block;
 	color: #00DDDD;
 	font-size: 30px;
 	font-family: "Hotel Coral Essex";
-	background-color: #1D3841;
+	background-color: #000000;
 }
 
 #agrupar {
@@ -132,6 +132,7 @@ display: block;
 	border-bottom-style: none;
 	border-left-style: none;
 	height: 60%;
+	background-color: #000;
 }
 
 .valorInfo {

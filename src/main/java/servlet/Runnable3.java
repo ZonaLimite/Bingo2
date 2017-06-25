@@ -80,6 +80,7 @@ public class Runnable3 implements Runnable{
         	int number= pb.getNewBola();
         	//this.enviarMensajeAPerfil("bolaJuego_"+orden);
         	enviarMensajeAPerfil("cantarNumero_"+number+"_"+orden,"supervisor");
+        	enviarMensajeAPerfil("cantarNumero_"+number+"_"+orden,"jugador");
         	enviarMensajeAPerfil("EncenderNumero_"+number,"supervisor");
         	enviarMensajeAPerfil("EncenderNumero_"+number,"jugador");
         	
@@ -115,9 +116,11 @@ public class Runnable3 implements Runnable{
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
                 	i--;
+                	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");
                 
                 }else if(pb.getIdState().equals("Bingo")){
                 	enviarMensajeAPerfil("Bingo_bingo","supervisor");
+                	
                 	//enviarMensajeAPerfil("ComprobarLinea");
                 	pb.setIdState("ComprobandoBingo");
                 	i--;
@@ -137,6 +140,8 @@ public class Runnable3 implements Runnable{
                 	
                 	//pb.setSecuenciaAcabada(false);
                 	enviarMensajeAPerfil("cantarNumero_"+number+"_"+i+"_"+pb.getLastNumber(),"supervisor");
+                	enviarMensajeAPerfil("cantarNumero_"+number+"_"+i+"_"+pb.getLastNumber(),"jugador");
+                	
                 	
                 	pb.setNewBola(number);//bola en pantalla
                 	pb.setNumeroOrden(i);
