@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -27,7 +28,11 @@ import org.jboss.logging.Logger;
 
 	@Startup
 	@ApplicationScoped
-	public class GestorSessions {
+	public class GestorSessions implements Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -124517853214941713L;
 		Logger log = Logger.getLogger("GestorSessions");
 	    private Map<String, Vector<UserBean>> sessions;
 	    
