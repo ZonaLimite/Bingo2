@@ -281,6 +281,7 @@ display: block;
 	border-bottom-width: medium;
 	border-left-width: medium;
 	background-color: #960;
+	height: 100px;
   }
 .video{
   border: 1px solid red;
@@ -301,7 +302,7 @@ display: block;
 	visibility: visible;
 	opacity: 0.9;
 	vertical-align: middle;
-	height: 65px;
+	height: 75px;
 	background-image: none;
 }
 #marquesina {
