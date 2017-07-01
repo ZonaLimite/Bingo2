@@ -378,7 +378,7 @@ function abierto(){
 	//resizeBolas();
 	alto=window.innerHeight;
 	
-	refreshDatosCartones();
+	//refreshDatosCartones();
 	//caja_spy.value=""+anchoPantalla+"x"+alto;
 	        /*
         imageObj.onload = function() {

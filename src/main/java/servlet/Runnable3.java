@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.swing.JTextArea;
 import javax.websocket.Session;
@@ -32,6 +33,7 @@ public class Runnable3 implements Runnable{
     int maxNumbers = 90;
     int orden;
     int delay= 0;
+    
 	
     private GestorSessions gestorSesions;
     
@@ -209,7 +211,7 @@ public class Runnable3 implements Runnable{
     
     private void enviarMensajeAPerfil(String textMessage,String perfil){
     	try {
-    		log.info("Enviando mensaje desde Hilo3(modified):" + textMessage);
+    		
     		// Vamos a obtener las sesiones a las que vamos a redirigir los mensajes de momento
     		//son de superdf
     		//Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
@@ -220,6 +222,7 @@ public class Runnable3 implements Runnable{
     		while (itBeans.hasNext()){
     			Session sesionActiva = itBeans.next().getSesionSocket();
     			sesionActiva.getBasicRemote().sendText(textMessage);
+    			log.info("Enviando mensaje desde Hilo3(modified):" + textMessage);
     		}
   		
 		} catch (IOException e) {

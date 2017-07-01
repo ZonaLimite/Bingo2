@@ -108,12 +108,13 @@ display: block;
 	padding-left: 4px;
 }
 .tablaInfo {
-	text-align: left;
+	text-align: center;
 	background-color: #000;
 	color: #FFFBB9;
 	font-weight: bold;
 	font-family: "Courier New", Courier, monospace;
 	border: 2px solid #1D3841;
+	width: 90%;
 }
 .celdaInfo {
 	font-size: large;
@@ -133,9 +134,9 @@ display: block;
 .valorInfo {
 	color: #FFE479;
 	font-weight: bolder;
-	font-size: x-large;
 	font-family: "Courier New", Courier, monospace;
 	text-align: center;
+	font-size: 24px;
 }
 
 #linea_alta_video {
@@ -352,4 +353,7 @@ display: block;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+.classMessage {
+
 }

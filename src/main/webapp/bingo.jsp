@@ -82,7 +82,7 @@
    	         </video>
    	         </div>
             </span>
-              <table width="90%"  align="center" class="tablaInfo">
+              <table   align="center" class="tablaInfo">
      		<tr>
 	        <td width="26%" class="celdaInfo"><span class="Comander"><span class="Comander">BOLA N:</span></span></td>
 	        <td width="4%" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander"><span class="Comander">
@@ -104,7 +104,10 @@
 	        </span></span></td>
     </tr>
 	      <tr>
-	        <td colspan="4" class="valorInfo" id="comboTexto">comboTexto</td>
+	        <td colspan="4"  class="celdaInfo" id="comboTexto" >
+	          
+	          <label  id="labelTexto" class="classMessage" >combotexto</label>
+	         
 	        
     	</tr>
 </table>

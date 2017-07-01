@@ -14,6 +14,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.concurrent.ManagedThreadFactory;
 import javax.inject.Inject;
@@ -68,10 +69,10 @@ private String salaInUse;
 	//	Manejo perfil supervisor
 	if(perfil.equals("supervisor")){
 		this.mySesion=session;
-		pb=gestorSesions.getJugadasSalas(salaInUse);
+		pb=this.gestorSesions.getJugadasSalas(salaInUse);
 		//if(pb==null)pb= new PocketBingo();
 		//session.getUserProperties().put("sala1",pb);
-		gestorSesions.add(userBean.getUsername(), userBean);
+		this.gestorSesions.add(userBean.getUsername(), userBean);
 		//Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
 		mySesion.getUserProperties().put("gestorSesiones",gestorSesions);
 		log.info("Grabados userBeans en sesion");//
@@ -80,8 +81,8 @@ private String salaInUse;
 	if(perfil.equals("jugador")){
 		this.mySesion=session;
 		userBean.setStatusPlayer("OnLine");
-		pb=gestorSesions.getJugadasSalas(salaInUse);
-		gestorSesions.add(userBean.getUsername(), userBean);
+		pb=this.gestorSesions.getJugadasSalas(salaInUse);
+		this.gestorSesions.add(userBean.getUsername(), userBean);
 
 	}
 }

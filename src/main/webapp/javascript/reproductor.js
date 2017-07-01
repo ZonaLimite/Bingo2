@@ -88,6 +88,9 @@ var factorX;
 var sumador=1;
 var bolaPreparada="false";
 var salaInUse;
+var largoCeldaMensajes;
+var comboTexto;
+var labelTexto;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -197,6 +200,7 @@ function iniciar() {
 	lienzo=canvas.getContext('2d');
 	
 	comboTexto = document.getElementById("comboTexto");
+	labelTexto= document.getElementById("labelTexto");
 	
 	cajaTamano = document.getElementById("maxTamano");
 	
@@ -500,11 +504,14 @@ function esperarReadyState(){
 }
 
 function show_InMessage(contenido,activoMarquee){
+	textoLargo = largoCeldaMensajes+"px";
 	if(activoMarquee!=null){
 		longitudActualComboTexto = 400;
-		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width="+longitudActualComboTexto+">"+contenido+"</marquee>";
+		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4' width='300px'>"+contenido+"</marquee>";
 	}else{
-	comboTexto.innerHTML=contenido;
+		
+		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
+	
 	}	
 	
 	
@@ -702,7 +709,10 @@ function resizeBolas(tamanoMenu){
 		elemento=document.getElementById(""+i);
 		elemento.style.fontSize=nuevoTamano+"px";
 	}
-	/*
+	largoCeldaMensajes = comboTexto.clientWidth;
+	
+	
+	/*Haber
 	anchoposterImage=posterImage.offsetHeight;
 	altoposterImage=posterImage.offsetWidth;
 	posterImage.style.height=altoposterImage;

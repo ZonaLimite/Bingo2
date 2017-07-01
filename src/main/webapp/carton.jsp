@@ -71,9 +71,10 @@
      <td colspan="4" class="valorInfo" id="comboTexto">comboTexto</td>
    </tr>
  </table>
+ <!--
    CARTON n:
    <%= " "+ myCarton.getnCarton()+" "%> SERIE: <%= " " + myCarton.getnCarton()+" "%>PRECIO:<%= myCarton.getPrecioCarton()%>
-     
+     -->
   
 	
     <td id="CajaDcha" width="20%">	          
@@ -195,7 +196,7 @@
 </article>
 </div>
 <article>
-<p>&nbsp;</p>    
+ 
 
 
 

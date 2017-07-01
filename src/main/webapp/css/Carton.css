@@ -249,7 +249,7 @@ display: block;
 	color: #0099FF;
 	font-family: "Hotel Coral Essex";
 	font-weight: bold;
-	font-size: 50px;
+	font-size: 40px;
 	text-align: center;
 	vertical-align: middle;
 	padding: 10px;
@@ -302,7 +302,7 @@ display: block;
 	visibility: visible;
 	opacity: 0.9;
 	vertical-align: middle;
-	height: 75px;
+	height: 80px;
 	background-image: none;
 }
 #marquesina {

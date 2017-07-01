@@ -27,7 +27,7 @@ import javax.websocket.Session;
 import org.jboss.logging.Logger;
 
 	@Startup
-	@ApplicationScoped
+	@Singleton
 	public class GestorSessions implements Serializable{
 		/**
 		 * 
@@ -67,7 +67,7 @@ import org.jboss.logging.Logger;
 		}
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
 	  
-	    void add(String user,UserBean userBean) {
+	    public void add(String user,UserBean userBean) {
 	    		String idSesionAComparar = userBean.getSesionHttp().getId();
 	    		String perfilAComparar = userBean.getPerfil();
 	    		Boolean sesionUtilizada = sesionUtilizada(idSesionAComparar,perfilAComparar);
@@ -118,7 +118,7 @@ import org.jboss.logging.Logger;
 	    }
 
 	    
-	    Set<UserBean> dameUserBeans(String perfilAComparar){
+	    public Set<UserBean> dameUserBeans(String perfilAComparar){
 	    	Set<UserBean> juegoUserBeans = new LinkedHashSet<UserBean>();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -140,7 +140,7 @@ import org.jboss.logging.Logger;
 	    	return juegoUserBeans;
 	    }
 	
-	    void remove(Session session) {
+	    public void remove(Session session) {
 	    	String idSesionAComparar = session.getId();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -155,12 +155,14 @@ import org.jboss.logging.Logger;
 	            		  UserBean ub = (UserBean)itUsersBean.next();
 	            		  String idSession = ub.getSesionSocket().getId();
 	            		  if(idSession.equals(idSesionAComparar)){
-	            			vectorUserBean.remove(ub);//borramos UserBean asociado a esta sesion websocket
+	            			//vectorUserBean.remove(ub);//borramos UserBean asociado a esta sesion websocket
+	            			  itUsersBean.remove();
 	            			
 	            			log.info("Removida Sesion socket"+idSesionAComparar);
 	            			
 	            			if(vectorUserBean.size()==0){
-	            				sessions.remove(ub.getUsername());
+	            				//sessions.remove(ub.getUsername());
+	            				itClaves.remove();
 	            			}
 	            			log.info("Jugadores presentes3 :"+sessions.keySet().toString());
 	            		  }
