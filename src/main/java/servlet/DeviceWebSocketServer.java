@@ -93,12 +93,14 @@ private String salaInUse;
 	guardaPocket(salaInUse,mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
 	gestorSesions.remove(mySesion);
+	gestorSesions.guardaContext(mySesion);
 	
 }
 
 @OnError
     public void onError(Throwable error) {
 	guardaPocket(salaInUse,mySesion);
+	gestorSesions.guardaContext(mySesion);
 	log.info("Ocurrido error : "+ error.getMessage());
 	error.printStackTrace();
 }

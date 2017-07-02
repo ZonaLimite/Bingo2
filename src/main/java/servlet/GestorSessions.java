@@ -50,19 +50,17 @@ import org.jboss.logging.Logger;
 
 		@PostConstruct
 	    public void init() {
-	        sessions = new ConcurrentHashMap<>();
-	        
-	      //se crea un mapa temporal al inicio
-	      //cuando haya tiempo hay que leerlo del disco con LeeContext
-	        jugadasSalas = new ConcurrentHashMap<>();
-	        
+	        if((jugadasSalas=leeContext())==null){
+	        	this.jugadasSalas = new ConcurrentHashMap<>();
+	        }
+	        	this.sessions = new ConcurrentHashMap<>();
 	        
 	        log.info("Gestor inicializado2");
 	    }
 		
 		@PreDestroy
-		public void finalize(){
-			
+		final public void finalize(){
+			guardaContext();//Pendiente local
 			log.info("Guardando contexto pockets bingo");
 		}
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
@@ -164,7 +162,7 @@ import org.jboss.logging.Logger;
 	            				//sessions.remove(ub.getUsername());
 	            				itClaves.remove();
 	            			}
-	            			log.info("Jugadores presentes3 :"+sessions.keySet().toString());
+	            			log.info("Jugadores presentes :"+sessions.keySet().toString());
 	            		  }
 	             }
 	         }
@@ -200,25 +198,56 @@ import org.jboss.logging.Logger;
 		    
 		    return aux; 
 	  }
-	    private void guardaContext(String sala, Session sesion, PocketBingo pb){
+	  private Map<String,PocketBingo> leeContext(){
+		  	String ruta,fichero;
+		  	Map<String,PocketBingo> aux=null;
+		  	ruta = System.getenv("OPENSHIFT_DATA_DIR");
+		  	
+		  	if(ruta==null){
+		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
+		  		fichero=ruta+"\\"+"MapaBingos";
+		  	}else{
+	  				
+	  				fichero=ruta+"MapaBingos";
+		  	}
+	        try
+	        	{
+		            // Se crea un ObjectInputStream
+		            ObjectInputStream ois = new ObjectInputStream(
+		                    new FileInputStream(fichero));
+		            
+		            // Se lee el primer objeto
+		            aux = (Map<String,PocketBingo>)ois.readObject();
+		            
+		            ois.close();
+		            log.info("MapaBingos recuperado contexto");
+		        }catch (Exception e1){
+		           log.error("Problem serializacion File="+fichero);
+		           e1.printStackTrace();
+		        }
+		        
+		    
+		    return aux; 
+	  }	    
+	    public void guardaContext(){
 		  	String ruta,fichero;
 		  	
-		  	String uri=sesion.getRequestURI().toString();
+		  	//String uri=sesion.getRequestURI().toString();
 		  	//log.info("la uri es:"+uri);
-		  	if(uri.equals("/wildfly-1.0/sala1")){
+		  	/*if(uri.equals("/wildfly-1.0/sala1")){
 		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
 		  		fichero=ruta+"\\"+sala;
-		  	}else{
+		  	}else{*/
 					ruta = System.getenv("OPENSHIFT_DATA_DIR");
-					fichero=ruta+sala;
+					fichero=ruta+"MapaBingos";
 					log.info("ghuaradndo Pocket"+ fichero);
-		  	}
+		  
 		  try
 	      {
 	          ObjectOutputStream oos = new ObjectOutputStream(
 	                  new FileOutputStream(fichero));
 	          
-	              oos.writeObject(pb);
+	              oos.writeObject(this.jugadasSalas);
 	              
 	          oos.close();
 	      } catch (Exception e)
@@ -228,7 +257,35 @@ import org.jboss.logging.Logger;
 	      }  
 		  
 	  }
-	  private void borraPocket(String user, Session sesion){
+	    public void guardaContext(Session sesion){
+		  	String ruta,fichero;
+		  	
+		  	String uri=sesion.getRequestURI().toString();
+		  	log.info("la uri es:"+uri);
+		  	if(uri.equals("/wildfly-1.0/sala1")){
+		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
+		  		fichero=ruta+"\\"+"MapaBingos";
+		  	}else{
+					ruta = System.getenv("OPENSHIFT_DATA_DIR");
+					fichero=ruta+"MapaBingos";
+					log.info("ghuaradndo Pocket"+ fichero);
+		  	}
+		  	try
+		  	{
+	          ObjectOutputStream oos = new ObjectOutputStream(
+	                  new FileOutputStream(fichero));
+	          
+	          			oos.writeObject(this.jugadasSalas);
+	              
+	          oos.close();
+		  	} catch (Exception e){
+	          log.error("Excepcion Guarda Pocket "+ fichero);
+	    	  e.printStackTrace();
+		  	}  
+		  
+	  }
+	  
+	    private void borraPocket(String user, Session sesion){
 		  String ruta,fichero;
 		  	
 		  	String uri=sesion.getRequestURI().toString();

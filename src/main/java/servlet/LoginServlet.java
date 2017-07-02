@@ -51,9 +51,11 @@ try
     	  PocketBingo pb = gestorSesions.getJugadasSalas(user.getSalonInUse());
     	  if(pb==null && perfil.equals("supervisor")){
     		  if(pb==null)pb= new PocketBingo();
-    		  gestorSesions.setJugadasSalas(user.getSalonInUse(), pb);
+    		  
     	  }
- 
+    	  log.info("Guardando Pockect a gestorSessions");
+    	  gestorSesions.setJugadasSalas(user.getSalonInUse(), pb);
+    	  
           if(perfil.equals("jugador")){
         	  Carton newcarton = new Carton();
         	  Vector<Carton> vCarton = user.getvCarton();
