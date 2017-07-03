@@ -14,7 +14,9 @@
 @viewport{
 	zoom:1.0;
 	orientation: landscape;
-	max-width: fit-content;
+    width: extend-to-zoom 100%;
+    height: auto;
+
 }
 header, section, footer, aside, nav, article, figure, figcaption,
 hgroup{
