@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="vieport" content="width=device-height, initial-scale=1.0">
+<meta name="vieport" content="width=device-width, initial-scale=1.0">
 <title>Bingo 2016</title>
  
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -185,17 +185,13 @@
 
 <article id="articulo">	
 <div align="center">  
- 
-
 <label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
 <label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
-
-
 <label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
 </div>  
 </article>
 </div>
-<article>
+
  
 
 

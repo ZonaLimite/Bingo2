@@ -231,16 +231,13 @@ import org.jboss.logging.Logger;
 	  }	    
 	    public void guardaContext(){
 		  	String ruta,fichero;
-		  	
-		  	//String uri=sesion.getRequestURI().toString();
-		  	//log.info("la uri es:"+uri);
-		  	/*if(uri.equals("/wildfly-1.0/sala1")){
-		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
-		  		fichero=ruta+"\\"+sala;
-		  	}else{*/
+	
 					ruta = System.getenv("OPENSHIFT_DATA_DIR");
-					fichero=ruta+"MapaBingos";
-					log.info("ghuaradndo Pocket"+ fichero);
+					if(ruta==null){
+						ruta="C:\\\\put\\HTML5\\PocketBingo\\";
+					}
+					fichero=ruta+"MapaBingos";//
+					log.info("guardando Pocket"+ fichero);
 		  
 		  try
 	      {
@@ -255,33 +252,6 @@ import org.jboss.logging.Logger;
 	          log.error("Excepcion Guarda Pocket "+ fichero);
 	    	  e.printStackTrace();
 	      }  
-		  
-	  }
-	    public void guardaContext(Session sesion){
-		  	String ruta,fichero;
-		  	
-		  	String uri=sesion.getRequestURI().toString();
-		  	log.info("la uri es:"+uri);
-		  	if(uri.equals("/wildfly-1.0/sala1")){
-		  		ruta="C:\\\\put\\HTML5\\PocketBingo";
-		  		fichero=ruta+"\\"+"MapaBingos";
-		  	}else{
-					ruta = System.getenv("OPENSHIFT_DATA_DIR");
-					fichero=ruta+"MapaBingos";
-					log.info("ghuaradndo Pocket"+ fichero);
-		  	}
-		  	try
-		  	{
-	          ObjectOutputStream oos = new ObjectOutputStream(
-	                  new FileOutputStream(fichero));
-	          
-	          			oos.writeObject(this.jugadasSalas);
-	              
-	          oos.close();
-		  	} catch (Exception e){
-	          log.error("Excepcion Guarda Pocket "+ fichero);
-	    	  e.printStackTrace();
-		  	}  
 		  
 	  }
 	  
