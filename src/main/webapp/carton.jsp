@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="vieport" content="width=device-width, initial-scale=1.0, orientation=landscape">
+<meta name="vieport" content="width=device-width, initial-scale=0.5, orientation=landscape">
 <title>Bingo 2016</title>
  
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -45,14 +45,14 @@
   <tr>
   <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
   
- <td width="68%" class="tablaInfo" ><table width="90%"  align="center" class="tablaInfo">
+ <td width="68%" class="tablaInfo" ><table width="86%"  align="center" class="tablaInfo">
    <tr>
-     <td width="26%" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
-     <td width="4%" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
+     <td width="97" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
+     <td width="26" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
        <label id="labelOrden" class="valorInfo">0</label>
      </span></td>
-     <td width="37%" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
-     <td width="33%" class="celdaInfo"><span class="Comander">
+     <td width="184" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
+     <td width="70" class="celdaInfo"><span class="Comander">
        <label id="valorLinea" class="valorInfo">0 €</label>
      </span></td>
    </tr>
@@ -76,7 +76,7 @@
      -->
   
 	
-    <td id="CajaDcha" width="20%">	          
+    <td id="CajaDcha" width="30%">	          
     <canvas id="canvas_bola" class="canvasBola">
 	           
     </canvas></td>
