@@ -26,7 +26,6 @@
 
 <link href="css/Carton.css" rel="stylesheet" type="text/css">
 </head>
-
 <body class="pagina" id="content">
 <%
 	mySession = request.getSession();
