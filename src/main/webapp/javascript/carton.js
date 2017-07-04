@@ -131,11 +131,16 @@ function iniciar() {
 }
 
 function fullscreen(e){
-    if (e.webkitRequestFullScreen) {
-      e.webkitRequestFullScreen();
-    } else if(e.mozRequestFullScreen) {
-      e.mozRequestFullScreen();
-    }
+
+	if (e.requestFullscreen) {
+		e.requestFullscreen();
+	} else if (e.webkitRequestFullscreen) {
+		e.webkitRequestFullscreen();
+	} else if (i.mozRequestFullScreen) {
+		e.mozRequestFullScreen();
+	} else if (i.msRequestFullscreen) {
+		e.msRequestFullscreen();
+	}
 }
 function enciendeVideo(){
 	if(videoEnable=="true")video.style.visibility="visible";
