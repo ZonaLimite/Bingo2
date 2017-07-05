@@ -78,6 +78,7 @@ var factorX;
 var sumador=1;
 var bolaPreparada="false";
 var salaInUse;
+var largoCeldaMensajes;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -260,11 +261,12 @@ function esperarReadyState(){
 }
 
 function show_InMessage(contenido,activoMarquee){
+	textoLargo = largoCeldaMensajes+"px";
 	if(activoMarquee!=null){
 		longitudActualComboTexto = 400;
 		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width="+longitudActualComboTexto+">"+contenido+"</marquee>";
 	}else{
-	comboTexto.innerHTML=contenido;
+		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
 	}	
 	
 	
@@ -318,6 +320,7 @@ function initInterface(){
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth);
 	//refresca los valores de estos enteros desde el servidor y los visualiza 
 	// en el manejador de vuelta, como si un callback se tratara.
+	largoCeldaMensajes = comboTexto.clientWidth;
 	refreshDatosCartones();
 	
 
