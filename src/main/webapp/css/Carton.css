@@ -6,7 +6,7 @@
 @import url("../webfonts/Hotel_Coral_Essex/stylesheet.css");
 
 @viewport{
-	zoom:0.5;
+	zoom:1.0;
 	orientation: landscape;
     width: extend-to-zoom 100%;
     height: auto;
@@ -149,8 +149,6 @@ display: block;
 	border-bottom-style: none;
 	border-left-style: none;
 	background-color: #000;
-	height: 70%;
-	width: 100%;
 }
 
 .valorInfo {
@@ -267,7 +265,7 @@ display: block;
 	color: #0099FF;
 	font-family: "Hotel Coral Essex";
 	font-weight: bold;
-	font-size: 36px;
+	font-size: 40px;
 	text-align: center;
 	vertical-align: middle;
 	padding: 10px;
@@ -320,7 +318,6 @@ display: block;
 	opacity: 0.9;
 	vertical-align: middle;
 	background-image: none;
-	height: 100%;
 	padding-top: 2%;
 	padding-right: 1%;
 	padding-bottom: 2%;

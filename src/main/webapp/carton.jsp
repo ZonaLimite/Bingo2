@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="vieport" content="width=device-width, initial-scale=0.5, orientation=landscape">
+<meta name="vieport" content="width=device-width, initial-scale=1.0, orientation=landscape">
 <title>Bingo 2016</title>
  
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -43,7 +43,7 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-  <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
+  <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
   
  <td width="68%" class="tablaInfo" ><table width="86%"  align="center" class="tablaInfo">
    <tr>
@@ -51,8 +51,8 @@
      <td width="26" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
        <label id="labelOrden" class="valorInfo">0</label>
      </span></td>
-     <td width="184" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
-     <td width="70" class="celdaInfo"><span class="Comander">
+     <td width="108" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
+     <td width="146" class="celdaInfo"><span class="Comander">
        <label id="valorLinea" class="valorInfo">0 €</label>
      </span></td>
    </tr>
@@ -87,33 +87,33 @@
 
 <table class="tablero">
     <tr>
-         <td height="100" class="panel"> 
+         <td class="panel"> 
             <label ID="F1C1" class="numeros" ></label>             
         </td>
       <td class="panel"> 
         <label id="F1C2" class="numeros" >10</label>             
         </td>
-      <td height="100" class="panel"> 
+      <td class="panel"> 
         <label id="F1C3" class="numeros" >20</label>             
         </td>
-      <td height="100" class="panel"> 
+      <td class="panel"> 
         <label id="F1C4" class="numeros" >30</label>             
         </td>
-      <td height="100" class="panel"> 
+      <td class="panel"> 
         <label id="F1C5" class="numeros" >40</label>             
         </td>
       
-      <td height="100" class="panel">
+      <td class="panel">
       	<label id="F1C6" class="numeros" >50</label>
       </td >
-      <td height="100" class="panel">
+      <td  class="panel">
         <label id="F1C7" class="numeros" >60</label>              
      </td >
 
-        <td height="100" class="panel">
+        <td  class="panel">
           <label id="F1C8" class="numeros" >70</label>              
         </td >
-        <td height="100" class="panel">
+        <td  class="panel">
           <label id="F1C9" class="numeros" >80</label>              
         </td >
 
