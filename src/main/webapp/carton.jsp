@@ -87,10 +87,10 @@
 
 <table class="tablero">
     <tr>
-         <td class="panel"> 
+         <td onClick="analizaTecla(this)" class="panel"> 
             <label ID="F1C1" class="numeros" ></label>             
         </td>
-      <td class="panel"> 
+      <td onClick="analizaTecla(this)" class="panel"> 
         <label id="F1C2" class="numeros" >10</label>             
         </td>
       <td class="panel"> 

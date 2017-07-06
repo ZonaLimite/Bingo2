@@ -95,16 +95,16 @@ function iniciar() {
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
-		if(lineaCantada=="true" || lineaCantada=="comprobando")return;
-		lineaCantada="comprobando";
+		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
+		//lineaCantada="comprobando";
 		socket_send("Linea");
 		triggerLinea="true";
 	};
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
 	boton_Bingo.onclick = function(){
-		if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
-		bingoCantado="comprobando";
+		//if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
+		//bingoCantado="comprobando";
 		socket_send("Bingo");
 		triggerBingo="true";
 	};
@@ -143,128 +143,28 @@ function fullscreen(e){
 		e.msRequestFullscreen();
 	}
 }
-function enciendeVideo(){
-	if(videoEnable=="true")video.style.visibility="visible";
-	posterImage.style.visibility="hidden";
+function analizaTecla(e){
+	numero = e.firstElementChild.textContent
 }
 
-function apagaVideo(){
-	video.style.visibility="hidden";
-
-}
 
 function apagaLinea(){
 	document.getElementById("labelLinea").style.visibility="hidden";
 	triggerLinea="false";
 	lineaCantada="true";
 }
-function mostrarFecha(){
-	var f = new Date();
-	HTML=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
-	HTML+="<br>";
-	if(f.getHours()<10){
-		horas="0"+f.getHours();
-	}else{
-		horas=f.getHours();
-	}
-	if(f.getMinutes()<10){
-		minutos="0"+f.getMinutes();
-	}else{
-		minutos=f.getMinutes();
-	}
-	if(f.getSeconds()<10){
-		segundos="0"+f.getSeconds();
-	}else{
-		segundos=f.getSeconds();
-	}
-	HTML+= horas+":"+minutos+":"+ segundos;
-	cajaFecha.innerHTML=HTML;
-	
-	
-}
+
 function apagaBingo(){
 	document.getElementById("labelBingo").style.visibility="hidden";
-	triggerBingo="false";
-	bingoCantado="true";
-}
-function elegirCantaor(cantaor){
-	
-		    //var playMsg = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
-		    
-		    if (valCodecs=="MP4") {
-		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
-		    	if(cantaor=="Lola"){
-					nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
-					nombreRangos="rangosLola";
-					
-		    	}
-		    	if(cantaor=="Ines"){
-					nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
-					nombreRangos="rangosInes";
-				}
-
-		    }
-		    
-		    
-		    if (valCodecs=="OGG") {
-		      //msg.innerHTML += "ogg is " + playMsg + " supported<br/>";
-				if(cantaor=="Lola"){
-					nombreFileVideo="http://boga.esy.es/video/BingoLola.ogv";
-					nombreRangos="rangosLola";
-				}
-		    	if(cantaor=="Ines"){
-					nombreFileVideo="http://boga.esy.es/video/BingoInes.ogv";
-							
-					nombreRangos="rangosInes";
-				}
-		    	
-		    	
-		    }
-		    if (valCodecs=="WEBM") {
-		    	if(cantaor=="Lola"){
-					nombreFileVideo="http://boga.esy.es/video/BingoLola.webm";
-									
-					nombreRangos="rangosLola";
-				}
-		    	if(cantaor=="Ines"){
-					nombreFileVideo="http://boga.esy.es/video/BingoInes.webm";
-										
-					nombreRangos="rangosInes";
-				}
-
-		    }
-		  
-		video.pause();
-		flagVideoReady="false";
-		if(bucle!=null)clearInterval(bucle);
-		if(bucle2!=null)clearInterval(bucle2);
-		
-		video.src=nombreFileVideo;
-		
-		rangos=eval(nombreRangos);
-		if (arrayMessages==null)return;
-		myRango=sacarRangos(arrayMessages[1]);
-		if(arrayMessages[2]!=null)etiquetaOrden.textContent=(arrayMessages[2]);
-		video.load();
-		
-		//video.play();
-		//video.pause();
-		bucle2 = setInterval(function(){ esperarReadyState() }, 1000);
-}
-function esperarReadyState(){
-	if(flagVideoReady=="false")return;
-	flagVideoReady=false;
-	window.clearInterval(bucle2);
-	
-	play_range(myRango[0],myRango[1]);
-	
+	//triggerBingo="false";
+	//bingoCantado="true";
 }
 
 function show_InMessage(contenido,activoMarquee){
 	textoLargo = largoCeldaMensajes+"px";
 	if(activoMarquee!=null){
 		longitudActualComboTexto = 400;
-		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width="+longitudActualComboTexto+">"+contenido+"</marquee>";
+		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width="+textoLargo+">"+contenido+"</marquee>";
 	}else{
 		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
 	}	
@@ -277,33 +177,6 @@ function send_command(){
 }
 
 
-function play_range(ini,fin){
-	//video.pause();
-	if(ini==null)return;
-	if(fin==null)return;
-	video.currentTime=ini;
-	document.getElementById("seek_ini").value=ini;
-	document.getElementById("seek_fin").value=fin;
-	fin_seek=fin;
-	seeking="true";
-	esPrimeraVez="true";
-	//bucle=setInterval(procesarCuadros, 100);
-	bucle = setInterval(function(){ procesarCuadros() }, 60);
-	
-	
-}
-function play_range2(ini,fin){
-	//video.currentTime=ini;
-	video.currentTime=ini;
-	fin_seek=fin;
-	seeking="true";
-	esPrimeraVez="true";
-	//video.play();
-	//bucle = setInterval(function(){ procesarCuadros() }, 60);
-	
-
-	bucle=setInterval(procesarCuadros, 100);
-}
 function initInterface(){
 	triggerBingo="false";
 	triggerLinea="false";
@@ -335,20 +208,10 @@ function arrancar(){
 	//video.pause();
 	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
 	//
-	socket_send("newGame");
+	//socket_send("newGame");
 	initInterface();
 }
-function resumir(){
-	//El socket ya esta creado
-	fullscreen(document.getElementById("content"));
-	//video.play();
-	//video.pause();
-	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
-	//
-	socket_send("resume");
-	initInterface();
-	
-}
+
 
 function creaSocket(sala){
 	var wsUri = getRootUri() + sala;
@@ -383,31 +246,7 @@ function getRootUri() {
 function abierto(){
 	show_InMessage("socket abierto");
 	anchoPantalla=window.innerWidth;
-	//resizeBolas();
-	alto=window.innerHeight;
-	
-	//refreshDatosCartones();
-	//caja_spy.value=""+anchoPantalla+"x"+alto;
-	        /*
-        imageObj.onload = function() {
 
-					lienzo.scale(1,1);
-					ancho=window.innerWidth;
-					alto=windows.innerHeight;
-					canvas.width=ancho;
-					canvas.height=alto;
-                    lienzo.drawImage(imageObj, 0, 0,ancho,alto);
-        };
- 		 // Calls the imageObj.onload function asynchronously
-       imageObj.src="images/Bingo.png";
-       */
-	
-	
-	//alert("Ancho canvas=" + canvas.width + ", alto="+ canvas.height);
-	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
-	
-	
-	//socket_send("startGame");
 }
 function refreshDatosCartones(){
 	//Envia al servidor una peticion de refresco de datos
@@ -420,15 +259,11 @@ function refreshDatosCartones(){
 function visualizaDatosCartones(){
 	sumaCaja = precioCarton*nCartones;
 	sumaTantos = porCientoLinea+porCientoBingo+porCientoCantaor;
-	/*
-	xLinea=Math.floor((sumaCaja*porCientoLinea)/sumaTantos);
-	xBingo=Math.floor((sumaCaja*porCientoBingo)/sumaTantos);
-	zCantaor=Math.floor((sumaCaja*porCientoCantaor)/sumaTantos);
-	*/
+
 	xLinea=parseFloat((sumaCaja*porCientoLinea)/sumaTantos).toFixed(2);
 	xBingo=parseFloat((sumaCaja*porCientoBingo)/sumaTantos).toFixed(2);
 	zCantaor=parseFloat((sumaCaja*porCientoCantaor)/sumaTantos).toFixed(2);
-	//xLinea=(sumaCaja*porCientoLinea)/sumaTantos).toFixed(2);
+
 	if(xLinea+xBingo+zCantaor<sumaCaja){
 		dif=sumaCaja-(xLinea+xBingo+zCantaor);
 		if(dif=2){
@@ -444,30 +279,7 @@ function visualizaDatosCartones(){
 	datoLinea.textContent=xLinea+" €";
 	datoBingo.textContent=xBingo+" €";
 }
-function resizeBolas(tamanoMenu){
-	//alert("olas");
-	
-	if(tamanoMenu==null){
-	anchoPantalla=window.innerWidth;
-	alto=window.innerHeight;
-	nuevoTamano=Math.floor(anchoPantalla/27);
-	if(nuevoTamano>82)nuevoTamano=maxTamano;
-	}else{
-		nuevoTamano=tamanoMenu;
-	}
-	if(nuevoTamano>82)nuevoTamano=maxTamano;
-	caja_spy.value=""+anchoPantalla+"x"+alto +" -->"+nuevoTamano;
-	for(i=1;i<91;i++){
-		elemento=document.getElementById(""+i);
-		elemento.style.fontSize=nuevoTamano+"px";
-	}
-	/*
-	anchoposterImage=posterImage.offsetHeight;
-	altoposterImage=posterImage.offsetWidth;
-	posterImage.style.height=altoposterImage;
-	posterImage.style.width=anchoposterImage;
-	*/
-}
+
 function cerrado(){
 	show_InMessage("El socket se ha cerrado");
 }
@@ -513,6 +325,10 @@ function recibido(e){
 		case "ApagaVideo":
 				apagaVideo();
 				break;
+		case "InitInterface":
+				initInterface();
+				break;
+
 		case "EndBalls":
 				
 				numerin = Math.floor((Math.random()*10))+1;	
@@ -537,28 +353,10 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);
 				break
 		case "ComprobarLinea":
-				
-				numerin = Math.floor((Math.random()*10))+1;
-				poster="url('images/gifLinea"+numerin+".gif')";
-				posterImage.style.backgroundImage=poster;
-				
-				apagaVideo();
 				show_InMessage("COMPROBANDO LINEA ....",true);
-				posterImage.style.visibility="visible";
-				anchoposterImage=posterImage.offsetHeight;
-				altoposterImage=posterImage.offsetWidth;
 				break;
 		case "ComprobarBingo":
-				numerin = Math.floor((Math.random()*10))+1;
-				poster="url('images/gifBingo"+numerin+".gif')";
-				posterImage.style.backgroundImage=poster;
-				apagaVideo();
 				show_InMessage("COMPROBANDO BINGO ....",true);
-				posterImage.style.visibility="visible";
-				//	Se deberia escribir en el canvas 	
-				
-				//	etqLinea=document.getElementById("labelLinea");
-				//etqLinea.style.
 				break;				
 		case "EncenderNumero":
 				if(arrayMessages[1] == null || (arrayMessages[1]+"").length >2)return;
@@ -581,6 +379,9 @@ function recibido(e){
 		case "ApagaLinea":
 				apagaLinea();
 				break;
+		case "ApagaBingo":
+			apagaBingo();
+			break;				
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);
@@ -594,14 +395,7 @@ function recibido(e){
 		} 
 	}
 }
-function detectarFinVideo(){
-	if(video.ended){
-		apagarVideo();
-		window.clearInterval(bucle8);
-		bucle8=null;
-		
-	}
-}
+
 function apagarNumero(n){
 	document.getElementById(n).style.color="#280000";
 	document.getElementById(n).style.backgroundColor="#000000";
@@ -644,21 +438,7 @@ function sacarRangos(numerobase){
 function socket_send(comanda){
 	socket.send(comanda);
 }
-function pausar(){
-	  boton_pause.style.borderBottomStyle = "inset";
-	  boton_pause.style.borderLeftStyle = "inset";
-  	  video.pause();
-      boton_play.style.borderBottomStyle = "outset";
-	  boton_play.style.borderLeftStyle = "outset";	
-}
 
-function reanudar(){
-	boton_play.style.borderBottomStyle = "inset";
-	boton_play.style.borderLeftStyle = "inset";
-	video.play();
-	   boton_pause.style.borderBottomStyle = "outset";
-	   boton_pause.style.borderLeftStyle = "outset";
-}
 function procesarCuadros(){
 	
 	contador.value=video.currentTime;
@@ -675,30 +455,7 @@ function procesarCuadros(){
 		palabraBingo.style.backgroundColor=color;
 		colorTriggerLinea++;
 	}
-	if(seeking=="true"){
-		if(esPrimeraVez=="true"){
-			
-			if(!video.seeking){
-				video.play();
-				esPrimeraVez = "false";
-			}
-			/*
-			video.oncanplay = function() {
-			    video.play();
-			    esPrimeraVez = "false";
-			};*/
-			
 
-		}
-		if(video.currentTime >= fin_seek){
-			window.clearInterval(bucle);
-			seeking="false";
-			video.pause();
-			socket_send("refresh_refresh_refresh1");		
-			socket_send("seekingFinished");
-			socket_send("refresh_refresh_refresh2");
-		}
-	}
 	
 }
 //numero,ejeX,ejeY,radio,gradiente(Si-no),modoPatttern,colorPattern,selectorPattern

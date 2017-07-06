@@ -109,10 +109,12 @@ public class Runnable3 implements Runnable{
                 	i--;
                 }else if(pb.getIdState().equals("ComprobandoLinea")){
                 	enviarMensajeAPerfil("ComprobarLinea","supervisor");
+                	enviarMensajeAPerfil("ComprobarLinea","jugador");
                 	i--;
                 }else if(pb.getIdState().equals("LineaOk")){
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"supervisor");
+                	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"jugador");
                 	i--;
                 }else if(pb.getIdState().equals("Continue")){
                 	pb.setIdState("Started");
@@ -128,6 +130,7 @@ public class Runnable3 implements Runnable{
                 	i--;
                 }else if(pb.getIdState().equals("ComprobandoBingo")){
                 	enviarMensajeAPerfil("ComprobarBingo","supervisor");
+                	enviarMensajeAPerfil("ComprobarBingo","jugador");
                 	i--;
                 }else if(pb.getIdState().equals("BingoOk")){
                 	pb.setIdState("Finalized");

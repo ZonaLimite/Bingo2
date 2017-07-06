@@ -120,54 +120,40 @@ function iniciar() {
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
-		if(lineaCantada=="true" || lineaCantada=="comprobando")return;
-		lineaCantada="comprobando";
+		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
+		//lineaCantada="comprobando";
 		socket_send("Linea");
-		triggerLinea="true";
+		//triggerLinea="true";
 	};
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
 	boton_Bingo.onclick = function(){
-		if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
-		bingoCantado="comprobando";
+		//if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
+		//bingoCantado="comprobando";
 		socket_send("Bingo");
-		triggerBingo="true";
+		//triggerBingo="true";
 	};
 
 	boton_LineaOk= document.getElementById("boton_LineaOk");
 	boton_LineaOk.onclick = function(){
-		if(lineaCantada!="comprobando")return;
-		apagaLinea();
-		enciendeVideo();
+		//if(lineaCantada!="comprobando")return;
+
 		socket_send("Linea_OK");
 	};
 	
 	boton_BingoOk= document.getElementById("boton_BingoOk");
 	boton_BingoOk.onclick = function(){
-		if(bingoCantado!="comprobando")return;
-		palabraBingo.style.visibility="hidden";
-		apagaBingo();
-		enciendeVideo();
+		//if(bingoCantado!="comprobando")return;
+		//palabraBingo.style.visibility="hidden";
+
 		socket_send("Bingo_OK");
 	};
 	
 	boton_Continuar = document.getElementById("boton_Continuar");
 	boton_Continuar.onclick = function(){
-		
-		if(lineaCantada=="comprobando"){
-			lineaCantada="false";
-			triggerLinea="false";
-			socket_send("Continue");
-		}
-		if(bingoCantado=="comprobando"){
-			bingoCantado="false";
-			triggerBingo="false";
-			socket_send("Continue");
-		}
-		
-
-		
+		socket_send("Continue");
 	}
+	
 	boton_iniciar = document.getElementById("iniciar");
 	boton_iniciar.onclick = function(){ arrancar()};
 	
@@ -374,10 +360,7 @@ function iniciar() {
 		  ]
 		});
 		bucle3 = setInterval(function(){ mostrarFecha() }, 1000);
-	//Podriamos hacer autenticaUsuario() aqui;
-
-
-		
+			
 }
 function fullscreen(e){
     if (e.webkitRequestFullScreen) {
@@ -831,6 +814,10 @@ function recibido(e){
 		case "ApagaLinea":
 				apagaLinea();
 				break;
+		case "ApagaBingo":
+			apagaBingo();
+			break;
+
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);

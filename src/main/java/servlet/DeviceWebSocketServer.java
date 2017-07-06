@@ -153,6 +153,7 @@ private String salaInUse;
 	case "newGame":
 		//this.borraPocket("user", session);vcfb
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
+		this.enviarMensajeAPerfil("InitInterface", "jugador");
 		//pb= new PocketBingo();
 		pb= gestorSesions.getJugadasSalas(salaInUse);
 		if(pb==null){
@@ -185,20 +186,28 @@ private String salaInUse;
 		break;
 	
 	case "Linea":
+		if(pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
 		pb.setIdState("Linea");
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
 
 	case "Linea_OK":
-		pb.setLineaCantada(true);
-		pb.setIdState("LineaOk");
-		pb.setReasonInterrupt("secuenciaAcabada");
-		//this.guardaPocket("sala1", session);
-		hilo3.interrupt();
+		if(pb.getIdState().equals("ComprobandoLinea")){
+			pb.setLineaCantada(true);
+			pb.setIdState("LineaOk");
+			pb.setReasonInterrupt("secuenciaAcabada");
+			enviarMensajeAPerfil("ApagaLinea","supervisor");
+			enviarMensajeAPerfil("ApagaLinea","jugador");
+			enviarMensajeAPerfil("EnciendeVideo","supervisor");
+			//this.guardaPocket("sala1", session);
+			hilo3.interrupt();
+		}
+
 		break;
 	
 	case "Bingo":
+		if(!pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
 		pb.setIdState("Bingo");
 		pb.setReasonInterrupt("Bingo");
 		//this.guardaPocket("sala1", session);
@@ -206,18 +215,27 @@ private String salaInUse;
 		break;
 	
 	case "Bingo_OK":
-		pb.setBingoCantado(true);
-		pb.setIdState("BingoOk");
-		pb.setReasonInterrupt("secuenciaAcabada");
-		//this.guardaPocket("sala1", session);
-		hilo3.interrupt();
+		if(pb.getIdState().equals("ComprobandoBingo")){
+			pb.setBingoCantado(true);
+			pb.setIdState("BingoOk");
+			pb.setReasonInterrupt("secuenciaAcabada");
+			enviarMensajeAPerfil("ApagaBingo","supervisor");
+			enviarMensajeAPerfil("ApagaBingo","jugador");
+			enviarMensajeAPerfil("EnciendeVideo","supervisor");
+
+			//this.guardaPocket("sala1", session);
+			hilo3.interrupt();
+		}
 		break;
+		
 	case "Continue":
-		pb.setIdState("Continue");
-		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
-		pb.setReasonInterrupt("continuar");
-		//this.guardaPocket("sala1", session);
-		hilo3.interrupt();
+		if(pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") ){		
+			pb.setIdState("Continue");
+			this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
+			pb.setReasonInterrupt("continuar");
+			//	this.guardaPocket("sala1", session);
+			hilo3.interrupt();
+		}
 		break;
 	
 	case "Finalize":
@@ -269,10 +287,9 @@ private String salaInUse;
 
 		}
 	}
-	
-	
 }
-  private PocketBingo leePocket(String sala, Session sesion){
+
+private PocketBingo leePocket(String sala, Session sesion){
 	  	String ruta,fichero;
 	  	PocketBingo aux=null;
 	  	String uri=sesion.getRequestURI().toString();

@@ -60,9 +60,34 @@ import org.jboss.logging.Logger;
 		
 		@PreDestroy
 		final public void finalize(){
-			guardaContext();//Pendiente local
+			//guardaContext();//Pendiente local
 			log.info("Guardando contexto pockets bingo");
+		  	String ruta,fichero;
+			
+					ruta = System.getenv("OPENSHIFT_DATA_DIR");
+					if(ruta==null){
+						ruta="C:\\\\put\\HTML5\\PocketBingo\\";
+					}
+					fichero=ruta+"MapaBingos";//
+					
+		  
+		  try
+	      {
+	          ObjectOutputStream oos = new ObjectOutputStream(
+	                  new FileOutputStream(fichero));
+	          
+	              oos.writeObject(this.jugadasSalas);
+	              log.info("guardando Pocket"+ fichero);
+	              
+	          oos.close();
+	      } catch (Exception e)
+	      {
+	          log.error("Excepcion Guarda Pocket "+ fichero);
+	    	  e.printStackTrace();
+	      }  
+		  
 		}
+		
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
 	  
 	    public void add(String user,UserBean userBean) {
@@ -237,7 +262,7 @@ import org.jboss.logging.Logger;
 						ruta="C:\\\\put\\HTML5\\PocketBingo\\";
 					}
 					fichero=ruta+"MapaBingos";//
-					log.info("guardando Pocket"+ fichero);
+					
 		  
 		  try
 	      {
@@ -245,6 +270,7 @@ import org.jboss.logging.Logger;
 	                  new FileOutputStream(fichero));
 	          
 	              oos.writeObject(this.jugadasSalas);
+	              log.info("guardando Pocket"+ fichero);
 	              
 	          oos.close();
 	      } catch (Exception e)
