@@ -6,7 +6,7 @@
 @import url("../webfonts/Hotel_Coral_Essex/stylesheet.css");
 
 @viewport{
-	zoom:1.0;
+	zoom:0.5;
 	orientation: landscape;
     width: extend-to-zoom 100%;
     height: auto;

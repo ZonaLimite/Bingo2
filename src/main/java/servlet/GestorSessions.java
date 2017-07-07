@@ -60,7 +60,6 @@ import org.jboss.logging.Logger;
 		
 		@PreDestroy
 		final public void finalize(){
-			//guardaContext();//Pendiente local
 			log.info("Guardando contexto pockets bingo");
 		  	String ruta,fichero;
 			
