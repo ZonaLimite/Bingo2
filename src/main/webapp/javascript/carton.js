@@ -152,22 +152,30 @@ function apagaLinea(){
 	document.getElementById("labelLinea").style.visibility="hidden";
 	triggerLinea="false";
 	lineaCantada="true";
+	show_InMessage("LINEA CORRECTA","blink")
 }
 
 function apagaBingo(){
 	document.getElementById("labelBingo").style.visibility="hidden";
 	//triggerBingo="false";
 	//bingoCantado="true";
+	show_InMessage("BINGO CORRECTO","blink")
 }
 
 function show_InMessage(contenido,activoMarquee){
-	textoLargo = largoCeldaMensajes+"px";
+	textoLargo = largoCeldaMensajes+"px";//
+	
 	if(activoMarquee!=null){
-		longitudActualComboTexto = 400;
-		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width="+textoLargo+">"+contenido+"</marquee>";
+		if(activoMarquee=="blink"){
+			comboTexto.innerHTML="<label class='blink' width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
+		}else {
+			comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width="+textoLargo+">"+contenido+"</marquee>";
+		}
+
 	}else{
-		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
-	}	
+		//comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
+
+		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' ></label>";}	
 	
 	
 }
@@ -186,6 +194,7 @@ function initInterface(){
 	palabraBingo.style.backgroundColor="#000000";
 	palabraLinea.style.visibility="visible";
 	palabraBingo.style.visibility="visible";
+	etiquetaOrden.textContent="0";
 
 	canvas=document.getElementById('canvas_bola');
 	canvas.width=canvas.width;
@@ -326,31 +335,19 @@ function recibido(e){
 				apagaVideo();
 				break;
 		case "InitInterface":
-				initInterface();
+				initInterface();//
+				show_InMessage("!! COMIENZA PARTIDA ¡¡","blink");	
 				break;
 
 		case "EndBalls":
-				
-				numerin = Math.floor((Math.random()*10))+1;	
-					poster="url('images/EndBalls"+numerin+".gif')";
-
-					//posterImage.style.height=altoposterImage;
-					//posterImage.style.width=anchoposterImage;
-					
-					apagaVideo();
-					posterImage.style.visibility="visible";
-					posterImage.style.backgroundImage=poster;
-					show_InMessage("HAGAN SUS APUESTAS...HABRA UNA PARTIDA ESPECIAL CADA HORA Y MEDIA",true)
-					
-					detenerFondoEstrellas();
+				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true)
 				break;
 		case "Linea":
-				myRango=sacarRangos(arrayMessages[1]);
-				play_range(myRango[0],myRango[1]);
+				show_InMessage("!! LINEA ¡¡","blink");	
 				break;
 		case "Bingo":
-				myRango=sacarRangos(arrayMessages[1]);
-				play_range(myRango[0],myRango[1]);
+			show_InMessage("!! BINGO ¡¡","blink");	
+			break;
 				break
 		case "ComprobarLinea":
 				show_InMessage("COMPROBANDO LINEA ....",true);
@@ -380,7 +377,7 @@ function recibido(e){
 				apagaLinea();
 				break;
 		case "ApagaBingo":
-			apagaBingo();
+				apagaBingo();
 			break;				
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);

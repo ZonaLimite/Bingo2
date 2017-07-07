@@ -67,7 +67,7 @@
      </span></td>
    </tr>
    <tr>
-     <td colspan="4" class="valorInfo" id="comboTexto">comboTexto</td>
+     <td colspan="4" class="valorInfo" id="comboTexto"></td>
    </tr>
  </table>
  <!--

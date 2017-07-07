@@ -114,7 +114,7 @@ public class Runnable3 implements Runnable{
                 }else if(pb.getIdState().equals("LineaOk")){
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"supervisor");
-                	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"jugador");
+                
                 	i--;
                 }else if(pb.getIdState().equals("Continue")){
                 	pb.setIdState("Started");
@@ -173,12 +173,13 @@ public class Runnable3 implements Runnable{
            				}
                			if(pb.getIdState().equals("Finalized")){
                				enviarMensajeAPerfil("EndBalls","supervisor");
+               				enviarMensajeAPerfil("EndBalls","jugador"); 
                				return;
                			}
 
                			pb.addNumerosCalled(pb.getNewBola());
                			enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"supervisor");
-               			enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"jugador");
+               			//enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"jugador");
                			
                			try {
                				delay=pb.getDelay();
@@ -200,6 +201,7 @@ public class Runnable3 implements Runnable{
                				
                		case "offLine":
                			enviarMensajeAPerfil("EndBalls","supervisor");
+               			enviarMensajeAPerfil("EndBalls","jugador");               			
                			pb.setIdState("Finalized");
                			return;
                }
@@ -208,6 +210,7 @@ public class Runnable3 implements Runnable{
           }   
         }
     	enviarMensajeAPerfil("EndBalls","supervisor");
+    	enviarMensajeAPerfil("EndBalls","jugador");                	
     	pb.setIdState("Finalized");
     	return;
     }

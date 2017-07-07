@@ -188,6 +188,7 @@ private String salaInUse;
 	case "Linea":
 		if(pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
 		pb.setIdState("Linea");
+		enviarMensajeAPerfil("Linea","jugador");
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
@@ -209,6 +210,7 @@ private String salaInUse;
 	case "Bingo":
 		if(!pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
 		pb.setIdState("Bingo");
+		enviarMensajeAPerfil("Bingo","jugador");		
 		pb.setReasonInterrupt("Bingo");
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
