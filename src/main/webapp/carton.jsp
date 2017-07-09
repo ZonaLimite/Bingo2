@@ -1,5 +1,5 @@
 <%@ page language="java" 
-    contentType="text/html; charset=UTF-8"
+    contentType="text/html; charset=utf-8"
     pageEncoding="UTF-8"
 %>
 <%@ page import="javax.servlet.http.HttpSession" %>
@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="vieport" content="width=device-width, initial-scale=1.0, orientation=landscape">
+<meta name="vieport" content="width=800, height=480, initial-scale=1, orientation=landscape">
 <title>Bingo 2016</title>
  
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -45,7 +45,7 @@
   <tr>
   <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
   
- <td width="68%" class="tablaInfo" ><table width="86%"  align="center" class="tablaInfo">
+ <td width="62%" class="tablaInfo" ><table width="86%"  align="center" class="tablaInfo">
    <tr>
      <td width="97" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
      <td width="26" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
@@ -76,7 +76,7 @@
      -->
   
 	
-    <td id="CajaDcha" width="30%">	          
+    <td id="CajaDcha" width="36%">	          
     <canvas id="canvas_bola" class="canvasBola">
 	           
     </canvas></td>
@@ -88,95 +88,97 @@
 <table class="tablero">
     <tr>
          <td onClick="analizaTecla(this)" class="panel"> 
-            <label ID="F1C1" class="numeros" ></label>             
+          <canvas class="canvasNumero" id="F1C1"></canvas>             
         </td>
-      <td onClick="analizaTecla(this)" class="panel"> 
-        <label id="F1C2" class="numeros" >10</label>             
+    <td class="panel" >	          
+    <canvas class="canvasNumero" id="F1C2" >
+	           
+    </canvas></td>
+      <td class="panel"> 
+     	<canvas class="canvasNumero" id="F1C3"></canvas>   
         </td>
       <td class="panel"> 
-        <label id="F1C3" class="numeros" >20</label>             
+		<canvas class="canvasNumero" id="F1C4"></canvas> 
         </td>
       <td class="panel"> 
-        <label id="F1C4" class="numeros" >30</label>             
+		<canvas class="canvasNumero" id="F1C5"></canvas>            
         </td>
-      <td class="panel"> 
-        <label id="F1C5" class="numeros" >40</label>             
-        </td>
-      
       <td class="panel">
-      	<label id="F1C6" class="numeros" >50</label>
+     	 <canvas class="canvasNumero" id="F1C6"></canvas> 
       </td >
       <td  class="panel">
-        <label id="F1C7" class="numeros" >60</label>              
+		<canvas class="canvasNumero" id="F1C7"></canvas>               
      </td >
-
         <td  class="panel">
-          <label id="F1C8" class="numeros" >70</label>              
+		<canvas class="canvasNumero" id="F1C8"></canvas>          
         </td >
         <td  class="panel">
-          <label id="F1C9" class="numeros" >80</label>              
+		<canvas class="canvasNumero" id="F1C9"></canvas>          
         </td >
 
     </tr>
-    <tr>
-       <td class="panel">
-         <label id="F2C1" class="numeros" >1</label>
-       </td>
-               <td class="panel"> 
-            <label id="F2C2" class="numeros" >11</label>             
+   <tr>
+         <td onClick="analizaTecla(this)" class="panel"> 
+          <canvas class="canvasNumero" id="F2C1"></canvas>             
+        </td>
+    <td class="panel">	          
+    <canvas class="canvasNumero"  id="F2C2">
+	           
+    </canvas></td>
+      <td class="panel"> 
+     	<canvas class="canvasNumero" id="F2C3"></canvas>   
         </td>
       <td class="panel"> 
-            <label id="F2C3" class="numeros" >21</label>             
+		<canvas class="canvasNumero" id="F2C4"></canvas> 
         </td>
       <td class="panel"> 
-            <label id="F2C4" class="numeros" >31</label>             
+		<canvas class="canvasNumero" id="F2C5"></canvas>            
         </td>
-      <td class="panel"> 
-            <label id="F2C5" class="numeros" >41</label>             
-        </td>
-      <td class="panel"> 
-            <label id="F2C6" class="numeros" >51</label>             
-        </td>
-      <td class="panel"> 
-            <label id="F2C7" class="numeros" >61</label>             
-        </td>
-    
-        <td class="panel">
-            <label id="F2C8" class="numeros" >71</label>              
+      <td class="panel">
+     	 <canvas class="canvasNumero" id="F2C6"></canvas> 
+      </td >
+      <td  class="panel">
+		<canvas class="canvasNumero" id="F2C7"></canvas>               
+     </td >
+        <td  class="panel">
+		<canvas class="canvasNumero" id="F2C8"></canvas>          
         </td >
-        <td class="panel">
-            <label id="F2C9" class="numeros" >81</label>              
+        <td  class="panel">
+		<canvas class="canvasNumero" id="F2C9"></canvas>          
         </td >
-	</tr>
 
-  <tr>
-         <td class="panel"><label id="F3C1" class="numeros" >2</label></td>
+    </tr>
+   <tr>
+         <td onClick="analizaTecla(this)" class="panel"> 
+          <canvas class="canvasNumero" id="F3C1"></canvas>             
+        </td>
+    <td class="panel" >	          
+    <canvas class="canvasNumero" id="F3C2">
+	           
+    </canvas></td>
       <td class="panel"> 
-            <label id="F3C2" class="numeros" >12</label>             
+     	<canvas class="canvasNumero" id="F3C3"></canvas>   
         </td>
       <td class="panel"> 
-            <label id="F3C3" class="numeros" >22</label>             
+		<canvas class="canvasNumero" id="F3C4"></canvas> 
         </td>
       <td class="panel"> 
-            <label id="F3C4" class="numeros" >32</label>             
+		<canvas class="canvasNumero" id="F3C5"></canvas>            
         </td>
-      <td class="panel"> 
-            <label id="F3C5" class="numeros" >42</label>             
-        </td>
-      <td class="panel"> 
-            <label id="F3C6" class="numeros" >52</label>             
-        </td>
-      <td class="panel"> 
-            <label id="F3C7" class="numeros" >62</label>             
-        </td>
-    
-        <td class="panel">
-            <label id="F3C8" class="numeros" >72</label>              
+      <td class="panel">
+     	 <canvas class="canvasNumero" id="F3C6"></canvas> 
+      </td >
+      <td  class="panel">
+		<canvas class="canvasNumero" id="F3C7"></canvas>               
+     </td >
+        <td  class="panel">
+		<canvas class="canvasNumero" id="F3C8"></canvas>          
         </td >
-        <td class="panel">
-            <label id="F3C9" class="numeros" >82</label>              
+        <td  class="panel">
+		<canvas class="canvasNumero" id="F3C9"></canvas>          
         </td >
-</tr>
+
+    </tr>
 </table>
 
  

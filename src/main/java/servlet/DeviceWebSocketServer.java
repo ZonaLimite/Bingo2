@@ -93,7 +93,7 @@ private String salaInUse;
 	guardaPocket(salaInUse,mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
 	gestorSesions.remove(mySesion);
-	gestorSesions.guardaContext();
+	//gestorSesions.guardaContext();
 	
 }
 

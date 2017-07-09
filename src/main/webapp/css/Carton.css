@@ -6,7 +6,7 @@
 @import url("../webfonts/Hotel_Coral_Essex/stylesheet.css");
 
 @viewport{
-	zoom:0.5;
+	zoom:1.0;
 	orientation: landscape;
     width: extend-to-zoom 100%;
     height: auto;
@@ -62,8 +62,6 @@ display: block;
 
 #agrupar {
 	width: 100%;
-	text-align: left;
-	float: left;
 	margin: 0px;
 }
 
@@ -166,6 +164,10 @@ display: block;
 	border-bottom-style: none;
 	border-left-style: none;
 	background-color: #000;
+	height: 90px;
+	width: 100%;
+	font-family: "Hotel Coral Essex";
+	font-weight: bolder;
 }
 
 .valorInfo {
@@ -314,7 +316,7 @@ display: block;
 	border-bottom-width: medium;
 	border-left-width: medium;
 	background-color: #960;
-	height: 100px;
+	height: 100%;
   }
 .video{
   border: 1px solid red;
@@ -330,15 +332,9 @@ display: block;
 .panel{
 	background-color: #FFFFFF;
 	border: 1px solid #1D3841;
-	text-align: center;
 	visibility: visible;
 	opacity: 0.9;
-	vertical-align: middle;
 	background-image: none;
-	padding-top: 2%;
-	padding-right: 1%;
-	padding-bottom: 2%;
-	padding-left: 1%;
 }
 #marquesina {
 	font-family: AgainstMyself;
@@ -405,4 +401,21 @@ display: block;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+.canvasNumero {
+	margin: 0px;
+	padding: 0;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	width: 95%;
+	height: 70px;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	vertical-align: middle;
+	
+
+
 }
