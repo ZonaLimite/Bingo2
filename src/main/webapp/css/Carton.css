@@ -236,9 +236,8 @@ display: block;
 	border-bottom-style: solid;
 	border-left-style: solid;
 	background-color: #B93CB9;
-	margin: 20px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 30px;
+	font-size: 25px;
 	font-weight: bold;
 	float: none;
 	color: #000;
@@ -248,6 +247,10 @@ display: block;
 	border-color: #682268;
 	height: auto;
 	vertical-align: middle;
+	margin-top: 0px;
+	margin-right: 10px;
+	margin-bottom: 0px;
+	margin-left: 10px;
 }
 #menu_li1 {
 	display: inline-block;

@@ -67,8 +67,19 @@
      </span></td>
    </tr>
    <tr>
-     <td colspan="4" class="valorInfo" id="comboTexto"></td>
+     <td colspan="4" class="valorInfo" ><article id="articulo">	
+<div align="center">  
+<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
+<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
+<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
+</div>  
+</article>
+</td>
    </tr>
+   <tr>
+     <td colspan="4" class="valorInfo" id="comboTexto">
+	 </td>
+   </tr>   
  </table>
  <!--
    CARTON n:
@@ -184,13 +195,7 @@
  
 
 
-<article id="articulo">	
-<div align="center">  
-<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
-<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
-<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
-</div>  
-</article>
+
 </div>
 
  
