@@ -43,9 +43,9 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-  <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%>Sala1</label>
+  <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label>
     <span class="labelUser">
-    <label class="labelUser"><%=myUser.getUsername()%>Pedorri</label>
+    <label class="labelUser"><%=myUser.getUsername()%></label>
     </span></td>
   
  <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
