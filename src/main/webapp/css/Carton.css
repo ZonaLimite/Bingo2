@@ -366,7 +366,7 @@ display: block;
 
 
 .ano {
-	font-size: 22px;
+	font-size: 24px;
 	font-weight: bold;
 	background-color: #1D3841;
 	color: #CC0000;
@@ -421,4 +421,9 @@ display: block;
 	
 
 
+}
+.labelUser {
+	font-family: "Hotel Coral Essex";
+	font-size: 14px;
+	color: #0F0;
 }

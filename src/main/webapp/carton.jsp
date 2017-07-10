@@ -43,7 +43,10 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-  <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
+  <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%>Sala1</label>
+    <span class="labelUser">
+    <label class="labelUser"><%=myUser.getUsername()%>Pedorri</label>
+    </span></td>
   
  <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
    <tr>
@@ -67,19 +70,21 @@
      </span></td>
    </tr>
    <tr>
-     <td colspan="4" class="valorInfo" ><article id="articulo">	
-<div align="center">  
-<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
-<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
-<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
-</div>  
-</article>
-</td>
-   </tr>
-   <tr>
      <td colspan="4" class="valorInfo" id="comboTexto">
 	 </td>
-   </tr>   
+   </tr>      
+   <tr>
+     <td colspan="4" class="valorInfo" >
+     <article id="articulo">	
+		<div align="center">  
+		<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
+		<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
+		<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
+		</div>  
+	</article>
+	</td>
+   </tr>
+
  </table>
  <!--
    CARTON n:
