@@ -363,7 +363,7 @@ display: block;
 
 
 .ano {
-	font-size: 32px;
+	font-size: 25px;
 	font-weight: bold;
 	background-color: #1D3841;
 	color: #CC0000;
@@ -409,7 +409,7 @@ display: block;
 	right: 0px;
 	bottom: 0px;
 	width: 95%;
-	height: 70px;
+	height: 60px;
 	border-top-style: groove;
 	border-right-style: groove;
 	border-bottom-style: groove;
