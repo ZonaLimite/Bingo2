@@ -45,7 +45,7 @@
   <tr>
   <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
   
- <td width="62%" class="tablaInfo" ><table width="90%"  align="center" class="tablaInfo">
+ <td width="62%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
    <tr>
      <td width="97" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
      <td width="26" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
