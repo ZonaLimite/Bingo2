@@ -45,14 +45,14 @@
   <tr>
   <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()+ " "%></td>
   
- <td width="62%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
+ <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
    <tr>
-     <td width="101" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
-     <td width="28" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
+     <td width="90" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
+     <td width="35" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
        <label id="labelOrden" class="valorInfo">0</label>
      </span></td>
-     <td width="83" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
-     <td width="185" class="celdaInfo"><span class="Comander">
+     <td width="76" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
+     <td width="196" class="celdaInfo"><span class="Comander">
        <label id="valorLinea" class="valorInfo">0 €</label>
      </span></td>
    </tr>
@@ -76,7 +76,7 @@
      -->
   
 	
-    <td id="CajaDcha" width="36%">	          
+    <td id="CajaDcha" width="38%">	          
     <canvas id="canvas_bola" class="canvasBola">
 	           
     </canvas></td>
