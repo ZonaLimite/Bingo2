@@ -50,12 +50,12 @@
   
  <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
    <tr>
-     <td width="90" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
-     <td width="35" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
+     <td width="97" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
+     <td width="37" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
        <label id="labelOrden" class="valorInfo">0</label>
      </span></td>
-     <td width="76" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
-     <td width="196" class="celdaInfo"><span class="Comander">
+     <td width="118" id="datoLinea" class="celdaInfo" ><label id="labelLinea">LINEA:</label></td>
+     <td width="176" class="celdaInfo"><span class="Comander">
        <label id="valorLinea" class="valorInfo">0 €</label>
      </span></td>
    </tr>
@@ -83,7 +83,7 @@
    </tr>
 	   <tr>
      <td colspan="4" class="valorInfo" id="comboTexto">
-     <label  id="labelTexto" class="classMessage" >combotexto</label>
+     <label  id="labelTexto" >combotexto</label>
 	 </td>
    </tr>      
  </table>

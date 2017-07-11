@@ -18,9 +18,18 @@ public class UserBean {
     private HttpSession sesionHttp;
     private Session sesionSocket;
     private Vector<Carton> vCarton;
+    private Integer saldo=0;
     
     public Integer getNumeroCartones() {
 		return numeroCartones;
+	}
+
+	public Integer getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(Integer saldo) {
+		this.saldo = saldo;
 	}
 
 	public void setNumeroCartones(Integer numeroCartones) {

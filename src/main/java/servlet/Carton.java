@@ -14,6 +14,7 @@ public class Carton {
 	private String numeroPantalla;
 	private boolean lineaCantado=false;
 	private boolean bingoCantado=false;
+	
 	public String getnCarton() {
 		return nCarton;
 	}

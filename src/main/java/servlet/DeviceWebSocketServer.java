@@ -26,6 +26,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.jboss.logging.Logger;
 
+
 @ServerEndpoint(value="/sala1",configurator=UserAwareConfigurator.class)
 public class DeviceWebSocketServer {
 Logger log = Logger.getLogger("MyLogger");
@@ -92,15 +93,18 @@ private String salaInUse;
 	//serializar Pocke33tBingo
 	guardaPocket(salaInUse,mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
-	gestorSesions.remove(mySesion);//
-	//gestorSesions.guardaContext();
+	try{
+		gestorSesions.remove(mySesion);
+	}catch(Exception e){
+		//
+	}
 	
 }
 
 @OnError
     public void onError(Throwable error) {
 	guardaPocket(salaInUse,mySesion);
-	gestorSesions.guardaContext();
+
 	log.info("Ocurrido error : "+ error.getMessage());
 	error.printStackTrace();
 }

@@ -164,9 +164,9 @@ function fullscreen(e){
 		e.requestFullscreen();
 	} else if (e.webkitRequestFullscreen) {
 		e.webkitRequestFullscreen();
-	} else if (i.mozRequestFullScreen) {
+	} else if (e.mozRequestFullScreen) {
 		e.mozRequestFullScreen();
-	} else if (i.msRequestFullscreen) {
+	} else if (e.msRequestFullscreen) {
 		e.msRequestFullscreen();
 	}
 }

@@ -34,10 +34,14 @@ import org.jboss.logging.Logger;
 		 */
 		private static final long serialVersionUID = -124517853214941713L;
 		Logger log = Logger.getLogger("GestorSessions");
+		
+		 //Mapa seguimiento sesiones de usuario
 	    private Map<String, Vector<UserBean>> sessions;
 	    
 	    //Mapa seguimiento jugadas Bingo por Sala (Sala,PocketBingo)
 	    private Map<String, PocketBingo> jugadasSalas;
+	    
+	    
 
 	    public PocketBingo getJugadasSalas(String sala) {
 			PocketBingo pb = jugadasSalas.get(sala);

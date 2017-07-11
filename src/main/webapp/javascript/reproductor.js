@@ -487,10 +487,11 @@ function esperarReadyState(){
 }
 
 function show_InMessage(contenido,activoMarquee){
+	largoCeldaMensajes = comboTexto.clientWidth;
 	textoLargo = largoCeldaMensajes+"px";
 	if(activoMarquee!=null){
 		longitudActualComboTexto = 400;
-		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4' width='300px'>"+contenido+"</marquee>";
+		comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4' width='"+textoLargo+"'>"+contenido+"</marquee>";
 	}else{
 		
 		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
