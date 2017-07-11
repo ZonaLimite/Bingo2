@@ -79,6 +79,7 @@ var sumador=1;
 var bolaPreparada="false";
 var salaInUse;
 var largoCeldaMensajes;
+var comboTexto;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -181,6 +182,7 @@ function apagaBingo(){
 }
 
 function show_InMessage(contenido,activoMarquee){
+	largoCeldaMensajes = comboTexto.clientWidth;
 	textoLargo = largoCeldaMensajes+"px";//
 	
 	if(activoMarquee!=null){
@@ -220,7 +222,7 @@ function initInterface(){
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth);
 	//refresca los valores de estos enteros desde el servidor y los visualiza 
 	// en el manejador de vuelta, como si un callback se tratara.
-	largoCeldaMensajes = comboTexto.clientWidth;
+	
 	refreshDatosCartones();
 	
 

@@ -69,10 +69,7 @@
        <label id="valorBingo" class="valorInfo">0 €</label>
      </span></td>
    </tr>
-   <tr>
-     <td colspan="4" class="valorInfo" id="comboTexto">
-	 </td>
-   </tr>      
+
    <tr>
      <td colspan="4" class="valorInfo" >
      <article id="articulo">	
@@ -84,7 +81,11 @@
 	</article>
 	</td>
    </tr>
-
+	   <tr>
+     <td colspan="4" class="valorInfo" id="comboTexto">
+     <label  id="labelTexto" class="classMessage" >combotexto</label>
+	 </td>
+   </tr>      
  </table>
  <!--
    CARTON n:
