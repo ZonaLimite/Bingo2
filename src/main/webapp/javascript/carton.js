@@ -187,13 +187,13 @@ function show_InMessage(contenido,activoMarquee){
 		if(activoMarquee=="blink"){
 			comboTexto.innerHTML="<label class='blink' width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
 		}else {
-			comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4'width='"+textoLargo+"'>"+contenido+"</marquee>";
+			comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4' width='"+textoLargo+"'>"+contenido+"</marquee>";
 		}
 
 	}else{
-		//comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
+		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
 
-		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' ></label>";}	
+		//comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' ></label>";}	
 	
 	
 }
