@@ -150,6 +150,14 @@ function DrawNumberAt(number,id){
  
 	
 }
+function borraNumeroCartonAt(id){
+	  
+	  elementCanvas= document.getElementById(id);	
+	  elementCanvas.width=elementCanvas.width;
+	  var ctx = elementCanvas.getContext('2d');
+	  ctx.clearRect(0,0,elementCanvas.width,elementCanvas.heigth);
+
+}
 function fullscreen(e){
 
 	if (e.requestFullscreen) {
@@ -220,8 +228,7 @@ function initInterface(){
 	canvas.width=canvas.width;
 	lienzo=canvas.getContext('2d');
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth);
-	//refresca los valores de estos enteros desde el servidor y los visualiza 
-	// en el manejador de vuelta, como si un callback se tratara.
+	borrarNumerosCarton();
 	
 	refreshDatosCartones();
 	
@@ -247,6 +254,13 @@ function mostrarNumerosCarton(){
 		for(c=1;c<10;c++){
 			number = Math.floor((Math.random() * 90) + 1);
 			DrawNumberAt(number,"F"+f+"C"+c);
+		}
+	}
+}
+function borrarNumerosCarton(){
+	for(f=1;f<4;f++){
+		for(c=1;c<10;c++){
+			borraNumeroCartonAt("F"+f+"C"+c);
 		}
 	}
 }

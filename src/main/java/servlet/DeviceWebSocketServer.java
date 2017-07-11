@@ -92,7 +92,7 @@ private String salaInUse;
 	//serializar Pocke33tBingo
 	guardaPocket(salaInUse,mySesion);
 	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
-	//gestorSesions.remove(mySesion);
+	gestorSesions.remove(mySesion);//
 	//gestorSesions.guardaContext();
 	
 }
