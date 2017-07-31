@@ -77,7 +77,7 @@
 		<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
 		<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
 		<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
-		<label id="boton_Carton" CLASS="menu_li2" >CARTON</label>
+		<label id="boton_Carton" CLASS="menu_li2" >CARD</label>
 		</div>  
 	</article>
 	</td>
