@@ -6,14 +6,10 @@
 
 package servlet;
 
-import static java.lang.Thread.sleep;
-
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import javax.websocket.Session;
@@ -210,7 +206,7 @@ public class Hilo2 extends Thread{
             Iterator<Integer> itNumeros = pb.getNumerosCalled().iterator();
             numeroValido=true;            
             while(itNumeros.hasNext()){
-               int compNumber=(int) itNumeros.next();
+               int compNumber=itNumeros.next();
                if(compNumber==number){
                    //log.info("Se produce coincidencia");
                    numeroValido=false;

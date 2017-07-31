@@ -26,18 +26,18 @@
 
 <link href="css/Carton.css" rel="stylesheet" type="text/css">
 </head>
-<body class="pagina" id="content">
 <%
+	Vector<Carton> vCarton=null;
 	mySession = request.getSession();
 	if(mySession!=null){
 		myUser = (UserBean)mySession.getAttribute("userBean");
 		//De momento solo un carton por usuario
-		int numCartones = myUser.getNumeroCartones();
-		Vector<Carton> vCarton = (Vector<Carton>)myUser.getvCarton();
-		myCarton= vCarton.elementAt(0)	;
+		//int numCartones = myUser.getNumeroCartones();
+		vCarton = (Vector<Carton>)myUser.getvCarton();
 	}
-	
 %>
+<body class="pagina" id="content">
+<input id="numeroCartonesComprados" type="hidden" name="cuantosCartones" value="<%=vCarton.size()%>">
 <div id="agrupar">
 <header id="cabecera">
 
@@ -77,6 +77,7 @@
 		<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
 		<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
 		<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
+		<label id="boton_Carton" CLASS="menu_li2" >CARTON</label>
 		</div>  
 	</article>
 	</td>
@@ -87,10 +88,7 @@
 	 </td>
    </tr>      
  </table>
- <!--
-   CARTON n:
-   <%= " "+ myCarton.getnCarton()+" "%> SERIE: <%= " " + myCarton.getnCarton()+" "%>PRECIO:<%= myCarton.getPrecioCarton()%>
-     -->
+ 
   
 	
     <td id="CajaDcha" width="38%">	          
@@ -102,113 +100,32 @@
 </table>
 </header>
 
-<table class="tablero">
-    <tr>
-         <td onClick="analizaTecla(this)" class="panel"> 
-          <canvas class="canvasNumero" id="F1C1"></canvas>             
-        </td>
-    <td class="panel" >	          
-    <canvas class="canvasNumero" id="F1C2" >
-	           
-    </canvas></td>
-      <td class="panel"> 
-     	<canvas class="canvasNumero" id="F1C3"></canvas>   
-        </td>
-      <td class="panel"> 
-		<canvas class="canvasNumero" id="F1C4"></canvas> 
-        </td>
-      <td class="panel"> 
-		<canvas class="canvasNumero" id="F1C5"></canvas>            
-        </td>
-      <td class="panel">
-     	 <canvas class="canvasNumero" id="F1C6"></canvas> 
-      </td >
-      <td  class="panel">
-		<canvas class="canvasNumero" id="F1C7"></canvas>               
-     </td >
-        <td  class="panel">
-		<canvas class="canvasNumero" id="F1C8"></canvas>          
-        </td >
-        <td  class="panel">
-		<canvas class="canvasNumero" id="F1C9"></canvas>          
-        </td >
-
-    </tr>
-   <tr>
-         <td onClick="analizaTecla(this)" class="panel"> 
-          <canvas class="canvasNumero" id="F2C1"></canvas>             
-        </td>
-    <td class="panel">	          
-    <canvas class="canvasNumero"  id="F2C2">
-	           
-    </canvas></td>
-      <td class="panel"> 
-     	<canvas class="canvasNumero" id="F2C3"></canvas>   
-        </td>
-      <td class="panel"> 
-		<canvas class="canvasNumero" id="F2C4"></canvas> 
-        </td>
-      <td class="panel"> 
-		<canvas class="canvasNumero" id="F2C5"></canvas>            
-        </td>
-      <td class="panel">
-     	 <canvas class="canvasNumero" id="F2C6"></canvas> 
-      </td >
-      <td  class="panel">
-		<canvas class="canvasNumero" id="F2C7"></canvas>               
-     </td >
-        <td  class="panel">
-		<canvas class="canvasNumero" id="F2C8"></canvas>          
-        </td >
-        <td  class="panel">
-		<canvas class="canvasNumero" id="F2C9"></canvas>          
-        </td >
-
-    </tr>
-   <tr>
-         <td onClick="analizaTecla(this)" class="panel"> 
-          <canvas class="canvasNumero" id="F3C1"></canvas>             
-        </td>
-    <td class="panel" >	          
-    <canvas class="canvasNumero" id="F3C2">
-	           
-    </canvas></td>
-      <td class="panel"> 
-     	<canvas class="canvasNumero" id="F3C3"></canvas>   
-        </td>
-      <td class="panel"> 
-		<canvas class="canvasNumero" id="F3C4"></canvas> 
-        </td>
-      <td class="panel"> 
-		<canvas class="canvasNumero" id="F3C5"></canvas>            
-        </td>
-      <td class="panel">
-     	 <canvas class="canvasNumero" id="F3C6"></canvas> 
-      </td >
-      <td  class="panel">
-		<canvas class="canvasNumero" id="F3C7"></canvas>               
-     </td >
-        <td  class="panel">
-		<canvas class="canvasNumero" id="F3C8"></canvas>          
-        </td >
-        <td  class="panel">
-		<canvas class="canvasNumero" id="F3C9"></canvas>          
-        </td >
-
-    </tr>
-</table>
-
- 
+<%	
+    for(int i=0; i < vCarton.size();i++){
+    	myCarton = vCarton.elementAt(i);
+%>
+        <jsp:include page="tablaCarton.jsp" flush="true">
+        <jsp:param name="cartonSeq" value="<%= i+1 %>" />
+        <jsp:param name="nRef" value="<%= myCarton.getnRef()+\"\" %>" /> 
+        </jsp:include>    
+<%
+    }
+%>
 
 
 
 </div>
 
- 
+<div id="cartones" title="Compra de cartones"> 
+<form id="requestForm">
 
+<label >Numero de cartones a jugar?:</label><input type="text" value="1" name="nCartones">
+<input type="hidden" id="sala" name="sala" value="<%=myUser.getSalonInUse() %>">
+<input type="hidden" id="usuario"  name="usuario" value="<%=myUser.getUsername() %>">
+<input type="text" id="feedback" >
 
-
-
+</form>
+</div>
 
 
 </body>

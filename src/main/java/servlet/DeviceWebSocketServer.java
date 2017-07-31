@@ -1,21 +1,18 @@
 package servlet;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
-import javax.ejb.EJB;
-import javax.enterprise.concurrent.ManagedExecutorService;
 import javax.enterprise.concurrent.ManagedThreadFactory;
 import javax.inject.Inject;
 import javax.naming.InitialContext;
@@ -24,12 +21,12 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-import org.jboss.logging.Logger;
+//import org.jboss.logging.Logger;
 
 
 @ServerEndpoint(value="/sala1",configurator=UserAwareConfigurator.class)
 public class DeviceWebSocketServer {
-Logger log = Logger.getLogger("MyLogger");
+static final Logger log = Logger.getLogger("MyLogger");
  
 @Inject
 private GestorSessions gestorSesions;
@@ -46,54 +43,47 @@ private String salaInUse;
 
 @OnOpen
     public void open(Session session, EndpointConfig config) {
-	UserBean userBean = (UserBean) config.getUserProperties().get("userBean");
-	//Comprobar si la corriente sesionHttp ya esta presente(cosa que no deberia porque al morir el websocket capturamos ese evento y kill la sesion
-	//vinculada, pero por si acaso.
-	//Lo que si puede ocurrir es que se repita una sesionHttp de un usuario que utilice mas de un recurso del contenedor, entonces tendra la misma
-	//Http Session, distinto perfil, y distinta WebsocketSession.
-	//Que como identificamos un usuario, por su nombre de usuario, independientemente de su perfil,y sessiones asociadas.
-	//Solo habra un univoco usuario en juego.
-	//vincular sesion web socket a UserBean.
-	/*Aqui, sabemos el  nombre del user
-						el perfil del user
-						su Http Session
-						su WebSockeSession	
-	*/
+	String usuario = (String)config.getUserProperties().get("usuario");
+	String perfil = (String)config.getUserProperties().get("perfil");
+
+	UserBean userBean = gestorSesions.dameUserBeansPorUser(usuario,perfil);
 	userBean.setSesionSocket(session);
-	
-	String perfil = userBean.getPerfil();
+	//userBean.setStatusPlayer("playingBingo");
+	perfil = userBean.getPerfil();
 	salaInUse = userBean.getSalonInUse();
 	HttpSession userHttpSession = userBean.getSesionHttp();
 	String idSesionHttp = userHttpSession.getId();
 	log.info("Abierta Session WebSocket:"+ session.getId() + "del Usuario "+userBean.getUsername()+" ,perfil="+userBean.getPerfil()+" y nueva sessionHttp:"+idSesionHttp);
-
+	
 	//	Manejo perfil supervisor
 	if(perfil.equals("supervisor")){
 		this.mySesion=session;
-		pb=this.gestorSesions.getJugadasSalas(salaInUse);
+		userBean.setStatusPlayer("playingBingo");
+		pb=gestorSesions.getJugadasSalas(salaInUse);
 		//if(pb==null)pb= new PocketBingo();
 		//session.getUserProperties().put("sala1",pb);
-		this.gestorSesions.add(userBean.getUsername(), userBean);
-		//Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
+		//this.gestorSesions.add(userBean.getUsername(), userBean);
+		Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
 		mySesion.getUserProperties().put("gestorSesiones",gestorSesions);
-		log.info("Grabados userBeans en sesion");//
+		log.info("Grabados userBeans en sesion");
 		
 	}
 	if(perfil.equals("jugador")){
 		this.mySesion=session;
-		userBean.setStatusPlayer("OnLine");
-		pb=this.gestorSesions.getJugadasSalas(salaInUse);
-		this.gestorSesions.add(userBean.getUsername(), userBean);
-
+		userBean.setStatusPlayer("playingBingo");
+		pb=gestorSesions.getJugadasSalas(salaInUse);
+		//this.gestorSesions.add(userBean.getUsername(), userBean);
 	}
 }
 
 @OnClose
     public void close(CloseReason reason) {
 	//serializar Pocke33tBingo
-	guardaPocket(salaInUse,mySesion);
-	log.info("Closing a WebSocket due to " + reason.getReasonPhrase());
+	//guardaPocket(salaInUse,mySesion);
+	
 	try{
+		//userBean.setStatusPlayer("notPlayingBingo");
+		log.info("Closing a WebSocket due to close web socket 'notPlayingBingo'");
 		gestorSesions.remove(mySesion);
 	}catch(Exception e){
 		//
@@ -103,7 +93,7 @@ private String salaInUse;
 
 @OnError
     public void onError(Throwable error) {
-	guardaPocket(salaInUse,mySesion);
+	//guardaPocket(salaInUse,mySesion);
 
 	log.info("Ocurrido error : "+ error.getMessage());
 	error.printStackTrace();
@@ -317,7 +307,7 @@ private PocketBingo leePocket(String sala, Session sesion){
 	            
 	            ois.close();
 	        }catch (Exception e1){
-	           log.error("Problem serializacion File="+fichero);
+	           log.severe("Problem serializacion File="+fichero);
 	           e1.printStackTrace();
 	        }
 	        
@@ -361,7 +351,7 @@ private PocketBingo leePocket(String sala, Session sesion){
           oos.close();
       } catch (Exception e)
       {
-          log.error("Excepcion Guarda Pocket "+ fichero);
+          log.severe("Excepcion Guarda Pocket "+ fichero);
     	  e.printStackTrace();
       }  
 	  

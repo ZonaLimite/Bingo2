@@ -2,7 +2,7 @@ package servlet;
 
 public class Carton {
 	
-	
+	private int nRef;
 	private String nCarton;
 	private String nSerie;
 	private String PrecioCarton;
@@ -14,7 +14,13 @@ public class Carton {
 	private String numeroPantalla;
 	private boolean lineaCantado=false;
 	private boolean bingoCantado=false;
-	
+	public int getnRef() {
+            return nRef;
+        }
+
+        public void setnRef(int nRef) {
+            this.nRef = nRef;
+        }
 	public String getnCarton() {
 		return nCarton;
 	}

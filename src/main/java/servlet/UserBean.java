@@ -17,7 +17,7 @@ public class UserBean {
     private Integer numeroCartones=0;
     private HttpSession sesionHttp;
     private Session sesionSocket;
-    private Vector<Carton> vCarton;
+    private Vector<Carton> vCarton = new Vector();
     private Integer saldo=0;
     
     public Integer getNumeroCartones() {

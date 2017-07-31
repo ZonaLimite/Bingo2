@@ -6,7 +6,7 @@
 <%@ page import="servlet.UserBean" %>
 <%! HttpSession mySession = null;%>
 <%! UserBean myUser = null;%>
-<%! String user = null;%>
+<%! String user,sala = null;%>
 <!doctype html>
 <html>
 <head>
@@ -28,7 +28,9 @@
 <%
 	mySession = request.getSession();
 	if(mySession!=null){
-		myUser = (UserBean)mySession.getAttribute("userBean"); 
+		//myUser = (UserBean)mySession.getAttribute("userBean"); 
+		user = (String) mySession.getAttribute("usuario"); 
+		sala = (String) mySession.getAttribute("sala"); 
 	}
 	
 %>
@@ -37,7 +39,7 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label><%= " "+ myUser.getUsername()%></td>
+    <td padding=0 width="12%"><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=sala%></label><%=" "+user%></td>
     <td width="68%" class="ano" >! BIENVENIDOS BINGO 2017 ¡<nav id="menu">
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
     <label id="resume" CLASS="menu_li" >RESUMIR</label>

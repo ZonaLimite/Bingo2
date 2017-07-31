@@ -93,6 +93,7 @@ function iniciar() {
     datoBingo=document.getElementById("valorBingo");
     cajaFecha = document.getElementById("CajaDcha");
     etiquetaOrden = document.getElementById("labelOrden");
+    numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
@@ -115,8 +116,10 @@ function iniciar() {
 	boton_iniciar = document.getElementById("boton_Jugar");
 	boton_iniciar.onclick = function(){ arrancar()};
 	
-	//boton_resume = document.getElementById("resume");
-	//boton_resume.onclick = function(){ resumir()};
+	boton_Carton = document.getElementById("boton_Carton");
+	boton_Carton.onclick = function(){ 
+		$( "#cartones" ).dialog( "open" );
+	};
 	
 	datoOrdenBola= document.getElementById("datoOrdenBola")
 	canvas=document.getElementById('canvas_bola');
@@ -129,7 +132,63 @@ function iniciar() {
 		//e.preventDefault();
 		resizeBolas();
 	}*/
+	activarCartones();
 	creaSocket(salaInUse.textContent);
+	
+	//Manejo JQuery
+	
+	//Plantilla JQuery para Dialogo Cartones
+	$( "#cartones" ).dialog({ autoOpen: false , modal: true });
+	$( "#cartones" ).dialog({
+		  create: function( event, ui ) {
+			 // mensaje="JSON#GET_DATOS_CARTONES#";
+			  //socket_send(mensaje);
+		  }
+		});
+	$( "#cartones" ).dialog({
+		  open: function( event, ui ) {
+			  $("#feedback").val("Elija nº cartones y Pulse 'COMPRAR'");
+		  }
+		});
+
+	$( "#cartones" ).dialog({
+		  buttons: [
+		    {
+		      text: "COMPRAR",
+		      icons: {
+		        primary: "ui-icon-heart"
+		      },
+		      click: function() {
+		    	  $.post("gestorComprasCartones",$( "#requestForm" ).serialize(), function(responseText){
+		    		  //responsetext devuelve text/plain
+		    		  $("#feedback").val( responseText);
+		    		  
+		    	  });
+		    	  //visualizaDatosCartones();
+		    	  //socket_send(mensaje);
+		    	  //$( this ).dialog( "close" );
+		      }
+		    },
+		      // Uncommenting the following line would hide the text,
+		      // resulting in the label being used as a tooltip
+		      //showText: false
+		    
+		    {
+			      text: "CERRAR",
+			      icons: {
+			        primary: "ui-icon-heart"
+			      },
+			      click: function() {
+			    	  $( this ).dialog( "close" );
+			    	  window.location.reload(true);
+			      }
+			 
+			      // Uncommenting the following line would hide the text,
+			      // resulting in the label being used as a tooltip
+			      //showText: false
+			 }
+		  ]
+		});
 }
 function DrawNumberAt(number,id){
   element= document.getElementById(id);
@@ -147,9 +206,12 @@ function DrawNumberAt(number,id){
   ctx.fillStyle="#0099FF";
   //ctx.scale(2,2);
   ctx.fillText(number,x, y);
- 
+}
+
+function comprarCartones(){
 	
 }
+
 function borraNumeroCartonAt(id){
 	  
 	  elementCanvas= document.getElementById(id);	
@@ -228,7 +290,7 @@ function initInterface(){
 	canvas.width=canvas.width;
 	lienzo=canvas.getContext('2d');
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth);
-	borrarNumerosCarton();
+	//borrarNumerosCarton();
 	
 	refreshDatosCartones();
 	
@@ -239,30 +301,61 @@ function arrancar(){
 	//El socket ya esta creado
 	
 	fullscreen(document.getElementById("content"));
-
-	//video.play();
-	//video.pause();
-	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
-	//
-	//socket_send("newGame");
 	initInterface();
-	mostrarNumerosCarton();
+
+}
+function activarCartones(){
+	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
+	
+	for(nC=1;nC <= numeroCartonesComprados;nC++){
+		numeroRefCarton=document.getElementById("refCarton"+nC).textContent;
+		mostrarNumerosCarton(numeroRefCarton,nC);
+	}
+	
 }
 
-function mostrarNumerosCarton(){
-	for(f=1;f<4;f++){
-		for(c=1;c<10;c++){
-			number = Math.floor((Math.random() * 90) + 1);
-			DrawNumberAt(number,"F"+f+"C"+c);
+function mostrarNumerosCarton(nRefCarton,nOrdCarton){
+			var arrayCartones;
+			var OrdinalCarton = nOrdCarton;
+			var params = new Object();
+			//params.nCarton=document.getElementById("refCarton"+nC).textContent;
+			params.nCarton=nRefCarton
+			params.perfil="jugador";
+			params.usuario=document.getElementById("usuario").value;
+			params.comando="ArrayCartonBaseDatosPorNRef";
+
+
+			$.ajax({
+				  type: 'POST',
+				  url: "SourcerArraysCarton",
+				  data: params,
+				  dataType:"json",
+				  async:false
+				}).done(function( data ) {
+					encenderNumerosDeArrayCarton(data,OrdinalCarton);
+				
+				});
+}
+function encenderNumerosDeArrayCarton(myData,numberCarton){
+	var array=myData;
+	
+	for(f=0;f<3;f++){
+		for(c=0;c<9;c++){
+			arrayLinea= array[f];
+			number = arrayLinea[c];
+			DrawNumberAt(number,numberCarton+"F"+(f+1)+"C"+(c+1));
 		}
-	}
+	}	
+	
 }
 function borrarNumerosCarton(){
+	/*
 	for(f=1;f<4;f++){
 		for(c=1;c<10;c++){
 			borraNumeroCartonAt("F"+f+"C"+c);
 		}
-	}
+	}*/
+	window.location.reload(true);
 }
 function creaSocket(sala){
 	var wsUri = getRootUri() + sala;
@@ -382,7 +475,8 @@ function recibido(e){
 				break;
 
 		case "EndBalls":
-				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true)
+				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true);
+                                borrarNumerosCarton();
 				break;
 		case "Linea":
 				show_InMessage("!! LINEA ¡¡","blink");	

@@ -1,7 +1,5 @@
 package servlet;
 
-import static java.lang.Thread.sleep;
-
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -11,8 +9,6 @@ import java.util.Vector;
 
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-import javax.inject.Inject;
 import javax.swing.JTextArea;
 import javax.websocket.Session;
 
@@ -33,6 +29,7 @@ public class Runnable3 implements Runnable{
     int maxNumbers = 90;
     int orden;
     int delay= 0;
+    private String estaSalaEs="sala1";
     
 	
     private GestorSessions gestorSesions;
@@ -47,7 +44,7 @@ public class Runnable3 implements Runnable{
     	log.info("IdState en 'run' putobucle5:" );
     	gestorSesions = (GestorSessions) session.getUserProperties().get("gestorSesiones");
     	
-        this.pb=(PocketBingo)gestorSesions.getJugadasSalas("sala1");
+        this.pb=gestorSesions.getJugadasSalas(estaSalaEs);
         status=pb.getIdState();
         
         
@@ -174,6 +171,7 @@ public class Runnable3 implements Runnable{
                			if(pb.getIdState().equals("Finalized")){
                				enviarMensajeAPerfil("EndBalls","supervisor");
                				enviarMensajeAPerfil("EndBalls","jugador"); 
+               				gestorSesions.resetCartones(estaSalaEs);
                				return;
                			}
 
@@ -200,6 +198,7 @@ public class Runnable3 implements Runnable{
                				break;
                				
                		case "offLine":
+                        gestorSesions.resetCartones(estaSalaEs);
                			enviarMensajeAPerfil("EndBalls","supervisor");
                			enviarMensajeAPerfil("EndBalls","jugador");               			
                			pb.setIdState("Finalized");
@@ -209,9 +208,11 @@ public class Runnable3 implements Runnable{
           
           }   
         }
+        gestorSesions.resetCartones(estaSalaEs);
     	enviarMensajeAPerfil("EndBalls","supervisor");
     	enviarMensajeAPerfil("EndBalls","jugador");                	
     	pb.setIdState("Finalized");
+        
     	return;
     }
     
@@ -221,7 +222,7 @@ public class Runnable3 implements Runnable{
     		// Vamos a obtener las sesiones a las que vamos a redirigir los mensajes de momento
     		//son de superdf
     		//Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
-    		GestorSessions gestorSesions = (GestorSessions)this.session.getUserProperties().get("gestorSesiones");
+    		//GestorSessions gestorSesions = (GestorSessions)this.session.getUserProperties().get("gestorSesiones");
     		//Set<UserBean> myUsersbean = (Set<UserBean>)this.session.getUserProperties().get("sesiones");
     		Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
     		Iterator<UserBean> itBeans= myUsersbean.iterator();
@@ -247,7 +248,7 @@ public class Runnable3 implements Runnable{
             Iterator<Integer> itNumeros = pb.getNumerosCalled().iterator();
             numeroValido=true;            
             while(itNumeros.hasNext()){
-               int compNumber=(int) itNumeros.next();
+               int compNumber=itNumeros.next();
                if(compNumber==number){
                    //log.info("Se produce coincidencia");
                    numeroValido=false;

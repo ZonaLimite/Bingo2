@@ -17,14 +17,18 @@ public class PocketBingo implements Serializable {
 	private static final long serialVersionUID = -5953174463423977451L;
 	private int numeroOrden = 0;
     private String idPlayer = "";
+    //Este HashMap recopila los cartones en juego de cada user.
+    //la key del mapa representa
+    
     private Vector numerosCalled = new Vector() ;
     private int lastNumber;
     private int newBola;
     private String reasonInterrupt;
     private boolean secuenciaAcabada=true;
+
     private boolean lineaCantada=false;
     private boolean bingoCantado=false;
-    private String IdState = "NewGame";
+    private String IdState = "Finalized";
     private String precioCarton="0";
     private String nCartones="0";
     private String porcientoLinea="0";
@@ -41,7 +45,7 @@ public class PocketBingo implements Serializable {
     	numeroOrden=0;
     	idPlayer="";
     	numerosCalled= new Vector();
-    	lastNumber=0;
+       	lastNumber=0;
     	newBola=0;
     	reasonInterrupt="";
     	secuenciaAcabada=true;
@@ -50,6 +54,8 @@ public class PocketBingo implements Serializable {
     	IdState="NewGame";
 
     }
+    
+    
     public boolean isLineaCantada() {
 		return lineaCantada;
 	}
