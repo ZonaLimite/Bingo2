@@ -141,9 +141,10 @@ function iniciar() {
 	$( "#cartones" ).dialog({ autoOpen: false ,
 								 modal: true,
 								 height: 'auto',
-								 width: 345});
+								 width: 360});
 	$( "#cartones" ).dialog({
 		  create: function( event, ui ) {
+			  event.preventDefault();
 			 // mensaje="JSON#GET_DATOS_CARTONES#";
 			  //socket_send(mensaje);
 		  }
