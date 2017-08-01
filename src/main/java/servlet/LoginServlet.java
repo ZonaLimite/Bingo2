@@ -54,6 +54,7 @@ try
      PocketBingo pb = gestorSesions.getJugadasSalas(user.getSalonInUse());
      if(pb==null ){
     		  pb= new PocketBingo();
+    		  pb.setIdState("Finalized");
                   gestorSesions.setJugadasSalas(user.getSalonInUse(), pb);
                   log.info("Registrando Pockect a gestorSessions");
      }
