@@ -138,7 +138,10 @@ function iniciar() {
 	//Manejo JQuery
 	
 	//Plantilla JQuery para Dialogo Cartones
-	$( "#cartones" ).dialog({ autoOpen: false , modal: true });
+	$( "#cartones" ).dialog({ autoOpen: false ,
+								 modal: true,
+								 height: 'auto',
+								 width: 345});
 	$( "#cartones" ).dialog({
 		  create: function( event, ui ) {
 			 // mensaje="JSON#GET_DATOS_CARTONES#";
@@ -146,15 +149,16 @@ function iniciar() {
 		  }
 		});
 	$( "#cartones" ).dialog({
-		  open: function( event, ui ) {
-			  $("#feedback").val("Elija nº cartones y Pulse 'COMPRAR'");
+		open: function( event, ui ) {
+			  event.preventDefault();
+			  $("#feedback").val("Elija nº cartones y Pulse 'COMPRA'");
 		  }
 		});
 
 	$( "#cartones" ).dialog({
 		  buttons: [
 		    {
-		      text: "COMPRAR",
+		      text: "COMPRA",
 		      icons: {
 		        primary: "ui-icon-heart"
 		      },
