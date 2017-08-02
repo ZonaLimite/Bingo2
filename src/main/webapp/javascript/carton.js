@@ -134,6 +134,7 @@ function iniciar() {
 	}*/
 	activarCartones();
 	creaSocket(salaInUse.textContent);
+	arrancar();
 	
 	//Manejo JQuery
 	
