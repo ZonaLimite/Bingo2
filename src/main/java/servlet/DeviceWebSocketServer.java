@@ -259,7 +259,7 @@ private String salaInUse;
 				pb.setPorcientoBingo(arrayMessage.elementAt(5));
 				pb.setPorcientoCantaor(arrayMessage.elementAt(6));
 				//this.guardaPocket("sala1", session);
-				break;
+				comando="GET_DATOS_CARTONES";
 			
 			case "GET_DATOS_CARTONES"://JSON#GET_DATOS_CARTONES#.........
 				String precioCarton,nCartones,porCientoLinea,porCientoBingo,porCientoCantaor;
