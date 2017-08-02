@@ -46,6 +46,13 @@ public class gestorComprasCartones extends HttpServlet {
             String sala = req.getParameter("sala");
             int nCartonesAComprar = new Integer(req.getParameter("nCartones"));
             
+            PocketBingo pocketBingoSala= gestorSesions.getJugadasSalas(user.getSalonInUse());
+            if(!pocketBingoSala.getIdState().equals("Finalized")){
+                String mensaje="Error,Compra de cartones aun no permitida. Espere a que acabe la partida";
+                resp.getWriter().print(mensaje);
+                return;
+            } 
+            
             Set userBeans = gestorSesions.dameUserBeansPorUser(usuario);
             Iterator it = userBeans.iterator();
             while(it.hasNext()){
@@ -67,12 +74,7 @@ public class gestorComprasCartones extends HttpServlet {
             }
             
             //Comprobacion estado Pocket Bingo en "Finalized"
-            PocketBingo pocketBingoSala= gestorSesions.getJugadasSalas(user.getSalonInUse());
-            if(!pocketBingoSala.getIdState().equals("Finalized")){
-                String mensaje="Error,Compra de cartones aun no permitida. Espere a que acabe la partida";
-                resp.getWriter().print(mensaje);
-                return;
-            }            
+
             //comprobarSaldoUsuario();
             //realizarCompraTransaccion();
             
