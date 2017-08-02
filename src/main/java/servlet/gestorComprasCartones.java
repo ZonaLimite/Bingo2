@@ -46,12 +46,8 @@ public class gestorComprasCartones extends HttpServlet {
             String sala = req.getParameter("sala");
             int nCartonesAComprar = new Integer(req.getParameter("nCartones"));
             
-            PocketBingo pocketBingoSala= gestorSesions.getJugadasSalas(user.getSalonInUse());
-            if(!pocketBingoSala.getIdState().equals("Finalized")){
-                String mensaje="Error,Compra de cartones aun no permitida. Espere a que acabe la partida";
-                resp.getWriter().print(mensaje);
-                return;
-            } 
+            
+
             
             Set userBeans = gestorSesions.dameUserBeansPorUser(usuario);
             Iterator it = userBeans.iterator();
@@ -64,6 +60,12 @@ public class gestorComprasCartones extends HttpServlet {
                     
                 if(idSesion.equals(httpSessionAComparar.getId())&& perfil.equals("jugador")&&usuarioreg.equals(usuario)){
                     user = user_;
+                    PocketBingo pocketBingoSala= gestorSesions.getJugadasSalas(user.getSalonInUse());
+                    if(!pocketBingoSala.getIdState().equals("Finalized")){
+                        String mensaje="Error,Compra de cartones aun no permitida. Espere a que acabe la partida";
+                        resp.getWriter().print(mensaje);
+                        return;
+                    } 
                     cargarVectordeCartonesdeUsuario(user,nCartonesAComprar);
                 }
             }
