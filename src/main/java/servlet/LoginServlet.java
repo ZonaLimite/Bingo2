@@ -61,6 +61,7 @@ try
     	  
           if(perfil.equals("jugador")){
         	  session.setAttribute("usuario",user.getUsername());
+        	  session.setAttribute("perfil",user.getPerfil());//
         	  session.setAttribute("userBean",user);
                   gestorSesions.add(user.getUsername(), user);
         	  response.sendRedirect("carton.jsp"); //logged-in page  

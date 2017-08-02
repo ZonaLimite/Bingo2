@@ -13,6 +13,7 @@ public class UserAwareConfigurator extends Configurator {
 	        HttpSession httpSession = (HttpSession) request.getHttpSession();
 	        //UserBean user = (UserBean) httpSession.getAttribute("userBean");//
 	        String usuario = (String)httpSession.getAttribute("usuario");
+	        System.out.println("Usuario en award es:"+usuario);
 	        String perfil = (String)httpSession.getAttribute("perfil");
 	        config.getUserProperties().put("perfil", perfil);
 	        config.getUserProperties().put("usuario", usuario);		

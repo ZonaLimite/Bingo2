@@ -43,6 +43,7 @@ private String salaInUse;
 
 @OnOpen
     public void open(Session session, EndpointConfig config) {
+	this.mySesion=session;
 	String usuario = (String)config.getUserProperties().get("usuario");
 	String perfil = (String)config.getUserProperties().get("perfil");
 
@@ -57,7 +58,7 @@ private String salaInUse;
 	
 	//	Manejo perfil supervisor
 	if(perfil.equals("supervisor")){
-		this.mySesion=session;
+		
 		userBean.setStatusPlayer("playingBingo");
 		pb=gestorSesions.getJugadasSalas(salaInUse);
 		//if(pb==null)pb= new PocketBingo();
@@ -69,7 +70,7 @@ private String salaInUse;
 		
 	}
 	if(perfil.equals("jugador")){
-		this.mySesion=session;
+		
 		userBean.setStatusPlayer("playingBingo");
 		pb=gestorSesions.getJugadasSalas(salaInUse);
 		//this.gestorSesions.add(userBean.getUsername(), userBean);

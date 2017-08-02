@@ -40,7 +40,7 @@ public class gestorComprasCartones extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSessionAComparar = req.getSession(false);
         UserBean user = null;
-        //Identificacion de la sesion de usuario
+        //Identificacion de la sesion de usuario//
         if(httpSessionAComparar!=null){
             String usuario = req.getParameter("usuario");
             String sala = req.getParameter("sala");
@@ -51,9 +51,13 @@ public class gestorComprasCartones extends HttpServlet {
             while(it.hasNext()){
                 UserBean user_ = (UserBean)it.next();
                 String idSesion = user_.getSesionHttp().getId();
+                String usuarioreg = user_.getUsername();
                 String perfil= user_.getPerfil();
-                if(idSesion.equals(httpSessionAComparar.getId())&& perfil.equals("jugador")){
+                //if(perfil.equals("jugador")&&usuario.equals(usuarioreg)){
+                    
+                if(idSesion.equals(httpSessionAComparar.getId())&& perfil.equals("jugador")&&usuarioreg.equals(usuario)){
                     user = user_;
+                    cargarVectordeCartonesdeUsuario(user,nCartonesAComprar);
                 }
             }
             if(user==null){
@@ -71,7 +75,7 @@ public class gestorComprasCartones extends HttpServlet {
             }            
             //comprobarSaldoUsuario();
             //realizarCompraTransaccion();
-            cargarVectordeCartonesdeUsuario(user,nCartonesAComprar);
+            
             String mensaje="Inf,Compra de cartones efectuada";
             resp.getWriter().print(mensaje);
             System.out.println(mensaje);

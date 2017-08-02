@@ -111,23 +111,24 @@ import javax.websocket.Session;
 	    public synchronized void add(String user,UserBean userBean) {
 	    		String usuarioAComparar = userBean.getUsername();
 	    		String perfilAComparar = userBean.getPerfil();
-	    		Vector<UserBean> myVector = sessions.get(user);
-	    		Boolean sesionUtilizada = sesionUtilizada(usuarioAComparar,perfilAComparar,userBean);
+	    		Vector<UserBean> myVector = sessions.get(user);//
+
 	    			if (myVector==null)myVector= new Vector<UserBean>(); 
-	    			myVector.add(userBean);
+		    		UserBean UserBeanUtilizado= sesionUtilizada(usuarioAComparar,perfilAComparar,userBean);
+	    			myVector.add(UserBeanUtilizado);
 	    			sessions.put(user, myVector);
-	    			log.info("UserBean de user:"+userBean.getUsername()+",perfil:"+userBean.getPerfil()+" añadido a mapa para user:"+user);
+	    			log.info("UserBean de user:"+UserBeanUtilizado.getUsername()+",perfil:"+UserBeanUtilizado.getPerfil()+" añadido a mapa para user:"+user);
 	    		
 	    			log.info("Jugadores presente:"+ sessions.keySet().toString() );
 	    }
 	    //Comprueba si la sesion Http esta utilizada y el perfil
 	
-	    public synchronized boolean sesionUtilizada(String usuarioAComparar,String perfilAComparar,UserBean userbean){
+	    public synchronized UserBean sesionUtilizada(String usuarioAComparar,String perfilAComparar,UserBean userbean){
 	    	
-	    	boolean siHaySesionUtilizada=false;
+	    	UserBean myUserBean=userbean;;
 
 	    	
-	    	//String  idSesionHttpAComparar = userBean.getSesionHttp().getId();
+	    	String  idSesionHttpAComparar = userbean.getSesionHttp().getId();
 	    	//String perfilAComparar = userBean.getPerfil();
 	    	//String usuarioAComparar = userBean.getUsername();
 	    	
@@ -144,19 +145,22 @@ import javax.websocket.Session;
 	            		  String perfil = ub.getPerfil();
 	            		  String usuario = ub.getUsername();
 	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar)){
-	            			 siHaySesionUtilizada=true;
+	            			 
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
-	            			 userbean.setvCarton(cartones);
-	            			 itUsersBean.remove();
+	            			 myUserBean.setvCarton(cartones);
+	            			 if(idSesionHttpAComparar.equals(ub.getSesionHttp().getId())){
+	            				 itUsersBean.remove();
+	            			 }
+	            			 log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
+	            			 return myUserBean;
 	            			 
-	            			 log.info("Si hay esta sesion y perfil iniciados,se borra anterior userBean");
 	            		  }else{
 	            			  log.info("No hay esta sesion y perfil iniciados");
 	            		  }
 	             }
 	         }
-	         return siHaySesionUtilizada; 
+	         return myUserBean; 
 	    }
 
 	    public synchronized void resetCartones(String sala){
@@ -306,21 +310,25 @@ import javax.websocket.Session;
 	             String usuarios = itClaves.next();
 	             Vector<UserBean> vectorUserBean =sessions.get(usuarios);
 	             Iterator<UserBean> itUsersBean = vectorUserBean.iterator();
+	             log.info("Sesiones abiertas :");
 	             while(itUsersBean.hasNext()){	
 
 	            		  UserBean ub = itUsersBean.next();
-	            		  //String idSession = ub.getSesionSocket().getId();
-                                  String idSession = ub.getSesionSocket().getId();
+	            		  Session itSesion=ub.getSesionSocket();
+                          String idSession="";
+                          if(itSesion==null){
+                        	 
+                          }else{
+                        	  idSession=itSesion.getId();
+                          }
 	            		  if(idSession.equals(idSesionAComparar)){
 	            			//vectorUserBean.remove(ub);//b
                                          
 	            			  //itUsersBean.remove();
 	            			  //Ahora, solo ajustamos status del userBean
 	            			  ub.setStatusPlayer("notPlayingBingo");
-	            			log.info("Ajustado status a not Playing");
-	            			
-	            			log.info("Sesiones abiertas :"+sessions.keySet().toString());
 	            		  }
+	            			log.info(ub.getUsername() + ":" +ub.getStatusPlayer());
 	             }
      			if(vectorUserBean.size()==0){
     				//sessions.remove(ub.getUsername());
