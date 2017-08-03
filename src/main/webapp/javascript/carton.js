@@ -142,7 +142,9 @@ function iniciar() {
 	//Manejo JQuery
 	
 	//Plantilla JQuery para Dialogo Cartones//
+	
 	$( "#spinner" ).spinner();
+	$("#spinner").attr("readonly","true");
 	$( "#cartones" ).dialog({ autoOpen: false ,
 								 modal: true,
 								 height: 'auto',
