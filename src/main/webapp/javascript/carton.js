@@ -81,6 +81,9 @@ var salaInUse;
 var largoCeldaMensajes;
 var comboTexto;
 
+var numeroCartonesComprados;
+var myArrayCartonesJuego= new Array();
+
 function iniciar() {
 	salaInUse = document.getElementById("sala");
 	elementCanvas = document.getElementById("canvas_bola");	
@@ -138,7 +141,8 @@ function iniciar() {
 	
 	//Manejo JQuery
 	
-	//Plantilla JQuery para Dialogo Cartones
+	//Plantilla JQuery para Dialogo Cartones//
+	$( "#spinner" ).spinner();
 	$( "#cartones" ).dialog({ autoOpen: false ,
 								 modal: true,
 								 height: 'auto',
@@ -153,7 +157,7 @@ function iniciar() {
 	$( "#cartones" ).dialog({
 		open: function( event, ui ) {
 			  event.preventDefault();
-			  $("#feedback").val("Elija nº cartones y Pulse 'COMPRA'");
+			  $("#feedback").text("Elija nº cartones y Pulse 'COMPRA'");
 		  }
 		});
 
@@ -167,7 +171,7 @@ function iniciar() {
 		      click: function() {
 		    	  $.post("gestorComprasCartones",$( "#requestForm" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
-		    		  $("#feedback").val( responseText);
+		    		  $("#feedback").text( responseText);
 		    		  
 		    	  });
 		    	  //visualizaDatosCartones();
@@ -195,6 +199,8 @@ function iniciar() {
 			 }
 		  ]
 		});
+	
+	
 }
 function DrawNumberAt(number,id){
   element= document.getElementById(id);
@@ -239,7 +245,20 @@ function fullscreen(e){
 	}
 }
 function analizaTecla(e){
-	numero = e.firstElementChild.textContent
+	refCanvas = e.firstElementChild.id;
+
+	numOrdenCarton= refCanvas.charAt(0);
+	numFilaCarton=refCanvas.charAt(2);
+	numColCarton=refCanvas.charAt(4);
+	
+	numeroRefCarton=document.getElementById("refCarton"+numOrdenCarton).textContent;
+	
+	arrayCard = myArrayCartonesJuego[numOrdenCarton];
+	arrayFila= arrayCard[numFilaCarton-1];
+	numRepresentado=arrayFila[numColCarton-1];
+	
+	alert("numero de canvas:"+refCanvas+"\n"+"numero de nRefCarton="+numeroRefCarton+"\n"+"Numero representado="+numRepresentado);
+	
 }
 
 
@@ -312,18 +331,20 @@ function arrancar(){
 }
 function activarCartones(){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
-	
+	var array;
 	for(nC=1;nC <= numeroCartonesComprados;nC++){
 		numeroRefCarton=document.getElementById("refCarton"+nC).textContent;
-		mostrarNumerosCarton(numeroRefCarton,nC);
+		array=mostrarNumerosCarton(numeroRefCarton,nC);
+		myArrayCartonesJuego[nC]=array;
 	}
 	
 }
 
 function mostrarNumerosCarton(nRefCarton,nOrdCarton){
-			var arrayCartones;
+			//servlet de servicio --->SourcerArraysCarton
 			var OrdinalCarton = nOrdCarton;
 			var params = new Object();
+			var array2;
 			//params.nCarton=document.getElementById("refCarton"+nC).textContent;
 			params.nCarton=nRefCarton
 			params.perfil="jugador";
@@ -339,19 +360,21 @@ function mostrarNumerosCarton(nRefCarton,nOrdCarton){
 				  async:false
 				}).done(function( data ) {
 					encenderNumerosDeArrayCarton(data,OrdinalCarton);
-				
-				});
+					array2=data;
+			});
+			return array2;
 }
 function encenderNumerosDeArrayCarton(myData,numberCarton){
-	var array=myData;
+	var myArrayCartones=myData;
 	
 	for(f=0;f<3;f++){
 		for(c=0;c<9;c++){
-			arrayLinea= array[f];
+			arrayLinea= myArrayCartones[f];
 			number = arrayLinea[c];
 			DrawNumberAt(number,numberCarton+"F"+(f+1)+"C"+(c+1));
 		}
-	}	
+	}
+	
 	
 }
 function borrarNumerosCarton(){

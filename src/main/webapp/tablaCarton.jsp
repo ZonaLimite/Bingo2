@@ -93,6 +93,6 @@
 
     </tr>
     <tr>
-    	<td colspan="9">CARTON n:<Label id="refCarton<%=request.getParameter("cartonSeq") %>"><%=request.getParameter("nRef")%></label></td>
+    	<td colspan="9" class="letraCarton">CARTON n:<Label id="refCarton<%=request.getParameter("cartonSeq") %>"><%=request.getParameter("nRef")%></label></td>
     </tr>
 </table>

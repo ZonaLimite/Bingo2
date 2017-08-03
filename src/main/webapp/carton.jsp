@@ -17,10 +17,9 @@
 <meta name="vieport" content="width=800, initial-scale=1, orientation=landscape">
 <title>Bingo 2016</title>
   <link href="css/Carton.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
   <script src="javascript/carton.js"></script>
 
@@ -120,11 +119,11 @@
 <div id="cartones" title="Compra de cartones"> 
 <form id="requestForm">
 
-<label >Numero de cartones a jugar?:</label><input type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
+<label >Numero de cartones a jugar?:</label><input id="spinner" type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
 <input type="hidden" id="sala" name="sala" value="<%=myUser.getSalonInUse() %>">
 <input type="hidden" id="usuario"  name="usuario" value="<%=myUser.getUsername() %>">
 <br>
-<input type="text" id="feedback" style=" width : 100%;">
+<label id="feedback" style=" width : 100%;"></label>
 
 </form>
 </div>

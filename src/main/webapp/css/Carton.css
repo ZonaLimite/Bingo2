@@ -310,16 +310,9 @@ display: block;
 .tablero{
 	background-size: 100% 100%;
 	width: 100%;
-	border-top-style: groove;
-	border-right-style: groove;
-	border-bottom-style: groove;
-	border-left-style: groove;
-	border-top-width: medium;
-	border-right-width: medium;
-	border-bottom-width: medium;
-	border-left-width: medium;
-	background-color: #960;
+	background-color: #1D3841;
 	height: 100%;
+	border: medium solid #999;
   }
 .video{
   border: 1px solid red;
@@ -418,9 +411,13 @@ display: block;
 	border-bottom-style: groove;
 	border-left-style: groove;
 	vertical-align: middle;
+	background-color: #FFC;
 	
 
 
+}
+.letraCarton {
+	color: #FFF;
 }
 .labelUser {
 	font-family: "Hotel Coral Essex";

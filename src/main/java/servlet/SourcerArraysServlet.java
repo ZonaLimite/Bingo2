@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -34,18 +35,20 @@ HttpServletResponse response;
 protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		this.response=res;
 		Carton carton = null;
+		HttpSession htps=req.getSession();
+		String idHttpSession = htps.getId();
 		String usuario = req.getParameter("usuario");
 		String perfil = req.getParameter("perfil");
 		String ordCarton = req.getParameter("nCarton");
 		String comando = req.getParameter("comando");
 		if(comando.equals("ArrayCartonUsuario")){
-			carton = cartonUsuario (usuario, perfil, ordCarton);
+			carton = cartonUsuario (usuario, perfil, ordCarton, idHttpSession);
 		}
 		if(comando.equals("ArrayCartonBaseDatos")){
 			carton = consultaObjetoCarton(ordCarton);
 		}
 		if(comando.equals("ArrayCartonBaseDatosPorNRef")){
-			carton = cartonUsuarioPorNRef (usuario, perfil, ordCarton);
+			carton = cartonUsuarioPorNRef (usuario, perfil, ordCarton,idHttpSession);
 		}		
 		
 		int numeros[][]= carton.getNumeros();
@@ -63,19 +66,22 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		}
 
 }
-private Carton cartonUsuario (String usuario, String perfil, String ordCarton){
+private Carton cartonUsuario (String usuario, String perfil, String ordCarton, String idHttpSession){
+	Carton carton=null;
 	int index = new Integer(ordCarton);
-	UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil);
+	UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil,idHttpSession);
 	Vector<Carton> vCarton = userbean.getvCarton();
-
-	Carton carton= vCarton.get(index-1);
+	if(vCarton.size()>0){
+		carton= vCarton.get(index-1);
+	}
+	
 	return carton;
 
 }
-private Carton cartonUsuarioPorNRef (String usuario, String perfil, String nRef){
+private Carton cartonUsuarioPorNRef (String usuario, String perfil, String nRef, String idHttpSession){
 	Carton cartonBuscado=null;
 	//
-	UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil);
+	UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil,idHttpSession);
 	Vector<Carton> vCarton = userbean.getvCarton();//
 	for(int c=0;c<vCarton.size();c++){
 		Carton cart = vCarton.elementAt(c);//

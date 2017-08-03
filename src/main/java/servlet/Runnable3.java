@@ -214,6 +214,7 @@ public class Runnable3 implements Runnable{
     	pb.setIdState("Finalized");
         
     	return;
+    	//Con return finalizamos el hilo
     }
     
     private void enviarMensajeAPerfil(String textMessage,String perfil){

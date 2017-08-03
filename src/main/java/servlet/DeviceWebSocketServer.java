@@ -46,8 +46,8 @@ private String salaInUse;
 	this.mySesion=session;
 	String usuario = (String)config.getUserProperties().get("usuario");
 	String perfil = (String)config.getUserProperties().get("perfil");
-
-	UserBean userBean = gestorSesions.dameUserBeansPorUser(usuario,perfil);
+	String idHttpSession = (String)config.getUserProperties().get("idHttpSession");
+	UserBean userBean = gestorSesions.dameUserBeansPorUser(usuario,perfil,idHttpSession);
 	userBean.setSesionSocket(session);
 	//userBean.setStatusPlayer("playingBingo");
 	perfil = userBean.getPerfil();

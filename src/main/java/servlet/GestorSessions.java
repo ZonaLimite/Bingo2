@@ -277,7 +277,7 @@ import javax.websocket.Session;
 	    	
 	    	return juegoUserBeans;
 	    }            
-	    public synchronized UserBean dameUserBeansPorUser(String userAComparar,String perfilAComparar){
+	    public synchronized UserBean dameUserBeansPorUser(String userAComparar,String perfilAComparar,String idSession){
 	    	UserBean ub = null;
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -290,8 +290,9 @@ import javax.websocket.Session;
 	            		  ub = itUsersBean.next();
 	            		  String user = ub.getUsername();
 	            		  String perfil = ub.getPerfil();
-	            		  if(user.equals(userAComparar)&&perfil.equals(perfilAComparar)){
-	            			  log.info("Coleccionado UserBean por usuario:"+ub.getUsername() +" y perfil "+perfil);  
+	            		  String idHttpSession=ub.getSesionHttp().getId();
+	            		  if(user.equals(userAComparar)&&perfil.equals(perfilAComparar)&&idHttpSession.equals(idSession)){
+	            			  log.info("Coleccionado UserBean por usuario:"+ub.getUsername() +" y perfil "+perfil+" y iDHttpSession ");  
 	            			return ub;
 	            			
 	            		  }

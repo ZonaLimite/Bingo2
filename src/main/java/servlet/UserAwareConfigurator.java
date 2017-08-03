@@ -18,7 +18,7 @@ public class UserAwareConfigurator extends Configurator {
 	        config.getUserProperties().put("perfil", perfil);
 	        config.getUserProperties().put("usuario", usuario);		
 	        //config.getUserProperties().put("userBean", user);
-	        //config.getUserProperties().put("httpSession", httpSession.getId());
+	        config.getUserProperties().put("idHttpSession", httpSession.getId());
 	    }
 
 	}
