@@ -122,7 +122,7 @@
 <input type="hidden" id="usuario"  name="usuario" value="<%=myUser.getUsername() %>">
 <br>
 <label id="feedback" style=" width : 100%;"></label>
-
+<img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
 </form>
 </div>
 

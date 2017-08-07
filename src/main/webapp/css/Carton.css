@@ -411,10 +411,7 @@ display: block;
 	border-bottom-style: groove;
 	border-left-style: groove;
 	vertical-align: middle;
-	background-color: #FFC;
-	
-
-
+	background-color: #D7D7D7;
 }
 .letraCarton {
 	color: #FFF;
@@ -423,4 +420,7 @@ display: block;
 	font-family: "Hotel Coral Essex";
 	font-size: 14px;
 	color: #0F0;
+}
+.hiddenImage{
+	visibility: hidden;
 }

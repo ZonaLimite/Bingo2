@@ -21,11 +21,10 @@ document.addEventListener('touchmove', function(event) {
 */
 function startup() {
 	
-	alert();
+	
 	var collectionCanvas = document.getElementsByTagName("canvas");
 	  for(i=0;i<collectionCanvas.length;i++){
 		  el=collectionCanvas[i];
-		  if(i==0)alert(el);
 		  el.addEventListener("mousedown",func,false);
 		  el.addEventListener("mousemove",drawNow,false);
 		  //el.addEventListener("mouseover",controlOver,false);		 
@@ -34,7 +33,7 @@ function startup() {
 		  el.addEventListener("touchstart", func, false);
 		  el.addEventListener("touchend", revert, false);
 		  //el.addEventListener("touchcancel", handleCancel, false);
-		  el.addEventListener("touchmove", drawNow(event,el), false);
+		  el.addEventListener("touchmove", drawNow, false);
 	  }
 }
 
@@ -47,11 +46,11 @@ function func(event)
    event.preventDefault();
    elementDrawing = event.target.id;
    istrue = true;
-   timer = setTimeout(function(){ makeChange();},delay);
+   timer = setTimeout(function(){ makeChange(event);},delay);
    
 }
 
-function makeChange()
+function makeChange(event)
 {
       if(timer)
       clearTimeout(timer);
@@ -59,7 +58,8 @@ function makeChange()
       if(istrue)
       {
             /// rest of your code
-          alert('holding');
+          
+          event.target.style.backgroundColor = "#FFC";
           istrue=false;
       
 
@@ -80,7 +80,7 @@ function getMousePos(canvas, evt) {
     };
 }
 function drawNow(event){
-	event.preventDefault();
+	//event.preventDefault();
 	if(istrue){
 		element = event.target;
 		idElement = element.id;
@@ -91,7 +91,7 @@ function drawNow(event){
 	    posMouseY = pos.y;
 		context.beginPath();
 
-		context.fillStyle='rgb(0,255,0,0.5)';
+		context.fillStyle="rgba(0,255,0,0.3)";
 		context.fillRect(posMouseX,posMouseY,20,20);
 		//console.log(texto);
 		//context.fillText(texto,2,Math.floor(element.height-10));

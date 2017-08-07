@@ -80,7 +80,7 @@ var bolaPreparada="false";
 var salaInUse;
 var largoCeldaMensajes;
 var comboTexto;
-
+var img;
 var numeroCartonesComprados;
 var myArrayCartonesJuego= new Array();
 
@@ -219,7 +219,12 @@ function DrawNumberAt(number,id){
   y= Math.floor((altoTexto/2))+Math.floor((altoTexto/3));
   ctx.fillStyle="#0099FF";
   //ctx.scale(2,2);
-  ctx.fillText(number,x, y);
+  if(number==0){
+
+	  ctx.drawImage(img, 0, 0,xWidth,yHeight);//
+  }else{
+	  ctx.fillText(number,x, y);
+  }
 }
 
 function comprarCartones(){
@@ -329,11 +334,12 @@ function arrancar(){
 	
 	fullscreen(document.getElementById("content"));
 	initInterface();
-	startup();
+	startup();//activa manejadores carton
 }
 function activarCartones(){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
 	var array;
+	this.img = document.getElementById("Loto2");
 	for(nC=1;nC <= numeroCartonesComprados;nC++){
 		numeroRefCarton=document.getElementById("refCarton"+nC).textContent;
 		array=mostrarNumerosCarton(numeroRefCarton,nC);
