@@ -1,7 +1,7 @@
 <table class="tablero">
     <tr>
-         <td onClick="analizaTecla(this)" class="panel"> 
-          <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C1"></canvas>             
+         <td  class="panel"> 
+          <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C1" ></canvas>             
         </td>
     <td class="panel" >	          
     <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C2" >
@@ -31,7 +31,7 @@
 
     </tr>
    <tr>
-         <td onClick="analizaTecla(this)" class="panel"> 
+         <td class="panel"> 
           <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F2C1"></canvas>             
         </td>
     <td class="panel">	          

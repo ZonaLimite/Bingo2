@@ -329,7 +329,7 @@ function arrancar(){
 	
 	fullscreen(document.getElementById("content"));
 	initInterface();
-
+	startup();
 }
 function activarCartones(){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
