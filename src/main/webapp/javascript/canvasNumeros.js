@@ -1,6 +1,8 @@
 var timer;
 var canvasOffset;
 var istrue = false;
+
+var elementDrawing;
 var delay = 1000; // how much long u have to hold click in MS
 
 /*
@@ -26,6 +28,8 @@ function startup() {
 		  if(i==0)alert(el);
 		  el.addEventListener("mousedown",func,false);
 		  el.addEventListener("mousemove",drawNow,false);
+		  //el.addEventListener("mouseover",controlOver,false);		 
+		  //el.addEventListener("mouseout",controlOut,false);				  
 		  el.addEventListener("mouseup",revert,false);
 		  el.addEventListener("touchstart", func, false);
 		  el.addEventListener("touchend", revert, false);
@@ -33,9 +37,15 @@ function startup() {
 		  el.addEventListener("touchmove", drawNow(event,el), false);
 	  }
 }
+
+function controlOut(){
+	
+}
 function func(event)
 {
+	
    event.preventDefault();
+   elementDrawing = event.target.id;
    istrue = true;
    timer = setTimeout(function(){ makeChange();},delay);
    
@@ -51,6 +61,7 @@ function makeChange()
             /// rest of your code
           alert('holding');
           istrue=false;
+      
 
       }
 }
@@ -58,6 +69,7 @@ function revert(evt)
 {
    evt.preventDefault();	
    istrue =false;
+ 
 }
 
 function getMousePos(canvas, evt) {
@@ -71,6 +83,8 @@ function drawNow(event){
 	event.preventDefault();
 	if(istrue){
 		element = event.target;
+		idElement = element.id;
+		if(!(idElement==elementDrawing))return;//
 		context = element.getContext("2d");
 	    var pos = getMousePos(element, event);
 	    posMouseX = pos.x;
