@@ -57,7 +57,7 @@ function makeChange()
 function revert(evt)
 {
    evt.preventDefault();	
-   istrue =false;//
+   istrue =false;
 }
 
 function getMousePos(canvas, evt) {
