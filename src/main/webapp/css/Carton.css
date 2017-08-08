@@ -313,6 +313,8 @@ display: block;
 	background-color: #1D3841;
 	height: 100%;
 	border: medium solid #999;
+	margin: 0px;
+	padding: 0px;
   }
 .video{
   border: 1px solid red;
@@ -331,6 +333,8 @@ display: block;
 	visibility: visible;
 	opacity: 0.9;
 	background-image: none;
+	padding: 0px;
+	margin: 0px;
 }
 #marquesina {
 	font-family: AgainstMyself;
@@ -411,7 +415,7 @@ display: block;
 	border-bottom-style: groove;
 	border-left-style: groove;
 	vertical-align: middle;
-	background-color: #D7D7D7;
+	background-color: #B5B5B5;
 }
 .letraCarton {
 	color: #FFF;

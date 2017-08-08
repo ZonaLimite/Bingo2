@@ -4,9 +4,8 @@
           <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C1" ></canvas>             
         </td>
     <td class="panel" >	          
-    <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C2" >
-	           
-    </canvas></td>
+  		  <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C2" ></canvas>
+    </td>
       <td class="panel"> 
      	<canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F1C3"></canvas>   
         </td>
