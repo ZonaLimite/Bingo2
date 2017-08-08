@@ -137,7 +137,7 @@ function iniciar() {
 	}*/
 	activarCartones();
 	creaSocket(salaInUse.textContent);
-	fullscreen(document.getElementById("content"));
+	
 	
 	//Manejo JQuery
 	
@@ -332,7 +332,7 @@ function initInterface(){
 function arrancar(){
 	//El socket ya esta creado
 	
-	
+	fullscreen(document.getElementById("content"));
 	initInterface();
 	startup();//activa manejadores carton
 }
