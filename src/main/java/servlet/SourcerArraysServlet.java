@@ -41,6 +41,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		String perfil = req.getParameter("perfil");
 		String ordCarton = req.getParameter("nCarton");
 		String comando = req.getParameter("comando");
+		
 		if(comando.equals("ArrayCartonUsuario")){
 			carton = cartonUsuario (usuario, perfil, ordCarton, idHttpSession);
 		}

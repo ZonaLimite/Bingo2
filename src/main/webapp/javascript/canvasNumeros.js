@@ -5,7 +5,7 @@ var context;
 var imageData;
 
 var elementDrawing;
-var delay = 900; // how much long u have to hold click in MS
+var delay = 800; // how much long u have to hold click in MS
 
 /*
 document.addEventListener('touchstart', function(event) {
@@ -104,7 +104,7 @@ function drawNow(event){
 		context.beginPath();
 		letras=""+posMouseX+","+posMouseY;
 
-		context.fillStyle="rgba(255,255,0,0.3)";
+		context.fillStyle="rgba(0,255,0,0.3)";
 		context.fillRect(posMouseX,posMouseY,20,20);
 		//console.log(texto);
 		//context.fillText(texto,2,Math.floor(element.height-10));

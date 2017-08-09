@@ -83,6 +83,7 @@ var comboTexto;
 var img;
 var numeroCartonesComprados;
 var myArrayCartonesJuego= new Array();
+var ventanaCartones;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -97,6 +98,7 @@ function iniciar() {
     cajaFecha = document.getElementById("CajaDcha");
     etiquetaOrden = document.getElementById("labelOrden");
     numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
+	ventanaCartones=document.getElementById("innerHTMLCartones");
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
@@ -135,7 +137,8 @@ function iniciar() {
 		//e.preventDefault();
 		resizeBolas();
 	}*/
-	activarCartones();
+	innerHTMLCartones();
+
 	creaSocket(salaInUse.textContent);
 	
 	
@@ -192,7 +195,7 @@ function iniciar() {
 			      },
 			      click: function() {
 			    	  $( this ).dialog( "close" );
-			    	  window.location.reload(true);
+			    	  innerHTMLCartones();
 			      }
 			 
 			      // Uncommenting the following line would hide the text,
@@ -204,6 +207,24 @@ function iniciar() {
 	
 	
 }
+function innerHTMLCartones(){
+	var params = new Object();
+	params.perfil="jugador";
+	params.usuario=document.getElementById("usuario").value;
+
+	$.ajax({
+		  type: 'POST',
+		  url: "WriterCartonesServlet",
+		  data: params,
+		  async:false
+		}).done(function( data ) {
+			borrarNumerosCarton();
+			ventanaCartones.innerHTML=data;
+			activarCartones();
+		
+	});
+}
+
 function DrawNumberAt(number,id){
   element= document.getElementById(id);
   xWidth= element.width;
@@ -392,7 +413,10 @@ function borrarNumerosCarton(){
 			borraNumeroCartonAt("F"+f+"C"+c);
 		}
 	}*/
-	window.location.reload(true);
+	//window.location.reload(true);
+	ventanaCartones.innerHTML="";// borramos el html del articulo de los cartones y el array de control.
+	myArrayCartonesJuego= new Array();
+	
 }
 function creaSocket(sala){
 	var wsUri = getRootUri() + sala;

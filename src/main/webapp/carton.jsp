@@ -35,7 +35,6 @@
 	}
 %>
 <body class="pagina" id="content">
-<input id="numeroCartonesComprados" type="hidden" name="cuantosCartones" value="<%=vCarton.size()%>">
 <div id="agrupar">
 <header id="cabecera">
 
@@ -97,23 +96,10 @@
    
 </table>
 </header>
-
-<%	
-    for(int i=0; i < vCarton.size();i++){
-    	myCarton = vCarton.elementAt(i);
-%>
-        <jsp:include page="tablaCarton.jsp" flush="true">
-        <jsp:param name="cartonSeq" value="<%= i+1 %>" />
-        <jsp:param name="nRef" value="<%= myCarton.getnRef()+\"\" %>" /> 
-        </jsp:include>    
-<%
-    }
-%>
-
-
-
+<article id="innerHTMLCartones">
+		<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
+</article>
 </div>
-
 <div id="cartones" title="Compra de cartones"> 
 <form id="requestForm">
 
