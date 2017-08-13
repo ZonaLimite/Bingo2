@@ -14,13 +14,20 @@ public class Carton {
 	private String numeroPantalla;
 	private boolean lineaCantado=false;
 	private boolean bingoCantado=false;
+	private int nOrden=0;
+	
+	public int getnOrden() {
+		return nOrden;
+	}
+	public void setnOrden(int nOrden) {
+		this.nOrden = nOrden;
+	}
 	public int getnRef() {
-            return nRef;
-        }
-
-        public void setnRef(int nRef) {
-            this.nRef = nRef;
-        }
+        return nRef;
+    }
+    public void setnRef(int nRef) {
+        this.nRef = nRef;
+    }
 	public String getnCarton() {
 		return nCarton;
 	}

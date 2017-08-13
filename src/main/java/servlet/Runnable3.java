@@ -18,9 +18,6 @@ import javax.websocket.Session;
  */
 //public class Hilo2 extends Thread{
 public class Runnable3 implements Runnable{
-	
-
-	
     Logger log = Logger.getLogger("HiloSala1");
     JTextArea area2;
     PocketBingo pb;
@@ -30,7 +27,6 @@ public class Runnable3 implements Runnable{
     int orden;
     int delay= 0;
     private String estaSalaEs="sala1";
-    
 	
     private GestorSessions gestorSesions;
     
@@ -75,7 +71,7 @@ public class Runnable3 implements Runnable{
     				e.printStackTrace();
     			}
     		}
-        	orden=pb.getNumeroOrden();;
+        	orden=pb.getNumeroOrden();
         	int number= pb.getNewBola();
         	//this.enviarMensajeAPerfil("bolaJuego_"+orden);
         	enviarMensajeAPerfil("cantarNumero_"+number+"_"+orden,"supervisor");
@@ -107,6 +103,7 @@ public class Runnable3 implements Runnable{
                 }else if(pb.getIdState().equals("ComprobandoLinea")){
                 	enviarMensajeAPerfil("ComprobarLinea","supervisor");
                 	enviarMensajeAPerfil("ComprobarLinea","jugador");
+                	gestorSesions.comprobarLineas(estaSalaEs);
                 	i--;
                 }else if(pb.getIdState().equals("LineaOk")){
                 	pb.setIdState("Started");
@@ -128,6 +125,7 @@ public class Runnable3 implements Runnable{
                 }else if(pb.getIdState().equals("ComprobandoBingo")){
                 	enviarMensajeAPerfil("ComprobarBingo","supervisor");
                 	enviarMensajeAPerfil("ComprobarBingo","jugador");
+                	gestorSesions.comprobarBingos(estaSalaEs);
                 	i--;
                 }else if(pb.getIdState().equals("BingoOk")){
                 	pb.setIdState("Finalized");

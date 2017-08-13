@@ -121,6 +121,7 @@ function iniciar() {
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
 		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
+		
 		//lineaCantada="comprobando";
 		socket_send("Linea");
 		//triggerLinea="true";

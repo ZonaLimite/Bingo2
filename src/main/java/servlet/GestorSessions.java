@@ -12,10 +12,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -199,7 +203,7 @@ import javax.websocket.Session;
                     UserBean ub = (UserBean) it.next();
                     if(ub.getPerfil().equals(perfil)&ub.getSalonInUse().equals(sala)){
                         Vector<Carton> vCartonesUser = ub.getvCarton();
-                        
+                        	
                         	for(int vC=0;vC<vCartonesUser.size();vC++){
                         		Carton c = (Carton)vCartonesUser.get(vC);
                         		relacion.put(ub.getUsername(), c);
@@ -208,7 +212,158 @@ import javax.websocket.Session;
                   }
                 }
                 return relacion;
-            }            
+            }
+	    
+
+	    
+	    public void comprobarLineas(String sala){
+	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.
+	    	//Despues recorremos los cartones de cada userbean y comprobamos la linea
+	    	// a cada carton premiado lo registramos con su userbean propietario
+	    	Set<UserBean> userbeans = this.dameUserBeans("jugador",sala);
+	    	PocketBingo pb = getJugadasSalas(sala);
+	    	List<Integer>numerosCalled = pb.getNumerosCalled();
+	    	int resultControlLinea;
+	    	
+	    		Iterator<UserBean> it =userbeans.iterator();
+	    		HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
+	    		while(it.hasNext()){
+
+	    			UserBean user = it.next();
+	    			Vector<Carton>vCarton = user.getvCarton();	
+	    			Iterator<Carton> itCarton = vCarton.iterator();
+	    			while(itCarton.hasNext()){
+	    				Carton carton = (Carton)itCarton.next();
+	    				int numeros[][] = carton.getNumeros();
+	    				resultControlLinea=0;
+	    				for(int f=0;f < 3; f++){
+	    					resultControlLinea=0;
+	    					for(int c=0; c<9 ; c++){
+	    						int numero = numeros[f][c];
+	    						if(numerosCalled.contains(numero)){
+	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
+	    								try {
+	    									
+	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
+	    								} catch (IOException e) {
+										// 	TODO Auto-generated catch block
+	    									e.printStackTrace();
+	    								}
+	    								if(f==0)resultControlLinea+=5;
+	    								if(f==1)resultControlLinea+=50;	
+	    								if(f==2)resultControlLinea+=500;	  
+	    						}
+	    					}
+	    					if (resultControlLinea == 25 || resultControlLinea == 250 || resultControlLinea == 2500 ) {
+	    							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
+	    							pilaAnunciaPremios.put(user, carton);
+	    							log.info("Hay Linea ,result:"+resultControlLinea+" Fila "+ (f+1) + " Carton:" + carton.getnRef());
+	    							//	user.getSesionSocket().getBasicRemote().sendText("Linea OK, Enhorabuena recoja su premio");
+	    							
+	    							//	lineaOK de user user en carton con ref nRef en fila f
+	    					}else{
+	    						try {
+	    							user.getSesionSocket().getBasicRemote().sendText("No hay Linea, Continuamos ,result:"+resultControlLinea);
+	    							log.info("No Hay Linea ,result:"+resultControlLinea +" Fila "+ (f+1) +" Carton:" + carton.getnRef());
+	    						} catch (IOException e) {
+	    							// 	TODO Auto-generated catch block
+	    							e.printStackTrace();
+	    						}
+	    					}
+	    				}
+	    			}                                                                                                                                                                                                    
+	    					
+	    			
+	    			
+	    		}
+	    		Set<UserBean> userBeansPremiados = pilaAnunciaPremios.keySet();
+	    		Iterator<UserBean> itPremiados = userBeansPremiados.iterator();
+	    		while(itPremiados.hasNext()){
+	    			UserBean ubPremiado = itPremiados.next();
+	    			Carton carton  = pilaAnunciaPremios.get(ubPremiado);
+	    			try {
+						ubPremiado.getSesionSocket().getBasicRemote().sendText("Premio Carton:"+carton.getnRef()+", enhorabuena");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+	    }
+
+	    public void comprobarBingos(String sala){
+	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.
+	    	//Despues recorremos los cartones de cada userbean y comprobamos la linea
+	    	// a cada carton premiado lo registramos con su userbean propietario
+	    	Set<UserBean> userbeans = this.dameUserBeans("jugador",sala);
+	    	PocketBingo pb = getJugadasSalas(sala);
+	    	List<Integer>numerosCalled = pb.getNumerosCalled();
+	    	int resultControlLinea;
+	    	
+	    		Iterator<UserBean> it =userbeans.iterator();
+	    		HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
+	    		while(it.hasNext()){
+
+	    			UserBean user = it.next();
+	    			Vector<Carton>vCarton = user.getvCarton();	
+	    			Iterator<Carton> itCarton = vCarton.iterator();
+	    			while(itCarton.hasNext()){
+	    				Carton carton = (Carton)itCarton.next();
+	    				int numeros[][] = carton.getNumeros();
+	    				resultControlLinea=0;
+	    				for(int f=0;f < 3; f++){
+	    					
+	    					for(int c=0; c<9 ; c++){
+	    						int numero = numeros[f][c];
+	    						if(numerosCalled.contains(numero)){
+	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
+	    								try {
+	    									
+	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
+	    								} catch (IOException e) {
+										// 	TODO Auto-generated catch block
+	    									e.printStackTrace();
+	    								}
+	    								if(f==0)resultControlLinea+=5;
+	    								if(f==1)resultControlLinea+=50;	
+	    								if(f==2)resultControlLinea+=500;	  
+	    						}
+	    					}
+
+	    				}
+    					if (resultControlLinea == 2775) {
+							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
+							pilaAnunciaPremios.put(user, carton);
+							log.info("Hay Bingo ,result:"+resultControlLinea+" Carton:" + carton.getnRef());
+							//	user.getSesionSocket().getBasicRemote().sendText("Linea OK, Enhorabuena recoja su premio");
+							
+							//	lineaOK de user user en carton con ref nRef en fila f
+					}else{
+						try {
+							user.getSesionSocket().getBasicRemote().sendText("No hay Bingo, Continuamos ,result:"+resultControlLinea);
+							log.info("No Hay Bingo ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
+						} catch (IOException e) {
+							// 	TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}	    				
+	    			}                                                                                                                                                                                                    
+	    					
+	    			
+	    			
+	    		}
+	    		Set<UserBean> userBeansPremiados = pilaAnunciaPremios.keySet();
+	    		Iterator<UserBean> itPremiados = userBeansPremiados.iterator();
+	    		while(itPremiados.hasNext()){
+	    			UserBean ubPremiado = itPremiados.next();
+	    			Carton carton  = pilaAnunciaPremios.get(ubPremiado);
+	    			try {
+						ubPremiado.getSesionSocket().getBasicRemote().sendText("Premio Carton:"+carton.getnRef()+", enhorabuena");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+	    }	    
             
 	    public synchronized Set<UserBean> dameUserBeans(String perfilAComparar){
 	    	Set<UserBean> juegoUserBeans = new LinkedHashSet<UserBean>();
@@ -233,6 +388,29 @@ import javax.websocket.Session;
 	         }
 	         return juegoUserBeans;
 	    }
+	    public synchronized Set<UserBean> dameUserBeans(String perfilAComparar, String sala){
+	    	Set<UserBean> juegoUserBeans = new LinkedHashSet<UserBean>();
+	    	Set<String> juegoClaves= sessions.keySet();	    	
+	    	Iterator<String> itClaves = juegoClaves.iterator();
+	         while (itClaves.hasNext()){
+	             String usuarios = itClaves.next();
+	             Vector<UserBean> vectorUserBean =sessions.get(usuarios);
+	             Iterator<UserBean> itUsersBean = vectorUserBean.iterator();
+	             while(itUsersBean.hasNext()){
+
+	            		  UserBean ub = itUsersBean.next();
+	            		  String salaInUse = ub.getSalonInUse();
+	            		  String perfil = ub.getPerfil();
+	            		  if(perfil.equals(perfilAComparar)&&(salaInUse.equals(sala))&&(ub.getStatusPlayer().equals("playingBingo"))){
+	            			//
+	            			juegoUserBeans.add(ub);
+	            			log.info("Coleccionado UserBean de usuario:"+ub.getUsername()+" perfil:"+ perfil + "socketSesion:"+ub.getSesionSocket().getId());
+	            		  }
+	             }
+	             
+	         }
+	         return juegoUserBeans;
+	    }	    
 	    public synchronized Set<UserBean> dameUserBeansEnPortal(String perfilAComparar){
 		    	Set<UserBean> juegoUserBeans = new LinkedHashSet<UserBean>();
 		    	Set<String> juegoClaves= sessions.keySet();	    	
@@ -276,7 +454,14 @@ import javax.websocket.Session;
 	         }
 	    	
 	    	return juegoUserBeans;
-	    }            
+	    } 
+	    public synchronized Vector<UserBean> dameVectorUserBeansUsuario(String user){
+	    	return this.sessions.get(user);
+	    }
+	    public synchronized void setVectorUserBeansUsuario(String user, Vector<UserBean> vectorUsersBean){
+	    	this.sessions.put(user, vectorUsersBean);
+	    }
+	    
 	    public synchronized UserBean dameUserBeansPorUser(String userAComparar,String perfilAComparar,String idSession){
 	    	UserBean ub = null;
 	    	Set<String> juegoClaves= sessions.keySet();	    	

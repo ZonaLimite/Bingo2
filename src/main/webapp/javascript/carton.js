@@ -177,9 +177,12 @@ function iniciar() {
 		    	  $.post("gestorComprasCartones",$( "#requestForm" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
 		    		  $("#feedback").text( responseText);
-		    		  
+			    	  result = document.getElementById("feedback").textContent;
+			    	  indexError = result.lastIndexOf("Error");	
+			    	  if(indexError>=0)return;
+			    	  innerHTMLCartones();
 		    	  });
-		    	  //visualizaDatosCartones();
+		    	  
 		    	  //socket_send(mensaje);
 		    	  //$( this ).dialog( "close" );
 		      }
@@ -194,8 +197,11 @@ function iniciar() {
 			        primary: "ui-icon-heart"
 			      },
 			      click: function() {
+
+			    	  
 			    	  $( this ).dialog( "close" );
-			    	  innerHTMLCartones();
+
+
 			      }
 			 
 			      // Uncommenting the following line would hide the text,
@@ -356,6 +362,7 @@ function arrancar(){
 	fullscreen(document.getElementById("content"));
 	initInterface();
 	startup();//activa manejadores carton
+	iniciarFondoEstrellas();//
 }
 function activarCartones(){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
@@ -532,7 +539,7 @@ function recibido(e){
 				break;
 		case "InitInterface":
 				initInterface();//
-				show_InMessage("!! COMIENZA PARTIDA ¡¡","blink");	
+				show_InMessage("!! COMIENZA PARTIDA ¡¡",true);	
 				break;
 
 		case "EndBalls":
@@ -540,7 +547,8 @@ function recibido(e){
                                 borrarNumerosCarton();
 				break;
 		case "Linea":
-				show_InMessage("!! LINEA ¡¡","blink");	
+				show_InMessage("!! LINEA ¡¡","blink");
+				//Play audio Linea();
 				break;
 		case "Bingo":
 			show_InMessage("!! BINGO ¡¡","blink");	
@@ -548,6 +556,7 @@ function recibido(e){
 				break
 		case "ComprobarLinea":
 				show_InMessage("COMPROBANDO LINEA ....",true);
+				//rutinaComprobacionCartones("Linea");
 				break;
 		case "ComprobarBingo":
 				show_InMessage("COMPROBANDO BINGO ....",true);
@@ -559,6 +568,9 @@ function recibido(e){
 				}else{
 					//encenderNumero(arrayMessages[1]);
 				}
+				break;
+		case "numeroOK_":
+				
 				break;
 		case "ApagarNumero":
 				apagarNumero(arrayMessages[1]);
