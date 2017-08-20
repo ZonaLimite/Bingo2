@@ -48,7 +48,8 @@ var starsEnable="true";
 var lineaCantada="false";
 var bingoCantado="false";
 var precioCarton=0;
-var nCartones=0;
+var nCartonesManuales=0;
+var nCartonesAutomaticos;
 var porCientoLinea=0;
 var porCientoBingo=0;
 var porCientoCantaor=0;
@@ -173,6 +174,9 @@ function iniciar() {
 
     boton_cartones=document.getElementById("lab_cartones");
 	boton_cartones.onclick = function(){$( "#cartones" ).dialog( "open" );}
+	
+	boton_comando = document.getElementById("finalizar");
+	boton_comando.onclick = function(){finalizarPartida()};
 	
 	boton_comando = document.getElementById("comando");
 	boton_comando.onclick = function(){send_command()};
@@ -314,7 +318,12 @@ function iniciar() {
 	$( "#cartones" ).dialog({
 		  open: function( event, ui ) {
 			  $("#PrecioCarton").val(precioCarton);
-			  $("#NCartonesJuego").val(nCartones);
+			  var array = obtenerDatosCartones();//Funcion Ajax de obtencion datos de contexto
+			  nCartonesAutomaticos = array[3];
+			  nCartonesManuales = array[4];
+			  nCartonesJuego = nCartonesManuales + nCartonesAutomaticos;
+			  $("#NCartonesJuego").val(nCartonesJuego);
+			  $("#NCartonesManuales").val(nCartonesManuales);
 			  $("#porcientoLinea").val(porCientoLinea);
 			  $("#porcientoBingo").val(porCientoBingo);
 			  $("#porcientoCantaor").val(porCientoCantaor);
@@ -331,11 +340,11 @@ function iniciar() {
 		      },
 		      click: function() {
 		    	  precioCarton=parseFloat($("#PrecioCarton").val()).toFixed(2);
-		    	  nCartones=parseInt($("#NCartonesJuego").val());
+		    	  nCartonesManuales=parseInt($("#NCartonesManuales").val());
 		    	  porCientoLinea=parseInt($("#porcientoLinea").val());
 		    	  porCientoBingo=parseInt($("#porcientoBingo").val());
 				  porCientoCantaor=parseInt($("#porcientoCantaor").val());
-		    	  mensaje="JSON#SET_DATOS_CARTONES#"+precioCarton+"#"+nCartones+"#"+porCientoLinea+"#"+porCientoBingo+"#"+porCientoCantaor;
+		    	  mensaje="JSON#SET_DATOS_CARTONES#"+precioCarton+"#"+nCartonesManuales+"#"+porCientoLinea+"#"+porCientoBingo+"#"+porCientoCantaor;
 		    	  visualizaDatosCartones();
 		    	  socket_send(mensaje);
 		    	  $( this ).dialog( "close" );
@@ -558,6 +567,7 @@ function initInterface(){
 	if(numin==1)cantaor="Ines";
 	if(numin==2)cantaor="Lola";
 	elegirCantaor(cantaor);
+	//show_InMessage(" ");
 	
 }
 function arrancar(){
@@ -597,6 +607,10 @@ function creaSocket(sala){
 	socket.addEventListener('error', errores, false);	
 	
 }
+function finalizarPartida(){
+	socket_send("Finalize");
+}
+
 function getRootUri() {
 	/*Web Sockets on OpenShift work over ports 8000 for ws and 8443 for wss,*/
 	    
@@ -615,32 +629,14 @@ function getRootUri() {
 }
 
 function abierto(){
-	show_InMessage("socket abierto");
+	refreshDatosCartones();
+	
 	anchoPantalla=window.innerWidth;
 	resizeBolas();
 	alto=window.innerHeight;
 	
 	caja_spy.value=""+anchoPantalla+"x"+alto;
-	        /*
-        imageObj.onload = function() {
-
-					lienzo.scale(1,1);
-					ancho=window.innerWidth;
-					alto=windows.innerHeight;
-					canvas.width=ancho;
-					canvas.height=alto;
-                    lienzo.drawImage(imageObj, 0, 0,ancho,alto);
-        };
- 		 // Calls the imageObj.onload function asynchronously
-       imageObj.src="images/Bingo.png";
-       */
-	
-	
-	//alert("Ancho canvas=" + canvas.width + ", alto="+ canvas.height);
-	//imagen.addEventListener("load", function(){lienzo.drawImage(imagen,0,0,canvas.width,canvas.height)}, false);
-	
-	
-	//socket_send("startGame");
+	show_InMessage("socket abierto");
 }
 function refreshDatosCartones(){
 	//Envia al servidor una peticion de refresco de datos
@@ -772,11 +768,9 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);
 				break
 		case "ComprobarLinea":
-				
 				numerin = Math.floor((Math.random()*10))+1;
 				poster="url('images/gifLinea"+numerin+".gif')";
 				posterImage.style.backgroundImage=poster;
-				
 				apagaVideo();
 				show_InMessage("COMPROBANDO LINEA ....",true);
 				posterImage.style.visibility="visible";
@@ -819,7 +813,9 @@ function recibido(e){
 		case "ApagaBingo":
 			apagaBingo();
 			break;
-
+		case "WarningFinalizando":
+			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");
+			    break;
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);
@@ -898,6 +894,30 @@ function reanudar(){
 	   boton_pause.style.borderBottomStyle = "outset";
 	   boton_pause.style.borderLeftStyle = "outset";
 }
+function obtenerDatosCartones(){
+	//servlet de servicio --->SourcerArraysCarton
+	var params = new Object();
+	var arrayDatosCartones ;
+	params.perfil="supervisor";
+	params.usuario="super";
+	params.comando="DatosCartones";
+
+	$.ajax({
+		  type: 'POST',
+		  url: "SourcerArraysCarton",
+		  data: params,
+		  dataType:"json",
+		  async:false
+		}).done(function( data ) {
+			
+			myArrayDatosCartones=data;
+			precioCarton= myArrayDatosCartones[0];
+			saldo=myArrayDatosCartones[1];
+			nCartones=myArrayDatosCartones[2];
+	});
+	return myArrayDatosCartones;
+}
+
 function procesarCuadros(){
 	
 	contador.value=video.currentTime;
@@ -935,7 +955,7 @@ function procesarCuadros(){
 			video.pause();
 			socket_send("refresh_refresh_refresh1");		
 			socket_send("seekingFinished");
-			socket_send("refresh_refresh_refresh2");
+			//socket_send("refresh_refresh_refresh2");
 		}
 	}
 	

@@ -37,6 +37,7 @@ var videoEnable="true";
 var starsEnable="true";
 var lineaCantada="false";
 var bingoCantado="false";
+var saldo = 0;
 var precioCarton=0;
 var nCartones=0;
 var porCientoLinea=0;
@@ -83,6 +84,8 @@ var comboTexto;
 var img;
 var numeroCartonesComprados;
 var myArrayCartonesJuego= new Array();
+var myArrayNumerosCantados = new Array();
+var myArrayDatosCartones = new Array();
 var ventanaCartones;
 
 function iniciar() {
@@ -95,6 +98,7 @@ function iniciar() {
 	datoCartones=document.getElementById("valorCartones");
     datoLinea=document.getElementById("valorLinea");
     datoBingo=document.getElementById("valorBingo");
+    datoSaldo=document.getElementById("saldo");
     cajaFecha = document.getElementById("CajaDcha");
     etiquetaOrden = document.getElementById("labelOrden");
     numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
@@ -116,13 +120,12 @@ function iniciar() {
 		triggerBingo="true";
 	};
 
-	
-	
 	boton_iniciar = document.getElementById("boton_Jugar");
-	boton_iniciar.onclick = function(){ arrancar()};
+	boton_iniciar.onclick = function(){ fullscreen(document.getElementById("content"));};
 	
 	boton_Carton = document.getElementById("boton_Carton");
-	boton_Carton.onclick = function(){ 
+	boton_Carton.onclick = function(){
+		refreshDatosCartones();
 		$( "#cartones" ).dialog( "open" );
 	};
 	
@@ -137,12 +140,14 @@ function iniciar() {
 		//e.preventDefault();
 		resizeBolas();
 	}*/
+	
+	obtenerDatosCartones();//Funcion ajax que consulta pocketBingo de sala corriente y obtiene datos cartones
+	
 	innerHTMLCartones();
-
 	creaSocket(salaInUse.textContent);
 	
 	
-	//Manejo JQuery
+	//Manejo JQuery//
 	
 	//Plantilla JQuery para Dialogo Cartones//
 	
@@ -155,6 +160,7 @@ function iniciar() {
 	$( "#cartones" ).dialog({
 		  create: function( event, ui ) {
 			  event.preventDefault();
+			  
 			 // mensaje="JSON#GET_DATOS_CARTONES#";
 			  //socket_send(mensaje);
 		  }
@@ -162,7 +168,8 @@ function iniciar() {
 	$( "#cartones" ).dialog({
 		open: function( event, ui ) {
 			  event.preventDefault();
-			  $("#feedback").text("Elija nº cartones y Pulse 'COMPRA'");
+			  
+			  $("#feedback").text("Elija nº cartones y Pulse 'COMPRA' Precio Carton: "+precioCarton+" Euros ");
 		  }
 		});
 
@@ -180,7 +187,10 @@ function iniciar() {
 			    	  result = document.getElementById("feedback").textContent;
 			    	  indexError = result.lastIndexOf("Error");	
 			    	  if(indexError>=0)return;
+			    	  obtenerDatosCartones();
+			    	  visualizaDatosCartones();
 			    	  innerHTMLCartones();
+			    	  refreshDatosCartones();
 		    	  });
 		    	  
 		    	  //socket_send(mensaje);
@@ -197,7 +207,7 @@ function iniciar() {
 			        primary: "ui-icon-heart"
 			      },
 			      click: function() {
-
+			    	  arrancar();
 			    	  
 			    	  $( this ).dialog( "close" );
 
@@ -359,7 +369,7 @@ function initInterface(){
 function arrancar(){
 	//El socket ya esta creado
 	
-	fullscreen(document.getElementById("content"));
+	//fullscreen(document.getElementById("content"));
 	initInterface();
 	startup();//activa manejadores carton
 	iniciarFondoEstrellas();//
@@ -400,14 +410,77 @@ function mostrarNumerosCarton(nRefCarton,nOrdCarton){
 			});
 			return array2;
 }
+function obtenerNumerosCantados(){
+	//servlet de servicio --->SourcerArraysCarton
+	var params = new Object();
+	var array3;
+	//params.nCarton=document.getElementById("refCarton"+nC).textContent;
+	
+	params.perfil="jugador";
+	params.usuario=document.getElementById("usuario").value;
+	params.comando="ArrayNumerosCantados";
+
+	$.ajax({
+		  type: 'POST',
+		  url: "SourcerArraysCarton",
+		  data: params,
+		  dataType:"json",
+		  async:false
+		}).done(function( data ) {
+			
+			array3=data;
+	});
+	return array3
+}
+
+function obtenerDatosCartones(){
+	//servlet de servicio --->SourcerArraysCarton
+	var params = new Object();
+	var arrayDatosCartones ;
+	params.perfil="jugador";
+	params.usuario=document.getElementById("usuario").value;
+	params.comando="DatosCartones";
+
+	$.ajax({
+		  type: 'POST',
+		  url: "SourcerArraysCarton",
+		  data: params,
+		  dataType:"json",
+		  async:false
+		}).done(function( data ) {
+			
+			myArrayDatosCartones=data;
+			precioCarton= myArrayDatosCartones[0];
+			saldo=myArrayDatosCartones[1];
+			nCartones=myArrayDatosCartones[2];
+			porCientoLinea=myArrayDatosCartones[6];
+			porCientoBingo=myArrayDatosCartones[7];
+			porCientoCantaor=myArrayDatosCartones[5];
+	});
+	return;
+}
+
 function encenderNumerosDeArrayCarton(myData,numberCarton){
 	var myArrayCartones=myData;
-	
+	myArrayNumerosCantados = obtenerNumerosCantados();
+	var siEstaCantado=false;
 	for(f=0;f<3;f++){
 		for(c=0;c<9;c++){
 			arrayLinea= myArrayCartones[f];
 			number = arrayLinea[c];
-			DrawNumberAt(number,numberCarton+"F"+(f+1)+"C"+(c+1));
+			id=numberCarton+"F"+(f+1)+"C"+(c+1);
+			DrawNumberAt(number,id);
+			for(x=0;x < myArrayNumerosCantados.length; x++){
+				if(myArrayNumerosCantados[x]==number){
+					siEstaCantado=true;
+					x=myArrayNumerosCantados.length;
+				}
+			}
+			if(siEstaCantado==true){
+				element= document.getElementById(id);
+				element.style.backgroundColor = "#FFC";//Marca numeros cantados en carton
+				siEstaCantado=false;
+			}
 		}
 	}
 	
@@ -457,7 +530,10 @@ function getRootUri() {
 
 function abierto(){
 	show_InMessage("socket abierto");
+	obtenerDatosCartones();// desde Ajax
+	visualizaDatosCartones();
 	anchoPantalla=window.innerWidth;
+	arrancar();
 
 }
 function refreshDatosCartones(){
@@ -490,6 +566,7 @@ function visualizaDatosCartones(){
 	datoCartones.textContent=""+nCartones;
 	datoLinea.textContent=xLinea+" €";
 	datoBingo.textContent=xBingo+" €";
+	datoSaldo.textContent=saldo;
 }
 
 function cerrado(){
@@ -500,7 +577,8 @@ function errores(e){
 }
 function recibido(e){
 	//manejador mensajes
-	show_InMessage(e.data);
+	
+
 
 	mensaje=""+e.data;
 	
@@ -509,6 +587,7 @@ function recibido(e){
 	if(arrayMessages.length > 0){
 		 
 	comando=arrayMessages[0];
+	if(!(comando=="DATOSCARTONES"))	show_InMessage(e.data);
 		switch(comando) {
 		    
 		//Cantar numero y mostrar orden bola
@@ -552,8 +631,8 @@ function recibido(e){
 				break;
 		case "Bingo":
 			show_InMessage("!! BINGO ¡¡","blink");	
-			break;
-				break
+				break;
+				
 		case "ComprobarLinea":
 				show_InMessage("COMPROBANDO LINEA ....",true);
 				//rutinaComprobacionCartones("Linea");
@@ -569,8 +648,9 @@ function recibido(e){
 					//encenderNumero(arrayMessages[1]);
 				}
 				break;
-		case "numeroOK_":
-				
+		case "numeroOK":
+				element = document.getElementById(arrayMessages[1]);
+				element.style.backgroundColor = "#FFC";//Marca numeros cantados en carton
 				break;
 		case "ApagarNumero":
 				apagarNumero(arrayMessages[1]);
@@ -587,7 +667,10 @@ function recibido(e){
 				break;
 		case "ApagaBingo":
 				apagaBingo();
-			break;				
+				break;	
+		case "WarningFinalizando":
+		    	show_InMessage("finalizando partida; ¿Hay mas Bingos?","blink");
+		    	break;
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);

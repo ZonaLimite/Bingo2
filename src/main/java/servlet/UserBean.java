@@ -18,17 +18,18 @@ public class UserBean {
     private HttpSession sesionHttp;
     private Session sesionSocket;
     private Vector<Carton> vCarton = new Vector();
-    private Integer saldo=0;
+    private float saldo=0;
+    
     
     public Integer getNumeroCartones() {
 		return numeroCartones;
 	}
 
-	public Integer getSaldo() {
+	public float getSaldo() {
 		return saldo;
 	}
 
-	public void setSaldo(Integer saldo) {
+	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
 

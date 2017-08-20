@@ -29,10 +29,12 @@ public class PocketBingo implements Serializable {
     private boolean lineaCantada=false;
     private boolean bingoCantado=false;
     private String IdState = "Finalized";
-    private String precioCarton="0";
-    private String nCartones="0";
-    private String porcientoLinea="0";
-    private String porcientoBingo="0";
+    private String precioCarton="1";
+    private int nCartonesElectronicos=0;
+
+	private String nCartonesManuales="0";
+    private String porcientoLinea="20";//Por defecto
+    private String porcientoBingo="80";
     private String porcientoCantaor="0";
     private int delay = 1500;
     
@@ -44,7 +46,7 @@ public class PocketBingo implements Serializable {
     public void initPocket(){
     	numeroOrden=0;
     	idPlayer="";
-    	numerosCalled= new Vector();
+    	this.resetNumerosCalled();
        	lastNumber=0;
     	newBola=0;
     	reasonInterrupt="";
@@ -54,13 +56,22 @@ public class PocketBingo implements Serializable {
     	IdState="NewGame";
 
     }
+   
     
-    
+    public int getnCartonesElectronicos() {
+		return nCartonesElectronicos;
+	}
+	public void setnCartonesElectronicos(int nCartonesElectronicos) {
+		this.nCartonesElectronicos = nCartonesElectronicos;
+	}
     public boolean isLineaCantada() {
 		return lineaCantada;
 	}
 	public void setLineaCantada(boolean lineaCantada) {
 		this.lineaCantada = lineaCantada;
+	}
+	public void resetNumerosCalled(){
+		numerosCalled= new Vector<Integer>();
 	}
 	public boolean isBingoCantado() {
 		return bingoCantado;
@@ -132,11 +143,11 @@ public class PocketBingo implements Serializable {
 	public void setPrecioCarton(String precioCarton) {
 		this.precioCarton = precioCarton;
 	}
-	public String getnCartones() {
-		return nCartones;
+	public String getnCartonesManuales() {
+		return nCartonesManuales;
 	}
-	public void setnCartones(String nCartones) {
-		this.nCartones = nCartones;
+	public void setnCartonesManuales(String nCartones) {
+		this.nCartonesManuales = nCartones;
 	}
 	public String getPorcientoLinea() {
 		return porcientoLinea;

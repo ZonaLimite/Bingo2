@@ -29,6 +29,7 @@
 	mySession = request.getSession();
 	if(mySession!=null){
 		myUser = (UserBean)mySession.getAttribute("userBean");
+		//myUser.setStatusPlayer("playingBingo");//Vamos aver si cambaindo aqui el estado, se refleja en gestorsessions dicho cambio
 		//De momento solo un carton por usuario
 		//int numCartones = myUser.getNumeroCartones();
 		vCarton = (Vector<Carton>)myUser.getvCarton();
@@ -40,9 +41,14 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-  <td width="12%" height="109" padding=0><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ><label id="sala"><%=myUser.getSalonInUse()%></label>
+  <td width="12%" height="109" padding=0>
+  	<label class="labelUser">Saldo : <label id="saldo"><%=myUser.getSaldo()%></label> Euros</label>
+  	<img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" >
+  	<label id="sala"><%=myUser.getSalonInUse()%></label>
     <span class="labelUser">
     <label class="labelUser"><%=myUser.getUsername()%></label>
+  
+ 
     </span></td>
   
  <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
@@ -73,7 +79,7 @@
 		<div align="center">  
 		<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
 		<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
-		<label id="boton_Jugar" CLASS="menu_li2" >JUGAR</label>
+		<label id="boton_Jugar" CLASS="menu_li2" >FULL</label>
 		<label id="boton_Carton" CLASS="menu_li2" >CARD</label>
 		</div>  
 	</article>

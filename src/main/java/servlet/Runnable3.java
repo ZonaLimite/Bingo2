@@ -26,6 +26,7 @@ public class Runnable3 implements Runnable{
     int maxNumbers = 90;
     int orden;
     int delay= 0;
+    int n=0;
     private String estaSalaEs="sala1";
 	
     private GestorSessions gestorSesions;
@@ -84,7 +85,7 @@ public class Runnable3 implements Runnable{
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
         	
         	orden=pb.getNumeroOrden()+1;;
@@ -128,10 +129,14 @@ public class Runnable3 implements Runnable{
                 	gestorSesions.comprobarBingos(estaSalaEs);
                 	i--;
                 }else if(pb.getIdState().equals("BingoOk")){
-                	pb.setIdState("Finalized");
+                	pb.setIdState("EndBalls");
                 	enviarMensajeAPerfil("cantarNumero_bingoOk_"+pb.getNumeroOrden(),"supervisor");
                 	i--;
-                }
+                
+                }else if(pb.getIdState().equals("WarningFinalizando")){
+                	n=20000;
+                   	log.info("Haciendo tiempo que hemos llegado al 90 y no canta nadie");
+                }	               
                 
                 else{
             	
@@ -147,17 +152,30 @@ public class Runnable3 implements Runnable{
                 	pb.setNumeroOrden(i);
                 }
                 log.info("Orden antes del wait "+ pb.getNumeroOrden());
-                
-                wait(); 
+ 
+   	                wait(n); 
+   				
+
 
             } catch (InterruptedException ex) {
         	   //log.info("He sido interrumpido");
+            	n=0;
         	   String reasonInterrupt=pb.getReasonInterrupt();
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
                switch(reasonInterrupt){
                		case "secuenciaAcabada":
                			
                			pb.setLastNumber(pb.getNewBola());
+               			pb.addNumerosCalled(pb.getNewBola());
+               			enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"supervisor");
+
+               			if(pb.getIdState().equals("Started") && pb.getNumeroOrden()==90){
+           					i--;
+           					pb.setIdState("WarningFinalizando");
+               	        	enviarMensajeAPerfil("WarningFinalizando","jugador");
+               	        	enviarMensajeAPerfil("WarningFinalizando","supervisor");
+               	        	break;
+               			}	
                			
                			if( pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("LineaOk")|| pb.getIdState().equals("BingoOk")){
                				break;
@@ -166,17 +184,15 @@ public class Runnable3 implements Runnable{
            					i--;
            					break;
            				}
-               			if(pb.getIdState().equals("Finalized")){
+               			if(pb.getIdState().equals("EndBalls")){
                				enviarMensajeAPerfil("EndBalls","supervisor");
                				enviarMensajeAPerfil("EndBalls","jugador"); 
                				gestorSesions.resetCartones(estaSalaEs);
+               				pb.resetNumerosCalled();
+               				pb.setIdState("Finalized");
                				return;
                			}
 
-               			pb.addNumerosCalled(pb.getNewBola());
-               			enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"supervisor");
-               			//enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"jugador");
-               			
                			try {
                				delay=pb.getDelay();
                				Thread.sleep(delay);
@@ -185,7 +201,7 @@ public class Runnable3 implements Runnable{
                				e.printStackTrace();
                			}
 
-               		break;
+               				break;
                		
                		case "continuar":
                				break;
@@ -195,8 +211,9 @@ public class Runnable3 implements Runnable{
                				}
                				break;
                				
-               		case "offLine":
+               		case "Finalize":
                         gestorSesions.resetCartones(estaSalaEs);
+                        pb.resetNumerosCalled();
                			enviarMensajeAPerfil("EndBalls","supervisor");
                			enviarMensajeAPerfil("EndBalls","jugador");               			
                			pb.setIdState("Finalized");
@@ -206,7 +223,11 @@ public class Runnable3 implements Runnable{
           
           }   
         }
+
+    	//Esto nose si se se ejecuta alguna vez; quizas al llegar al 90 y no haber ningn cambio de estado
+    	log.info("Se ha cabado la secuencia y no hay cantados bingos");
         gestorSesions.resetCartones(estaSalaEs);
+        pb.resetNumerosCalled();
     	enviarMensajeAPerfil("EndBalls","supervisor");
     	enviarMensajeAPerfil("EndBalls","jugador");                	
     	pb.setIdState("Finalized");

@@ -204,9 +204,15 @@ private String salaInUse;
 	
 	case "Bingo":
 		if(!pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
-		pb.setIdState("Bingo");
+
+
 		enviarMensajeAPerfil("Bingo","jugador");		
 		pb.setReasonInterrupt("Bingo");
+		if(pb.getIdState().equals("WarningFinalizando")){
+			pb.setIdState("Bingo");
+			hilo3.interrupt();
+		}
+		pb.setIdState("Bingo");
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
@@ -236,8 +242,8 @@ private String salaInUse;
 		break;
 	
 	case "Finalize":
-		pb.setIdState("Finalized");
-		pb.setReasonInterrupt("offLine");
+		//pb.setIdState("Finalized");
+		pb.setReasonInterrupt("Finalize");
 		hilo3.interrupt();
 		break;
 	}
@@ -254,7 +260,7 @@ private String salaInUse;
 			case "SET_DATOS_CARTONES"://JSON#SET_DATOS_CARTONES#.........
 				//String precioCarton,nCartones,porCientoLinea,porCientoBingo,porCientoCantaor;
 				pb.setPrecioCarton(arrayMessage.elementAt(2));
-				pb.setnCartones(arrayMessage.elementAt(3));
+				pb.setnCartonesManuales(arrayMessage.elementAt(3));
 				pb.setPorcientoLinea(arrayMessage.elementAt(4));
 				pb.setPorcientoBingo(arrayMessage.elementAt(5));
 				pb.setPorcientoCantaor(arrayMessage.elementAt(6));
@@ -262,9 +268,14 @@ private String salaInUse;
 				comando="GET_DATOS_CARTONES";
 			
 			case "GET_DATOS_CARTONES"://JSON#GET_DATOS_CARTONES#.........
-				String precioCarton,nCartones,porCientoLinea,porCientoBingo,porCientoCantaor;
+				String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
 				precioCarton=pb.getPrecioCarton();
-				nCartones=pb.getnCartones();
+				//Hay que distinguir entre cartones electronicos y manuales
+				//EL cuadro de Dialogo debe considerar las dos facetas
+				// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
+				// Vamos a probar ahora conla electronica y dejamos 
+				//nCartones=pb.getnCartones();
+				int nCartones = new Integer(pb.getnCartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
 				porCientoLinea=pb.getPorcientoLinea();
 				porCientoBingo=pb.getPorcientoBingo();
 				porCientoCantaor=pb.getPorcientoCantaor();

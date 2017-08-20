@@ -50,11 +50,13 @@ public class UserDAO
          String firstName = rs.getString("User");
          String eMail = rs.getString("Email");
          String perfil = rs.getString("Perfil");
+         float saldo = rs.getFloat("Saldo");
 	     	
          System.out.println("Welcome " + firstName + "Email:" + eMail);
          bean.setUserName(firstName);
          bean.setPerfil(perfil);
          bean.setValid(true);
+         bean.setSaldo(saldo);
       }
    } 
 

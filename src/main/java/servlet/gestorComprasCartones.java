@@ -37,61 +37,80 @@ public class gestorComprasCartones extends HttpServlet {
     //private UserBean user = null;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected synchronized void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSessionAComparar = req.getSession(false);
-        UserBean user = null;
+        UserBean user_ = null;
+        PocketBingo pocketBingoSala= null;
         //Identificacion de la sesion de usuario//
         if(httpSessionAComparar!=null){
             String usuario = req.getParameter("usuario");
             String sala = req.getParameter("sala");
             int nCartonesAComprar = new Integer(req.getParameter("nCartones"));
-            
-            
 
-            
             Set userBeans = gestorSesions.dameUserBeansPorUser(usuario);
-            Iterator it = userBeans.iterator();
+            Iterator<UserBean> it = userBeans.iterator();
             while(it.hasNext()){
-                UserBean user_ = (UserBean)it.next();
+                user_ = (UserBean)it.next();
                 String idSesion = user_.getSesionHttp().getId();
                 String usuarioreg = user_.getUsername();
                 String perfil= user_.getPerfil();
                 //if(perfil.equals("jugador")&&usuario.equals(usuarioreg)){
                     
                 if(idSesion.equals(httpSessionAComparar.getId())&& perfil.equals("jugador")&&usuarioreg.equals(usuario)){
-                    user = user_;
-                    PocketBingo pocketBingoSala= gestorSesions.getJugadasSalas(user.getSalonInUse());
+                    //user = user_;
+                    pocketBingoSala= gestorSesions.getJugadasSalas(user_.getSalonInUse());
+ 
+                  //Comprobacion estado Pocket Bingo en "Finalized"
                     if(!pocketBingoSala.getIdState().equals("Finalized")){
-                        String mensaje="Error,Compra de cartones aun no permitida. Espere a que acabe la partida";
+                        String mensaje="Error,Compra de cartones aun no permitida.\n Espere a que acabe la partida";
                         resp.getWriter().print(mensaje);
                         return;
                     } 
-                    cargarVectordeCartonesdeUsuario(user,nCartonesAComprar);
+                    
                 }
             }
-            if(user==null){
-                String mensaje="Error,Usuario no esta registrado o no esta On Line ";
+            if(user_==null){
+                String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
                 resp.getWriter().print(mensaje);
                 return;
             }
+          
+          //comprobarSaldoUsuario();
+            String mensaje2="";
+            float precioCarton = new Float (pocketBingoSala.getPrecioCarton());
+            float precioCompraActual = nCartonesAComprar * precioCarton;
+            float saldoUsuario = user_.getSaldo();
+            if(precioCompraActual > saldoUsuario){
+                String mensaje="Error,No hay saldo suficiente";
+                resp.getWriter().print(mensaje);
+                return;
+            } else{           
             
-            //Comprobacion estado Pocket Bingo en "Finalized"
-
-            //comprobarSaldoUsuario();
-            //realizarCompraTransaccion();
-            
-            String mensaje="Inf,Compra de cartones efectuada";
-            resp.getWriter().print(mensaje);
-            System.out.println(mensaje);
+            	//realizarCompraTransaccion();
+            	boolean comoHaIdo = realizarCompraTransaccion(precioCompraActual,user_);
+            	if(comoHaIdo){
+            		cargarVectordeCartonesdeUsuario(user_,nCartonesAComprar);
+            		mensaje2="Inf,Compra de cartones efectuada";
+            	}else{
+            		mensaje2="Err,Fallo transaccion compra";
+            	}
+            		resp.getWriter().print(mensaje2);
+            		System.out.println(mensaje2);
+            }
         }
     }
-    private int consultarSaldoUsuario(String usuario, String perfil) {
-        int saldo=0;
-        
-        return saldo;
-    }
-    private boolean realizarCompraTransaccion(){
+
+    private boolean realizarCompraTransaccion(float precioCompra, UserBean myUser){
         boolean okeyCompra=false;
+        float saldoRestante = myUser.getSaldo() - precioCompra;
+        String Consulta = "UPDATE usuarios SET Saldo = "+ saldoRestante+" WHERE User = '"+myUser.getUsername()+"'";
+        System.out.println(Consulta);
+        int result=UtilDatabase.updateQuery(Consulta);
+        if(result>0){
+        	myUser.setSaldo(saldoRestante);
+        	okeyCompra=true;
+        }
+        
         return okeyCompra;
     }
     private void cargarVectordeCartonesdeUsuario(UserBean user_, int nCartones){

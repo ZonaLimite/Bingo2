@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +51,76 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		}
 		if(comando.equals("ArrayCartonBaseDatosPorNRef")){
 			carton = cartonUsuarioPorNRef (usuario, perfil, ordCarton,idHttpSession);
+		}
+		if(comando.equals("DatosCartones")){
+			UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil, idHttpSession);
+			String sala = userbean.getSalonInUse();
+			float precioCarton = new Float(gestorSesions.getJugadasSalas(sala).getPrecioCarton());
+			float saldoUsuario = userbean.getSaldo();
+			int cartonesManuales = new Integer(gestorSesions.getJugadasSalas(sala).getnCartonesManuales());
+			int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
+			int nCartonesEnJuego = gestorSesions.dameSetCartonesEnJuego(sala).size() + cartonesManuales;
+			int porCientoCantaor = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoCantaor());
+			int porCientoLinea = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoLinea());
+			int porCientoBingo = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoBingo());
+			//float premioLinea = gestorSesions.getJugadasSalas(sala).
+			//Pasamos los datos a array
+			// index 0 = precioCarton - float
+			// index 1 = saldoUsuario - float
+			// index 2 = cartones en Juego - int (Automaticos) + manuales
+			// index 3 = cartones automaticos - int
+			// index 4 = cartones Manaules - int
+			// index 5 = % Cantaor - int
+			// index 6 - % Linea - int
+			// index 7 - % Bingo - int
+			
+			Object datosCartones [] = new Object[10];
+			datosCartones[0] = precioCarton;
+			datosCartones[1] = saldoUsuario;
+			datosCartones[2] = nCartonesEnJuego;
+			datosCartones[3] = cartonesAutomaticos;
+			datosCartones[4] = cartonesManuales;
+			datosCartones[5] = porCientoCantaor;
+			datosCartones[6] = porCientoLinea;
+			datosCartones[7] = porCientoBingo;
+			
+			//Ahora a enviarlo como JSON
+			 String json = new Gson().toJson(datosCartones);
+		   
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+		    try {
+				response.getWriter().write(json);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
 		}		
+		if(comando.equals("ArrayNumerosCantados")){
+			UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil, idHttpSession);
+			String sala = userbean.getSalonInUse();
+			List<Integer> numerosCantados = dameNumerosCantados(sala);
+			//Pasamos la lista a array
+			int cantidad = numerosCantados.size();
+			
+			int arrayNumerosCantados[] = new int[cantidad] ;
+			for(int i=0;i<cantidad;i++){
+				arrayNumerosCantados[i]=numerosCantados.get(i);
+			}
+			//Ahora a enviarlo como JSON
+			 String json = new Gson().toJson(arrayNumerosCantados);
+		   
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+		    try {
+				response.getWriter().write(json);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
 		
 		int numeros[][]= carton.getNumeros();
 		
@@ -66,6 +136,11 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			e.printStackTrace();
 		}
 
+}
+private List<Integer>  dameNumerosCantados(String sala){
+	List<Integer> cantados  =null;
+		cantados = gestorSesions.getJugadasSalas(sala).getNumerosCalled();
+	return cantados;
 }
 private Carton cartonUsuario (String usuario, String perfil, String ordCarton, String idHttpSession){
 	Carton carton=null;
@@ -101,8 +176,6 @@ public synchronized Carton consultaObjetoCarton(String nrefCarton){
     Statement st=null;
     ResultSet rs=null;
     try {
-      
-  
         int matrizNumeros[][]=null;
         int idCarton;
         String nCarton;

@@ -44,7 +44,7 @@
     <label id="iniciar" CLASS="menu_li" >INICIAR</label>
     <label id="resume" CLASS="menu_li" >RESUMIR</label>
 	<label id="lab_cartones" CLASS="menu_li" >CARTONES</label>
-	<label id="historico" CLASS="menu_li" >HISTORICO</label>
+	<label id="finalizar" CLASS="menu_li" >FINALIZAR</label>
 	<label id="preferencias" CLASS="menu_li" >OPCIONES</label>	
 	</nav>
 	</td>
@@ -508,7 +508,7 @@ ELEGIR CANTAOR
   <table width="200">
     <tr>
       <td><label>
-        <input type="radio" name="Codecs" value="MP4" id="Codecs_0" checked>
+        <input type="radio" name="Codecs" value="MP4" id="Codecs_0">
         MP4</label></td>
     </tr>
     <tr>
@@ -518,7 +518,7 @@ ELEGIR CANTAOR
     </tr>
     <tr>
       <td><label>
-        <input type="radio" name="Codecs" value="WEBM" id="Codecs_2">
+        <input type="radio" name="Codecs" value="WEBM" id="Codecs_2"  checked>
         WebM</label></td>
     </tr>
   </table>
@@ -544,9 +544,15 @@ ELEGIR CANTAOR
 <div id="cartones" title="Configuracion cartones"> 
 <form>
 <label >Precio Carton(€):</label><input type="text" id="PrecioCarton">
-<label >N: Cartones en Juego:</label><input type="text" id="NCartonesJuego">
+<br>
+<label >N: Cartones en Juego:</label><input type="text"  id="NCartonesJuego">
+<br>
+<label >N: Cartones Manuales:</label><input type="text" id="NCartonesManuales">
+<br>
 <label >Asignacion % Premio Linea:</label><input type="text" id="porcientoLinea">
+<br>
 <label >Asignacion % Premio Bingo:</label><input type="text" id="porcientoBingo">
+<br>
 <label >Asignacion % Cantaor     :</label><input type="text" id="porcientoCantaor">
 
 </form>
