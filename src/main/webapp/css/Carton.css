@@ -429,5 +429,5 @@ display: block;
 	visibility: hidden;
 }
 .audioClass {
-	visibility: hidden;
+	display: none;
 }
