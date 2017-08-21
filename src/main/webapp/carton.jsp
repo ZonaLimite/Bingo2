@@ -118,10 +118,12 @@
 </form>
 </div>
 
-<audio id="audioWeb" >
+<span class="audioClass">
+<audio id="audioWeb" class="audioClass" controls>
   	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
-	Your browser does not support the audio element.
+	Your browser does not support the audio element....
 </audio>
+</span>
 
 </body>
 
