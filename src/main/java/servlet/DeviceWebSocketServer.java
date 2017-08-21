@@ -40,7 +40,7 @@ private Runnable3 runnable3;//
 private Session mySesion;//
 private int delay=0;//ms
 private String salaInUse;
-
+private String myPerfil;
 @OnOpen
     public void open(Session session, EndpointConfig config) {
 	this.mySesion=session;
@@ -51,6 +51,7 @@ private String salaInUse;
 	userBean.setSesionSocket(session);
 	//userBean.setStatusPlayer("playingBingo");
 	perfil = userBean.getPerfil();
+	this.myPerfil = perfil;
 	salaInUse = userBean.getSalonInUse();
 	HttpSession userHttpSession = userBean.getSesionHttp();
 	String idSesionHttp = userHttpSession.getId();
@@ -132,6 +133,7 @@ private String salaInUse;
 			e.printStackTrace();
 		}
 		hilo3 = threadFactory.newThread(runnable3);
+		gestorSesions.addHiloSala(salaInUse, hilo3);
 		log.info("Antes de arrancar hilo3 en resume");
 		//pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
 		
@@ -167,6 +169,7 @@ private String salaInUse;
 			e.printStackTrace();
 		}
 		hilo3 = threadFactory.newThread(runnable3);
+		gestorSesions.addHiloSala(salaInUse, hilo3);
 		log.info("Antes de arrancar hilo3");
 		//pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
 		
@@ -205,16 +208,18 @@ private String salaInUse;
 	case "Bingo":
 		if(!pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
 
-
-		enviarMensajeAPerfil("Bingo","jugador");		
-		pb.setReasonInterrupt("Bingo");
-		if(pb.getIdState().equals("WarningFinalizando")){
+			enviarMensajeAPerfil("Bingo","jugador");		
+			
+			if(pb.getIdState().equals("WarningFinalizando")){
+				pb.setReasonInterrupt("Bingo");
+				pb.setIdState("Bingo");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
+				//hilo3.interrupt();
+			}
 			pb.setIdState("Bingo");
-			hilo3.interrupt();
-		}
-		pb.setIdState("Bingo");
-		//this.guardaPocket("sala1", session);
-		//Hilo2.interrupt();
+			//this.guardaPocket("sala1", session);
+			//Hilo2.interrupt();
+		
 		break;
 	
 	case "Bingo_OK":

@@ -50,15 +50,28 @@ import javax.websocket.Session;
 	    //Mapa seguimiento jugadas Bingo por Sala (Sala,PocketBingo)
 	    private Map<String, PocketBingo> jugadasSalas;
 	    
+	    //Referencias a hilos activos de salas
+	    private Map<String,Thread> hiloSala ;
+	    
 
-	    public PocketBingo getJugadasSalas(String sala) {
-                PocketBingo pb = jugadasSalas.get(sala);
+	    public Thread getHiloSala(String sala) {
+			return this.hiloSala.get(sala);
+		}
+
+		public void addHiloSala(String sala, Thread hilo) {
+			this.hiloSala.put(sala, hilo);
+			log.info("Hilo de sala " +sala+" ,registrado");
+		}
+
+		public PocketBingo getJugadasSalas(String sala) {
+            PocketBingo pb = jugadasSalas.get(sala);
             return pb;
-            }
+        }
 
-            public void setJugadasSalas(String sala,PocketBingo pb) {
-		jugadasSalas.put(sala, pb) ;
-            }
+        public void setJugadasSalas(String sala,PocketBingo pb) {
+        	jugadasSalas.put(sala, pb) ;
+        }
+        
 
 		@PostConstruct
 	    public void init() {
@@ -71,7 +84,9 @@ import javax.websocket.Session;
 
                 this.sessions = new ConcurrentHashMap<>();
                 log.info("Gestor :mapas cargados");
-	        
+                
+                this.hiloSala = new ConcurrentHashMap<>();
+                
 	    }
 		
 		@Override

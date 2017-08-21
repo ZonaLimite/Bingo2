@@ -87,6 +87,7 @@ var myArrayCartonesJuego= new Array();
 var myArrayNumerosCantados = new Array();
 var myArrayDatosCartones = new Array();
 var ventanaCartones;
+var audio;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -103,6 +104,7 @@ function iniciar() {
     etiquetaOrden = document.getElementById("labelOrden");
     numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
 	ventanaCartones=document.getElementById("innerHTMLCartones");
+	audio = document.getElementById("audioWeb");
 	
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
@@ -627,9 +629,14 @@ function recibido(e){
 				break;
 		case "Linea":
 				show_InMessage("!! LINEA ¡¡","blink");
-				//Play audio Linea();
+				numAudio =Math.floor((Math.random() * 2) + 1);
+				audio.src="http://boga.esy.es/audio/AudioLinea"+numAudio+".mp3";
+				audio.play();
 				break;
 		case "Bingo":
+			numAudio =Math.floor((Math.random() * 2) + 1);
+			audio.src="http://boga.esy.es/audio/AudioBingo"+numAudio+".mp3";
+			audio.play();			
 			show_InMessage("!! BINGO ¡¡","blink");	
 				break;
 				

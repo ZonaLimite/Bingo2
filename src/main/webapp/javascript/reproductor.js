@@ -113,6 +113,8 @@ function iniciar() {
     datoBingo=document.getElementById("valorBingo");
     cajaFecha = document.getElementById("CajaDcha");
     etiquetaOrden = document.getElementById("labelOrden");
+    audio = document.getElementById("audioWeb");
+    
 	boton_play = document.getElementById("play");
 	boton_play.onclick = function() {reanudar()};
 	
