@@ -151,7 +151,7 @@ public class Runnable3 implements Runnable{
                 	pb.setNewBola(number);//bola en pantalla
                 	pb.setNumeroOrden(i);
                 }
-                log.info("Orden antes del wait "+ pb.getNumeroOrden());
+                log.info("Orden antes del wait "+ pb.getNumeroOrden()+ "n= "+n);
  
    	                wait(n); 
    				
@@ -159,7 +159,7 @@ public class Runnable3 implements Runnable{
 
             } catch (InterruptedException ex) {
         	   //log.info("He sido interrumpido");
-            	n=0;
+               n=0;
         	   String reasonInterrupt=pb.getReasonInterrupt();
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
                switch(reasonInterrupt){
@@ -231,7 +231,7 @@ public class Runnable3 implements Runnable{
     	enviarMensajeAPerfil("EndBalls","supervisor");
     	enviarMensajeAPerfil("EndBalls","jugador");                	
     	pb.setIdState("Finalized");
-        
+        log.info("Acabado bucle");//
     	return;
     	//Con return finalizamos el hilo
     }
