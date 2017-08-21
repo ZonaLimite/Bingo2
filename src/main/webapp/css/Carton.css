@@ -429,5 +429,7 @@ display: block;
 	visibility: hidden;
 }
 .audioClass {
-	display: none;
+	height: 1px;
+	width: 1px;
+	opacity: 0;
 }
