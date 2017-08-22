@@ -117,6 +117,11 @@
 <img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
 </form>
 </div>
+<div id="welcome" title="¡BIENVENIDOS!"> 
+<form >
+<label >Pulsa "START" para comenzar</label>
+</form>	
+</div>
 
 <span class="audioClass">
 

@@ -213,16 +213,53 @@ function iniciar() {
 			 }
 		  ]
 		});
-	
-	
-}
-function habilitarBotonesBingo(){
+		
+		//Plantilla JQuery para Dialogo Welcome/	
+		$( "#welcome" ).dialog({ autoOpen: false ,
+			modal: true,
+			height: 'auto',
+			width: 360});
+		$( "#welcome" ).dialog({
+			create: function( event, ui ) {
+			event.preventDefault();
+			}
+		});
+		$( "#welcome" ).dialog({
+			open: function( event, ui ) {
+			event.preventDefault();
 
+			}
+		});
+
+		$( "#welcome" ).dialog({
+			buttons: [
+			{
+				text: "START",
+				icons: {
+					primary: "ui-icon-heart"
+				},
+				click: function() {
+					trampaAudio();
+					  $( this ).dialog( "close" );
+				}	
+
+			}]
+			
+		});
+	
+		$( "#welcome" ).dialog( "open" );		
+}
+function trampaAudio(){
 	audio.style.opacity = "1";
 	audio.src="http://boga.esy.es/audio/AudioLinea1.mp3";
 	audio.play();
 	audio.pause();
 	audio.style.opacity = "0";
+}
+
+function habilitarBotonesBingo(){
+
+
 	boton_Linea.onclick = function(){ 
 		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
 		//lineaCantada="comprobando";
@@ -374,7 +411,7 @@ function initInterface(){
 	lienzo=canvas.getContext('2d');
 	lienzo.clearRect(0,0,canvas.width,canvas.heigth);
 	//borrarNumerosCarton();
-	
+	habilitarBotonesBingo();
 	refreshDatosCartones();
 	
 
@@ -386,7 +423,7 @@ function arrancar(){
 	//fullscreen(document.getElementById("content"));
 	initInterface();
 	startup();//activa manejadores carton
-	iniciarFondoEstrellas();//
+	
 }
 function activarCartones(){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
@@ -645,12 +682,16 @@ function recibido(e){
 				break;
 		case "InitInterface":
 				initInterface();//
-				show_InMessage("!! COMIENZA PARTIDA ¡¡",true);	
+				show_InMessage("!! COMIENZA PARTIDA ¡¡",true);
+				iniciarFondoEstrellas();//
 				break;
 
 		case "EndBalls":
 				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true);
                                 borrarNumerosCarton();
+                                obtenerDatosCartones();
+                                visualizaDatosCartones();
+                                detenerFondoEstrellas();
 				break;
 		case "Linea":
 				show_InMessage("!! LINEA ¡¡","blink");
