@@ -105,7 +105,7 @@ function iniciar() {
     numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
 	ventanaCartones=document.getElementById("innerHTMLCartones");
 	audio = document.getElementById("audioWeb");
-	audio.style.transform="translate(-100px)";
+	audio.style.transform="translate(-2048px)";
 
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
