@@ -172,13 +172,14 @@ function iniciar() {
 		        primary: "ui-icon-heart"
 		      },
 		      click: function() {
+		    	  habilitarBotonesBingo();
 		    	  $.post("gestorComprasCartones",$( "#requestForm" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
 		    		  $("#feedback").text( responseText);
 			    	  result = document.getElementById("feedback").textContent;
 			    	  indexError = result.lastIndexOf("Error");	
 			    	  if(indexError>=0)return;
-			    	  habilitarBotonesBingo();
+			    	 
 			    	  obtenerDatosCartones();
 			    	  visualizaDatosCartones();
 			    	  innerHTMLCartones();
@@ -557,12 +558,18 @@ function refreshDatosCartones(){
 	socket_send("JSON#GET_DATOS_CARTONES");
 	
 }
-function playAudioPremios(){
+function playAudioPremioLinea(){
 	numAudio =Math.floor((Math.random() * 2) + 1);
 	//document.getElementById("myDIV").style.opacity = "1";
 	audio.src="http://boga.esy.es/audio/AudioLinea"+numAudio+".mp3";
 	audio.play();
 	
+}
+function playAudioPremioBingo(){
+	numAudio =Math.floor((Math.random() * 2) + 1);
+	//document.getElementById("myDIV").style.opacity = "1";
+	audio.src="http://boga.esy.es/audio/AudioBingo"+numAudio+".mp3";
+	audio.play();
 }
 function visualizaDatosCartones(){
 	sumaCaja = precioCarton*nCartones;
@@ -647,12 +654,10 @@ function recibido(e){
 				break;
 		case "Linea":
 				show_InMessage("!! LINEA ¡¡","blink");
-				playAudioPremios();
+				playAudioPremioLinea();
 				break;
 		case "Bingo":
-			numAudio =Math.floor((Math.random() * 2) + 1);
-			audio.src="http://boga.esy.es/audio/AudioBingo"+numAudio+".mp3";
-			audio.play();			
+				playAudioPremioBingo();
 			show_InMessage("!! BINGO ¡¡","blink");	
 				break;
 				
