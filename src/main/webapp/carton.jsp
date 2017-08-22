@@ -115,16 +115,16 @@
 <br>
 <label id="feedback" style=" width : 100%;"></label>
 <img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
-<audio id="audioWeb" class="audioClass" controls>
-  	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
-	Your browser does not support the audio element....
-</audio></form>
+</form>
 </div>
 
 <span class="audioClass">
 
 </span>
-
+<audio id="audioWeb" class="audioClass" controls >
+  	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
+	Your browser does not support the audio element....
+</audio>
 </body>
 
 </html>

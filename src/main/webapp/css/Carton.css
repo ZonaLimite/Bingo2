@@ -431,5 +431,5 @@ display: block;
 .audioClass {
 	height: 1px;
 	width: 1px;
-	opacity: 0;
+	opacity: 0.9;
 }
