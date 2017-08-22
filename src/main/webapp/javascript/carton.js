@@ -105,27 +105,11 @@ function iniciar() {
     numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
 	ventanaCartones=document.getElementById("innerHTMLCartones");
 	audio = document.getElementById("audioWeb");
-	audio.src="http://boga.esy.es/audio/AudioLinea1.mp3";
-	audio.play();
-	audio.pause();
 	audio.style.opacity = "0";
-	
 	boton_Linea= document.getElementById("boton_Linea");
-	boton_Linea.onclick = function(){ 
-		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
-		//lineaCantada="comprobando";
-		playAudioPremios();
-		socket_send("Linea");
-		triggerLinea="true";
-	};
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
-	boton_Bingo.onclick = function(){
-		//if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
-		//bingoCantado="comprobando";
-		socket_send("Bingo");
-		triggerBingo="true";
-	};
+
 
 	boton_iniciar = document.getElementById("boton_Jugar");
 	boton_iniciar.onclick = function(){ fullscreen(document.getElementById("content"));};
@@ -176,7 +160,7 @@ function iniciar() {
 		open: function( event, ui ) {
 			  event.preventDefault();
 			  
-			  $("#feedback").text("Elija nº cartones y Pulse 'COMPRA' Precio Carton: "+precioCarton+" Euros ");
+			  $("#feedback").text("Elija nº cartones y Pulse 'COMPRA' \nPrecio Carton: "+precioCarton+" Euros ");
 		  }
 		});
 
@@ -194,6 +178,7 @@ function iniciar() {
 			    	  result = document.getElementById("feedback").textContent;
 			    	  indexError = result.lastIndexOf("Error");	
 			    	  if(indexError>=0)return;
+			    	  habilitarBotonesBingo();
 			    	  obtenerDatosCartones();
 			    	  visualizaDatosCartones();
 			    	  innerHTMLCartones();
@@ -229,6 +214,27 @@ function iniciar() {
 		});
 	
 	
+}
+function habilitarBotonesBingo(){
+
+	audio.style.opacity = "1";
+	audio.src="http://boga.esy.es/audio/AudioLinea1.mp3";
+	audio.play();
+	audio.pause();
+	audio.style.opacity = "0";
+	boton_Linea.onclick = function(){ 
+		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
+		//lineaCantada="comprobando";
+
+		socket_send("Linea");
+		triggerLinea="true";
+	};
+	boton_Bingo.onclick = function(){
+		//if(lineaCantada=="false" || lineaCantada=="comprobando" || bingoCantado=="comprobando")return;
+		//bingoCantado="comprobando";
+		socket_send("Bingo");
+		triggerBingo="true";
+	};
 }
 function innerHTMLCartones(){
 	var params = new Object();
