@@ -105,7 +105,8 @@ function iniciar() {
     numeroCartonesJugador= document.getElementById("numeroCartonesComprados");
 	ventanaCartones=document.getElementById("innerHTMLCartones");
 	audio = document.getElementById("audioWeb");
-	
+	audio.style.transform="translate(-100px)";
+
 	boton_Linea= document.getElementById("boton_Linea");
 	boton_Linea.onclick = function(){ 
 		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
