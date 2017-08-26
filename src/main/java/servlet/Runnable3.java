@@ -123,7 +123,7 @@ public class Runnable3 implements Runnable{
         	    				i--;
         	    				n=0;
         	    		}else{
-        	    			pb.setIdState("PremiosRecopilados");
+        	    			pb.setIdState("PremiosRecopilados");//
         	    			n=1;
         	    			i--;
         	    		}
