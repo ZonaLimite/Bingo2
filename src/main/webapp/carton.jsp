@@ -3,13 +3,9 @@
     pageEncoding="UTF-8"
 %>
 <%@ page import="javax.servlet.http.HttpSession" %>
-<%@ page import="java.util.Vector" %>
-<%@ page import="servlet.Carton" %>
-<%@ page import="servlet.UserBean" %>
 <%! HttpSession mySession = null;%>
-<%! UserBean myUser = null;%>
-<%! Carton myCarton= null;%>
 <%! String user = null;%>
+<%! String sala = null;%>
 <!doctype html>
 <html>
 <head>
@@ -25,14 +21,19 @@
 
 </head>
 <%
-	Vector<Carton> vCarton=null;
-	mySession = request.getSession();
+	
+	mySession = request.getSession(false);
 	if(mySession!=null){
-		myUser = (UserBean)mySession.getAttribute("userBean");
-		//myUser.setStatusPlayer("playingBingo");//Vamos aver si cambaindo aqui el estado, se refleja en gestorsessions dicho cambio
-		//De momento solo un carton por usuario
-		//int numCartones = myUser.getNumeroCartones();
-		vCarton = (Vector<Carton>)myUser.getvCarton();
+		System.out.println("la mySesion "+ mySession.getId());
+		user = request.getParameter("usuario");
+		sala = request.getParameter("sala");
+		
+
+	}else{
+		System.out.print("la sesion es null");
+        String url="Login.jsp";
+        response.sendRedirect(url); //logged-in page // 
+        return;
 	}
 %>
 <body class="pagina" id="content">
@@ -42,11 +43,11 @@
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
   <td width="12%" height="109" padding=0>
-  	<label class="labelUser">Saldo : <label id="saldo"><%=myUser.getSaldo()%></label> Euros</label>
+  	<label class="labelUser">Saldo : <label id="saldo">0</label> Euros</label>
   	<img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" >
-  	<label id="sala"><%=myUser.getSalonInUse()%></label>
+  	<label id="sala"><%out.print(sala);%></label>
     <span class="labelUser">
-    <label class="labelUser"><%=myUser.getUsername()%></label>
+    <label class="labelUser"><%out.print(user);%></label>
   
  
     </span></td>
@@ -109,9 +110,10 @@
 <div id="cartones" title="Compra de cartones"> 
 <form id="requestForm">
 
-<label >Numero de cartones a jugar?:</label><input id="spinner" type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
-<input type="hidden" id="sala" name="sala" value="<%=myUser.getSalonInUse() %>">
-<input type="hidden" id="usuario"  name="usuario" value="<%=myUser.getUsername() %>">
+<label >Numero de cartones a jugar?:</label>
+<input id="spinner" type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
+<input type="hidden" id="sala" name="sala" value="<%out.print(sala); %>">
+<input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">
 <br>
 <label id="feedback" style=" width : 100%;"></label>
 <img id="Loto2" class="hiddenImage" src="./images/Loto2.png">

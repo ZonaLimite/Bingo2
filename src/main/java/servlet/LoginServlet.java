@@ -1,5 +1,6 @@
 package servlet;
 
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -60,20 +61,32 @@ try
      }
     	  
           if(perfil.equals("jugador")){
-        	  session.setAttribute("usuario",user.getUsername());
-        	  session.setAttribute("perfil",user.getPerfil());//
-        	  session.setAttribute("userBean",user);
+        	  //Utilizamos el atributo de sesion usuario para hacer seguimiento de sesiones Http mediante 
+        	  //la implementacion de la interface "implements HttpSessionAttributeListener"
+        	  
+        	  	  session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
+            	  //session.setAttribute("perfil",user.getPerfil());
+            	  //session.setAttribute("sala",user.getSalonInUse());
+        	  	  
+        	  //Registramos el usuario a traves de un bean que representa todos los atributos del mismo
+        	  //en un singleton con alcance de aplicacion
                   gestorSesions.add(user.getUsername(), user);
-        	  response.sendRedirect("carton.jsp"); //logged-in page  
+                
+                  String url="WriterHeaderCarton?usuario="+user.getUsername()+"&sala="+user.getSalonInUse()+"&perfil="+perfil;
+                  log.info("Voy ha hacer el response");
+                  response.sendRedirect(url); //logged-in page // 
           }
 
           
           if(perfil.equals("supervisor")){
-        	  session.setAttribute("usuario",user.getUsername());
-        	  session.setAttribute("perfil",user.getPerfil());
-        	  session.setAttribute("sala",user.getSalonInUse());
+        	  session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
+        	  //session.setAttribute("perfil",user.getPerfil());
+        	  //session.setAttribute("sala",user.getSalonInUse());
                   gestorSesions.add(user.getUsername(), user);
-        	  response.sendRedirect("bingo.jsp"); //logged-in page  
+                  
+                 String url="WriterHeaderBingo?usuario="+user.getUsername()+"&sala="+user.getSalonInUse()+"&perfil="+perfil;
+                  //String url="bingo.jsp";
+        	  response.sendRedirect(url); //logged-in page  
           }
           
      }else response.sendRedirect("invalidLogin.jsp"); //error page 
@@ -99,12 +112,16 @@ public void attributeAdded(HttpSessionBindingEvent event) {
 @Override
 public void attributeRemoved(HttpSessionBindingEvent event) {
     String nameEvent = event.getName();
-    System.out.println("Se accede a metodo deteccion atributo removido para "+nameEvent);
-    if(nameEvent.equals("usuario")){
-        //UserBean ub = (UserBean)event.getValue();//
-    	gestorSesions.removeUserBean(event.getSession());
-        //remove(ub.getSesionHttp());
 
+    if(nameEvent.contains("usuario")){
+        StringTokenizer st = new StringTokenizer(nameEvent,"_");
+        String atributo = st.nextToken();
+        String usuario = st.nextToken();
+        //UserBean ub = (UserBean)event.getValue();//
+    	//Se elimina el userbean asociado a esta sesion Http ("Se avisara a el usuario para que renove la sesion").
+    	gestorSesions.removeUserBean(event.getSession(),usuario);
+        //remove(ub.getSesionHttp());
+    	System.out.println("Se accede a metodo deteccion atributo removido para "+usuario);
     }
         
 }

@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -44,7 +45,7 @@ import javax.websocket.Session;
             private static final long serialVersionUID = -124517853214941713L;
             Logger log = Logger.getLogger("GestorSessions");
 		
-            //Mapa seguimiento sesiones de usuario
+        //Mapa seguimiento sesiones de usuario
 	    private Map<String, Vector<UserBean>> sessions;
 	    
 	    //Mapa seguimiento jugadas Bingo por Sala (Sala,PocketBingo)
@@ -52,6 +53,12 @@ import javax.websocket.Session;
 	    
 	    //Referencias a hilos activos de salas
 	    private Map<String,Thread> hiloSala ;
+	    
+	    //Mapa de peticiones comprobacion premios por usuarios
+	    private Map<String,PeticionPremio> listaPeticionesPremios;
+	    
+	    //Mapa de premios comprobados de todas las salas (Ojo filtrar por sala)(Liquidacion de premios)
+	    private Map<PeticionPremio,Carton>  pilaAnunciaPremios;
 	    
 
 	    public Thread getHiloSala(String sala) {
@@ -72,6 +79,47 @@ import javax.websocket.Session;
         	jugadasSalas.put(sala, pb) ;
         }
         
+		public Map<String,PeticionPremio> getListaPeticionesPremios() {
+			return listaPeticionesPremios;
+		}
+		
+		public void borrarListaPeticionPremios(String sala){
+			Collection<PeticionPremio> setPeticionesSala = this.listaPeticionesPremios.values();
+			Iterator<PeticionPremio> it = setPeticionesSala.iterator();
+			while(it.hasNext()){
+				PeticionPremio pp = (PeticionPremio)it.next();
+				UserBean ub = pp.getUserbean();
+				if(ub.getSalonInUse().equals(sala)){
+					it.remove();
+				}
+			}
+			
+		}
+		public void borrarListaPremiosLiquidados(String sala){
+			Collection<PeticionPremio> setPremios = this.pilaAnunciaPremios.keySet();
+			Iterator<PeticionPremio> it = setPremios.iterator();
+			while(it.hasNext()){
+				PeticionPremio pp = (PeticionPremio)it.next();
+				UserBean ub = pp.getUserbean();
+				if(ub.getSalonInUse().equals(sala)){
+					it.remove();
+				}
+			}
+			
+		}
+
+		public synchronized boolean addPeticionPremios(UserBean userbean,String premio) {
+			boolean registrado = false;
+			String key = userbean.getUsername();
+			if(!(this.listaPeticionesPremios.containsKey(key))){
+				PeticionPremio pp= new PeticionPremio();
+				pp.setPremio(premio);
+				pp.setUserbean(userbean);
+				this.listaPeticionesPremios.put(key, pp);
+				registrado=true;
+			}
+			return registrado;
+		}       
 
 		@PostConstruct
 	    public void init() {
@@ -86,9 +134,13 @@ import javax.websocket.Session;
                 log.info("Gestor :mapas cargados");
                 
                 this.hiloSala = new ConcurrentHashMap<>();
+                this.listaPeticionesPremios = new ConcurrentHashMap<>();
+                this.pilaAnunciaPremios = new ConcurrentHashMap<>();
                 
 	    }
 		
+
+
 		@Override
 		@PreDestroy
 		final public void finalize(){
@@ -121,23 +173,29 @@ import javax.websocket.Session;
 		
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
 	  
-	    public synchronized void add(String user,UserBean userBean) {
-	    		String usuarioAComparar = userBean.getUsername();
+	    public synchronized boolean add(String user,UserBean userBean) {
+	    	boolean insertado = false;
+	    	if( !(userBean.getStatusPlayer().equals("playingBingo"))){
+	    	String usuarioAComparar = userBean.getUsername();
 	    		String perfilAComparar = userBean.getPerfil();
 	    		Vector<UserBean> myVector = sessions.get(user);//
 
-	    			if (myVector==null)myVector= new Vector<UserBean>(); 
-		    		UserBean UserBeanUtilizado= sesionUtilizada(usuarioAComparar,perfilAComparar,userBean);
-	    			myVector.add(UserBeanUtilizado);
-	    			sessions.put(user, myVector);
-	    			log.info("UserBean de user:"+UserBeanUtilizado.getUsername()+",perfil:"+UserBeanUtilizado.getPerfil()+" añadido a mapa para user:"+user);
-	    		
-	    			log.info("Jugadores presente:"+ sessions.keySet().toString() );
+	    			if (myVector==null)myVector= new Vector<UserBean>();
+	    			UserBean ubam= sesionUtilizada(usuarioAComparar,perfilAComparar,userBean);
+		    		//Vaya tela
+		    			myVector.add(ubam);
+		    			sessions.put(user, myVector);
+		    			log.info("UserBean de user:"+userBean.getUsername()+",perfil:"+userBean.getPerfil()+" añadido a mapa para user:"+user);
+		    			insertado=true;
+		    			log.info("Jugadores presente:"+ sessions.keySet().toString() );
+	    	}else{	
+	    		insertado=false;
+	    	}
+	    	return insertado;
 	    }
 	    //Comprueba si la sesion Http esta utilizada y el perfil
 	
 	    public synchronized UserBean sesionUtilizada(String usuarioAComparar,String perfilAComparar,UserBean userbean){
-	    	
 	    	UserBean myUserBean=userbean;;
 
 	    	
@@ -163,6 +221,7 @@ import javax.websocket.Session;
 	            			 Vector<Carton> cartones= ub.getvCarton();
 	            			 myUserBean.setvCarton(cartones);
 	            			 if(idSesionHttpAComparar.equals(ub.getSesionHttp().getId())){
+	            				 //Vamos a probar a no borrar la sesion duplicada, haber que pasa
 	            				 itUsersBean.remove();
 	            			 }
 	            			 log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
@@ -174,6 +233,7 @@ import javax.websocket.Session;
 	             }
 	         }
 	         return myUserBean; 
+
 	    }
 
 	    public synchronized void resetCartones(String sala){
@@ -225,7 +285,7 @@ import javax.websocket.Session;
 	    
 
 	    
-	    public void comprobarLineas(String sala){
+	    public synchronized boolean comprobarLineas(String sala) throws InterruptedException{
 	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.
 	    	//Despues recorremos los cartones de cada userbean y comprobamos la linea
 	    	// a cada carton premiado lo registramos con su userbean propietario
@@ -236,7 +296,7 @@ import javax.websocket.Session;
 	    	boolean hayLinea=false;
 	    	
 	    		Iterator<UserBean> it =userbeans.iterator();
-	    		HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
+	    		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
 	    		while(it.hasNext()){
 
 	    			UserBean user = it.next();
@@ -246,15 +306,19 @@ import javax.websocket.Session;
 	    				Carton carton = (Carton)itCarton.next();
 	    				int numeros[][] = carton.getNumeros();
 	    				resultControlLinea=0;
-	    				hayLinea=false;
+	    				Thread.sleep(1000);
 	    				for(int f=0;f < 3; f++){
 	    					resultControlLinea=0;
 	    					for(int c=0; c<9 ; c++){
 	    						int numero = numeros[f][c];
 	    						if(numerosCalled.contains(numero)){
 	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
-	    								try {
+	    							//De momento no lo enviamos/
+	    							
+	    							   try {
+	    									
 	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
+	    									//Thread.sleep(1000);
 	    								} catch (IOException e) {
 										// 	TODO Auto-generated catch block
 	    									e.printStackTrace();
@@ -266,13 +330,39 @@ import javax.websocket.Session;
 	    					}
 	    					if (resultControlLinea == 25 || resultControlLinea == 250 || resultControlLinea == 2500 ) {
 	    							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
-	    							pilaAnunciaPremios.put(user, carton);
-	    							log.info("Hay Linea ,result:"+resultControlLinea+" Fila "+ (f+1) + " Carton:" + carton.getnRef());
-	    							//	user.getSesionSocket().getBasicRemote().sendText("Linea OK, Enhorabuena recoja su premio");
-	    							hayLinea=true;
-	    							//	lineaOK de user user en carton con ref nRef en fila f
+	    						String key = user.getUsername();
+	    						PeticionPremio userBeanPeticiones = this.listaPeticionesPremios.get(key);
+	    							if(!(userBeanPeticiones==null)){
+	    								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Linea")){
+	    									pilaAnunciaPremios.put(userBeanPeticiones, carton);
+	    									
+	    	    							log.info("Hay Linea ,result:"+resultControlLinea+" Fila "+ (f+1) + " Carton:" + carton.getnRef());
+	    	    							log.info("tamaño en Pila ahora("+pilaAnunciaPremios.size()+")");
+	    	    							try {
+												user.getSesionSocket().getBasicRemote().sendText("Hay premio Linea, Enhorabuena ");
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+	    	    							hayLinea=true;
+	    	    							f=3;
+	    								}
+
+	    							}else{
+    	    							try {
+    										user.getSesionSocket().getBasicRemote().sendText("Habia Linea y no la has cantado ...");
+    										f=3;
+    									} catch (IOException e) {
+    										// TODO Auto-generated catch block
+    										e.printStackTrace();
+    									}
+    								
+	    							}
+
+
+	    							
 	    					}else{
-	    						if(!hayLinea){
+	    						//if(!hayLinea){
 	    							try {
 	    								user.getSesionSocket().getBasicRemote().sendText("No tienes Linea... ");
 	    								log.info("No Hay Linea ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
@@ -280,31 +370,51 @@ import javax.websocket.Session;
 	    								// 		TODO Auto-generated catch block
 	    								e.printStackTrace();
 	    							}
-	    						}	
+	    						//}	
 	    					}
 	    				}
 	    			}                                                                                                                                                                                                    
-	    					
-	    			
-	    			
 	    		}
-	    		Set<UserBean> userBeansPremiados = pilaAnunciaPremios.keySet();
-	    		Iterator<UserBean> itPremiados = userBeansPremiados.iterator();
-	    		while(itPremiados.hasNext()){
-	    			UserBean ubPremiado = itPremiados.next();
-	    			Carton carton  = pilaAnunciaPremios.get(ubPremiado);
-	    			try {
-						ubPremiado.getSesionSocket().getBasicRemote().sendText("LINEA¡ Carton:"+carton.getnRef()+", enhorabuena");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	    		}
-	    }
 
-	    public void comprobarBingos(String sala){
+	    		
+	    		return hayLinea;
+	    }
+	    public boolean liquidacionPremios(String sala){
+    		//ESto deberia ir en otra fase separada
+    		//Tratamiento comprobacion peticiones premios
+	    	boolean hayPremios=false;
+
+    		Set<PeticionPremio> userBeansPremiados = pilaAnunciaPremios.keySet();
+    		Iterator<PeticionPremio> itPremiados = userBeansPremiados.iterator();
+    		log.info("Liquidando premios ... tamaño en Pila("+userBeansPremiados.size()+")");
+    		while(itPremiados.hasNext()){
+    			log.info("En el iterador hay objetos premio");
+    			PeticionPremio pp =  itPremiados.next();
+    			UserBean ubPremiado =pp.getUserbean();
+    			
+    			if(ubPremiado.getSalonInUse().equals(sala)){
+    				Carton carton  = pilaAnunciaPremios.get(pp);
+    				try {
+    					ubPremiado.getSesionSocket().getBasicRemote().sendText("Premio "+pp.getPremio()+"¡ Carton:"+carton.getnRef()+", enhorabuena");
+    					//
+    					// Realizacion transacciones de premios a usuarios de forma persistente(sumar a saldo)
+    					// Pendiente
+    					hayPremios=true;
+    					
+    				} catch (IOException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    		this.borrarListaPeticionPremios(sala);
+    		this.borrarListaPremiosLiquidados(sala);
+    		log.info("Hay premios :" + hayPremios);
+    		return hayPremios;
+	    }
+	    public synchronized boolean comprobarBingos(String sala) throws InterruptedException{
 	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.
-	    	//Despues recorremos los cartones de cada userbean y comprobamos la linea
+	    	//Despues recorremos los cartones de cada userbean y comprobamos el Bingo
 	    	// a cada carton premiado lo registramos con su userbean propietario
 	    	Set<UserBean> userbeans = this.dameUserBeans("jugador",sala);
 	    	PocketBingo pb = getJugadasSalas(sala);
@@ -313,7 +423,7 @@ import javax.websocket.Session;
 	    	boolean hayBingo=false;
 	    	
 	    		Iterator<UserBean> it =userbeans.iterator();
-	    		HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
+	    		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
 	    		while(it.hasNext()){
 
 	    			UserBean user = it.next();
@@ -323,16 +433,18 @@ import javax.websocket.Session;
 	    				Carton carton = (Carton)itCarton.next();
 	    				int numeros[][] = carton.getNumeros();
 	    				resultControlBingo=0;
-	    				hayBingo=false;
+	    				Thread.sleep(1000);
 	    				for(int f=0;f < 3; f++){
 	    					
 	    					for(int c=0; c<9 ; c++){
 	    						int numero = numeros[f][c];
 	    						if(numerosCalled.contains(numero)){
 	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
-	    								try {
+	    							
+	    							   try {
 	    									
 	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
+	    									//Thread.sleep(1000);
 	    								} catch (IOException e) {
 										// 	TODO Auto-generated catch block
 	    									e.printStackTrace();
@@ -342,44 +454,53 @@ import javax.websocket.Session;
 	    								if(f==2)resultControlBingo+=500;	  
 	    						}
 	    					}
-
 	    				}
-    					if (resultControlBingo == 2775) {
+	    				log.info("Result Control Bingo de "+ user.getUsername()+ " y carton " + carton.getnRef() + " = " + resultControlBingo  );
+    					if (resultControlBingo == 2775 ) {
 							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
-							pilaAnunciaPremios.put(user, carton);
-							log.info("Hay Bingo ,result:"+resultControlBingo+" Carton:" + carton.getnRef());
-							hayBingo=true;
-							//	user.getSesionSocket().getBasicRemote().sendText("Linea OK, Enhorabuena recoja su premio");
-							//	lineaOK de user user en carton con ref nRef en fila f
-    					}else{
-    						if(!hayBingo){
+						String key = user.getUsername();
+						PeticionPremio userBeanPeticiones = this.listaPeticionesPremios.get(key);
+							if(!(userBeanPeticiones==null)){
+								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Bingo")){
+									pilaAnunciaPremios.put(userBeanPeticiones, carton);
+									
+	    							log.info("Hay Bingo ,result:"+resultControlBingo + " Carton:" + carton.getnRef());
+	    							log.info("tamaño en Pila ahora("+pilaAnunciaPremios.size()+")");
+	    							try {
+										user.getSesionSocket().getBasicRemote().sendText("Hay premio Bingo, Enhorabuena ");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+	    							hayBingo=true;
+								}
+
+							}else{
     							try {
-    								user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo ...");
-    								log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
-    							} catch (IOException e) {
-    								// 		TODO Auto-generated catch block
-    								e.printStackTrace();
-    							}
-    						}	
-    					}		    				
-	    		}                                                                                                                                                                                                    
-	    					
-	    			
-	    			
-	    		}
-	    		Set<UserBean> userBeansPremiados = pilaAnunciaPremios.keySet();
-	    		Iterator<UserBean> itPremiados = userBeansPremiados.iterator();
-	    		while(itPremiados.hasNext()){
-	    			UserBean ubPremiado = itPremiados.next();
-	    			Carton carton  = pilaAnunciaPremios.get(ubPremiado);
-	    			try {
-						ubPremiado.getSesionSocket().getBasicRemote().sendText("Bingo¡ Carton:"+carton.getnRef()+", enhorabuena");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+									user.getSesionSocket().getBasicRemote().sendText("Habia Bingo y no le has cantado ...");
+									
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							
+							}
+					}else{
+						
+							try {
+								user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
+								log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
+							} catch (IOException e) {
+								// 		TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 					}
+	    				
+	    			}                                                                                                                                                                                                    
 	    		}
-	    }	    
+	    		return hayBingo;
+	    }
+	    
             
 	    public synchronized Set<UserBean> dameUserBeans(String perfilAComparar){
 	    	Set<UserBean> juegoUserBeans = new LinkedHashSet<UserBean>();
@@ -450,6 +571,7 @@ import javax.websocket.Session;
 	    	
 	    	return juegoUserBeans;
 	    }
+	    
 	    public synchronized Set<UserBean> dameUserBeansPorUser(String userAComparar){
 	    	Set<UserBean> juegoUserBeans = new LinkedHashSet<UserBean>();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
@@ -501,8 +623,11 @@ import javax.websocket.Session;
 	         }
 	    	
 	    	return ub;
-	    }            	    
+	    }
+	    
 	    public synchronized void remove(Session session) {
+	    	//Utilizado para controlar la salida del ambito de juego Bingo ("notPlayinBingo"
+	    	//El userbean permanece registrado ya que depende de la sesion Http.
 	    	String idSesionAComparar = session.getId();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -540,7 +665,7 @@ import javax.websocket.Session;
 	         }
 	        
 	    }
-	    public synchronized void removeUserBean(HttpSession session) {
+	    public synchronized void removeUserBean(HttpSession session,String usuario) {
 	    	String idSesionAComparar = session.getId();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -555,9 +680,19 @@ import javax.websocket.Session;
 	            		  UserBean ub = itUsersBean.next();
 	            		  //String idSession = ub.getSesionSocket().getId();
                                   String idSession = ub.getSesionHttp().getId();
-	            		  if(idSession.equals(idSesionAComparar)){
+                                  String userb = ub.getUsername();
+	            		  if(idSession.equals(idSesionAComparar)&& userb.equals(usuario)){
 	            			//vectorUserBean.remove(ub);//b
-	            			  String usuarioInvalidado = ub.getUsername();		            			           
+	            			  String usuarioInvalidado = ub.getUsername();
+	            			  Session mySession = ub.getSesionSocket();
+	            			  try {
+	            				  if (!(mySession==null)){
+	            					  mySession.getBasicRemote().sendText("SesionHttpCaducada");
+	            				  }
+							} catch (IOException e) {
+								log.info(e.getMessage());
+								//e.printStackTrace();
+							}
 	            			  itUsersBean.remove();
 	            			  
 	            			log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
@@ -678,8 +813,6 @@ import javax.websocket.Session;
 		  	
 	  }
 
-
-    
 
 	}
 

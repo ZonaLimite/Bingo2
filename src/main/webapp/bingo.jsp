@@ -26,7 +26,7 @@
 
 <body class="pagina" id="content">
 <%
-	mySession = request.getSession();
+	mySession = request.getSession(false);
 	if(mySession!=null){
 		//myUser = (UserBean)mySession.getAttribute("userBean"); 
 		user = (String) mySession.getAttribute("usuario"); 
@@ -488,11 +488,7 @@
   
 </footer>
 
-<div id="dialog" title="Partida Abierta">
-	
-Se ha encontrado una partida empezeda ؟Quiere continuar la partida o empezar una nueva?
 
-</div>
 
 <div id="opciones" title="Preferencias">
 
@@ -557,6 +553,25 @@ ELEGIR CANTAOR
 
 </form>
 </div>
+
+<div id="premiosForm" title="- Comprobacion cartones -">
+<form id="requestPremios">
+
+<label>Numero de carton premiado?</label>
+<br>
+<input id="spinner_centenas" type="text" value="1" name="nSpin1" style=" width : 27px;">
+<input id="spinner_decenas" type="text" value="1" name="nSpin2" style=" width : 27px;">
+<input id="spinner_unidades" type="text"  value="1" name="nSpin3" style=" width : 27px;">
+<input type="hidden" id="nRef" name="nRef" value="0">
+<input type="hidden" id="sala" name="sala" value="<%out.print(sala); %>">
+<input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">
+<br>
+<label id="feedback" style=" width : 100%;"></label>
+</form>
+</div>
+
+
+
 <audio id="audioWeb">
   	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
 	Your browser does not support the audio element.

@@ -207,20 +207,55 @@ function iniciar() {
 	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
 	creaSocket(salaInUse.textContent);
 
-
+	//Manejo JQuery//
 	
-	$( "#dialog" ).dialog({ autoOpen: false , modal: true });
-	$( "#dialog" ).dialog({
+	//Plantilla JQuery para Dialogo Cartones//
+	
+	$( "#spinner_centenas" ).spinner();
+	$( "#spinner_decenas" ).spinner();
+	$( "#spinner_unidades" ).spinner();
+
+	$("#spinner_centenas").attr("readonly","true");
+	$("#spinner_decenas").attr("readonly","true");
+	$("#spinner_unidades").attr("readonly","true");
+	$( "#premiosForm" ).dialog({ autoOpen: false ,
+								 modal: true,
+								 height: 'auto',
+								 width: 360});
+	$( "#premiosForm" ).dialog({
+		  create: function( event, ui ) {
+			  event.preventDefault();
+		  }
+	});
+	
+	$( "#premiosForm" ).dialog({
+		open: function( event, ui ) {
+			  event.preventDefault();
+			  $("#feedback").text("Indique numero carton premiado-->");
+		  }
+		});
+
+	$( "#premiosForm" ).dialog({
 		  buttons: [
 		    {
-		      text: "Continuar",
+		      text: "CHECK",
 		      icons: {
 		        primary: "ui-icon-heart"
 		      },
 		      click: function() {
-		    	  socket_send("resume");
+				  nRefCarton = ""+$( "#spinner_centenas" ).spinner( "value" )+
+  		          $( "#spinner_decenas" ).spinner( "value" )+
+  		          $( "#spinner_unidades" ).spinner( "value" );
+				  document.getElementById("nRef").value=nRefCarton;
 		    	  
-		    	  $( this ).dialog( "close" );
+		    	  $.post("Handshake",$( "#requestPremios" ).serialize(), function(responseText){
+		    		  //responsetext devuelve text/plain
+		    		  $("#feedback").text( responseText);
+			    	  result = document.getElementById("feedback").textContent;
+			    	  indexError = result.lastIndexOf("Error");	
+			    	  if(indexError>=0)return;
+	
+		    	  });
 		      }
 		    },
 		      // Uncommenting the following line would hide the text,
@@ -228,21 +263,18 @@ function iniciar() {
 		      //showText: false
 		    
 		    {
-			      text: "Empezar",
+			      text: "CONTINUAR",
 			      icons: {
 			        primary: "ui-icon-heart"
 			      },
 			      click: function() {
-			    	  socket_send("newGame");
 			    	  $( this ).dialog( "close" );
 			      }
-			 
-			      // Uncommenting the following line would hide the text,
-			      // resulting in the label being used as a tooltip
-			      //showText: false
+
 			 }
 		  ]
 		});
+	
 	//Plantilla JQuery para Opciones 
 	selectCantaor= document.getElementsByName("cantaor");
 	$( "#opciones" ).dialog({ autoOpen: false , modal: true });
@@ -372,7 +404,7 @@ function iniciar() {
 		  ]
 		});
 		bucle3 = setInterval(function(){ mostrarFecha() }, 1000);
-			
+
 }
 function fullscreen(e){
     if (e.webkitRequestFullScreen) {
@@ -597,11 +629,12 @@ function resumir(){
 }
 
 function creaSocket(sala){
-	var wsUri = getRootUri() + sala;
+	var wsUri = getRootUri() + sala+"?usuario="+document.getElementById("usuario").value+"&"+
+	  "sala="+ sala + "&perfil="+document.getElementById("perfil").value;
 	
 	socket=new WebSocket(wsUri);
 	
-	//socket=new WebSocket("ws://localhost:8080/wildfly/actions");
+	//socket=new WebSocket("ws://localhost:8080/wildfly/salax");
 	
 	socket.addEventListener('open', abierto, false);
 	socket.addEventListener('message', recibido, false);
@@ -758,7 +791,8 @@ function recibido(e){
 					posterImage.style.visibility="visible";
 					posterImage.style.backgroundImage=poster;
 					show_InMessage("HAGAN SUS APUESTAS...HABRA UNA PARTIDA ESPECIAL CADA HORA Y MEDIA",true)
-					
+					obtenerDatosCartones();
+					visualizaDatosCartones();
 					detenerFondoEstrellas();
 				break;
 		case "Linea":
@@ -814,6 +848,9 @@ function recibido(e){
 				break;
 		case "ApagaBingo":
 			apagaBingo();
+			break;
+		case "PreguntarPremios":
+				$( "#premiosForm" ).dialog( "open" );	
 			break;
 		case "WarningFinalizando":
 			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");

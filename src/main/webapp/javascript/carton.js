@@ -88,6 +88,7 @@ var myArrayNumerosCantados = new Array();
 var myArrayDatosCartones = new Array();
 var ventanaCartones;
 var audio;
+var hayNumerosParaCantar="No";
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -240,7 +241,7 @@ function iniciar() {
 				},
 				click: function() {
 					trampaAudio();
-					  $( this ).dialog( "close" );
+					$( this ).dialog( "close" );
 				}	
 
 			}]
@@ -252,7 +253,7 @@ function iniciar() {
 function trampaAudio(){
 	audio.style.opacity = "1";
 	audio.src="http://boga.esy.es/audio/AudioLinea1.mp3";
-	audio.play();
+	//audio.play();
 	audio.pause();
 	audio.style.opacity = "0";
 }
@@ -361,7 +362,7 @@ function apagaLinea(){
 	document.getElementById("labelLinea").style.visibility="hidden";
 	triggerLinea="false";
 	lineaCantada="true";
-	show_InMessage("LINEA CORRECTA","blink")
+	//show_InMessage("LINEA CORRECTA","blink")
 }
 
 function apagaBingo(){
@@ -550,11 +551,11 @@ function borrarNumerosCarton(){
 	
 }
 function creaSocket(sala){
-	var wsUri = getRootUri() + sala;
-	
+	var wsUri = getRootUri() + sala+"?usuario="+document.getElementById("usuario").value+"&"+
+									  "sala="+ sala + "&perfil="+document.getElementById("perfil").value;
 	socket=new WebSocket(wsUri);
 	
-	//socket=new WebSocket("ws://localhost:8080/wildfly/actions");
+	//socket=new WebSocket("ws://localhost:8080/wildfly/sala1");by Example
 	
 	socket.addEventListener('open', abierto, false);
 	socket.addEventListener('message', recibido, false);
@@ -651,7 +652,7 @@ function recibido(e){
 	if(arrayMessages.length > 0){
 		 
 	comando=arrayMessages[0];
-	if(!(comando=="DATOSCARTONES"))	show_InMessage(e.data);
+	if(!(comando=="DATOSCARTONES")&&!(comando=="ApagaLinea"))	show_InMessage(e.data);
 		switch(comando) {
 		    
 		//Cantar numero y mostrar orden bola
@@ -669,6 +670,7 @@ function recibido(e){
 	    	    	numero=arrayMessages[1];
 	    	    	//subDraw(0,arrayMessages[1]);
 	    	    }
+				hayNumerosParaCantar="Si";
 				subDraw(subNumero,numero);
 				refreshBolas();
 				//play_range(myRango[0],myRango[1]);	
@@ -688,13 +690,14 @@ function recibido(e){
 
 		case "EndBalls":
 				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true);
-                                borrarNumerosCarton();
-                                obtenerDatosCartones();
-                                visualizaDatosCartones();
-                                detenerFondoEstrellas();
+                borrarNumerosCarton();
+                obtenerDatosCartones();
+                visualizaDatosCartones();
+                detenerFondoEstrellas();
+                hayNumerosParaCantar="No";
 				break;
 		case "Linea":
-				show_InMessage("!! LINEA ¡¡","blink");
+				show_InMessage("!!"+arrayMessages[1]+" ha cantado LINEA ¡¡","blink");
 				playAudioPremioLinea();
 				break;
 		case "Bingo":
@@ -740,6 +743,9 @@ function recibido(e){
 		case "WarningFinalizando":
 		    	show_InMessage("finalizando partida; ¿Hay mas Bingos?","blink");
 		    	break;
+		case "SesionHttpCaducada":
+				show_InMessage("Sesion Http caducada","blink");
+				break;
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);
@@ -869,14 +875,14 @@ function draw(numero,varX,varY,miRadio,booleanGrad,v,color,thisPattern) {
   	}
 }
 function refreshBolas(){
-	if((numero+"").length < 3){
-		draw(numero,myVarX,myVarY,mi_Radio,"true",myV,my_color,my_pattern);
-	}
-	
-	
-	if(subNumero!=0){
-		  draw(subNumero,myVarX-Math.floor((mi_Radio*2)),mi_Radio+1,mi_Radio/2,"true",copymyV,copYColor,copy_my_pattern);
+	if(hayNumerosParaCantar=="Si"){
+		if((numero+"").length < 3){
+			draw(numero,myVarX,myVarY,mi_Radio,"true",myV,my_color,my_pattern);
+		}
+		if(subNumero!=0){
+			draw(subNumero,myVarX-Math.floor((mi_Radio*2)),mi_Radio+1,mi_Radio/2,"true",copymyV,copYColor,copy_my_pattern);
 	  	}
+	}
 }	
 function subDraw(subNumero,Numero) {
 		//varX,varY,miRadio

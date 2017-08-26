@@ -41,13 +41,14 @@ private Session mySesion;//
 private int delay=0;//ms
 private String salaInUse;
 private String myPerfil;
+private UserBean userBean;
 @OnOpen
     public void open(Session session, EndpointConfig config) {
 	this.mySesion=session;
 	String usuario = (String)config.getUserProperties().get("usuario");
 	String perfil = (String)config.getUserProperties().get("perfil");
 	String idHttpSession = (String)config.getUserProperties().get("idHttpSession");
-	UserBean userBean = gestorSesions.dameUserBeansPorUser(usuario,perfil,idHttpSession);
+	userBean = gestorSesions.dameUserBeansPorUser(usuario,perfil,idHttpSession);//
 	userBean.setSesionSocket(session);
 	//userBean.setStatusPlayer("playingBingo");
 	perfil = userBean.getPerfil();
@@ -180,13 +181,29 @@ private String myPerfil;
 		pb.setReasonInterrupt("secuenciaAcabada");
 		//this.guardaPocket("sala1", session);
 		//Thread.sleep(delay);
+		
 		hilo3.interrupt();
 		break;
 	
 	case "Linea":
-		if(pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
-		pb.setIdState("Linea");
-		enviarMensajeAPerfil("Linea","jugador");
+		//if(pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") )return;
+		if(pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo")|| pb.getIdState().equals("Bingo") )return;
+
+		if(gestorSesions.addPeticionPremios(userBean,"Linea")){
+
+			log.info("Si se registra esta peticion revision premio Linea");
+			log.info("Status antes de tratar Linea:"+pb.getIdState());
+			//Ojo con esto
+			if(pb.getIdState().equals("ComprobandoLinea")){
+				pb.setIdState("Linea");
+				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
+			}else{
+				pb.setIdState("Linea");
+				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
+			}
+		}
+		
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
@@ -206,25 +223,36 @@ private String myPerfil;
 		break;
 	
 	case "Bingo":
-		if(!pb.isLineaCantada() || pb.isBingoCantado() || pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Bingo") || pb.getIdState().equals("Linea"))return;
+		if(!pb.isLineaCantada() || pb.isBingoCantado() ||  pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Linea"))return;
 
-			enviarMensajeAPerfil("Bingo","jugador");		
-			
-			if(pb.getIdState().equals("WarningFinalizando")){
+		if(gestorSesions.addPeticionPremios(userBean,"Bingo")){
+
+			log.info("Si se registra esta peticion revision premio Bingo");
+			//Ojo con esto
+			if(pb.getIdState().equals("ComprobandoBingo")){
+				pb.setIdState("Bingo");
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
+
+			}else if(pb.getIdState().equals("WarningFinalizando")){
 				pb.setReasonInterrupt("Bingo");
 				pb.setIdState("Bingo");
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 				//hilo3.interrupt();
+			}else {
+				pb.setIdState("Bingo");
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 			}
-			pb.setIdState("Bingo");
-			//this.guardaPocket("sala1", session);
-			//Hilo2.interrupt();
-		
+		}
+
 		break;
 	
 	case "Bingo_OK":
 		if(pb.getIdState().equals("ComprobandoBingo")){
+			log.info("Status antes de Bingo_Ok"+pb.getIdState());
 			pb.setBingoCantado(true);
+			
 			pb.setIdState("BingoOk");
 			pb.setReasonInterrupt("secuenciaAcabada");
 			enviarMensajeAPerfil("ApagaBingo","supervisor");
@@ -247,7 +275,7 @@ private String myPerfil;
 		break;
 	
 	case "Finalize":
-		//pb.setIdState("Finalized");
+		pb.setIdState("EndBalls");
 		pb.setReasonInterrupt("Finalize");
 		hilo3.interrupt();
 		break;

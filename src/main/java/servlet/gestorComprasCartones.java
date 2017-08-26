@@ -47,35 +47,23 @@ public class gestorComprasCartones extends HttpServlet {
             String sala = req.getParameter("sala");
             int nCartonesAComprar = new Integer(req.getParameter("nCartones"));
 
-            Set userBeans = gestorSesions.dameUserBeansPorUser(usuario);
-            Iterator<UserBean> it = userBeans.iterator();
-            while(it.hasNext()){
-                user_ = (UserBean)it.next();
-                String idSesion = user_.getSesionHttp().getId();
-                String usuarioreg = user_.getUsername();
-                String perfil= user_.getPerfil();
-                //if(perfil.equals("jugador")&&usuario.equals(usuarioreg)){
-                    
-                if(idSesion.equals(httpSessionAComparar.getId())&& perfil.equals("jugador")&&usuarioreg.equals(usuario)){
-                    //user = user_;
-                    pocketBingoSala= gestorSesions.getJugadasSalas(user_.getSalonInUse());
- 
-                  //Comprobacion estado Pocket Bingo en "Finalized"
-                    if(!pocketBingoSala.getIdState().equals("Finalized")){
-                        String mensaje="Error,Compra de cartones aun no permitida.\n Espere a que acabe la partida";
-                        resp.getWriter().print(mensaje);
-                        return;
-                    } 
-                    
-                }
-            }
+            user_= gestorSesions.dameUserBeansPorUser(usuario, "jugador", httpSessionAComparar.getId());
             if(user_==null){
                 String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
                 resp.getWriter().print(mensaje);
                 return;
             }
+
+            pocketBingoSala= gestorSesions.getJugadasSalas(user_.getSalonInUse());
+ 
+            //Comprobacion estado Pocket Bingo en "Finalized"
+            if(!pocketBingoSala.getIdState().equals("Finalized")){
+                    String mensaje="Error,Compra de cartones aun no permitida.\n Espere a que acabe la partida";
+                    resp.getWriter().print(mensaje);
+                    return;
+             } 
           
-          //comprobarSaldoUsuario();
+           //comprobarSaldoUsuario();
             String mensaje2="";
             float precioCarton = new Float (pocketBingoSala.getPrecioCarton());
             float precioCompraActual = nCartonesAComprar * precioCarton;
