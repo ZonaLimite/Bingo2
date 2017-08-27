@@ -167,10 +167,10 @@ public class Runnable3 implements Runnable{
                     	//Si alguna no esta cantada se avisa y se da una opcion mas
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","supervisor");
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","jugador");
-                    	Thread.sleep(3000);
+                    	Thread.sleep(2000);
                     	if(gestorSesions.liquidacionPremios(estaSalaEs)){
                     	//if(gestorSesions.comprobarLineas(estaSalaEs)){
-                    		Thread.sleep(3000);
+                    		Thread.sleep(4000);
                     		pb.setIdState("BingoOk");
                     		pb.setBingoCantado(true);
                 			enviarMensajeAPerfil("ApagaBingo","supervisor");
