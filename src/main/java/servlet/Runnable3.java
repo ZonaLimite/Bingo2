@@ -159,6 +159,7 @@ public class Runnable3 implements Runnable{
                     	enviarMensajeAPerfil("Bingo_bingo","supervisor");
                     	pb.setIdState("ComprobandoBingo");
                     	i--;
+                    	//Pendiente controla automatico de comprobacion premios y integracion manual
                }else if(pb.getIdState().equals("ComprobandoBingo")){
                     	enviarMensajeAPerfil("ComprobarBingo","supervisor");
                     	enviarMensajeAPerfil("ComprobarBingo","jugador");
