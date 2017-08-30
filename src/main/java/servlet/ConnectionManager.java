@@ -21,7 +21,7 @@ public class ConnectionManager {
    //Obtencion de conexion con JNDI      
    static Connection getConnection(){
  
-	   String DATASOURCE_CONTEXT = "java:/MySQLDS";
+	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS";//Probando
 	    
 	    Connection result = null;
 	    try {
@@ -38,7 +38,7 @@ public class ConnectionManager {
 	      }
 	    }
 	    catch ( NamingException ex ) {
-	      log.info("Cannot get connection: " + ex);
+	      log.info("Cannot get connection: "+"("+ DATASOURCE_CONTEXT+"9"+ ex);
 	    }
 	    catch(SQLException ex){
 	      log.info("Cannot get connection: " + ex);
