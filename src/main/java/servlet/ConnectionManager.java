@@ -21,7 +21,7 @@ public class ConnectionManager {
    //Obtencion de conexion con JNDI      
    static Connection getConnection(){
  
-	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS";
+	   String DATASOURCE_CONTEXT = "java:/MySQLDS";
 	    
 	    Connection result = null;
 	    try {
