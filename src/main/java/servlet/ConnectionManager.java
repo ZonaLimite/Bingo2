@@ -38,7 +38,7 @@ public class ConnectionManager {
 	      }
 	    }
 	    catch ( NamingException ex ) {
-	      log.info("Cannot get connection: "+"("+ DATASOURCE_CONTEXT+"9"+ ex);
+	      log.info("Cannot get connection: "+"("+ DATASOURCE_CONTEXT+":"+ ex);
 	    }
 	    catch(SQLException ex){
 	      log.info("Cannot get connection: " + ex);
