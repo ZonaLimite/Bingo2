@@ -48,7 +48,7 @@ public class ConnectionManager {
    
     public static Connection getConexionMySQL(String ipServer,String user,String pwd, String schema ){
     Connection conSQL = null;
-    Properties connectionProps = new Properties();
+    Properties connectionProps = new Properties();//
     connectionProps.put("user", user);
     connectionProps.put("password", pwd);
 
