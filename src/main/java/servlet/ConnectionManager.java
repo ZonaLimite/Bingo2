@@ -45,6 +45,11 @@ public class ConnectionManager {
 	    }
 	    return result;
     }
+    public static Connection getConnection(String ipServer,String user,String pwd, String schema ){
+    	Connection myConnection=null;
+    	 myConnection = getConexionMySQL(ipServer,user,pwd, schema);
+    	return myConnection;
+    }
    
     public static Connection getConexionMySQL(String ipServer,String user,String pwd, String schema ){
     Connection conSQL = null;
