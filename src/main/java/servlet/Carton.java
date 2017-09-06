@@ -12,7 +12,7 @@ public class Carton {
 	
 	private int[][] numeros = new int[3][9] ;
 	private String numeroPantalla;
-	private boolean lineaCantado=false;
+	private boolean lineaCantado=false;//
 	private boolean bingoCantado=false;
 	private int nOrden=0;
 	
