@@ -35,7 +35,7 @@ public class GeneradorCartones {
     private int numeroSeriesConseguidas=0;
     private Map series;
     
-    //key=String-->"nSerie,nCarton"
+    //key=String-->"nSerie,nCarton"//
     //value= array[3][9]
     private HashMap cartones;
     private List numerosComputados;
