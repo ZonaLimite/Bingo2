@@ -1,12 +1,13 @@
 package servlet;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 public class UserDAO 	
 {
    static Connection currentCon = null;
    static ResultSet rs = null;  
-	
+   static Logger log = Logger.getLogger("UserDao");	
 	
 	
    public static UserBean login(UserBean bean) {
@@ -27,13 +28,14 @@ public class UserDAO
    // "System.out.println" prints in the console; Normally used to trace the process
    System.out.println("Your user name is " + username);          
    System.out.println("Your password is " + password);
-   System.out.println("Query: "+searchQuery);
+   log.info("Query: "+searchQuery);
 	    
    try 
    {
       //connect to DB 
       currentCon = ConnectionManager.getConnection();
       stmt=currentCon.createStatement();
+     
       rs = stmt.executeQuery(searchQuery);	        
       boolean more = rs.next();
 	       
