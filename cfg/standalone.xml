@@ -140,7 +140,7 @@
                     <driver>h2</driver>
                     <security>
                         <user-name>sa</user-name>
-                        <password>sa</password>
+                        <password>admin</password>
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:jboss/datasources/MySQLDS" pool-name="MySqlDS" enabled="true" use-ccm="true">
