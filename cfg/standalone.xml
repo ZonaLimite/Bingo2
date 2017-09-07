@@ -148,8 +148,8 @@
                     <driver-class>com.mysql.jdbc.Driver</driver-class>
                     <driver>mysql-connector-java-5.1.42-bin.jar_com.mysql.jdbc.Driver_5_1</driver>
                     <security>
-                        <user-name>root</user-name>
-                        <password>Miraflores</password>
+                        <user-name>paco</user-name>
+                        <password>ntmanager</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
