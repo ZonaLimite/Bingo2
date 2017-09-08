@@ -647,7 +647,8 @@ function finalizarPartida(){
 }
 
 function getRootUri() {
-	/*Web Sockets on OpenShift work over ports 8000 for ws and 8443 for wss,*/
+	/*Web Sockets on OpenShift 2 work over ports 8000 for ws and 8443 for wss,*/
+	
 	    
 		if(document.location.hostname=="localhost"){
 			nameEndPoint = "/wildfly-1.0/";//haber
@@ -657,9 +658,9 @@ function getRootUri() {
 			nameEndPoint="/";
 			port="8000";
 		}
-		
+		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
         return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
-                (document.location.port == "" ? "8000" : document.location.port) + nameEndPoint;
+                (document.location.port == "" ? "" : document.location.port) + nameEndPoint;
     
 }
 
