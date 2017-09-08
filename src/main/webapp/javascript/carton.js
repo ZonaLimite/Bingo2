@@ -253,7 +253,7 @@ function iniciar() {
 function trampaAudio(){
 	audio.style.opacity = "1";
 	audio.src="http://boga.esy.es/audio/AudioLinea1.mp3";
-	//audio.play();
+	audio.play();
 	audio.pause();
 	audio.style.opacity = "0";
 }
