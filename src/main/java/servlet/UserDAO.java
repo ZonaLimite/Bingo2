@@ -19,7 +19,7 @@ public class UserDAO
       String password = bean.getPassword();   
 	    
       String searchQuery =
-            "select * from usuarios where User='"
+            "select * from wildfly.usuarios where User='"
                      + username
                      + "' AND Password='"
                      + password
