@@ -104,6 +104,7 @@ public class Runnable3 implements Runnable{
                 }else if(pb.getIdState().equals("ComprobandoLinea")){
                 	enviarMensajeAPerfil("ComprobarLinea","supervisor");
                 	enviarMensajeAPerfil("ComprobarLinea","jugador");
+                	//Comprobamos las lineas de todos los cartones y avisamos de quien tiene linea y alos despitados que la tienen y no la cantan
                 	gestorSesions.comprobarLineas(estaSalaEs);
                 	Thread.sleep(5000);
                 	//Si alguna no esta cantada se avisa y se da una opcion mas

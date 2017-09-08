@@ -209,7 +209,7 @@ function iniciar() {
 
 	//Manejo JQuery//
 	
-	//Plantilla JQuery para Dialogo Cartones//
+	//Plantilla JQuery para Dialogo Preguntar Premios cartones//
 	
 	$( "#spinner_centenas" ).spinner();
 	$( "#spinner_decenas" ).spinner();
@@ -254,7 +254,12 @@ function iniciar() {
 			    	  result = document.getElementById("feedback").textContent;
 			    	  indexError = result.lastIndexOf("Error");	
 			    	  if(indexError>=0)return;
-	
+			    	  /*Pendiente Handshake
+			    	   * 1- Devuelvo Ok-check y pregunto -si Hay mas
+			    	   * 2- Si contesto hayMas - repito el check con el nueno nREFç
+			    	   * 	Si contesto NohayMaS - continuo a Liquidacion premios
+			    	   * 
+			    	   */
 		    	  });
 		      }
 		    },
@@ -268,6 +273,8 @@ function iniciar() {
 			        primary: "ui-icon-heart"
 			      },
 			      click: function() {
+			    	  //Si continuo es porque no hay Lineas manuales,por lo tanto
+			    	  // continuo a Liquidacion premios
 			    	  $( this ).dialog( "close" );
 			      }
 
