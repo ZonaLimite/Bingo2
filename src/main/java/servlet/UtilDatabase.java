@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class UtilDatabase {
+public class UtilDatabase {
 	   static Connection currentCon = null;
 	   static ResultSet rs = null;  
 		
@@ -64,7 +64,7 @@ class UtilDatabase {
 	return nRowsUpdated;
 		
 	   }
-	   public synchronized Carton consultaObjetoCarton(String nrefCarton){
+	public synchronized Carton consultaObjetoCarton(String nrefCarton){
 		    Carton carton = new Carton();
 		    //Connection con = ConnectionManager.getConexionMySQL("localhost", "paco", "ntmanager","wildfly");
 		    Connection con = ConnectionManager.getConnection();
