@@ -243,18 +243,22 @@ function iniciar() {
 		        primary: "ui-icon-heart"
 		      },
 		      click: function() {
-		    	  
+		
 				  nRefCarton = ""+$( "#spinner_centenas" ).spinner( "value" )+
   		          $( "#spinner_decenas" ).spinner( "value" )+
   		          $( "#spinner_unidades" ).spinner( "value" );
 				  document.getElementById("nRef").value=nRefCarton;
+					textS=document.getElementById("comandoHandshake").value;
+				
 		    	  
 		    	  $.post("Handshake",$( "#requestPremios" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
-		    		  $("#feedback").text( responseText);
-			    	  result = document.getElementById("feedback").textContent;
-			    	  indexError = result.lastIndexOf("Error");	
+		    		
+			    	  //result = document.getElementById("feedback").textContent;
+			    	  indexError = responseText.lastIndexOf("Error");	
 			    	  if(indexError>=0)return;
+			    	  $("#feedback").text( responseText);
+			    	 
 			    	  /*Pendiente Handshake
 			    	   * 1- Devuelvo Ok-check y pregunto -si Hay mas
 			    	   * 2- Si contesto hayMas - repito el check con el nueno nREF
@@ -860,11 +864,9 @@ function recibido(e){
 			apagaBingo();
 			break;
 		case "PreguntarPremiosLinea":
-				elementComandoHandshake=document.getElementById("comando");
+				elementComandoHandshake=document.getElementById("comandoHandshake");
 				elementComandoHandshake.value="_ComprobarCartonLinea";
-				while(!(elementComandoHandshake.value=="_NohayMas")){
-					$( "#premiosForm" ).dialog( "open" );
-				}
+				$( "#premiosForm" ).dialog( "open" );
 			break;
 		case "WarningFinalizando":
 			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");
@@ -877,6 +879,7 @@ function recibido(e){
 				porCientoCantaor=parseInt(arrayMessages[5]);
 				//callback
 				visualizaDatosCartones();
+				break;
 		default:
         		
 		} 

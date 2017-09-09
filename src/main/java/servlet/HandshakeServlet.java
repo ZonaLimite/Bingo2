@@ -27,9 +27,12 @@ public class HandshakeServlet extends HttpServlet {
 		sala= req.getParameter("sala");
 		usuario = req.getParameter("sala");
 		nRef= req.getParameter("nRef");
-		comando  = req.getParameter("comando");
+		comando  = req.getParameter("comandoHandshake");
 		
-		//if(comando.e)puede ser "_ComprobarCartonLinea","_ComprobarCartonBingo" o "_NohayMas
+		if(comando=="_ComprobarCartonLinea"){
+			
+		}
+		//,"_ComprobarCartonBingo" o "_NohayMas
 		
 		String objetoaConvertir = "sala="+sala+ "\nusuario="+usuario+"\nnref="+nRef+"\ncomando="+comando;
 		//pendiente comprobar carton con parametro nREF recibido
@@ -52,7 +55,7 @@ public class HandshakeServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    gestorSesions.getJugadasSalas(sala).setIdState("PremiosRecopilados");
-	    gestorSesions.getHiloSala(sala).interrupt();
+	    //gestorSesions.getJugadasSalas(sala).setIdState("PremiosRecopilados");
+	    //gestorSesions.getHiloSala(sala).interrupt();
 	}
 }

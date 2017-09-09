@@ -283,7 +283,83 @@ import javax.websocket.Session;
                 return relacion;
             }
 	    
+	    public synchronized boolean comprobarLineaDeCarton(String sala,int nRef) throws InterruptedException{
+	    	//Comprobacion de carton en faceta "super"
+	    	// a cada carton premiado lo registramos con su userbean propietario
+	    	PocketBingo pb = getJugadasSalas(sala);
+	    	List<Integer>numerosCalled = pb.getNumerosCalled();
+	    	int resultControlLinea;
+	    	boolean hayLinea=false;
+	    				Set setUserBean = this.dameUserBeans("supervisor", sala);
+	    				Iterator itUserBean = setUserBean.iterator();
+	    				UserBean user = (UserBean)itUserBean.next();
+	    				Carton carton = new Carton();
+	    				int numeros[][] = carton.getNumeros();
+	    				resultControlLinea=0;
+	    				Thread.sleep(1000);
+	    				for(int f=0;f < 3; f++){
+	    					resultControlLinea=0;
+	    					for(int c=0; c<9 ; c++){
+	    						int numero = numeros[f][c];
+	    						if(numerosCalled.contains(numero)){
+	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
+	    							//De momento no lo enviamos/
+	
+	    								if(f==0)resultControlLinea+=5;
+	    								if(f==1)resultControlLinea+=50;	
+	    								if(f==2)resultControlLinea+=500;	  
+	    						}
+	    					}
+	    					if (resultControlLinea == 25 || resultControlLinea == 250 || resultControlLinea == 2500 ) {
+	    							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
+	    						String key = "super";
+	    						PeticionPremio userBeanPeticiones = this.listaPeticionesPremios.get(key);
+	    							if(!(userBeanPeticiones==null)){
+	    								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Linea")){
+	    									pilaAnunciaPremios.put(userBeanPeticiones, carton);
+	    									
+	    	    							log.info("Hay Linea ,result:"+resultControlLinea+" Fila "+ (f+1) + " Carton:" + carton.getnRef());
+	    	    							log.info("tamaño en Pila ahora("+pilaAnunciaPremios.size()+")");
+	    	    							try {
+												user.getSesionSocket().getBasicRemote().sendText("Hay premio Linea, Enhorabuena ");
+											} catch (IOException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+	    	    							hayLinea=true;
+	    	    							f=3;
+	    								}
 
+	    							}else{
+    	    							try {
+    										user.getSesionSocket().getBasicRemote().sendText("Habia Linea y no la has cantado ...");
+    										f=3;
+    									} catch (IOException e) {
+    										// TODO Auto-generated catch block
+    										e.printStackTrace();
+    									}
+    								
+	    							}
+
+
+	    							
+	    					}else{
+	    						//if(!hayLinea){
+	    							try {
+	    								user.getSesionSocket().getBasicRemote().sendText("No tienes Linea... ");
+	    								log.info("No Hay Linea ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
+	    							} catch (IOException e) {
+	    								// 		TODO Auto-generated catch block
+	    								e.printStackTrace();
+	    							}
+	    						//}	
+	    					}
+	    				}
+	
+
+	    		
+	    		return hayLinea;
+	    }
 	    
 	    public synchronized boolean comprobarLineas(String sala) throws InterruptedException{
 	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.

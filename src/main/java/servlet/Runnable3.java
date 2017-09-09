@@ -330,7 +330,11 @@ public class Runnable3 implements Runnable{
     		Iterator<UserBean> itBeans= myUsersbean.iterator();
     		while (itBeans.hasNext()){
     			Session sesionActiva = itBeans.next().getSesionSocket();
-    			sesionActiva.getBasicRemote().sendText(textMessage);
+  
+
+    				sesionActiva.getBasicRemote().sendText(textMessage);
+    			
+    			
     			log.info("Enviando mensaje desde Hilo3(modified):" + textMessage);
     		}
   		

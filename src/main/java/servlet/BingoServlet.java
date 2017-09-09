@@ -610,7 +610,7 @@ public class BingoServlet extends HttpServlet{
 	      out.write("<input id=\"spinner_decenas\" type=\"text\" value=\"1\" name=\"nSpin2\" style=\" width : 27px;\">\r\n");
 	      out.write("<input id=\"spinner_unidades\" type=\"text\"  value=\"1\" name=\"nSpin3\" style=\" width : 27px;\">\r\n");
 	      out.write("<input type=\"hidden\" id=\"nRef\" name=\"nRef\" value=\"0\">\r\n");
-	      out.write("<input type=\"hidden\" id=\"comando\" name=\"comando\" value=\"\">\r\n");
+	      out.write("<input type=\"hidden\" id=\"comandoHandshake\" name=\"comandoHandshake\" value=\"\">\r\n");
 	      out.write("<input type=\"hidden\" id=\"sala\" name=\"sala\" value=\"");
 	out.print(sala); 
 	      out.write("\">\r\n");
