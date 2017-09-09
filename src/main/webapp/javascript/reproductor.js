@@ -243,6 +243,7 @@ function iniciar() {
 		        primary: "ui-icon-heart"
 		      },
 		      click: function() {
+		    	  
 				  nRefCarton = ""+$( "#spinner_centenas" ).spinner( "value" )+
   		          $( "#spinner_decenas" ).spinner( "value" )+
   		          $( "#spinner_unidades" ).spinner( "value" );
@@ -256,7 +257,7 @@ function iniciar() {
 			    	  if(indexError>=0)return;
 			    	  /*Pendiente Handshake
 			    	   * 1- Devuelvo Ok-check y pregunto -si Hay mas
-			    	   * 2- Si contesto hayMas - repito el check con el nueno nREFç
+			    	   * 2- Si contesto hayMas - repito el check con el nueno nREF
 			    	   * 	Si contesto NohayMaS - continuo a Liquidacion premios
 			    	   * 
 			    	   */
@@ -858,8 +859,12 @@ function recibido(e){
 		case "ApagaBingo":
 			apagaBingo();
 			break;
-		case "PreguntarPremios":
-				$( "#premiosForm" ).dialog( "open" );	
+		case "PreguntarPremiosLinea":
+				elementComandoHandshake=document.getElementById("comando");
+				elementComandoHandshake.value="_ComprobarCartonLinea";
+				while(!(elementComandoHandshake.value=="_NohayMas")){
+					$( "#premiosForm" ).dialog( "open" );
+				}
 			break;
 		case "WarningFinalizando":
 			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");

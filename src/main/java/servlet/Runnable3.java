@@ -119,7 +119,7 @@ public class Runnable3 implements Runnable{
         	    	
         	    		if(nCartonesManuales>0){
         	    				//Emviar un mensaje atraves del webSocket a super, para ser tratado en la interface reproductor
-        	    				this.enviarMensajeAPerfil("PreguntarPremios", "supervisor");
+        	    				this.enviarMensajeAPerfil("PreguntarPremiosLinea", "supervisor");
         	    				pb.setIdState("WaitingResultSuper");
         	    				i--;
         	    				n=0;
@@ -139,6 +139,8 @@ public class Runnable3 implements Runnable{
                 			enviarMensajeAPerfil("ApagaLinea","jugador");
                 		}else{
                 			pb.setIdState("Continue");
+                			enviarMensajeAPerfil("Continuamos ...","supervisor");
+                			enviarMensajeAPerfil("Continuando partida ...","jugador");
                 		}
                 		Thread.sleep(5000);
                 		enviarMensajeAPerfil("EnciendeVideo","supervisor");

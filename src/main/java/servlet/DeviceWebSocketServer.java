@@ -210,7 +210,8 @@ private UserBean userBean;
 	case "LiquidarPremios":
 		//Salida automatizacion comprbacion manual cartones
 		log.info("Terminando handshake ...");
-				pb.setIdState("PremiosRecopiladosLinea");	
+				pb.setIdState("PremiosRecopiladosLinea");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
 		break;
 	case "Linea_OK":
 		if(pb.getIdState().equals("ComprobandoLinea")){
