@@ -207,7 +207,11 @@ private UserBean userBean;
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
-
+	case "LiquidarPremios":
+		//Salida automatizacion comprbacion manual cartones
+		log.info("Terminando handshake ...");
+				pb.setIdState("PremiosRecopiladosLinea");	
+		break;
 	case "Linea_OK":
 		if(pb.getIdState().equals("ComprobandoLinea")){
 			pb.setLineaCantada(true);

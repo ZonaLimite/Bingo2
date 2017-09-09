@@ -275,6 +275,7 @@ function iniciar() {
 			      click: function() {
 			    	  //Si continuo es porque no hay Lineas manuales,por lo tanto
 			    	  // continuo a Liquidacion premios
+			    	  socket_send("LiquidarPremios");
 			    	  $( this ).dialog( "close" );
 			      }
 

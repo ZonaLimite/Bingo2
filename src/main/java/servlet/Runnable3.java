@@ -124,12 +124,12 @@ public class Runnable3 implements Runnable{
         	    				i--;
         	    				n=0;
         	    		}else{
-        	    			pb.setIdState("PremiosRecopilados");//
+        	    			pb.setIdState("PremiosRecopiladosLinea");//
         	    			n=1;
         	    			i--;
         	    		}
         	    		
-                }else if(pb.getIdState().equals("PremiosRecopilados")){
+                }else if(pb.getIdState().equals("PremiosRecopiladosLinea")){
                 		if(gestorSesions.liquidacionPremios(estaSalaEs)){
                 			//if(gestorSesions.comprobarLineas(estaSalaEs)){
                 			Thread.sleep(3000);
