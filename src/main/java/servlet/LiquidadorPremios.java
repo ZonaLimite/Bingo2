@@ -22,7 +22,7 @@ public class LiquidadorPremios {
 		return valorPremio;
 	}
 	private float saldarPremioLinea(String sala,UserBean user){
-		float premio = 0;
+		float premio = 0;//
 		PocketBingo pb = gestorSesions.getJugadasSalas(sala);
 		Map<PeticionPremio,Carton> pilaPremios = gestorSesions.getPilaAnunciaPremios();
 		int numeroPremios = pilaPremios.size();
