@@ -55,6 +55,7 @@ import javax.websocket.Session;
 	    private Map<String,Thread> hiloSala ;
 	    
 	    //Mapa de peticiones comprobacion premios por usuarios
+	             //username PeticionPremio<UserBean,"LInea o Bingo">
 	    private Map<String,PeticionPremio> listaPeticionesPremios;
 	    
 	    //Mapa de premios comprobados de todas las salas (Ojo filtrar por sala)(Liquidacion de premios)
@@ -455,7 +456,7 @@ import javax.websocket.Session;
     		//ESto deberia ir en otra fase separada
     		//Tratamiento comprobacion peticiones premios
 	    	boolean hayPremios=false;
-
+	    	LiquidadorPremios lp = new LiquidadorPremios();
     		Set<PeticionPremio> userBeansPremiados = pilaAnunciaPremios.keySet();
     		Iterator<PeticionPremio> itPremiados = userBeansPremiados.iterator();
     		log.info("Liquidando premios ... tamaño en Pila("+userBeansPremiados.size()+")");
@@ -467,10 +468,13 @@ import javax.websocket.Session;
     			if(ubPremiado.getSalonInUse().equals(sala)){
     				Carton carton  = pilaAnunciaPremios.get(pp);
     				try {
-    					ubPremiado.getSesionSocket().getBasicRemote().sendText("Premio "+pp.getPremio()+"¡ Carton:"+carton.getnRef()+", enhorabuena");
-    					//
-    					// Realizacion transacciones de premios a usuarios de forma persistente(sumar a saldo)
-    					// Pendiente
+    					//Si la transaccion de liquidacion se completa. lo anunciamos
+    					float premioCobrado = lp.saldarPremio(sala, ubPremiado, pp.getPremio());
+    					if(premioCobrado>0){
+    						ubPremiado.getSesionSocket().getBasicRemote().sendText("LiquidandoPremio");
+    						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+", enhorabuena");
+    					}
+     					
     					hayPremios=true;
     					
     				} catch (IOException e) {

@@ -317,8 +317,8 @@ private UserBean userBean;
 				//Hay que distinguir entre cartones electronicos y manuales
 				//EL cuadro de Dialogo debe considerar las dos facetas
 				// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
-				// Vamos a probar ahora conla electronica y dejamos 
-				//nCartones=pb.getnCartones();
+				// Implementado ambos tipos de datos
+			
 				int nCartones = new Integer(pb.getnCartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
 				porCientoLinea=pb.getPorcientoLinea();
 				porCientoBingo=pb.getPorcientoBingo();

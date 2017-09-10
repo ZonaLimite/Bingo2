@@ -687,7 +687,10 @@ function recibido(e){
 				show_InMessage("!! COMIENZA PARTIDA ¡¡",true);
 				iniciarFondoEstrellas();//
 				break;
-
+		case "RefreshDatosCartones":
+				obtenerDatosCartones();
+				visualizaDatosCartones();
+				break;
 		case "EndBalls":
 				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true);
                 borrarNumerosCarton();
