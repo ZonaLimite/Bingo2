@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import com.google.gson.Gson;
 
 @WebServlet("/SourcerArraysCarton")
@@ -47,7 +48,8 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			carton = cartonUsuario (usuario, perfil, ordCarton, idHttpSession);
 		}
 		if(comando.equals("ArrayCartonBaseDatos")){
-			carton = consultaObjetoCarton(ordCarton);
+			carton = this.consultaObjetoCarton(ordCarton);
+		
 		}
 		if(comando.equals("ArrayCartonBaseDatosPorNRef")){
 			carton = cartonUsuarioPorNRef (usuario, perfil, ordCarton,idHttpSession);

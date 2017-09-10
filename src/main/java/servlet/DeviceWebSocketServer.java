@@ -207,12 +207,18 @@ private UserBean userBean;
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
-	case "LiquidarPremios":
+	case "LiquidarPremiosLinea":
 		//Salida automatizacion comprbacion manual cartones
 		log.info("Terminando handshake ...");
 				pb.setIdState("PremiosRecopiladosLinea");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 		break;
+	case "LiquidarPremiosBingo":
+		//Salida automatizacion comprbacion manual cartones
+		log.info("Terminando handshake ...");
+				pb.setIdState("PremiosRecopiladosBingo");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
+		break;		
 	case "Linea_OK":
 		if(pb.getIdState().equals("ComprobandoLinea")){
 			pb.setLineaCantada(true);

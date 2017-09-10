@@ -92,6 +92,7 @@ var salaInUse;
 var largoCeldaMensajes;
 var comboTexto;
 var labelTexto;
+var comandoHandshake;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -248,17 +249,15 @@ function iniciar() {
   		          $( "#spinner_decenas" ).spinner( "value" )+
   		          $( "#spinner_unidades" ).spinner( "value" );
 				  document.getElementById("nRef").value=nRefCarton;
-					textS=document.getElementById("comandoHandshake").value;
+					comandoHandshake=document.getElementById("comandoHandshake").value;
 				
 		    	  
 		    	  $.post("Handshake",$( "#requestPremios" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
-		    		
-			    	  //result = document.getElementById("feedback").textContent;
-			    	  indexError = responseText.lastIndexOf("Error");	
-			    	  if(indexError>=0)return;
+
+			    	  
 			    	  $("#feedback").text( responseText);
-			    	 
+			    	  //Ojo con no repetir el mismo check sobre el mismo carton
 			    	  /*Pendiente Handshake
 			    	   * 1- Devuelvo Ok-check y pregunto -si Hay mas
 			    	   * 2- Si contesto hayMas - repito el check con el nueno nREF
@@ -280,7 +279,8 @@ function iniciar() {
 			      click: function() {
 			    	  //Si continuo es porque no hay Lineas manuales,por lo tanto
 			    	  // continuo a Liquidacion premios
-			    	  socket_send("LiquidarPremios");
+			    	  if(comandoHandshake=="_ComprobarCartonBingo")socket_send("LiquidarPremiosBingo");
+			    	  if(comandoHandshake=="_ComprobarCartonLinea")socket_send("LiquidarPremiosLinea");
 			    	  $( this ).dialog( "close" );
 			      }
 
@@ -861,13 +861,18 @@ function recibido(e){
 				apagaLinea();
 				break;
 		case "ApagaBingo":
-			apagaBingo();
+				apagaBingo();
 			break;
 		case "PreguntarPremiosLinea":
 				elementComandoHandshake=document.getElementById("comandoHandshake");
 				elementComandoHandshake.value="_ComprobarCartonLinea";
 				$( "#premiosForm" ).dialog( "open" );
 			break;
+		case "PreguntarPremiosBingo":
+			elementComandoHandshake=document.getElementById("comandoHandshake");
+			elementComandoHandshake.value="_ComprobarCartonBingo";
+			$( "#premiosForm" ).dialog( "open" );
+			break;			
 		case "WarningFinalizando":
 			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");
 			    break;
