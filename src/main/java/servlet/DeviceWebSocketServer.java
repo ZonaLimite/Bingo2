@@ -259,6 +259,7 @@ private UserBean userBean;
 			}else {
 				pb.setIdState("Bingo");
 				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"supervisor");
 			}
 		}
 

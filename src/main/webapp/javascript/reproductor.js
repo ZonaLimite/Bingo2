@@ -850,7 +850,10 @@ function recibido(e){
 		case "Bingo":
 				myRango=sacarRangos(arrayMessages[1]);
 				play_range(myRango[0],myRango[1]);
-				break
+				break;
+		case "BingoCantado":
+			show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
+				break;
 		case "ComprobarLinea":
 				numerin = Math.floor((Math.random()*10))+1;
 				poster="url('images/gifLinea"+numerin+".gif')";

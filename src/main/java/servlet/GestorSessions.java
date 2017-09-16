@@ -902,12 +902,6 @@ import javax.websocket.Session;
 		  	String ruta,fichero;
 		  	Map<String,PocketBingo> aux=null;
 		  	ruta = System.getenv("OPENSHIFT_DATA_DIR");
-		  	log.info("Host bingo:"+System.getenv("bingo_SERVICE_HOST"));
-		  	log.info("Host mysql:"+System.getenv("svc/mysql_SERVICE_HOST"));
-		  	log.info("MYSQL_USER:"+System.getenv("MYSQL_USER"));		  	
-		  	log.info("MYSQL_PASSWORD:"+System.getenv("MYSQL_PASSWORD"));		  	
-		  	log.info("MYSQL_ROOT_PASSWORD:"+System.getenv("MYSQL_USER"));		  	
-		  	
 
 		  	
 		  	if(ruta==null){

@@ -705,8 +705,11 @@ function recibido(e){
 				break;
 		case "Bingo":
 				playAudioPremioBingo();
-			show_InMessage("!! BINGO ¡¡","blink");	
+				show_InMessage("!! BINGO ¡¡","blink");	
 				break;
+		case "BingoCantado":
+			show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
+				break;				
 				
 		case "ComprobarLinea":
 				show_InMessage("COMPROBANDO LINEA ....",true);
