@@ -106,7 +106,7 @@ public class Runnable3 implements Runnable{
                 	enviarMensajeAPerfil("ComprobarLinea","jugador");
                 	//Comprobamos las lineas de todos los cartones y avisamos de quien tiene linea y alos despitados que la tienen y no la cantan
                 	gestorSesions.comprobarLineas(estaSalaEs);
-                	Thread.sleep(5000);
+                	Thread.sleep(4000);
                 	//Si alguna no esta cantada se avisa y se da una opcion mas
                 	enviarMensajeAPerfil("Hay alguna linea mas?","supervisor");
                 	enviarMensajeAPerfil("Hay alguna linea mas?","jugador");
@@ -132,7 +132,7 @@ public class Runnable3 implements Runnable{
                 }else if(pb.getIdState().equals("PremiosRecopiladosLinea")){
                 		if(gestorSesions.liquidacionPremios(estaSalaEs)){
                 			//if(gestorSesions.comprobarLineas(estaSalaEs)){
-                			Thread.sleep(3000);
+                			Thread.sleep(4000);
                 			pb.setIdState("LineaOk");
                 			pb.setLineaCantada(true);
                 			enviarMensajeAPerfil("ApagaLinea","supervisor");
@@ -148,14 +148,17 @@ public class Runnable3 implements Runnable{
                 		i--;
                 
                 }else if(pb.getIdState().equals("LineaOk")){
+                	n=0;
+                	i--;
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"supervisor");
-                
-                	i--;
+
                 }else if(pb.getIdState().equals("Continue")){
+                	n=0;
+                	i--;
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
-                	i--;
+
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");
                //---------------------------------------------------------------------------------------------- 
                 	
@@ -171,11 +174,11 @@ public class Runnable3 implements Runnable{
                     	enviarMensajeAPerfil("ComprobarBingo","supervisor");
                     	enviarMensajeAPerfil("ComprobarBingo","jugador");
                     	gestorSesions.comprobarBingos(estaSalaEs);
-                    	Thread.sleep(6000);
+                    	Thread.sleep(4000);
                     	//Si alguna no esta cantada se avisa y se da una opcion mas
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","supervisor");
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","jugador");
-                    	Thread.sleep(2000);
+                    	Thread.sleep(3000);
                        	//Al llegar aqui, preguntamos a super por premios de cartones manuales y que los meta en mapa Premios Manuales
             	    	// Se puede aprovechar en esta fase, para integrar los premios de cartones manuales que puedan existir
             	    	// Sera necesario hacer esto, si existen cartones manuales.
@@ -195,31 +198,35 @@ public class Runnable3 implements Runnable{
             	    		} 
                	}else if(pb.getIdState().equals("PremiosRecopiladosBingo")){
                		if(gestorSesions.liquidacionPremios(estaSalaEs)){
-               			
-               			Thread.sleep(3000);
+               			Thread.sleep(4000);
+
                			pb.setIdState("BingoOk");
                			pb.setLineaCantada(true);
                			enviarMensajeAPerfil("ApagaBingo","supervisor");
                			enviarMensajeAPerfil("ApagaBingo","jugador");
+               			
                		}else{
                			pb.setIdState("Continue");
                			enviarMensajeAPerfil("Continuamos ...","supervisor");
                			enviarMensajeAPerfil("Continuando partida ...","jugador");
                		}
-               		 
-               		enviarMensajeAPerfil("EnciendeVideo","supervisor");
                		n=1;
-               		i--;            	    		
+               		i--;        
+               		Thread.sleep(2000);
+               		enviarMensajeAPerfil("EnciendeVideo","supervisor");
+  	    		
 
                 }else if(pb.getIdState().equals("BingoOk")){
-                    	
+                		n=0;
+                		i--;
                     	enviarMensajeAPerfil("cantarNumero_bingoOk_"+pb.getNumeroOrden(),"supervisor");
                     	pb.setIdState("EndBalls");
-                    	i--;
+                
                 }else if(pb.getIdState().equals("Continue")){
+                		n=0;
+                		i--;
                     	pb.setIdState("Started");
                     	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
-                    	i--;
                     	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");                	
                 //---------------------------------------------------------------------------------------------                	
  

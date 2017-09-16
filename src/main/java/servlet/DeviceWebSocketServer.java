@@ -197,10 +197,12 @@ private UserBean userBean;
 			if(pb.getIdState().equals("ComprobandoLinea")){
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 			}else{
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
 			}
 		}
 		
@@ -219,6 +221,9 @@ private UserBean userBean;
 				pb.setIdState("PremiosRecopiladosBingo");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 		break;		
+	case "RefreshDatosCartones":
+			enviarMensajeAPerfil("RefreshDatosCartones","jugador");
+		break;
 	case "Linea_OK":
 		if(pb.getIdState().equals("ComprobandoLinea")){
 			pb.setLineaCantada(true);
@@ -276,7 +281,7 @@ private UserBean userBean;
 		break;
 		
 	case "Continue":
-		if(pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") ){		
+		if(pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("WaitingResultSuper") ){		
 			pb.setIdState("Continue");
 			this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
 			pb.setReasonInterrupt("continuar");
@@ -286,9 +291,18 @@ private UserBean userBean;
 		break;
 	
 	case "Finalize":
-		pb.setIdState("EndBalls");
-		pb.setReasonInterrupt("Finalize");
-		hilo3.interrupt();
+		if(!(hilo3==null)){
+				pb.setIdState("EndBalls");
+				pb.setReasonInterrupt("Finalize");
+				hilo3.interrupt();
+		}else{
+			gestorSesions.resetCartones(this.salaInUse);
+			pb.resetNumerosCalled();
+			enviarMensajeAPerfil("EndBalls","supervisor");
+			enviarMensajeAPerfil("EndBalls","jugador");               			
+			pb.setIdState("Finalized");
+		}
+		
 		break;
 	}
 	//manejar POJOS en el formato JSON#comando#dato1#datox....

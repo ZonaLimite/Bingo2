@@ -939,7 +939,9 @@ function iniciarFondoEstrellas(){
      
 }
 function detenerFondoEstrellas(){
-	window.clearInterval(bucle6);	
+	if(!((typeof x === 'undefined'))){
+		window.clearInterval(bucle6);	
+	}
 }
  
      /* Returns a random number in the range [minVal,maxVal] */

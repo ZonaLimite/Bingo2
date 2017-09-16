@@ -65,7 +65,7 @@ public class HandshakeServlet extends HttpServlet {
 				objetoaConvertir = "! Carton "+ nRef+ " premiado para Bingo ¡\n ¿Hay algun carton mas a comprobar?";
 
 			}else{
-				objetoaConvertir = "Se Siente ..., Carton no premiado o ya esta registrado el premio\n ¿Hay algun carton mas a comprobar?";
+				objetoaConvertir = "Se Siente ..., Carton no premiado o ya esta registrado este premio\n ¿Hay algun carton mas a comprobar?";
 			}
 		}		
 		

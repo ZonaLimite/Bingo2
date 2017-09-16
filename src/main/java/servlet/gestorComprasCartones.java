@@ -58,7 +58,7 @@ public class gestorComprasCartones extends HttpServlet {
  
             //Comprobacion estado Pocket Bingo en "Finalized"
             if(!pocketBingoSala.getIdState().equals("Finalized")){
-                    String mensaje="Error,Compra de cartones aun no permitida.\n Espere a que acabe la partida";
+                    String mensaje="Error,Compra de cartones aun no permitida.\nPartida no finalizada";
                     resp.getWriter().print(mensaje);
                     return;
              } 
