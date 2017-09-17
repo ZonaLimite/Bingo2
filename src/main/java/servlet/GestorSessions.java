@@ -387,11 +387,10 @@ import javax.websocket.Session;
 	    					for(int c=0; c<9 ; c++){
 	    						int numero = numeros[f][c];
 	    						if(numerosCalled.contains(numero)){
-	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
+	    							//Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero como OK)
 	    							//De momento no lo enviamos/
 	    							
 	    							   try {
-	    									
 	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
 	    									//Thread.sleep(1000);
 	    								} catch (IOException e) {
@@ -454,49 +453,6 @@ import javax.websocket.Session;
 	    		
 	    		return hayLinea;
 	    }
-	    public boolean liquidacionPremios(String sala){
-    		//ESto deberia ir en otra fase separada
-    		//Tratamiento comprobacion peticiones premios
-	    	boolean hayPremios=false;
-	    	
-    		Set<PeticionPremio> userBeansPremiados = pilaAnunciaPremios.keySet();
-    		Iterator<PeticionPremio> itPremiados = userBeansPremiados.iterator();
-    		log.info("Liquidando premios ... tamaño en Pila("+userBeansPremiados.size()+")");
-    		while(itPremiados.hasNext()){
-    			log.info("En el iterador hay objetos premio");
-    			PeticionPremio pp =  itPremiados.next();
-    			UserBean ubPremiado =pp.getUserbean();
-    			
-    			if(ubPremiado.getSalonInUse().equals(sala)){
-    				Carton carton  = pilaAnunciaPremios.get(pp);
-    				try {
-    					//Si la transaccion de liquidacion se completa. lo anunciamos
-    					float premioCobrado = this.saldarPremio(sala, ubPremiado, pp.getPremio());
-    					if(premioCobrado>0){
-    						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
-    						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+", enhorabuena");
-    					}
-     					
-    					hayPremios=true;
-    					
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
-    			}
-    			try {
-					Thread.sleep(4500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    		this.borrarListaPeticionPremios(sala);
-    		this.borrarListaPremiosLiquidados(sala);
-    		log.info("Hay premios :" + hayPremios);
-    		return hayPremios;
-	    }
-	    
 	    public synchronized boolean comprobarBingoDeCarton(String sala,String nRef,  UserBean user){
 	    	//Comprobacion de carton en faceta "super"
 
@@ -972,90 +928,5 @@ import javax.websocket.Session;
 		  	fileUser.delete();
 		  	
 	  }
-
-		public float saldarPremio(String sala, UserBean user, String tipoPremio){
-			float valorPremio=0;
-			if(tipoPremio.equals("Linea")){
-				valorPremio = this.saldarPremioLinea(sala, user);
-			}
-			if(tipoPremio.equals("Bingo")){
-				valorPremio = this.saldarPremioBingo(sala, user);
-			}
-			return valorPremio;
-		}
-		private float saldarPremioLinea(String sala,UserBean user){
-			float premio = 0;//
-			PocketBingo pb = this.getJugadasSalas(sala);
-			//Lo cogemos de aqui
-			int cartonesAutomaticos = this.dameSetCartonesEnJuego(sala).size();
-			int numeroCartonesEnJuego = cartonesAutomaticos + new Integer(pb.getnCartonesManuales());
-			Map<PeticionPremio,Carton> pilaPremios = this.getPilaAnunciaPremios();
-			int numeroPremios = pilaPremios.size();
-			log.info("Numero de premios (saldar premio Linea):"+numeroPremios);
-			float precioCarton =  new Float(pb.getPrecioCarton());
-			float sumaCaja = precioCarton*numeroCartonesEnJuego;
-			float porCientoLinea = new Float(pb.getPorcientoLinea());
-			float porCientoBingo = new Float(pb.getPorcientoBingo());
-			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
-			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-			// 
-			float xLinea = (new Float(((sumaCaja*porCientoLinea)/sumaTantos))/numeroPremios);
-			if(user.getUsername().contains("Carton"))return xLinea;
-			if(this.realizarLiquidacionTransaccion(xLinea, user)){
-				premio = xLinea;
-			}
-					
-			return premio;
-			//float xBingo = new Float((sumaCaja*porCientoBingo)/sumaTantos);
-			//float zCantaor = new Float((sumaCaja*porCientoCantaor)/sumaTantos);
-			
-
-		}
-		
-		private float saldarPremioBingo(String sala,UserBean user){
-			float premio = 0;
-			PocketBingo pb = this.getJugadasSalas(sala);
-			int cartonesAutomaticos = this.dameSetCartonesEnJuego(sala).size();
-			int numeroCartonesEnJuego = cartonesAutomaticos + new Integer(pb.getnCartonesManuales());
-			Map<PeticionPremio,Carton> pilaPremios = this.getPilaAnunciaPremios();
-			int numeroPremios = pilaPremios.size();
-			float precioCarton =  new Float(pb.getPrecioCarton());
-			float sumaCaja = precioCarton*numeroCartonesEnJuego;
-			float porCientoLinea = new Float(pb.getPorcientoLinea());
-			float porCientoBingo = new Float(pb.getPorcientoBingo());
-			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
-			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-			// 
-			
-			float xBingo = (new Float(((sumaCaja*porCientoBingo)/sumaTantos))/numeroPremios);
-			if(user.getUsername().contains("Carton"))return xBingo;
-			if(this.realizarLiquidacionTransaccion(xBingo, user)){
-				premio = xBingo;
-			}
-			log.info("Valor premio:"+premio);		
-			return premio;
-			//float xBingo = new Float((sumaCaja*porCientoBingo)/sumaTantos);
-			//float zCantaor = new Float((sumaCaja*porCientoCantaor)/sumaTantos);
-			
-
-		}	
-		
-	    private boolean realizarLiquidacionTransaccion(float valorPremio, UserBean myUser){
-	        boolean okeyCompra=false;
-	        float saldoRestante = myUser.getSaldo() + valorPremio;
-	        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-	        simbolos.setDecimalSeparator('.');
-	        DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
-	        
-	        String Consulta = "UPDATE usuarios SET Saldo = "+ formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
-	        log.info(Consulta);
-	        int result=UtilDatabase.updateQuery(Consulta);
-	        if(result>0){
-	        	myUser.setSaldo(saldoRestante);
-	        	okeyCompra=true;
-	        }
-	        
-	        return okeyCompra;
-	    }
 	}
 

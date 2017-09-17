@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.swing.JTextArea;
 import javax.websocket.Session;
 
@@ -19,6 +20,10 @@ import javax.websocket.Session;
 //public class Hilo2 extends Thread{
 public class Runnable3 implements Runnable{
     Logger log = Logger.getLogger("HiloSala1");
+    
+	@Inject
+	private LiquidadorPremio lp;    
+    
     JTextArea area2;
     PocketBingo pb;
     Session session;
@@ -40,7 +45,7 @@ public class Runnable3 implements Runnable{
     public void run(){
     	log.info("IdState en 'run' putobucle5:" );
     	gestorSesions = (GestorSessions) session.getUserProperties().get("gestorSesiones");
-    	
+    	LiquidadorPremio lp = new LiquidadorPremio(this.gestorSesions);
         this.pb=gestorSesions.getJugadasSalas(estaSalaEs);
         status=pb.getIdState();
         
@@ -130,22 +135,25 @@ public class Runnable3 implements Runnable{
         	    		}
         	    		
                 }else if(pb.getIdState().equals("PremiosRecopiladosLinea")){
-                		if(gestorSesions.liquidacionPremios(estaSalaEs)){
+                	
+                		//if(gestorSesions.liquidacionPremios(estaSalaEs)){
+            		
+            		if(lp.liquidacionPremios(estaSalaEs)){                			
                 			//if(gestorSesions.comprobarLineas(estaSalaEs)){
                 			Thread.sleep(4000);
                 			pb.setIdState("LineaOk");
                 			pb.setLineaCantada(true);
                 			enviarMensajeAPerfil("ApagaLinea","supervisor");
                 			enviarMensajeAPerfil("ApagaLinea","jugador");
-                		}else{
-                			pb.setIdState("Continue");
-                			enviarMensajeAPerfil("Continuamos ...","supervisor");
-                			enviarMensajeAPerfil("Continuando partida ...","jugador");
-                		}
-                		//Thread.sleep(5000);
-                		enviarMensajeAPerfil("EnciendeVideo","supervisor");
-                		n=1;
-                		i--;
+                   		}else{
+                   			pb.setIdState("Continue");
+                   			enviarMensajeAPerfil("Continuamos ...","supervisor");
+                   			enviarMensajeAPerfil("Continuando partida ...","jugador");
+                   		}
+                   		n=1;
+                   		i--;        
+                   		Thread.sleep(2000);
+                   		enviarMensajeAPerfil("EnciendeVideo","supervisor");
                 
                 }else if(pb.getIdState().equals("LineaOk")){
                 	n=0;
@@ -197,7 +205,9 @@ public class Runnable3 implements Runnable{
             	    			i--;
             	    		} 
                	}else if(pb.getIdState().equals("PremiosRecopiladosBingo")){
-               		if(gestorSesions.liquidacionPremios(estaSalaEs)){
+               		//if(gestorSesions.liquidacionPremios(estaSalaEs)){
+            		
+            		if(lp.liquidacionPremios(estaSalaEs)){               		
                			Thread.sleep(4000);
 
                			pb.setIdState("BingoOk");
@@ -257,7 +267,7 @@ public class Runnable3 implements Runnable{
 
 
             } catch (InterruptedException ex) {
-        	   //log.info("He sido interrumpido");
+        	   log.info("He sido interrumpido y numnero ordem es:"+i);
                n=0;
         	   String reasonInterrupt=pb.getReasonInterrupt();
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
