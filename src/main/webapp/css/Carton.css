@@ -363,7 +363,7 @@ display: block;
 
 
 .ano {
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: bold;
 	background-color: #1D3841;
 	color: #CC0000;
@@ -430,4 +430,7 @@ display: block;
 }
 .audioClass {
 
+}
+#saldo {
+	font-size: 14px;
 }

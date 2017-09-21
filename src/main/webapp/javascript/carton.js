@@ -89,6 +89,9 @@ var myArrayDatosCartones = new Array();
 var ventanaCartones;
 var audio;
 var hayNumerosParaCantar="No";
+var valueScale=14;
+var status="";
+var bucle10=null;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -107,6 +110,8 @@ function iniciar() {
 	ventanaCartones=document.getElementById("innerHTMLCartones");
 	audio = document.getElementById("audioWeb");
 	audio.style.opacity = "0";
+	
+	
 	boton_Linea= document.getElementById("boton_Linea");
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
@@ -705,12 +710,11 @@ function recibido(e){
 				break;
 		case "Bingo":
 				playAudioPremioBingo();
-				show_InMessage("!! BINGO ¡¡","blink");	
+				show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
 				break;
-		case "BingoCantado":
-			show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
+		case "PremioLiquidado":
+				bucle10 = setInterval(efectoSaldo, 50);
 				break;				
-				
 		case "ComprobarLinea":
 				show_InMessage("COMPROBANDO LINEA ....",true);
 				//rutinaComprobacionCartones("Linea");
@@ -736,15 +740,22 @@ function recibido(e){
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					//result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")
-					
 					$( "#dialog" ).dialog( "open" );
 				}
 				break;
 		case "ApagaLinea":
 				apagaLinea();
+				window.clearInterval(bucle10);
+				bucle10=null;
+				status=""
+				valueScale=14
 				break;
 		case "ApagaBingo":
 				apagaBingo();
+				window.clearInterval(bucle10);
+				bucle10=null;
+				status=""
+				valueScale=14				
 				break;	
 		case "WarningFinalizando":
 		    	show_InMessage("finalizando partida; ¿Hay mas Bingos?","blink");
@@ -769,6 +780,16 @@ function recibido(e){
 function apagarNumero(n){
 	document.getElementById(n).style.color="#280000";
 	document.getElementById(n).style.backgroundColor="#000000";
+}
+function efectoSaldo(){
+
+			if(valueScale==14)status="crece";
+			if(valueScale==20)status="decrece"
+			if(status=="crece")valueScale = valueScale +  0.5;
+			if(status=="decrece")valueScale = valueScale - 0.5;
+			sValue = valueScale+"px";
+			document.getElementById("saldo").style.fontSize=sValue;
+
 }
 function encenderNumero(numero,modo){
 	if(numero=="0")return;

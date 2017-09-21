@@ -194,7 +194,7 @@ private UserBean userBean;
 			log.info("Si se registra esta peticion revision premio Linea");
 			log.info("Status antes de tratar Linea:"+pb.getIdState());
 			//Ojo con esto
-			if(pb.getIdState().equals("ComprobandoLinea")){
+			if(pb.getIdState().equals("ComprobandoLinea")||pb.getIdState().equals("WaitingResultSuper")){
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
 				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
@@ -245,16 +245,19 @@ private UserBean userBean;
 
 			log.info("Si se registra esta peticion revision premio Bingo");
 			//Ojo con esto
-			if(pb.getIdState().equals("ComprobandoBingo")){
+			if(pb.getIdState().equals("ComprobandoBingo")||pb.getIdState().equals("WaitingResultSuper")){
 				pb.setIdState("Bingo");
-				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"supervisor");
 
 			}else if(pb.getIdState().equals("WarningFinalizando")){
+				
 				pb.setReasonInterrupt("Bingo");
 				pb.setIdState("Bingo");
-				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+
 				//hilo3.interrupt();
 			}else {
 				pb.setIdState("Bingo");

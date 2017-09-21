@@ -782,6 +782,7 @@ function recibido(e){
 	if(e.data.indexOf("Linea_")!=-1
 	   || e.data.indexOf("EncenderNumero_")!=-1
 	   || e.data.indexOf("Comprobar")!=-1
+	   || e.data.indexOf("Bingo_bingo")!=-1
 	){
 		
 	}else{
@@ -852,7 +853,7 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);
 				break;
 		case "BingoCantado":
-			show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
+				show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
 				break;
 		case "ComprobarLinea":
 				numerin = Math.floor((Math.random()*10))+1;

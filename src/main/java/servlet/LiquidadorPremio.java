@@ -49,6 +49,7 @@ public class LiquidadorPremio {
 					float premioCobrado = this.saldarPremio(sala, ubPremiado, pp.getPremio());
 					if(premioCobrado>0){
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
+						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+", enhorabuena");
 					}
  					
