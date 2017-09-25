@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -90,12 +92,16 @@ public class gestorComprasCartones extends HttpServlet {
 
     private boolean realizarCompraTransaccion(float precioCompra, UserBean myUser){
         boolean okeyCompra=false;
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        //Formateador de datos decimales. Limitado a dos digitos.
+        simbolos.setDecimalSeparator('.');
+        DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
         float saldoRestante = myUser.getSaldo() - precioCompra;
-        String Consulta = "UPDATE usuarios SET Saldo = "+ saldoRestante+" WHERE User = '"+myUser.getUsername()+"'";
+        String Consulta = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
         System.out.println(Consulta);
         int result=UtilDatabase.updateQuery(Consulta);
         if(result>0){
-        	myUser.setSaldo(saldoRestante);
+        	myUser.setSaldo(new  Float(formateador.format(saldoRestante)));
         	okeyCompra=true;
         }
         

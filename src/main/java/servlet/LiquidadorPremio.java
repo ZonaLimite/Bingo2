@@ -33,7 +33,7 @@ public class LiquidadorPremio {
 		//ESto deberia ir en otra fase separada
 		//Tratamiento comprobacion peticiones premios
     	boolean hayPremios=false;
-    	pilaAnunciaPremios= gestorSesions.getPilaAnunciaPremios();
+    	pilaAnunciaPremios= gestorSesions.getPilaAnunciaPremios(sala);
 		Set<PeticionPremio> userBeansPremiados = pilaAnunciaPremios.keySet();
 		Iterator<PeticionPremio> itPremiados = userBeansPremiados.iterator();
 		log.info("Liquidando premios ... tamaño en Pila("+userBeansPremiados.size()+")");
@@ -88,7 +88,7 @@ public class LiquidadorPremio {
 		//Lo cogemos de aqui
 		int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 		int numeroCartonesEnJuego = cartonesAutomaticos + new Integer(pb.getnCartonesManuales());
-		Map<PeticionPremio,Carton> pilaPremios = gestorSesions.getPilaAnunciaPremios();
+		Map<PeticionPremio,Carton> pilaPremios = gestorSesions.getPilaAnunciaPremios(sala);
 		int numeroPremios = pilaPremios.size();
 		log.info("Numero de premios (saldar premio Linea):"+numeroPremios);
 		float precioCarton =  new Float(pb.getPrecioCarton());
@@ -116,7 +116,7 @@ public class LiquidadorPremio {
 		PocketBingo pb = gestorSesions.getJugadasSalas(sala);
 		int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 		int numeroCartonesEnJuego = cartonesAutomaticos + new Integer(pb.getnCartonesManuales());
-		Map<PeticionPremio,Carton> pilaPremios = gestorSesions.getPilaAnunciaPremios();
+		Map<PeticionPremio,Carton> pilaPremios = gestorSesions.getPilaAnunciaPremios(sala);
 		int numeroPremios = pilaPremios.size();
 		float precioCarton =  new Float(pb.getPrecioCarton());
 		float sumaCaja = precioCarton*numeroCartonesEnJuego;

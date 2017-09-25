@@ -25,6 +25,7 @@ public class HandshakeServlet extends HttpServlet {
 	
 	@Inject
 	private GestorSessions gestorSesions;
+	private ComprobadorPremios cp;
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String objetoaConvertir="";
@@ -35,7 +36,7 @@ public class HandshakeServlet extends HttpServlet {
 		int iNumero = new Integer(numero);
 		nRef=""+iNumero;
 		comando  = req.getParameter("comandoHandshake");
-		
+		cp = new ComprobadorPremios(gestorSesions);
 		if(comando.equals("_ComprobarCartonLinea")){
 			Set<UserBean> setUserBean = gestorSesions.dameUserBeans("supervisor", sala);
 			Iterator<UserBean> itUserBean = setUserBean.iterator();
@@ -45,7 +46,7 @@ public class HandshakeServlet extends HttpServlet {
 			myUSER.setSesionSocket(user.getSesionSocket());
 			myUSER.setUserName("Carton_"+nRef);
 
-			if(gestorSesions.comprobarLineaDeCarton(sala, nRef, myUSER)){
+			if(cp.comprobarLineaDeCarton(sala, nRef, myUSER)){
 				objetoaConvertir = "! Carton "+ nRef+ " premiado para Linea ¡\n ¿Hay algun carton mas a comprobar?";
 
 			}else{
@@ -61,7 +62,7 @@ public class HandshakeServlet extends HttpServlet {
 			myUSER.setSesionSocket(user.getSesionSocket());
 			myUSER.setUserName("Carton_"+nRef);
 
-			if(gestorSesions.comprobarBingoDeCarton(sala, nRef, myUSER)){
+			if(cp.comprobarBingoDeCarton(sala, nRef, myUSER)){
 				objetoaConvertir = "! Carton "+ nRef+ " premiado para Bingo ¡\n ¿Hay algun carton mas a comprobar?";
 
 			}else{

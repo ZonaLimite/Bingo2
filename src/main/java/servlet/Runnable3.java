@@ -21,8 +21,9 @@ import javax.websocket.Session;
 public class Runnable3 implements Runnable{
     Logger log = Logger.getLogger("HiloSala1");
     
-	@Inject
-	private LiquidadorPremio lp;    
+
+	private LiquidadorPremio lp; 
+	private ComprobadorPremios cp;
     
     JTextArea area2;
     PocketBingo pb;
@@ -45,7 +46,8 @@ public class Runnable3 implements Runnable{
     public void run(){
     	log.info("IdState en 'run' putobucle5:" );
     	gestorSesions = (GestorSessions) session.getUserProperties().get("gestorSesiones");
-    	LiquidadorPremio lp = new LiquidadorPremio(this.gestorSesions);
+    	lp = new LiquidadorPremio(this.gestorSesions);
+    	cp = new ComprobadorPremios(this.gestorSesions);
         this.pb=gestorSesions.getJugadasSalas(estaSalaEs);
         status=pb.getIdState();
         
@@ -110,7 +112,7 @@ public class Runnable3 implements Runnable{
                 	enviarMensajeAPerfil("ComprobarLinea","supervisor");
                 	enviarMensajeAPerfil("ComprobarLinea","jugador");
                 	//Comprobamos las lineas de todos los cartones y avisamos de quien tiene linea y alos despitados que la tienen y no la cantan
-                	gestorSesions.comprobarLineas(estaSalaEs);
+                	cp.comprobarLineas(estaSalaEs);
                 	Thread.sleep(4000);
                 	//Si alguna no esta cantada se avisa y se da una opcion mas
                 	enviarMensajeAPerfil("Hay alguna linea mas?","supervisor");
@@ -181,7 +183,7 @@ public class Runnable3 implements Runnable{
                }else if(pb.getIdState().equals("ComprobandoBingo")){
                     	enviarMensajeAPerfil("ComprobarBingo","supervisor");
                     	enviarMensajeAPerfil("ComprobarBingo","jugador");
-                    	gestorSesions.comprobarBingos(estaSalaEs);
+                    	cp.comprobarBingos(estaSalaEs);
                     	Thread.sleep(4000);
                     	//Si alguna no esta cantada se avisa y se da una opcion mas
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","supervisor");
