@@ -637,10 +637,6 @@ import javax.websocket.Session;
 
 	            }
 
-
-
-
-  
 	        } catch (SQLException ex) {
                 Logger.getLogger("RegistroContexto").info("Ha habido problema SQl a l registrar contexto:"+ ex);
 
