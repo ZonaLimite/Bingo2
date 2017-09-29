@@ -1,5 +1,6 @@
 package servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -51,7 +54,7 @@ import javax.websocket.Session;
 	    private Map<String, Vector<UserBean>> sessions;
 	    
 	    //Mapa seguimiento jugadas Bingo por Sala (Sala,PocketBingo)
-	    private Map<String, PocketBingo> jugadasSalas;
+	    private ConcurrentHashMap<String, PocketBingo> jugadasSalas;
 	    
 	    //Referencias a hilos activos de salas
 	    private Map<String,Thread> hiloSala ;
@@ -126,20 +129,19 @@ import javax.websocket.Session;
 
 		@PostConstruct
 	    public void init() {
-                //Recuperacion contexto salas
-			this.jugadasSalas=leeContext();
+                //Recuperacion contexto salas Bingo
+			this.jugadasSalas=readContext("bingo");
 	        if(this.jugadasSalas==null){
 	        	this.jugadasSalas = new ConcurrentHashMap<>();
 	        	log.info("Gestor inicializado por jugadas salas =null");
+	        }else{
+	        	log.info("Contexto recuperado de base de datos correctamente");
 	        }
 
                 this.sessions = new ConcurrentHashMap<>();
-                log.info("Gestor :mapas cargados");
-                
                 this.hiloSala = new ConcurrentHashMap<>();
                 this.listaPeticionesPremios = new ConcurrentHashMap<>();
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
-                
 	    }
 		
 
@@ -147,35 +149,10 @@ import javax.websocket.Session;
 		@Override
 		@PreDestroy
 		final public void finalize(){
-			log.info("Guardando contexto pockets bingo");
-		  	String ruta,fichero;
+			log.info("El resultado de registrarContexto ha sido : "+this.registraContexto("bingo",this.jugadasSalas) );			
 			
-					ruta = System.getenv("OPENSHIFT_DATA_DIR");
-					if(ruta==null){
-						ruta="C:\\\\put\\HTML5\\PocketBingo\\";
-					}
-					fichero=ruta+"MapaBingos";//
-					
-		  
-		  try
-	      {
-	          ObjectOutputStream oos = new ObjectOutputStream(
-	                  new FileOutputStream(fichero));
-	          
-	              oos.writeObject(this.jugadasSalas);
-	              log.info("guardando Pocket"+ fichero);
-	              
-	          oos.close();
-	      } catch (Exception e)
-	      {
-	          log.severe("Excepcion Guarda Pocket "+ fichero);
-	    	  e.printStackTrace();
-	      }  
-		  
 		}
-		
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
-	  
 	    public synchronized boolean add(String user,UserBean userBean) {
 	    	boolean insertado = false;
 	    	if( !(userBean.getStatusPlayer().equals("playingBingo"))){
@@ -290,7 +267,7 @@ import javax.websocket.Session;
 	    
 	    public Map<PeticionPremio, Carton> getPilaAnunciaPremios(String sala) {
 	    	Map<PeticionPremio,Carton> pilaAnunciaPremiosFiltered = this.pilaAnunciaPremios;
-	    	Set<Map.Entry<PeticionPremio, Carton>> anunciaPremiosSala = pilaAnunciaPremios.entrySet();
+	    	Set<Map.Entry<PeticionPremio, Carton>> anunciaPremiosSala = pilaAnunciaPremiosFiltered.entrySet();
 	    	Iterator<Map.Entry<PeticionPremio, Carton>> it = anunciaPremiosSala.iterator();
 	    	while(it.hasNext()){
 	    		Map.Entry<PeticionPremio,Carton> entryPP = (Map.Entry<PeticionPremio, Carton>)it.next();
@@ -624,5 +601,109 @@ import javax.websocket.Session;
 		  	fileUser.delete();
 		  	
 	  }
-	}
+	    public int registraContexto(String juego,ConcurrentHashMap<String, PocketBingo> contexto){
+	        Connection myCon=null;
+	        PreparedStatement ps=null;
+	        int result=0;
+	  
+	        try {
+	            myCon = ConnectionManager.getConnection();
+	            Statement st = myCon.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 
+                ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                ObjectOutputStream oos;
+                        try {
+                            oos = new ObjectOutputStream(byteArray);
+                            oos.writeObject(contexto);
+                        } catch (IOException ex) {
+                            Logger.getLogger("RegistroContexto").info("Ha habido problema al escribir sobre Output Stream:"+ ex);
+                        }
+        	    ResultSet rs = st.executeQuery("Select * From contexto Where juego = 'bingo'");                        
+	            if(rs.next()){
+	            	String update = "update contexto set contexto = ? where juego = ?";
+	            	ps = myCon.prepareStatement(update);
+	                ps.setBytes(1, byteArray.toByteArray());
+	                ps.setString(2, "bingo");
+
+	                result = ps.executeUpdate();
+	            }else{
+	            	ps = myCon.prepareStatement("insert into contexto values (?,?)");
+	                ps.setString(1, "bingo");
+	                ps.setBytes(2, byteArray.toByteArray());	
+	                if(ps.execute()){
+	                	ResultSet rs2 = ps.getResultSet();
+		                if(rs2.next())result=1;
+	                }
+
+	            }
+
+
+
+
+  
+	        } catch (SQLException ex) {
+                Logger.getLogger("RegistroContexto").info("Ha habido problema SQl a l registrar contexto:"+ ex);
+
+	        }finally{
+	            if(myCon!=null)try {
+	                myCon.close();
+	                
+	            } catch (SQLException ex) {
+                    Logger.getLogger("RegistroContexto").info("Ha habido problema finalmente al escribir sobre Output Stream:"+ ex);
+	            }
+	            if(ps!=null)try {
+	                ps.close();
+	            } catch (SQLException ex) {
+                    Logger.getLogger("RegistroContexto").info("Ha habido problema finalmente 2 al cerrar conexiones:"+ ex);
+	            }
+	        }
+	        return result;
+
+	        
+
+	    }
+	    public ConcurrentHashMap<String, PocketBingo> readContext(String juego){
+	        Connection con = ConnectionManager.getConnection();
+	        Statement st=null;
+	        ResultSet rs=null;
+            ConcurrentHashMap<String, PocketBingo> myJuegosSalas=null;
+
+	        try {
+	            int idCarton;
+	            String nCarton;
+	            String nSerie;
+	            Blob blob;
+	             st = con.createStatement();
+	             rs = st.executeQuery("Select contexto from contexto where juego='"+juego+"'");
+	             if(rs.next()){
+	                   // Se obtiene el campo blob
+	                 blob = rs.getBlob(1);
+	                // Se reconstruye el objeto con un ObjectInputStream
+	                try {
+	                    ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+	                     try {
+	                         myJuegosSalas = (ConcurrentHashMap<String, PocketBingo>) ois.readObject();
+	                     } catch (ClassNotFoundException ex) {
+	                         Logger.getLogger("readContext(GestosSessions)").info("Ha habido problema en leerContexto:\n"+ex);
+	                     }
+	                   
+	                } catch (IOException ex) {
+                        Logger.getLogger("readContext(GestosSessions)").info("Ha habido problema(2) en leerContexto:\n"+ex);
+	                }
+	                
+	             }
+	        } catch (SQLException ex) {
+                Logger.getLogger("readContext(GestosSessions)").info("Ha habido problemaSQL en leerContexto:\n"+ex);
+	        }finally{
+	            try {
+	                if(con!=null)con.close();
+	                if(st!=null)st.close();
+	            } catch (SQLException ex) {
+                    Logger.getLogger("readContext(GestosSessions)").info("Ha habido problema finalmente");
+	            }
+	           
+	        }
+	        return myJuegosSalas;//	    
+	    }
+
+}

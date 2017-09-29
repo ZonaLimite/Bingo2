@@ -311,7 +311,10 @@ function DrawNumberAt(number,id){
   altoTexto = yHeight;
   x= Math.floor((xWidth/2))- Math.floor((anchoTexto/2)); 
   y= Math.floor((altoTexto/2))+Math.floor((altoTexto/3));
+  //Numero de color
+  //ctx.fillStyle="#0099FF";
   ctx.fillStyle="#0099FF";
+
   //ctx.scale(2,2);
   if(number==0){
 
