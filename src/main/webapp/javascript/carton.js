@@ -660,7 +660,7 @@ function recibido(e){
 	if(arrayMessages.length > 0){
 		 
 	comando=arrayMessages[0];
-	if(!(comando=="DATOSCARTONES")&&!(comando=="ApagaLinea"))	show_InMessage(e.data);
+	if(!(comando=="DATOSCARTONES")&&!(comando=="ApagaLinea")&&!(comando=="numeroOK"))	show_InMessage(e.data);
 		switch(comando) {
 		    
 		//Cantar numero y mostrar orden bola

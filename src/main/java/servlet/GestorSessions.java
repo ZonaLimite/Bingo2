@@ -634,7 +634,6 @@ import javax.websocket.Session;
 	                	ResultSet rs2 = ps.getResultSet();
 		                if(rs2.next())result=1;
 	                }
-
 	            }
 
 	        } catch (SQLException ex) {

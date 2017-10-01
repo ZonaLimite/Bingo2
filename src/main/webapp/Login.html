@@ -3,21 +3,47 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<style type="text/css">
+.botonSubmit {
+	text-align: center;
+}
+.rotulo {
+	text-align: center;
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
 	
 		<form action="LoginServlet">
-
-			Please enter your nombre de Usuario 		
-			<input type="text" name="un"/><br>		
-		
-		    <input type="text" name="pw"/>
-		    
-			<input type="text" name="sala" value="sala1">
-			
-			<input type="submit" value="submit">			
-		
-		</form>
+		<table width="200" border="1" align="center">
+		  <tr>
+			<td colspan="2" class="rotulo">
+            Control Acceso a Bingo
+            </td>
+          </tr>
+		  <tr>
+		    <td>Usuario :
+	        <td><input type="text" name="un" id="un"></td>
+	      </tr>
+		  <tr>
+		    <td>Password:</td>
+		    <td><input type="password" name="pw" id="pw"></td>
+	      </tr>
+		  <tr>
+		    <td>Sala:</td>
+		    <td><input type="text" name="sala" id="sala" value="sala1"></td>
+	      </tr>
+          <tr>
+          <td colspan="2" class="botonSubmit">
+           <input type="submit" value="Acceder a Bingo Home">
+		</td>
+          </tr>
+</table>
+		<p>
+		 
+		</p>
+</form>	
 	
 </body>
 </html>
