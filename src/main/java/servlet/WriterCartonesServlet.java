@@ -44,9 +44,6 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			HttpSession htpsBean = userbean.getSesionHttp();
 			String idHttpSessionBean = htpsBean.getId();
 			if(idHttpSessionBean.equals(idHttp)){
-			
-		
-		
 				Vector<Carton> vCarton= userbean.getvCarton();
 				int nCartones = vCarton.size();
 	   
