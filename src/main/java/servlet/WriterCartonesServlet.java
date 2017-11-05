@@ -39,11 +39,13 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		//Necesitaria mejor un vector de UserBeans,para luego registrarlo modificado a el mapa del usuario.
 		Vector<UserBean> vUserBean = gestorSesions.dameVectorUserBeansUsuario(usuario);
 		Iterator<UserBean> itUserBean = vUserBean.iterator();
+		//Iteramos todas posibles conexiones o userbeans de usuario activas
 		while(itUserBean.hasNext()){
 			userbean= itUserBean.next();
 			HttpSession htpsBean = userbean.getSesionHttp();
 			String idHttpSessionBean = htpsBean.getId();
 			if(idHttpSessionBean.equals(idHttp)){
+				//Por cada userbean obtenemos su juego de cartones adquiridos
 				Vector<Carton> vCarton= userbean.getvCarton();
 				int nCartones = vCarton.size();
 	   
@@ -220,7 +222,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 					
 				}
 				//	registramos los cambios hechos en los cartones, a nivel del numero de Orden del carton
-				// 	que luego nos sirve para identificar el carton en el check de Linea, Bingo
+				// 	que luego nos sirve para identificar el carton en el check de Linea, Bingo.
 				userbean.setvCarton(vCarton);
 			}
 			
