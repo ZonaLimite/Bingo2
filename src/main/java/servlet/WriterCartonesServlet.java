@@ -54,7 +54,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 				out.write("<input id=\"numeroCartonesComprados\" type=\"hidden\" name=\"cuantosCartones\" value=\"");
 				out.print(""+nCartones );
 				out.write("\">\r\n");
-				
+				//HTML pàra rejilla Cartones
 				for(int nC=1;nC <= nCartones; nC++){
 					carton = (Carton)vCarton.elementAt(nC-1);
 			  //	Para luego poder identificarlo en el check de carton
