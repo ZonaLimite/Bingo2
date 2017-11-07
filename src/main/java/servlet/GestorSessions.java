@@ -60,7 +60,7 @@ import javax.websocket.Session;
 	    private Map<String,Thread> hiloSala ;
 	    
 	    //Mapa de peticiones comprobacion premios por usuarios
-	             //username PeticionPremio<UserBean,"LInea o Bingo">
+	            //username PeticionPremio<UserBean,"LInea o Bingo">
 	    private Map<String,PeticionPremio> listaPeticionesPremios;
 	    
 	    //Mapa de premios comprobados de todas las salas (Ojo filtrar por sala)(Liquidacion de premios)
