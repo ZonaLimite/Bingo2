@@ -31,7 +31,8 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		//String perfil= req.getParameter("perfil");
 		String idHttp = htps.getId();
 		res.setContentType("text/html");
-		
+
+		out = res.getWriter();
 	   
 	   ////Solo hay un Userbean que requiera el carton a la vez
 	   //UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario,perfil,idHttp);
@@ -49,7 +50,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 				Vector<Carton> vCarton= userbean.getvCarton();
 				fillCanvasTable(vCarton);
 	   
-				out = res.getWriter();
+				
 	   
 
 				//	registramos los cambios hechos en los cartones, a nivel del numero de Orden del carton
