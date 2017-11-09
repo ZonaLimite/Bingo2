@@ -22,46 +22,81 @@ public class WriterCartonesServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 @Inject
 private GestorSessions gestorSesions;	
-PrintWriter out;
+
 protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		HttpSession htps=req.getSession();
 		UserBean userbean=null;
+		
 		String usuario = req.getParameter("usuario");
-		//String perfil= req.getParameter("perfil");
+		String comando= req.getParameter("comando");
 		String idHttp = htps.getId();
+		
 		res.setContentType("text/html");
+		PrintWriter out;
 
-		out = res.getWriter();
-	   
-	   ////Solo hay un Userbean que requiera el carton a la vez
-	   //UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario,perfil,idHttp);
-	
-		//Necesitaria mejor un vector de UserBeans,para luego registrarlo modificado a el mapa del usuario.
-		Vector<UserBean> vUserBean = gestorSesions.dameVectorUserBeansUsuario(usuario);
-		Iterator<UserBean> itUserBean = vUserBean.iterator();
-		//Iteramos todas posibles conexiones o userbeans de usuario activas
-		while(itUserBean.hasNext()){
-			userbean= itUserBean.next();
-			HttpSession htpsBean = userbean.getSesionHttp();
-			String idHttpSessionBean = htpsBean.getId();
-			if(idHttpSessionBean.equals(idHttp)){
-				//Por cada userbean obtenemos su juego de cartones adquiridos
-				Vector<Carton> vCarton= userbean.getvCarton();
-				fillCanvasTable(vCarton);
-	   
-				
-	   
-
-				//	registramos los cambios hechos en los cartones, a nivel del numero de Orden del carton
-				// 	que luego nos sirve para identificar el carton en el check de Linea, Bingo.
-				userbean.setvCarton(vCarton);
-			}
+		if(comando.equals("CartonesJuego")){
+			//Los Cartones se obtienen de un vector de UserBeans para luego registrarlo, modificado ,a el mapa del usuario.
+			Vector<UserBean> vUserBean = gestorSesions.dameVectorUserBeansUsuario(usuario);
+			Iterator<UserBean> itUserBean = vUserBean.iterator();
+			//Iteramos todas posibles conexiones o userbeans de usuario activas
+			while(itUserBean.hasNext()){
+				userbean= itUserBean.next();
+				HttpSession htpsBean = userbean.getSesionHttp();
+				String idHttpSessionBean = htpsBean.getId();
+				if(idHttpSessionBean.equals(idHttp)){
+					//	Por cada userbean obtenemos su juego de cartones adquiridos
+					Vector<Carton> vCarton= userbean.getvCarton();
+					//	fillCanvas es un metodo generico de relleno estructura HTML del carton.
+					//	Necesita un PrintWriter (Normalmente obtenido del Servlet de servicio corriente.) y un Vector de cartones a imprimir
+					out = res.getWriter();
+					fillCanvasTable(out,vCarton);
+					//	registramos los cambios hechos en los cartones, a nivel del numero de Orden del carton
+					// 	que luego nos sirve para identificar el carton en el check de Linea, Bingo.
+					userbean.setvCarton(vCarton);
+				}
 			
+			}
+			gestorSesions.setVectorUserBeansUsuario(usuario, vUserBean);
 		}
-		gestorSesions.setVectorUserBeansUsuario(usuario, vUserBean);
+		if(comando.equals("ImprimirCartones")){
+			//Los Cartones son proporcionados aleatoriamente en el rango de los ultimos 100 cartones de la base de datos de cartones.
+			//Se consigue el objeto Carton a partir de la Clase Carton y su metodo consultaObjetoCarton(String nrefCarton)
+			//En la request obtenemos el numero de cartones a imprimr (nCartones)
+
+				Carton utilCarton = new Carton();
+				Vector<Carton> cartonesPrinting = new Vector<Carton>();
+				int nCartones = new Integer(req.getParameter("nCartones"));
+				for(int n=900; n < 900 + nCartones; n++){
+					Carton myCarton = utilCarton.consultaObjetoCarton(n+"");
+					cartonesPrinting.add(myCarton);
+				}
+				out = res.getWriter();
+				
+			      out.write("<!doctype html>\r\n");
+			      out.write("<html>\r\n");
+			      out.write("<head>\r\n");
+			      out.write("<meta charset=\"utf-8\">\r\n");
+			      out.write("<meta name=\"vieport\" content=\"width=800, initial-scale=1, orientation=landscape\">\r\n");
+			      out.write("<title>Plantilla Impresion Cartones</title>\r\n");
+			      out.write("  <link href=\"css/Carton.css\" rel=\"stylesheet\" type=\"text/css\">\r\n");
+			      out.write("  <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css\">\r\n");
+			      out.write("  <script src=\"//code.jquery.com/jquery-1.12.4.js\"></script>\r\n");
+			      out.write("  <script src=\"//code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>\r\n");
+			      out.write("  <script src=\"javascript/canvasNumeros.js\"></script>\r\n");
+			      out.write("  <script src=\"javascript/carton.js\"></script>\r\n");
+			      out.write("\r\n");
+			      out.write("</head>\r\n");	
+			      out.write("\r\n");
+			      out.write("<body>\r\n");
+				this.fillCanvasTable(out, cartonesPrinting);
+			      out.write("</body>\r\n");				
+
+		}
+		
 	}
-	private void fillCanvasTable(Vector<Carton> vCarton){
+
+	private void fillCanvasTable(PrintWriter out,Vector<Carton> vCarton){
 		Carton carton = null;
 		int nCartones = vCarton.size();
 		out.write("<input id=\"numeroCartonesComprados\" type=\"hidden\" name=\"cuantosCartones\" value=\"");

@@ -282,7 +282,7 @@ function habilitarBotonesBingo(){
 }
 function innerHTMLCartones(){
 	var params = new Object();
-	params.perfil="jugador";
+	params.comando="CartonesJuego";
 	params.usuario=document.getElementById("usuario").value;
 
 	$.ajax({

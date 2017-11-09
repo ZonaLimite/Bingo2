@@ -1,6 +1,6 @@
-function innerHTMLCartones(nCartones,perfil, usuario){
+function innerHTMLCartones(nCartones,comando, usuario){
 	var params = new Object();
-	params.perfil=perfil;
+	params.comando=comando;
 	params.nCartones = ""+nCartones;
 	params.usuario=usuario;
 
