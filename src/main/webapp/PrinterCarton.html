@@ -4,17 +4,22 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="javascript/carton.js"></script>        
+  		<link href="css/Carton.css" rel="stylesheet" type="text/css">
+		<!--  <script src="javascript/carton.js"></script>-->
+		<script src="javascript/printer.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  		<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  		<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>		        
     </head>
-    <body>
+    <body id="contenedorHTML">
  
             <form action="WriterCartonesServlet" method="post">
                 <label> Numero de cartones a imprimir? </label>
-                <input name="nCartones">
+                <input name="nCartones" id="nCartones">
+                <input type="hidden" name="usuario" id="usuario" value="super">                
+                
                 <br>
-                <input type="submit" value="Preparar cartones para Imprimir">
-
- 				<input type="hidden" name="comando" value="ImprimirCartones">
+                <input type="button" id="botonImprimir" value="Preparar cartones para Imprimir">
             </form>
     </body>
 </html>

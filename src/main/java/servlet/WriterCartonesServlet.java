@@ -67,7 +67,8 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 				Carton utilCarton = new Carton();
 				Vector<Carton> cartonesPrinting = new Vector<Carton>();
 				int nCartones = new Integer(req.getParameter("nCartones"));
-				for(int n=900; n < 900 + nCartones; n++){
+				//for(int n=900; n < 900 + nCartones; n++){
+				for(int n=1; n < 1 + nCartones; n++){
 					Carton myCarton = utilCarton.consultaObjetoCarton(n+"");
 					cartonesPrinting.add(myCarton);
 				}
@@ -88,9 +89,12 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			      out.write("\r\n");
 			      out.write("</head>\r\n");	
 			      out.write("\r\n");
-			      out.write("<body>\r\n");
+			      out.write("<body class=\"pagina\" id=\"content\">\r\n");
+
 				this.fillCanvasTable(out, cartonesPrinting);
-			      out.write("</body>\r\n");				
+			      out.write("<img id=\"Loto2\" class=\"hiddenImage\" src=\"./images/Loto2.png\">\r\n");					      
+			      out.write("</body>\r\n");	
+			      out.flush();
 
 		}
 		
@@ -258,15 +262,18 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			out.write("\r\n");
 			out.write("    </tr>\r\n");
 			out.write("    <tr>\r\n");
-			out.write("    \t<td colspan=\"9\" class=\"letraCarton\">CARTON n:<Label id=\"refCarton");
+			out.write("    \t<td colspan=\"7\" class=\"letraCarton\">CARTON n:<Label align=\"center\" id=\"refCarton");
 			out.print(""+nC);
 			out.write('"');
 			out.write('>');
 			out.print(""+nRef);
 			out.write("</label></td>\r\n");
+			out.write("<td colspan=\"2\" class=\"letraCarton\"><label align=\"right\">Copyright@Boga</label></td>\r\n");
 			out.write("    </tr>\r\n");
 			out.write("</table>\r\n");
-			out.flush();
+			if(nC%4==0)out.write("<div style=\"page-break-before: always;\"> </div>");
+			
+			
 			
 		}
 	}
