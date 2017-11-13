@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.swing.JTextArea;
 import javax.websocket.Session;
 
@@ -19,6 +20,11 @@ import javax.websocket.Session;
 //public class Hilo2 extends Thread{
 public class Runnable3 implements Runnable{
     Logger log = Logger.getLogger("HiloSala1");
+    
+
+	private LiquidadorPremio lp; 
+	private ComprobadorPremios cp;
+    
     JTextArea area2;
     PocketBingo pb;
     Session session;
@@ -40,7 +46,8 @@ public class Runnable3 implements Runnable{
     public void run(){
     	log.info("IdState en 'run' putobucle5:" );
     	gestorSesions = (GestorSessions) session.getUserProperties().get("gestorSesiones");
-    	
+    	lp = new LiquidadorPremio(this.gestorSesions);
+    	cp = new ComprobadorPremios(this.gestorSesions);
         this.pb=gestorSesions.getJugadasSalas(estaSalaEs);
         status=pb.getIdState();
         
@@ -105,8 +112,8 @@ public class Runnable3 implements Runnable{
                 	enviarMensajeAPerfil("ComprobarLinea","supervisor");
                 	enviarMensajeAPerfil("ComprobarLinea","jugador");
                 	//Comprobamos las lineas de todos los cartones y avisamos de quien tiene linea y alos despitados que la tienen y no la cantan
-                	gestorSesions.comprobarLineas(estaSalaEs);
-                	Thread.sleep(5000);
+                	cp.comprobarLineas(estaSalaEs);
+                	Thread.sleep(4000);
                 	//Si alguna no esta cantada se avisa y se da una opcion mas
                 	enviarMensajeAPerfil("Hay alguna linea mas?","supervisor");
                 	enviarMensajeAPerfil("Hay alguna linea mas?","jugador");
@@ -119,97 +126,122 @@ public class Runnable3 implements Runnable{
         	    	
         	    		if(nCartonesManuales>0){
         	    				//Emviar un mensaje atraves del webSocket a super, para ser tratado en la interface reproductor
-        	    				this.enviarMensajeAPerfil("PreguntarPremios", "supervisor");
+        	    				this.enviarMensajeAPerfil("PreguntarPremiosLinea", "supervisor");
         	    				pb.setIdState("WaitingResultSuper");
         	    				i--;
         	    				n=0;
         	    		}else{
-        	    			pb.setIdState("PremiosRecopilados");//
+        	    			pb.setIdState("PremiosRecopiladosLinea");//
         	    			n=1;
         	    			i--;
         	    		}
         	    		
-                }else if(pb.getIdState().equals("PremiosRecopilados")){
-                		if(gestorSesions.liquidacionPremios(estaSalaEs)){
+                }else if(pb.getIdState().equals("PremiosRecopiladosLinea")){
+                	
+                		//if(gestorSesions.liquidacionPremios(estaSalaEs)){
+            		
+            		if(lp.liquidacionPremios(estaSalaEs)){                			
                 			//if(gestorSesions.comprobarLineas(estaSalaEs)){
-                			Thread.sleep(3000);
+                			Thread.sleep(4000);
                 			pb.setIdState("LineaOk");
                 			pb.setLineaCantada(true);
                 			enviarMensajeAPerfil("ApagaLinea","supervisor");
                 			enviarMensajeAPerfil("ApagaLinea","jugador");
-                		}else{
-                			pb.setIdState("Continue");
-                		}
-                		Thread.sleep(5000);
-                		enviarMensajeAPerfil("EnciendeVideo","supervisor");
-                		n=1;
-                		i--;
+                   		}else{
+                   			pb.setIdState("Continue");
+                   			enviarMensajeAPerfil("Continuamos ...","supervisor");
+                   			enviarMensajeAPerfil("Continuando partida ...","jugador");
+                   		}
+                   		n=1;
+                   		i--;        
+                   		Thread.sleep(2000);
+                   		enviarMensajeAPerfil("EnciendeVideo","supervisor");
                 
                 }else if(pb.getIdState().equals("LineaOk")){
+                	n=0;
+                	i--;
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"supervisor");
-                
-                	i--;
+
                 }else if(pb.getIdState().equals("Continue")){
+                	n=0;
+                	i--;
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
-                	i--;
+
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");
                //---------------------------------------------------------------------------------------------- 
+                	
+                	
+                	
+                	
                 }else if(pb.getIdState().equals("Bingo")){
                     	enviarMensajeAPerfil("Bingo_bingo","supervisor");
                     	pb.setIdState("ComprobandoBingo");
                     	i--;
-                    	//Pendiente controla automatico de comprobacion premios y integracion manual
+                    	
                }else if(pb.getIdState().equals("ComprobandoBingo")){
                     	enviarMensajeAPerfil("ComprobarBingo","supervisor");
                     	enviarMensajeAPerfil("ComprobarBingo","jugador");
-                    	gestorSesions.comprobarBingos(estaSalaEs);
-                    	Thread.sleep(5000);
+                    	cp.comprobarBingos(estaSalaEs);
+                    	Thread.sleep(4000);
                     	//Si alguna no esta cantada se avisa y se da una opcion mas
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","supervisor");
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","jugador");
-                    	Thread.sleep(2000);
-                    	if(gestorSesions.liquidacionPremios(estaSalaEs)){
-                    	//if(gestorSesions.comprobarLineas(estaSalaEs)){
-                    		Thread.sleep(4000);
-                    		pb.setIdState("BingoOk");
-                    		pb.setBingoCantado(true);
-                			enviarMensajeAPerfil("ApagaBingo","supervisor");
-                			enviarMensajeAPerfil("ApagaBingo","jugador");
-                    	}else{
-                    		pb.setIdState("Continue");
-                    	}
-                    	Thread.sleep(5000);
-            			enviarMensajeAPerfil("EnciendeVideo","supervisor");
-                    	n=1;
-                    	i--;
+                    	Thread.sleep(3000);
+                       	//Al llegar aqui, preguntamos a super por premios de cartones manuales y que los meta en mapa Premios Manuales
+            	    	// Se puede aprovechar en esta fase, para integrar los premios de cartones manuales que puedan existir
+            	    	// Sera necesario hacer esto, si existen cartones manuales.
+            	    		int nCartonesManuales = new Integer(gestorSesions.getJugadasSalas(this.estaSalaEs).getnCartonesManuales());
+            	    	// Si los hay, habra que avisar a super, que nos informe de ello
+            	    	
+            	    		if(nCartonesManuales>0){
+            	    				//Emviar un mensaje atraves del webSocket a super, para ser tratado en la interface reproductor
+            	    				this.enviarMensajeAPerfil("PreguntarPremiosBingo", "supervisor");
+            	    				pb.setIdState("WaitingResultSuper");
+            	    				i--;
+            	    				n=0;
+            	    		}else{
+            	    			pb.setIdState("PremiosRecopiladosBingo");//
+            	    			n=1;
+            	    			i--;
+            	    		} 
+               	}else if(pb.getIdState().equals("PremiosRecopiladosBingo")){
+               		//if(gestorSesions.liquidacionPremios(estaSalaEs)){
+            		
+            		if(lp.liquidacionPremios(estaSalaEs)){               		
+               			Thread.sleep(4000);
+
+               			pb.setIdState("BingoOk");
+               			pb.setLineaCantada(true);
+               			enviarMensajeAPerfil("ApagaBingo","supervisor");
+               			enviarMensajeAPerfil("ApagaBingo","jugador");
+               			
+               		}else{
+               			pb.setIdState("Continue");
+               			enviarMensajeAPerfil("Continuamos ...","supervisor");
+               			enviarMensajeAPerfil("Continuando partida ...","jugador");
+               		}
+               		n=1;
+               		i--;        
+               		Thread.sleep(2000);
+               		enviarMensajeAPerfil("EnciendeVideo","supervisor");
+  	    		
+
                 }else if(pb.getIdState().equals("BingoOk")){
-                    	
+                		n=0;
+                		i--;
                     	enviarMensajeAPerfil("cantarNumero_bingoOk_"+pb.getNumeroOrden(),"supervisor");
                     	pb.setIdState("EndBalls");
-                    	i--;
+                
                 }else if(pb.getIdState().equals("Continue")){
+                		n=0;
+                		i--;
                     	pb.setIdState("Started");
                     	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
-                    	i--;
                     	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");                	
                 //---------------------------------------------------------------------------------------------                	
-              /*  }else if(pb.getIdState().equals("Bingo")){
-                	enviarMensajeAPerfil("Bingo_bingo","supervisor");
-                	
-                	//enviarMensajeAPerfil("ComprobarLinea");
-                	pb.setIdState("ComprobandoBingo");
-                	i--;
-                }else if(pb.getIdState().equals("ComprobandoBingo")){
-                	enviarMensajeAPerfil("ComprobarBingo","supervisor");
-                	enviarMensajeAPerfil("ComprobarBingo","jugador");
-                	gestorSesions.comprobarBingos(estaSalaEs);
-                	i--;
-                }else if(pb.getIdState().equals("BingoOk")){
-                	pb.setIdState("EndBalls");
-                	enviarMensajeAPerfil("cantarNumero_bingoOk_"+pb.getNumeroOrden(),"supervisor");
-                	i--;*/
+ 
                 //----------------------------------------------------------------------------------------------
                 }else if(pb.getIdState().equals("WarningFinalizando")){
                 	n=20000;
@@ -237,7 +269,7 @@ public class Runnable3 implements Runnable{
 
 
             } catch (InterruptedException ex) {
-        	   //log.info("He sido interrumpido");
+        	   log.info("He sido interrumpido y numnero ordem es:"+i);
                n=0;
         	   String reasonInterrupt=pb.getReasonInterrupt();
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
@@ -328,7 +360,11 @@ public class Runnable3 implements Runnable{
     		Iterator<UserBean> itBeans= myUsersbean.iterator();
     		while (itBeans.hasNext()){
     			Session sesionActiva = itBeans.next().getSesionSocket();
-    			sesionActiva.getBasicRemote().sendText(textMessage);
+  
+
+    				sesionActiva.getBasicRemote().sendText(textMessage);
+    			
+    			
     			log.info("Enviando mensaje desde Hilo3(modified):" + textMessage);
     		}
   		

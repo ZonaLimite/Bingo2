@@ -363,7 +363,7 @@ display: block;
 
 
 .ano {
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: bold;
 	background-color: #1D3841;
 	color: #CC0000;
@@ -415,7 +415,7 @@ display: block;
 	border-bottom-style: groove;
 	border-left-style: groove;
 	vertical-align: middle;
-	background-color: #B5B5B5;
+	background-color: #C9C9C9;
 }
 .letraCarton {
 	color: #FFF;
@@ -430,4 +430,7 @@ display: block;
 }
 .audioClass {
 
+}
+#saldo {
+	font-size: 14px;
 }

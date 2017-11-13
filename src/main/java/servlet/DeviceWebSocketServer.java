@@ -194,20 +194,36 @@ private UserBean userBean;
 			log.info("Si se registra esta peticion revision premio Linea");
 			log.info("Status antes de tratar Linea:"+pb.getIdState());
 			//Ojo con esto
-			if(pb.getIdState().equals("ComprobandoLinea")){
+			if(pb.getIdState().equals("ComprobandoLinea")||pb.getIdState().equals("WaitingResultSuper")){
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 			}else{
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
 			}
 		}
 		
 		//this.guardaPocket("sala1", session);
 		//Hilo2.interrupt();
 		break;
-
+	case "LiquidarPremiosLinea":
+		//Salida automatizacion comprbacion manual cartones
+		log.info("Terminando handshake ...");
+				pb.setIdState("PremiosRecopiladosLinea");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
+		break;
+	case "LiquidarPremiosBingo":
+		//Salida automatizacion comprbacion manual cartones
+		log.info("Terminando handshake ...");
+				pb.setIdState("PremiosRecopiladosBingo");
+				gestorSesions.getHiloSala(salaInUse).interrupt();
+		break;		
+	case "RefreshDatosCartones":
+			enviarMensajeAPerfil("RefreshDatosCartones","jugador");
+		break;
 	case "Linea_OK":
 		if(pb.getIdState().equals("ComprobandoLinea")){
 			pb.setLineaCantada(true);
@@ -229,20 +245,24 @@ private UserBean userBean;
 
 			log.info("Si se registra esta peticion revision premio Bingo");
 			//Ojo con esto
-			if(pb.getIdState().equals("ComprobandoBingo")){
+			if(pb.getIdState().equals("ComprobandoBingo")||pb.getIdState().equals("WaitingResultSuper")){
 				pb.setIdState("Bingo");
-				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"supervisor");
 
 			}else if(pb.getIdState().equals("WarningFinalizando")){
+				
 				pb.setReasonInterrupt("Bingo");
 				pb.setIdState("Bingo");
-				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
+				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+
 				//hilo3.interrupt();
 			}else {
 				pb.setIdState("Bingo");
 				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
+				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"supervisor");
 			}
 		}
 
@@ -265,7 +285,7 @@ private UserBean userBean;
 		break;
 		
 	case "Continue":
-		if(pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea") ){		
+		if(pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("WaitingResultSuper") ){		
 			pb.setIdState("Continue");
 			this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
 			pb.setReasonInterrupt("continuar");
@@ -275,9 +295,18 @@ private UserBean userBean;
 		break;
 	
 	case "Finalize":
-		pb.setIdState("EndBalls");
-		pb.setReasonInterrupt("Finalize");
-		hilo3.interrupt();
+		if(!(hilo3==null)){
+				pb.setIdState("EndBalls");
+				pb.setReasonInterrupt("Finalize");
+				hilo3.interrupt();
+		}else{
+			gestorSesions.resetCartones(this.salaInUse);
+			pb.resetNumerosCalled();
+			enviarMensajeAPerfil("EndBalls","supervisor");
+			enviarMensajeAPerfil("EndBalls","jugador");               			
+			pb.setIdState("Finalized");
+		}
+		
 		break;
 	}
 	//manejar POJOS en el formato JSON#comando#dato1#datox....
@@ -306,8 +335,8 @@ private UserBean userBean;
 				//Hay que distinguir entre cartones electronicos y manuales
 				//EL cuadro de Dialogo debe considerar las dos facetas
 				// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
-				// Vamos a probar ahora conla electronica y dejamos 
-				//nCartones=pb.getnCartones();
+				// Implementado ambos tipos de datos
+			
 				int nCartones = new Integer(pb.getnCartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
 				porCientoLinea=pb.getPorcientoLinea();
 				porCientoBingo=pb.getPorcientoBingo();

@@ -15,7 +15,7 @@
 	text-align: center;
 }
 .TablaLogin {
-	background-color: #03F;
+	background-color: #06F;
 	color: #FFF;
 	border-top-style: groove;
 	border-right-style: groove;
@@ -29,13 +29,10 @@
 </head>
 <body class="cuerpo">
 	
-	
-		<form action="LoginServlet">
+		<form action="AltaUsuario">
 		<table class="TablaLogin" width="350" border="1" align="center">
 		  <tr>
-			<td colspan="2" class="rotulo">
-            Control Acceso a BingoHome
-            </td>
+			<td colspan="2" class="rotulo">Nueva Alta de usuario</td>
           </tr>
 		  <tr>
 		    <td width="167" class="TextLogin">Usuario :
@@ -46,21 +43,18 @@
 		    <td><input type="password" name="pw" id="pw"></td>
 	      </tr>
 		  <tr>
-		    <td class="TextLogin">Sala:</td>
-		    <td><input name="sala" type="text" class="TablaLogin" id="sala" value="sala1"></td>
+		    <td class="TextLogin">Email:</td>
+		    <td><input type="text" name="sala" id="sala"></td>
 	      </tr>
           <tr>
-          <td colspan="2" class="botonSubmit">
-           <input type="submit" value="Acceder a Bingo Home">
-		</td>
+          <td colspan="2" class="botonSubmit"><input type="submit" value="Registrar usuario"></td>
           </tr>
           <tr>
             <td colspan="2" class="botonSubmit">&nbsp;</td>
           </tr>
           <tr>
-            <td class="botonSubmit">
-            <input type="button" name="nuevoUsuario" id="nuevoUsuario" value="NuevoUsuario"></td>
-            <td class="botonSubmit"><input type="button" name="rememberPassword" id="rememberPassword" value="Recordar Password"></td>
+            <td height="92" colspan="2" class="botonSubmit"><label for="textoLogin"></label>
+            <textarea name="textoLogin" cols="50" rows="4" id="textoLogin">Introducir los datos de usuario, password e Email</textarea></td>
           </tr>
         </table>
 		<p>

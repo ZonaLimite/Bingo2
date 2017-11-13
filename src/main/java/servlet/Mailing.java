@@ -23,8 +23,8 @@ import org.jboss.logging.Logger;
 public class Mailing {
  private static final Logger log = Logger.getLogger(Mailing.class);
  
- @Resource(mappedName="java:jboss/mail/Default")
- //@Resource(mappedName="java:jboss/mail/Gmail")
+ ////@Resource(mappedName="java:jboss/mail/Default")
+ @Resource(mappedName="java:jboss/mail/Gmail")
  Session gmailSession;
  Properties props = new Properties();
   /**
@@ -46,7 +46,7 @@ public class Mailing {
 	 try {
 	 /* gmailSession = Session.getDefaultInstance(props,new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication("javier.boga.rioja@gmail.com","limitado10");
+						return new PasswordAuthentication("javier.boga.rioja@gmail.com","noquiero");
 					}
 	  });*/
 

@@ -65,7 +65,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("<table width=\"100%\" border=\"1\" cellspacing=\"2\" class=\"ano\">\r\n");
 	      out.write("  <tr>\r\n");
 	      out.write("  <td width=\"12%\" height=\"109\" padding=0>\r\n");
-	      out.write("  \t<label class=\"labelUser\">Saldo : <label id=\"saldo\">0</label> Euros</label>\r\n");
+	      out.write("  \t<label class=\"labelUser\">Saldo : <label class=\"saldo\" id=\"saldo\">0</label> €</label>\r\n");
 	      out.write("  \t<img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" >\r\n");
 	      out.write("  \t<label id=\"sala\">");
 	out.print(sala);

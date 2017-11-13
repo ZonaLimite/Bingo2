@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -58,12 +60,12 @@ public class gestorComprasCartones extends HttpServlet {
  
             //Comprobacion estado Pocket Bingo en "Finalized"
             if(!pocketBingoSala.getIdState().equals("Finalized")){
-                    String mensaje="Error,Compra de cartones aun no permitida.\n Espere a que acabe la partida";
+                    String mensaje="Error,Compra de cartones aun no permitida.\nPartida no finalizada";
                     resp.getWriter().print(mensaje);
                     return;
              } 
           
-           //comprobarSaldoUsuario();
+            //comprobarSaldoUsuario();
             String mensaje2="";
             float precioCarton = new Float (pocketBingoSala.getPrecioCarton());
             float precioCompraActual = nCartonesAComprar * precioCarton;
@@ -90,12 +92,19 @@ public class gestorComprasCartones extends HttpServlet {
 
     private boolean realizarCompraTransaccion(float precioCompra, UserBean myUser){
         boolean okeyCompra=false;
+        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        //Formateador de datos decimales. Limitado a dos digitos.
+        simbolos.setDecimalSeparator('.');
+        DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+        ///////////////////////////////////////////////////////
         float saldoRestante = myUser.getSaldo() - precioCompra;
-        String Consulta = "UPDATE usuarios SET Saldo = "+ saldoRestante+" WHERE User = '"+myUser.getUsername()+"'";
+        ///////////////////////////////////////////////////////
+        String Consulta = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
         System.out.println(Consulta);
+        ///// TRansaccion sobre Saldo y Caja
         int result=UtilDatabase.updateQuery(Consulta);
         if(result>0){
-        	myUser.setSaldo(saldoRestante);
+        	myUser.setSaldo(new  Float(formateador.format(saldoRestante)));
         	okeyCompra=true;
         }
         
@@ -128,10 +137,11 @@ public class gestorComprasCartones extends HttpServlet {
             String nSerie;
             Blob blob;
             st = con.createStatement();
-            //Preguntar cuantos cartones hay registrados
+            //Preguntar cuantos cartones hay registrados/Reservamos los 100 ultimos para juego en papel.
              ResultSet rs = st.executeQuery("Select count('idCarton')from cartonesbingo");
              if(rs.next()){
                  maxRegs=rs.getInt(1);
+                 if(maxRegs>200)maxRegs = maxRegs -100;
              }
              Set<Carton> sCartones = gestorSesions.dameSetCartonesEnJuego(sala);
              //Elegir uno, que no este ya en juego//

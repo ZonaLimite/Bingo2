@@ -50,17 +50,17 @@ try
      String perfil = user.getPerfil(); 		    
      if (user.isValid()){
           
-     HttpSession session = request.getSession(true);
-     user.setSesionHttp(session);
-     PocketBingo pb = gestorSesions.getJugadasSalas(user.getSalonInUse());
-     if(pb==null ){
+    	 HttpSession session = request.getSession(true);
+    	 user.setSesionHttp(session);
+    	 PocketBingo pb = gestorSesions.getJugadasSalas(user.getSalonInUse());
+    	 if(pb==null ){
     		  pb= new PocketBingo();
     		  pb.setIdState("Finalized");
-                  gestorSesions.setJugadasSalas(user.getSalonInUse(), pb);
-                  log.info("Registrando Pockect a gestorSessions");
-     }
+              gestorSesions.setJugadasSalas(user.getSalonInUse(), pb);
+              log.info("Registrando Pockect a gestorSessions");
+    	 }
     	  
-          if(perfil.equals("jugador")){
+         if(perfil.equals("jugador")){
         	  //Utilizamos el atributo de sesion usuario para hacer seguimiento de sesiones Http mediante 
         	  //la implementacion de la interface "implements HttpSessionAttributeListener"
         	  
@@ -75,19 +75,19 @@ try
                   String url="WriterHeaderCarton?usuario="+user.getUsername()+"&sala="+user.getSalonInUse()+"&perfil="+perfil;
                   log.info("Voy ha hacer el response");
                   response.sendRedirect(url); //logged-in page // 
-          }
+         }
 
-          
-          if(perfil.equals("supervisor")){
+         if(perfil.equals("supervisor")){
         	  session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
-        	  //session.setAttribute("perfil",user.getPerfil());
+        	  ////session.setAttribute("perfil",user.getPerfil());
         	  //session.setAttribute("sala",user.getSalonInUse());
                   gestorSesions.add(user.getUsername(), user);
                   
                  String url="WriterHeaderBingo?usuario="+user.getUsername()+"&sala="+user.getSalonInUse()+"&perfil="+perfil;
                   //String url="bingo.jsp";
+                 //mail.sendEmail("javier.boga@yahoo.es", "javier.boga.rioja@gmail.com", "prueba", "Hay contenido");
         	  response.sendRedirect(url); //logged-in page  
-          }
+         }
           
      }else response.sendRedirect("invalidLogin.jsp"); //error page 
 } 

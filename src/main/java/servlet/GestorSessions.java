@@ -1,5 +1,6 @@
 package servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,9 +10,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -49,12 +54,13 @@ import javax.websocket.Session;
 	    private Map<String, Vector<UserBean>> sessions;
 	    
 	    //Mapa seguimiento jugadas Bingo por Sala (Sala,PocketBingo)
-	    private Map<String, PocketBingo> jugadasSalas;
+	    private ConcurrentHashMap<String, PocketBingo> jugadasSalas;
 	    
 	    //Referencias a hilos activos de salas
 	    private Map<String,Thread> hiloSala ;
 	    
 	    //Mapa de peticiones comprobacion premios por usuarios
+	           //username PeticionPremio<UserBean,"LInea o Bingo">
 	    private Map<String,PeticionPremio> listaPeticionesPremios;
 	    
 	    //Mapa de premios comprobados de todas las salas (Ojo filtrar por sala)(Liquidacion de premios)
@@ -123,20 +129,19 @@ import javax.websocket.Session;
 
 		@PostConstruct
 	    public void init() {
-                //Recuperacion contexto salas
-			this.jugadasSalas=leeContext();
+                //Recuperacion contexto salas Bingo
+			this.jugadasSalas=readContext("bingo");
 	        if(this.jugadasSalas==null){
 	        	this.jugadasSalas = new ConcurrentHashMap<>();
 	        	log.info("Gestor inicializado por jugadas salas =null");
+	        }else{
+	        	log.info("Contexto recuperado de base de datos correctamente");
 	        }
 
                 this.sessions = new ConcurrentHashMap<>();
-                log.info("Gestor :mapas cargados");
-                
                 this.hiloSala = new ConcurrentHashMap<>();
                 this.listaPeticionesPremios = new ConcurrentHashMap<>();
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
-                
 	    }
 		
 
@@ -144,35 +149,10 @@ import javax.websocket.Session;
 		@Override
 		@PreDestroy
 		final public void finalize(){
-			log.info("Guardando contexto pockets bingo");
-		  	String ruta,fichero;
+			log.info("El resultado de registrarContexto ha sido : "+this.registraContexto("bingo",this.jugadasSalas) );			
 			
-					ruta = System.getenv("OPENSHIFT_DATA_DIR");
-					if(ruta==null){
-						ruta="C:\\\\put\\HTML5\\PocketBingo\\";
-					}
-					fichero=ruta+"MapaBingos";//
-					
-		  
-		  try
-	      {
-	          ObjectOutputStream oos = new ObjectOutputStream(
-	                  new FileOutputStream(fichero));
-	          
-	              oos.writeObject(this.jugadasSalas);
-	              log.info("guardando Pocket"+ fichero);
-	              
-	          oos.close();
-	      } catch (Exception e)
-	      {
-	          log.severe("Excepcion Guarda Pocket "+ fichero);
-	    	  e.printStackTrace();
-	      }  
-		  
 		}
-		
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
-	  
 	    public synchronized boolean add(String user,UserBean userBean) {
 	    	boolean insertado = false;
 	    	if( !(userBean.getStatusPlayer().equals("playingBingo"))){
@@ -285,221 +265,28 @@ import javax.websocket.Session;
 	    
 
 	    
-	    public synchronized boolean comprobarLineas(String sala) throws InterruptedException{
-	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.
-	    	//Despues recorremos los cartones de cada userbean y comprobamos la linea
-	    	// a cada carton premiado lo registramos con su userbean propietario
-	    	Set<UserBean> userbeans = this.dameUserBeans("jugador",sala);
-	    	PocketBingo pb = getJugadasSalas(sala);
-	    	List<Integer>numerosCalled = pb.getNumerosCalled();
-	    	int resultControlLinea;
-	    	boolean hayLinea=false;
-	    	
-	    		Iterator<UserBean> it =userbeans.iterator();
-	    		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
-	    		while(it.hasNext()){
-
-	    			UserBean user = it.next();
-	    			Vector<Carton>vCarton = user.getvCarton();	
-	    			Iterator<Carton> itCarton = vCarton.iterator();
-	    			while(itCarton.hasNext()){
-	    				Carton carton = (Carton)itCarton.next();
-	    				int numeros[][] = carton.getNumeros();
-	    				resultControlLinea=0;
-	    				Thread.sleep(1000);
-	    				for(int f=0;f < 3; f++){
-	    					resultControlLinea=0;
-	    					for(int c=0; c<9 ; c++){
-	    						int numero = numeros[f][c];
-	    						if(numerosCalled.contains(numero)){
-	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
-	    							//De momento no lo enviamos/
-	    							
-	    							   try {
-	    									
-	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
-	    									//Thread.sleep(1000);
-	    								} catch (IOException e) {
-										// 	TODO Auto-generated catch block
-	    									e.printStackTrace();
-	    								}
-	    								if(f==0)resultControlLinea+=5;
-	    								if(f==1)resultControlLinea+=50;	
-	    								if(f==2)resultControlLinea+=500;	  
-	    						}
-	    					}
-	    					if (resultControlLinea == 25 || resultControlLinea == 250 || resultControlLinea == 2500 ) {
-	    							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
-	    						String key = user.getUsername();
-	    						PeticionPremio userBeanPeticiones = this.listaPeticionesPremios.get(key);
-	    							if(!(userBeanPeticiones==null)){
-	    								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Linea")){
-	    									pilaAnunciaPremios.put(userBeanPeticiones, carton);
-	    									
-	    	    							log.info("Hay Linea ,result:"+resultControlLinea+" Fila "+ (f+1) + " Carton:" + carton.getnRef());
-	    	    							log.info("tamaño en Pila ahora("+pilaAnunciaPremios.size()+")");
-	    	    							try {
-												user.getSesionSocket().getBasicRemote().sendText("Hay premio Linea, Enhorabuena ");
-											} catch (IOException e) {
-												// TODO Auto-generated catch block
-												e.printStackTrace();
-											}
-	    	    							hayLinea=true;
-	    	    							f=3;
-	    								}
-
-	    							}else{
-    	    							try {
-    										user.getSesionSocket().getBasicRemote().sendText("Habia Linea y no la has cantado ...");
-    										f=3;
-    									} catch (IOException e) {
-    										// TODO Auto-generated catch block
-    										e.printStackTrace();
-    									}
-    								
-	    							}
-
-
-	    							
-	    					}else{
-	    						//if(!hayLinea){
-	    							try {
-	    								user.getSesionSocket().getBasicRemote().sendText("No tienes Linea... ");
-	    								log.info("No Hay Linea ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
-	    							} catch (IOException e) {
-	    								// 		TODO Auto-generated catch block
-	    								e.printStackTrace();
-	    							}
-	    						//}	
-	    					}
-	    				}
-	    			}                                                                                                                                                                                                    
-	    		}
-
+	    public Map<PeticionPremio, Carton> getPilaAnunciaPremios(String sala) {
+	    	Map<PeticionPremio,Carton> pilaAnunciaPremiosFiltered = this.pilaAnunciaPremios;
+	    	Set<Map.Entry<PeticionPremio, Carton>> anunciaPremiosSala = pilaAnunciaPremiosFiltered.entrySet();
+	    	Iterator<Map.Entry<PeticionPremio, Carton>> it = anunciaPremiosSala.iterator();
+	    	while(it.hasNext()){
+	    		Map.Entry<PeticionPremio,Carton> entryPP = (Map.Entry<PeticionPremio, Carton>)it.next();
+	    		PeticionPremio pp = entryPP.getKey();
+	    		UserBean ub = pp.getUserbean();
+	    		if(!(ub.getSalonInUse().equals(sala)))it.remove();
 	    		
-	    		return hayLinea;
-	    }
-	    public boolean liquidacionPremios(String sala){
-    		//ESto deberia ir en otra fase separada
-    		//Tratamiento comprobacion peticiones premios
-	    	boolean hayPremios=false;
+	    	}
+			return pilaAnunciaPremiosFiltered;
+		}
 
-    		Set<PeticionPremio> userBeansPremiados = pilaAnunciaPremios.keySet();
-    		Iterator<PeticionPremio> itPremiados = userBeansPremiados.iterator();
-    		log.info("Liquidando premios ... tamaño en Pila("+userBeansPremiados.size()+")");
-    		while(itPremiados.hasNext()){
-    			log.info("En el iterador hay objetos premio");
-    			PeticionPremio pp =  itPremiados.next();
-    			UserBean ubPremiado =pp.getUserbean();
-    			
-    			if(ubPremiado.getSalonInUse().equals(sala)){
-    				Carton carton  = pilaAnunciaPremios.get(pp);
-    				try {
-    					ubPremiado.getSesionSocket().getBasicRemote().sendText("Premio "+pp.getPremio()+"¡ Carton:"+carton.getnRef()+", enhorabuena");
-    					//
-    					// Realizacion transacciones de premios a usuarios de forma persistente(sumar a saldo)
-    					// Pendiente
-    					hayPremios=true;
-    					
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
-    			}
-    		}
-    		this.borrarListaPeticionPremios(sala);
-    		this.borrarListaPremiosLiquidados(sala);
-    		log.info("Hay premios :" + hayPremios);
-    		return hayPremios;
-	    }
-	    public synchronized boolean comprobarBingos(String sala) throws InterruptedException{
-	    	//Nos bajamos un juego de userbeans jugando al bingo en las la sala dada.
-	    	//Despues recorremos los cartones de cada userbean y comprobamos el Bingo
-	    	// a cada carton premiado lo registramos con su userbean propietario
-	    	Set<UserBean> userbeans = this.dameUserBeans("jugador",sala);
-	    	PocketBingo pb = getJugadasSalas(sala);
-	    	List<Integer>numerosCalled = pb.getNumerosCalled();
-	    	int resultControlBingo;
-	    	boolean hayBingo=false;
-	    	
-	    		Iterator<UserBean> it =userbeans.iterator();
-	    		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
-	    		while(it.hasNext()){
+		public void setPilaAnunciaPremios(Map<PeticionPremio, Carton> pilaAnunciaPremios) {
+			this.pilaAnunciaPremios = pilaAnunciaPremios;
+		}
 
-	    			UserBean user = it.next();
-	    			Vector<Carton>vCarton = user.getvCarton();	
-	    			Iterator<Carton> itCarton = vCarton.iterator();
-	    			while(itCarton.hasNext()){
-	    				Carton carton = (Carton)itCarton.next();
-	    				int numeros[][] = carton.getNumeros();
-	    				resultControlBingo=0;
-	    				Thread.sleep(1000);
-	    				for(int f=0;f < 3; f++){
-	    					
-	    					for(int c=0; c<9 ; c++){
-	    						int numero = numeros[f][c];
-	    						if(numerosCalled.contains(numero)){
-	    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
-	    							
-	    							   try {
-	    									
-	    									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));
-	    									//Thread.sleep(1000);
-	    								} catch (IOException e) {
-										// 	TODO Auto-generated catch block
-	    									e.printStackTrace();
-	    								}
-	    								if(f==0)resultControlBingo+=5;
-	    								if(f==1)resultControlBingo+=50;	
-	    								if(f==2)resultControlBingo+=500;	  
-	    						}
-	    					}
-	    				}
-	    				log.info("Result Control Bingo de "+ user.getUsername()+ " y carton " + carton.getnRef() + " = " + resultControlBingo  );
-    					if (resultControlBingo == 2775 ) {
-							//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
-						String key = user.getUsername();
-						PeticionPremio userBeanPeticiones = this.listaPeticionesPremios.get(key);
-							if(!(userBeanPeticiones==null)){
-								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Bingo")){
-									pilaAnunciaPremios.put(userBeanPeticiones, carton);
-									
-	    							log.info("Hay Bingo ,result:"+resultControlBingo + " Carton:" + carton.getnRef());
-	    							log.info("tamaño en Pila ahora("+pilaAnunciaPremios.size()+")");
-	    							try {
-										user.getSesionSocket().getBasicRemote().sendText("Hay premio Bingo, Enhorabuena ");
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-	    							hayBingo=true;
-								}
 
-							}else{
-    							try {
-									user.getSesionSocket().getBasicRemote().sendText("Habia Bingo y no le has cantado ...");
-									
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							
-							}
-					}else{
-						
-							try {
-								user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
-								log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
-							} catch (IOException e) {
-								// 		TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-					}
-	    				
-	    			}                                                                                                                                                                                                    
-	    		}
-	    		return hayBingo;
-	    }
+
+	    
+
 	    
             
 	    public synchronized Set<UserBean> dameUserBeans(String perfilAComparar){
@@ -666,6 +453,7 @@ import javax.websocket.Session;
 	        
 	    }
 	    public synchronized void removeUserBean(HttpSession session,String usuario) {
+	    	//Utilizado para eliminar userbeans del mapa sessions.El usuario queda off_line(Sesion caducada)
 	    	String idSesionAComparar = session.getId();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -743,12 +531,6 @@ import javax.websocket.Session;
 		  	String ruta,fichero;
 		  	Map<String,PocketBingo> aux=null;
 		  	ruta = System.getenv("OPENSHIFT_DATA_DIR");
-		  	log.info("Host bingo:"+System.getenv("bingo_SERVICE_HOST"));
-		  	log.info("Host mysql:"+System.getenv("svc/mysql_SERVICE_HOST"));
-		  	log.info("MYSQL_USER:"+System.getenv("MYSQL_USER"));		  	
-		  	log.info("MYSQL_PASSWORD:"+System.getenv("MYSQL_PASSWORD"));		  	
-		  	log.info("MYSQL_ROOT_PASSWORD:"+System.getenv("MYSQL_USER"));		  	
-		  	
 
 		  	
 		  	if(ruta==null){
@@ -819,7 +601,104 @@ import javax.websocket.Session;
 		  	fileUser.delete();
 		  	
 	  }
+	    public int registraContexto(String juego,ConcurrentHashMap<String, PocketBingo> contexto){
+	        Connection myCon=null;
+	        PreparedStatement ps=null;
+	        int result=0;
+	  
+	        try {
+	            myCon = ConnectionManager.getConnection();
+	            Statement st = myCon.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 
+                ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                ObjectOutputStream oos;
+                        try {
+                            oos = new ObjectOutputStream(byteArray);
+                            oos.writeObject(contexto);
+                        } catch (IOException ex) {
+                            Logger.getLogger("RegistroContexto").info("Ha habido problema al escribir sobre Output Stream:"+ ex);
+                        }
+        	    ResultSet rs = st.executeQuery("Select * From contexto Where juego = 'bingo'");                        
+	            if(rs.next()){
+	            	String update = "update contexto set contexto = ? where juego = ?";
+	            	ps = myCon.prepareStatement(update);
+	                ps.setBytes(1, byteArray.toByteArray());
+	                ps.setString(2, "bingo");
 
-	}
+	                result = ps.executeUpdate();
+	            }else{
+	            	ps = myCon.prepareStatement("insert into contexto values (?,?)");
+	                ps.setString(1, "bingo");
+	                ps.setBytes(2, byteArray.toByteArray());	
+	                if(ps.execute()){
+	                	ResultSet rs2 = ps.getResultSet();
+		                if(rs2.next())result=1;
+	                }
+	            }
 
+	        } catch (SQLException ex) {
+                Logger.getLogger("RegistroContexto").info("Ha habido problema SQl a l registrar contexto:"+ ex);
+
+	        }finally{
+	            if(myCon!=null)try {
+	                myCon.close();
+	                
+	            } catch (SQLException ex) {
+                    Logger.getLogger("RegistroContexto").info("Ha habido problema finalmente al escribir sobre Output Stream:"+ ex);
+	            }
+	            if(ps!=null)try {
+	                ps.close();
+	            } catch (SQLException ex) {
+                    Logger.getLogger("RegistroContexto").info("Ha habido problema finalmente 2 al cerrar conexiones:"+ ex);
+	            }
+	        }
+	        return result;
+
+	        
+
+	    }
+	    public ConcurrentHashMap<String, PocketBingo> readContext(String juego){
+	        Connection con = ConnectionManager.getConnection();
+	        Statement st=null;
+	        ResultSet rs=null;
+            ConcurrentHashMap<String, PocketBingo> myJuegosSalas=null;
+
+	        try {
+	            int idCarton;
+	            String nCarton;
+	            String nSerie;
+	            Blob blob;
+	             st = con.createStatement();
+	             rs = st.executeQuery("Select contexto from contexto where juego='"+juego+"'");
+	             if(rs.next()){
+	                   // Se obtiene el campo blob
+	                 blob = rs.getBlob(1);
+	                // Se reconstruye el objeto con un ObjectInputStream
+	                try {
+	                    ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+	                     try {
+	                         myJuegosSalas = (ConcurrentHashMap<String, PocketBingo>) ois.readObject();
+	                     } catch (ClassNotFoundException ex) {
+	                         Logger.getLogger("readContext(GestosSessions)").info("Ha habido problema en leerContexto:\n"+ex);
+	                     }
+	                   
+	                } catch (IOException ex) {
+                        Logger.getLogger("readContext(GestosSessions)").info("Ha habido problema(2) en leerContexto:\n"+ex);
+	                }
+	                
+	             }
+	        } catch (SQLException ex) {
+                Logger.getLogger("readContext(GestosSessions)").info("Ha habido problemaSQL en leerContexto:\n"+ex);
+	        }finally{
+	            try {
+	                if(con!=null)con.close();
+	                if(st!=null)st.close();
+	            } catch (SQLException ex) {
+                    Logger.getLogger("readContext(GestosSessions)").info("Ha habido problema finalmente");
+	            }
+	           
+	        }
+	        return myJuegosSalas;//	    
+	    }
+
+}

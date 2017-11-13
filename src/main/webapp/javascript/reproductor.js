@@ -92,6 +92,7 @@ var salaInUse;
 var largoCeldaMensajes;
 var comboTexto;
 var labelTexto;
+var comandoHandshake;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -243,20 +244,23 @@ function iniciar() {
 		        primary: "ui-icon-heart"
 		      },
 		      click: function() {
+		
 				  nRefCarton = ""+$( "#spinner_centenas" ).spinner( "value" )+
   		          $( "#spinner_decenas" ).spinner( "value" )+
   		          $( "#spinner_unidades" ).spinner( "value" );
 				  document.getElementById("nRef").value=nRefCarton;
+					comandoHandshake=document.getElementById("comandoHandshake").value;
+				
 		    	  
 		    	  $.post("Handshake",$( "#requestPremios" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
-		    		  $("#feedback").text( responseText);
-			    	  result = document.getElementById("feedback").textContent;
-			    	  indexError = result.lastIndexOf("Error");	
-			    	  if(indexError>=0)return;
+
+			    	  
+			    	  $("#feedback").text( responseText);
+			    	  //Ojo con no repetir el mismo check sobre el mismo carton
 			    	  /*Pendiente Handshake
 			    	   * 1- Devuelvo Ok-check y pregunto -si Hay mas
-			    	   * 2- Si contesto hayMas - repito el check con el nueno nREFç
+			    	   * 2- Si contesto hayMas - repito el check con el nueno nREF
 			    	   * 	Si contesto NohayMaS - continuo a Liquidacion premios
 			    	   * 
 			    	   */
@@ -275,6 +279,10 @@ function iniciar() {
 			      click: function() {
 			    	  //Si continuo es porque no hay Lineas manuales,por lo tanto
 			    	  // continuo a Liquidacion premios
+			    	  comandoHandshake=document.getElementById("comandoHandshake").value;
+			    	  
+			    	  if(comandoHandshake=="_ComprobarCartonBingo")socket_send("LiquidarPremiosBingo");
+			    	  if(comandoHandshake=="_ComprobarCartonLinea")socket_send("LiquidarPremiosLinea");
 			    	  $( this ).dialog( "close" );
 			      }
 
@@ -536,7 +544,7 @@ function esperarReadyState(){
 	play_range(myRango[0],myRango[1]);
 	
 }
-
+/*
 function show_InMessage(contenido,activoMarquee){
 	largoCeldaMensajes = comboTexto.clientWidth;
 	textoLargo = largoCeldaMensajes+"px";
@@ -555,7 +563,25 @@ function send_command(){
 		text_message = document.getElementById("text_comando").value;
 		socket_send(text_message);
 }
+*/
+function show_InMessage(contenido,activoMarquee){
+	largoCeldaMensajes = comboTexto.clientWidth;
+	textoLargo = largoCeldaMensajes+"px";//
+	
+	if(activoMarquee!=null){
+		if(activoMarquee=="blink"){
+			comboTexto.innerHTML="<label class='blink' width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
+		}else {
+			comboTexto.innerHTML="<marquee id='marquesina' behavior='scroll' direction='left' scrollamount='4' width='"+textoLargo+"'>"+contenido+"</marquee>";
+		}
 
+	}else{
+		//comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";
+
+		comboTexto.innerHTML= "<label width='"+textoLargo+"'  id='labelTexto' class='classMessage' >"+contenido+"</label>";	
+	}
+	
+}
 
 function play_range(ini,fin){
 	//video.pause();
@@ -751,7 +777,18 @@ function errores(e){
 }
 function recibido(e){
 	//manejador mensajes
-	show_InMessage(e.data);
+	//Por conveniencia algunos no los vamos a mostrar
+	
+	if(e.data.indexOf("Linea_")!=-1
+	   || e.data.indexOf("EncenderNumero_")!=-1
+	   || e.data.indexOf("Comprobar")!=-1
+	   || e.data.indexOf("Bingo_bingo")!=-1
+	){
+		
+	}else{
+		show_InMessage(e.data);
+	}
+	
 
 	mensaje=""+e.data;
 	
@@ -806,11 +843,18 @@ function recibido(e){
 		case "Linea":
 				myRango=sacarRangos(arrayMessages[1]);
 				play_range(myRango[0],myRango[1]);
+
 				break;
+		case "LineaCantada":
+				show_InMessage("!!"+arrayMessages[1]+" ha cantado LINEA ¡¡","blink");
+			break;				
 		case "Bingo":
 				myRango=sacarRangos(arrayMessages[1]);
 				play_range(myRango[0],myRango[1]);
-				break
+				break;
+		case "BingoCantado":
+				show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
+				break;
 		case "ComprobarLinea":
 				numerin = Math.floor((Math.random()*10))+1;
 				poster="url('images/gifLinea"+numerin+".gif')";
@@ -855,11 +899,18 @@ function recibido(e){
 				apagaLinea();
 				break;
 		case "ApagaBingo":
-			apagaBingo();
+				apagaBingo();
 			break;
-		case "PreguntarPremios":
-				$( "#premiosForm" ).dialog( "open" );	
+		case "PreguntarPremiosLinea":
+				elementComandoHandshake=document.getElementById("comandoHandshake");
+				elementComandoHandshake.value="_ComprobarCartonLinea";
+				$( "#premiosForm" ).dialog( "open" );
 			break;
+		case "PreguntarPremiosBingo":
+			elementComandoHandshake=document.getElementById("comandoHandshake");
+			elementComandoHandshake.value="_ComprobarCartonBingo";
+			$( "#premiosForm" ).dialog( "open" );
+			break;			
 		case "WarningFinalizando":
 			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");
 			    break;
@@ -871,6 +922,7 @@ function recibido(e){
 				porCientoCantaor=parseInt(arrayMessages[5]);
 				//callback
 				visualizaDatosCartones();
+				break;
 		default:
         		
 		} 
@@ -944,7 +996,7 @@ function reanudar(){
 function obtenerDatosCartones(){
 	//servlet de servicio --->SourcerArraysCarton
 	var params = new Object();
-	var arrayDatosCartones ;
+	var myArrayDatosCartones=null; ;
 	params.perfil="supervisor";
 	params.usuario="super";
 	params.comando="DatosCartones";
@@ -1121,7 +1173,9 @@ function iniciarFondoEstrellas(){
      
 }
 function detenerFondoEstrellas(){
-	window.clearInterval(bucle6);	
+	if(!(typeof x === 'undefined')){
+		window.clearInterval(bucle6);	
+	}
 }
  
      /* Returns a random number in the range [minVal,maxVal] */

@@ -89,6 +89,9 @@ var myArrayDatosCartones = new Array();
 var ventanaCartones;
 var audio;
 var hayNumerosParaCantar="No";
+var valueScale=14;
+var status="";
+var bucle10=null;
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -107,6 +110,8 @@ function iniciar() {
 	ventanaCartones=document.getElementById("innerHTMLCartones");
 	audio = document.getElementById("audioWeb");
 	audio.style.opacity = "0";
+	
+	
 	boton_Linea= document.getElementById("boton_Linea");
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
@@ -264,7 +269,7 @@ function habilitarBotonesBingo(){
 	boton_Linea.onclick = function(){ 
 		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
 		//lineaCantada="comprobando";
-
+		event.preventDefault();
 		socket_send("Linea");
 		triggerLinea="true";
 	};
@@ -277,7 +282,7 @@ function habilitarBotonesBingo(){
 }
 function innerHTMLCartones(){
 	var params = new Object();
-	params.perfil="jugador";
+	params.comando="CartonesJuego";
 	params.usuario=document.getElementById("usuario").value;
 
 	$.ajax({
@@ -306,7 +311,10 @@ function DrawNumberAt(number,id){
   altoTexto = yHeight;
   x= Math.floor((xWidth/2))- Math.floor((anchoTexto/2)); 
   y= Math.floor((altoTexto/2))+Math.floor((altoTexto/3));
+  //Numero de color
+  //ctx.fillStyle="#0099FF";
   ctx.fillStyle="#0099FF";
+
   //ctx.scale(2,2);
   if(number==0){
 
@@ -652,7 +660,7 @@ function recibido(e){
 	if(arrayMessages.length > 0){
 		 
 	comando=arrayMessages[0];
-	if(!(comando=="DATOSCARTONES")&&!(comando=="ApagaLinea"))	show_InMessage(e.data);
+	if(!(comando=="DATOSCARTONES")&&!(comando=="ApagaLinea")&&!(comando=="numeroOK"))	show_InMessage(e.data);
 		switch(comando) {
 		    
 		//Cantar numero y mostrar orden bola
@@ -687,7 +695,10 @@ function recibido(e){
 				show_InMessage("!! COMIENZA PARTIDA ¡¡",true);
 				iniciarFondoEstrellas();//
 				break;
-
+		case "RefreshDatosCartones":
+				obtenerDatosCartones();
+				visualizaDatosCartones();
+				break;
 		case "EndBalls":
 				show_InMessage("PARTIDA FINALIZADA ....HAGAN SUS APUESTAS",true);
                 borrarNumerosCarton();
@@ -702,9 +713,11 @@ function recibido(e){
 				break;
 		case "Bingo":
 				playAudioPremioBingo();
-			show_InMessage("!! BINGO ¡¡","blink");	
+				show_InMessage("!!"+arrayMessages[1]+" ha cantado BINGO ¡¡","blink");	
 				break;
-				
+		case "PremioLiquidado":
+				bucle10 = setInterval(efectoSaldo, 50);
+				break;				
 		case "ComprobarLinea":
 				show_InMessage("COMPROBANDO LINEA ....",true);
 				//rutinaComprobacionCartones("Linea");
@@ -730,15 +743,22 @@ function recibido(e){
 		case "Info":
 				if(arrayMessages[1]="PocketAbierto"){
 					//result=confirm("Hay una partida empezada,desea continuar(Aceptar) o empezar(Cancelar)")
-					
 					$( "#dialog" ).dialog( "open" );
 				}
 				break;
 		case "ApagaLinea":
 				apagaLinea();
+				window.clearInterval(bucle10);
+				bucle10=null;
+				status=""
+				valueScale=14
 				break;
 		case "ApagaBingo":
 				apagaBingo();
+				window.clearInterval(bucle10);
+				bucle10=null;
+				status=""
+				valueScale=14				
 				break;	
 		case "WarningFinalizando":
 		    	show_InMessage("finalizando partida; ¿Hay mas Bingos?","blink");
@@ -763,6 +783,16 @@ function recibido(e){
 function apagarNumero(n){
 	document.getElementById(n).style.color="#280000";
 	document.getElementById(n).style.backgroundColor="#000000";
+}
+function efectoSaldo(){
+
+			if(valueScale==14)status="crece";
+			if(valueScale==20)status="decrece"
+			if(status=="crece")valueScale = valueScale +  0.5;
+			if(status=="decrece")valueScale = valueScale - 0.5;
+			sValue = valueScale+"px";
+			document.getElementById("saldo").style.fontSize=sValue;
+
 }
 function encenderNumero(numero,modo){
 	if(numero=="0")return;
@@ -936,7 +966,9 @@ function iniciarFondoEstrellas(){
      
 }
 function detenerFondoEstrellas(){
-	window.clearInterval(bucle6);	
+	if(!((typeof x === 'undefined'))){
+		window.clearInterval(bucle6);	
+	}
 }
  
      /* Returns a random number in the range [minVal,maxVal] */
