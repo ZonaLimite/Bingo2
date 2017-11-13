@@ -17,6 +17,7 @@ public class UtilDatabase {
 		
 		
 	   public static int updateQuery(String query) {
+		   //public static int updateQuery(String query) {
 		
 	      //preparing some objects for connection 
 	      Statement stmt = null;

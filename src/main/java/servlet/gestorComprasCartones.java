@@ -65,7 +65,7 @@ public class gestorComprasCartones extends HttpServlet {
                     return;
              } 
           
-           //comprobarSaldoUsuario();
+            //comprobarSaldoUsuario();
             String mensaje2="";
             float precioCarton = new Float (pocketBingoSala.getPrecioCarton());
             float precioCompraActual = nCartonesAComprar * precioCarton;
@@ -96,9 +96,12 @@ public class gestorComprasCartones extends HttpServlet {
         //Formateador de datos decimales. Limitado a dos digitos.
         simbolos.setDecimalSeparator('.');
         DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+        ///////////////////////////////////////////////////////
         float saldoRestante = myUser.getSaldo() - precioCompra;
+        ///////////////////////////////////////////////////////
         String Consulta = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
         System.out.println(Consulta);
+        ///// TRansaccion sobre Saldo y Caja
         int result=UtilDatabase.updateQuery(Consulta);
         if(result>0){
         	myUser.setSaldo(new  Float(formateador.format(saldoRestante)));

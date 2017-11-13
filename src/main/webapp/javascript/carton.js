@@ -269,7 +269,7 @@ function habilitarBotonesBingo(){
 	boton_Linea.onclick = function(){ 
 		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
 		//lineaCantada="comprobando";
-
+		event.preventDefault();
 		socket_send("Linea");
 		triggerLinea="true";
 	};
