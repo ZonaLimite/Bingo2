@@ -85,7 +85,7 @@ try
                   
                  String url="WriterHeaderBingo?usuario="+user.getUsername()+"&sala="+user.getSalonInUse()+"&perfil="+perfil;
                   //String url="bingo.jsp";
-                 mail.sendEmail("javier.boga@yahoo.es", "javier.boga.rioja@gmail.com", "prueba", "Hay contenido");
+                 //mail.sendEmail("javier.boga@yahoo.es", "javier.boga.rioja@gmail.com", "prueba", "Hay contenido");
         	  response.sendRedirect(url); //logged-in page  
          }
           
