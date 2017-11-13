@@ -424,11 +424,6 @@
     </socket-binding-group>
 
     <deployments>
-        <deployment name="mysql-connector-java-5.1.42-bin.jar" runtime-name="mysql-connector-java-5.1.42-bin.jar">
-            <content sha1="1107177429f5078d03d19df8f5f27a33828c0087"/>
-        </deployment>
-        <deployment name="gson-2.8.1.jar" runtime-name="gson-2.8.1.jar">
-            <content sha1="02a8e0aa38a2e21cb39e2f5a7d6704cbdc941da0"/>
-        </deployment>
+
     </deployments>
 </server>
