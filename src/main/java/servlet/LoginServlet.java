@@ -79,7 +79,7 @@ try
 
          if(perfil.equals("supervisor")){
         	  session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
-        	  //session.setAttribute("perfil",user.getPerfil());
+        	  ////session.setAttribute("perfil",user.getPerfil());
         	  //session.setAttribute("sala",user.getSalonInUse());
                   gestorSesions.add(user.getUsername(), user);
                   
