@@ -6,6 +6,9 @@
 <style type="text/css">
 .botonSubmit {
 	text-align: center;
+	color: #F00;
+	font-weight: bold;
+	font-size: 18px;
 }
 .rotulo {
 	text-align: center;
@@ -26,35 +29,45 @@
 	background-color: #000;
 }
 </style>
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="javascript/utilDialogos.js"></script>
 </head>
 <body class="cuerpo">
 	
-		<form action="AltaUsuario">
-		<table class="TablaLogin" width="350" border="1" align="center">
+		<form>
+		<table class="TablaLogin" width="384" border="1" align="center">
 		  <tr>
 			<td colspan="2" class="rotulo">Nueva Alta de usuario</td>
           </tr>
 		  <tr>
-		    <td width="167" class="TextLogin">Usuario :
-	        <td width="167"><input type="text" name="un" id="un"></td>
+		    <td width="164" class="TextLogin">Usuario :
+	        <td width="198"><input name="usuario"  type="text" id="usuario" size="20" maxlength="20"></td>
 	      </tr>
 		  <tr>
 		    <td class="TextLogin">Password:</td>
-		    <td><input type="password" name="pw" id="pw"></td>
+		    <td><input name="pw" type="password" id="password" size="20" maxlength="10">
+		      (
+		      Max 10)</td>
 	      </tr>
 		  <tr>
+		    <td class="TextLogin">Password:</td>
+		    <td><input name="pwConfirm" type="password" id="passwordConfirm" size="20" maxlength="10"> (Repetir)
+		      </td>
+	      </tr>          
+		  <tr>
 		    <td class="TextLogin">Email:</td>
-		    <td><input type="text" name="sala" id="sala"></td>
+		    <td><input name="email" type="text" id="email" size="32" maxlength="32"></td>
 	      </tr>
           <tr>
-          <td colspan="2" class="botonSubmit"><input type="submit" value="Registrar usuario"></td>
+          <td colspan="2" class="botonSubmit"><input type="button" value="Registrar usuario" onClick="registraUsuario()"></td>
           </tr>
           <tr>
-            <td colspan="2" class="botonSubmit">&nbsp;</td>
+            <td colspan="2" class="botonSubmit" id="result">&nbsp;</td>
           </tr>
           <tr>
-            <td height="92" colspan="2" class="botonSubmit"><label for="textoLogin"></label>
-            <textarea name="textoLogin" cols="50" rows="4" id="textoLogin">Introducir los datos de usuario, password e Email</textarea></td>
+            <td height="92" id="infoArea" colspan="2" class="botonSubmit">
+            <textarea name="textoLogin" cols="50" rows="4" id="textoLogin">Introducir los datos de usuario, password, la confirmacion de la misma y Email</textarea></td>
           </tr>
         </table>
 		<p>
