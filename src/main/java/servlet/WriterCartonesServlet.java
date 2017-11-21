@@ -67,8 +67,8 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 				Carton utilCarton = new Carton();
 				Vector<Carton> cartonesPrinting = new Vector<Carton>();
 				int nCartones = new Integer(req.getParameter("nCartones"));
-				//for(int n=900; n < 900 + nCartones; n++){
-				for(int n=1; n < 1 + nCartones; n++){
+				for(int n=1001; n < 1001 + nCartones; n++){
+				//for(int n=1; n < 1 + nCartones; n++){
 					Carton myCarton = utilCarton.consultaObjetoCarton(n+"");
 					cartonesPrinting.add(myCarton);
 				}

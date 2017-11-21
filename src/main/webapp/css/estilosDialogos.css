@@ -1,0 +1,58 @@
+.Cabecera {
+	font-weight: bolder;
+	text-align: center;
+	text-decoration: underline;
+	background-color: #09F;
+	color: #FFF;
+	border-top-color: #00F;
+	border-right-color: #00F;
+	border-bottom-color: #00F;
+	border-left-color: #00F;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.BotonRequest {
+	display: none;
+	font-weight: bolder;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+}
+.DatosCentrados {
+	text-align: center;
+}
+.AIzquierdas {
+	padding-left: 12px;
+	font-weight: bolder;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000;
+}
+.Tabla {
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	border-top-color: #96C;
+	border-right-color: #96C;
+	border-bottom-color: #96C;
+	border-left-color: #96C;
+	background-color: #000;
+}
+.fondosLineas {
+}
+.otro {
+	text-align: left;
+	position: relative;
+	background-color: #FFD69D;
+	border-top-color: #00F;
+	border-right-color: #00F;
+	border-bottom-color: #00F;
+	border-left-color: #00F;
+}
+
+#refreshDatos {
+	text-align: right;
+	float: none;
+	display: inherit;
+}
+.Tabla tr td p label {
+	color: #FFF;
+}

@@ -13,7 +13,7 @@
 <meta charset="utf-8">
 <meta name="vieport" content="width=device-width, initial-scale=1.0">
 <title>Bingo 2016</title>
- 
+ <link href="css/estilosDialogos.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -112,13 +112,143 @@
 	        
     	</tr>
 </table>
+
+<span>        
+        <form name="form1" method="post" action="">
+
+<table width="86%" border="1" align="center" class="Tabla">
+  <tr bgcolor="#003399">
+    <td width="50%" height="72"><input name="refreshDatos" type="button" class="BotonRequest" id="refreshDatos" value="Solicitar Datos Jugadores" align="middle"></td>
+    <td colspan="2"><p>
+      <label>
+        <input type="radio" name="opcionesSel" value="opción"  checked id="opcionesSel_0">
+        En Juego</label>
+      <br>
+      <label>
+        <input type="radio" name="opcionesSel" value="opción" id="opcionesSel_1">
+        Registrados</label>
+      <br>
+    </p></td>
+    </tr>
+  <tr>
+    <td class="Cabecera">Nombre</td>
+    <td width="34%" class="Cabecera">Saldo</td>
+    <td width="15%" class="Cabecera">Cartones</td>
+  </tr>
+  <tr class="fondosLineas" >
+    <td class="otro">
+    <label class="AIzquierdas">Diego Perez</label>
+    </td>
+      <td class="otro">
+    <label class="AIzquierdas">120 €</label></td>
+     <td class="otro">
+    <label class="AIzquierdas">1</label></td>
+         
+  </tr>
+    <tr>
+    <td class="otro">
+    <label class="AIzquierdas">Antonio Diaz</label></td>
+      <td class="otro">
+    <label class="AIzquierdas">100 €</label></td>
+     <td class="otro">
+    <label class="AIzquierdas">2</label></td>
+         
+  </tr>
+    <tr>
+    <td height="23" class="otro">
+      <span class="fondosLineas">
+      <label class="AIzquierdas">David</label>
+      </span></td>
+      <td class="otro">
+        <span class="fondosLineas">
+        <label class="AIzquierdas">130 €</label>
+      </span></td>
+     <td class="otro">
+       <span class="fondosLineas">
+       <label class="AIzquierdas">3</label>
+      </span></td>
+         
+  </tr>
+    <tr class="fondosLineas" >
+    <td class="otro">
+    <label class="AIzquierdas">Diego Perez</label>
+    </td>
+      <td class="otro">
+    <label class="AIzquierdas">120 €</label></td>
+     <td class="otro">
+    <label class="AIzquierdas">1</label></td>
+         
+  </tr>
+    <tr>
+    <td class="otro">
+    <label class="AIzquierdas">Antonio Diaz</label></td>
+      <td class="otro">
+    <label class="AIzquierdas">100 €</label></td>
+     <td class="otro">
+    <label class="AIzquierdas">2</label></td>
+         
+  </tr>
+    <tr>
+    <td height="23" class="otro">
+      <span class="fondosLineas">
+      <label class="AIzquierdas">David</label>
+      </span></td>
+      <td class="otro">
+        <span class="fondosLineas">
+        <label class="AIzquierdas">130 €</label>
+      </span></td>
+     <td class="otro">
+       <span class="fondosLineas">
+       <label class="AIzquierdas">3</label>
+      </span></td>
+         
+  </tr>
+    <tr class="fondosLineas" >
+    <td class="otro">
+    <label class="AIzquierdas">Diego Perez</label>
+    </td>
+      <td class="otro">
+    <label class="AIzquierdas">120 €</label></td>
+     <td class="otro">
+    <label class="AIzquierdas">1</label></td>
+         
+  </tr>
+    <tr>
+    <td class="otro">
+    <label class="AIzquierdas">Antonio Diaz</label></td>
+      <td class="otro">
+    <label class="AIzquierdas">100 €</label></td>
+     <td class="otro">
+    <label class="AIzquierdas">2</label></td>
+         
+  </tr>
+    <tr>
+    <td height="23" class="otro">
+      <span class="fondosLineas">
+      <label class="AIzquierdas">David</label>
+      </span></td>
+      <td class="otro">
+        <span class="fondosLineas">
+        <label class="AIzquierdas">130 €</label>
+      </span></td>
+     <td class="otro">
+       <span class="fondosLineas">
+       <label class="AIzquierdas">3</label>
+      </span></td>
+         
+  </tr>
+</table>
+</form>
+</span>
 	
 	          <span class="Comander"><span class="Comander">
 	          <canvas id="canvas_bola" class="canvasBola">
-	           
+	           hola
               </canvas>
 	
-        </span></span></article>      
+       
+
+        </span></article>      
              
       </td>
       <td class="panel">

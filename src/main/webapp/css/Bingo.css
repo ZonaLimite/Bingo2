@@ -129,6 +129,7 @@ display: block;
 	border-right-color: #903;
 	border-bottom-color: #903;
 	border-left-color: #903;
+	visibility: hidden;
 }
 
 .valorInfo {
