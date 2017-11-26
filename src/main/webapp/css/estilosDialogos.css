@@ -55,4 +55,29 @@
 }
 .Tabla tr td p label {
 	color: #FFF;
+	
+.botonSubmit {
+	text-align: center;
+	color: #F00;
+	font-weight: bold;
+	font-size: 18px;
 }
+.rotulo {
+	text-align: center;
+	font-weight: bold;
+}
+.TextLogin {
+	text-align: center;
+}
+.TablaLogin {
+	background-color: #06F;
+	color: #FFF;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+}
+.cuerpo {
+	background-color: #000;
+}
+	

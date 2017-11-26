@@ -21,6 +21,7 @@ public class Carton {
 	//Fuente Letra Arial condensada tamaño 28
 	
 	private int[][] numeros = new int[3][9] ;
+	
 	private String numeroPantalla;
 	private boolean lineaCantado=false;//
 	private boolean bingoCantado=false;

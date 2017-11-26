@@ -32,12 +32,14 @@ public class PocketBingo implements Serializable {
     private String precioCarton="1";
     private int nCartonesElectronicos=0;
 
-	private String nCartonesManuales="0";
+
     private String porcientoLinea="20";//Por defecto
     private String porcientoBingo="80";
     private String porcientoCantaor="0";
     private int delay = 1500;
     
+    private  Vector<UserBean> usuariosManualesEnJuego = new Vector<UserBean>();
+	private String nCartonesManuales="0";    
     
     /* 
      * IdState :
@@ -54,7 +56,7 @@ public class PocketBingo implements Serializable {
     	lineaCantada=false;
     	bingoCantado=false;
     	IdState="NewGame";
-
+        //BORRA LOS CARTONES MANUALES DE LOS JUGADORES PRESENTES
     }
    
     
@@ -144,6 +146,7 @@ public class PocketBingo implements Serializable {
 		this.precioCarton = precioCarton;
 	}
 	public String getnCartonesManuales() {
+		
 		return nCartonesManuales;
 	}
 	public void setnCartonesManuales(String nCartones) {
