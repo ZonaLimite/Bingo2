@@ -22,6 +22,7 @@ public class HtmlPortalServlet extends HttpServlet{
 		String perfil = req.getParameter("perfil");
 		String ordCarton = req.getParameter("nCarton");
 		String comando = req.getParameter("comando");
+		String url="";
 		
 		if(comando.equals("MostrarLogin")){
 		    res.setContentType("text/html");
@@ -37,23 +38,26 @@ public class HtmlPortalServlet extends HttpServlet{
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");
 			res.sendRedirect("AltaUsuario.html");
-		}			
-		
-		if(comando.equals("ArrayCartonBaseDatos")){
-			Carton utilCarton = new Carton();
-			carton = utilCarton.consultaObjetoCarton(ordCarton);
-			/*Ahora a enviarlo como JSON
-			// String json = new Gson().toJson(datosCartones);
-		   
+		}
+		if(comando.equals("Solicitud Bonus")){
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");
-		    try {
-				//res.getWriter().write(json);
-			} catch (IOException e) {
+			res.sendRedirect("CompraBonus.html");
+		}
+		
+		if(comando.equals("ArrayCartonBaseDatos")){
 
-				e.printStackTrace();
-			}*/
 		}
 
+	}
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String comando = req.getParameter("comando");
+		if(comando.equals("CerrarSesion")){
+			req.getSession().invalidate();
+			//req.getSession().removeAttribute("jugador");
+		    res.setContentType("text/html");
+		    res.setCharacterEncoding("UTF-8");
+			res.sendRedirect("Portal.jsp");
+		}					
 	}
 }

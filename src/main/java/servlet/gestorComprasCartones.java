@@ -64,7 +64,6 @@ public class gestorComprasCartones extends HttpServlet {
                     resp.getWriter().print(mensaje);
                     return;
              } 
-          
             //comprobarSaldoUsuario();
             String mensaje2="";
             float precioCarton = new Float (pocketBingoSala.getPrecioCarton());

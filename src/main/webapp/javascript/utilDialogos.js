@@ -36,3 +36,76 @@ function registraUsuario(){
 	});
 	return
 }
+function solicitarCompraBonus(){
+	//servlet de servicio --->GestionUsuariosServlet
+	var params = new Object();
+	var textresult=document.getElementById("result");
+	var infoArea=document.getElementById("infoArea");
+	
+	params.nBonus=document.getElementById("nBonus").value;
+	params.usuario=document.getElementById("usuario").value ;
+	params.sala=document.getElementById("sala").value;
+
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestorComprasBonus",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			textresult.innerHTML=data;
+			infoArea.innerHTML="";
+			
+	});
+	return
+}
+function mostrarHTML(comando){
+	//servlet de servicio --->HtmlDinamicoServLet
+	
+	var params = new Object();
+
+	params.comando=comando;
+
+
+	$.ajax({
+		  type: 'POST',
+		  url: "HtmlPortal",
+		  data: params,
+		  dataType:"html",
+		  async:true
+		}).done(function( data ) {
+			content =document.getElementById("content");
+			content.innerHTML = data;
+	});
+
+}
+
+
+function hacerLogin(){
+	//servlet de servicio --->HtmlDinamicoServLet
+	
+	var params = new Object();
+	params.un=document.getElementById("un").value ;
+	params.pw=document.getElementById("pw").value;	
+	params.sala=document.getElementById("sala").value;		
+
+	$.ajax({
+		  type: 'POST',
+		  url: "LoginServlet",
+		  data: params,
+		  async:true
+		}).done(function( data ) {
+			if(data=="Si"){
+				window.location.replace("Portal.jsp");	
+			}else{
+			
+				myResp =document.getElementById("resp");
+				myResp.innerHTML="Usuario no registrado o password incorrecta";
+			}
+	});
+
+}
+
+
+

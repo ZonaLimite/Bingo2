@@ -1,38 +1,29 @@
-var botonLogin;
 
+var usuario;
+var sala;
+var perfil;
+var url;
 
-function iniciar(){
-	botonLogin = document.getElementById("botonLogin");
-	botonLogin.onclick = function(){ mostrarHTML("MostrarLogin");};
-
-	botonUsuarios = document.getElementById("botonRanking");
-	botonUsuarios.onclick = function(){ mostrarHTML("MostrarUsuarios");};	
-	
-
+function iniciar2(){
+	//alert("iniciar2");
+	usuario = document.getElementById("usuario");
+	perfil = document.getElementById("perfil");
+	sala = document.getElementById("sala");
+	if(perfil.value=="supervisor")url="WriterHeaderBingo?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
+	if(perfil.value=="jugador")url="WriterHeaderCarton?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
+	if(usuario.value=="null")mostrarHTML("MostrarLogin")
+	else{
+		botonAccessBingo = document.getElementById("AccessBingo");
+		botonAccessBingo.onclick = function(){ window.location.replace(url);};
+		botonUsuarios = document.getElementById("botonRanking");
+		botonUsuarios.onclick = function(){ mostrarHTML("MostrarUsuarios");};	
+		botonCerrarSesion = document.getElementById("botonCerrarSesion");
+		botonCerrarSesion.onclick = function(){window.location.replace("HtmlPortal?comando=CerrarSesion");};
+		botonCompraBonos = document.getElementById("compraBonos");
+		botonCompraBonos.onclick = function(){mostrarHTML("Solicitud Bonus");};
+	}
 }	
 
 
-function mostrarHTML(comando){
-			//servlet de servicio --->HtmlDinamicoServLet
 
-			var params = new Object();
-			
-			
-			
-			params.comando=comando;
-
-
-			$.ajax({
-				  type: 'POST',
-				  url: "HtmlPortal",
-				  data: params,
-				  dataType:"html",
-				  async:true
-				}).done(function( data ) {
-					content =document.getElementById("content");
-					content.innerHTML = data;
-			});
-		
-}
-
-window.onload=iniciar;
+window.onload=iniciar2;

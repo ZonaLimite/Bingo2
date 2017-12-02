@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +21,10 @@ public class GestionUsuariosServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	@Inject
+	private Mailing mail;
+
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {	
 		Logger log = Logger.getLogger("GestionUsuarios");
@@ -39,7 +44,11 @@ public class GestionUsuariosServlet extends HttpServlet {
 	    	 String query = "INSERT INTO usuarios VALUES (null,'"+usuario+"','"+ password +"','"+ eMail + "', 'jugador', 0)";
 	    	 int result = ud.queryAlta(query);
 	    	 String sResult="";
-	    	 if (result >0)sResult = "Usuario dado de alta OK";
+	    	 if (result >0){
+	    		 String message = "Enhorabuena "+usuario+ " , has sido dado de alta en el Portal Bingo Home. Tus datos de acceso son: \n Usuario = "+ usuario+"\n Password = "+ password;
+	    		mail.sendEmail(eMail, "javier.boga.rioja@gmail.com", "Alta en Bingo Home", message);
+	    		 sResult = "Usuario dado de alta OK";
+	    	 }
 	    	 if (result==0)sResult = "Ha habido error en alta Usuario";
 	    	 if(result==-1)sResult = "Usuario Ya existe, elija otro";
 			 String json = new Gson().toJson(sResult);	    	

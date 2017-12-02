@@ -30,6 +30,9 @@
 .cuerpo {
 	background-color: #000;
 }
+.TextoArea {
+	padding: 30px;
+}
 </style>
   <script src="//code.jquery.com/jquery-1.12.4.js"></script>
   <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -41,33 +44,22 @@
 		<form>
 		<table class="TablaLogin" width="90%" border="1" align="center">
 		  <tr>
-			<td colspan="2" class="rotulo">Nueva Alta de usuario</td>
+			<td colspan="2" class="rotulo">Solicitud compra Bonus Bingo Home</td>
           </tr>
 		  <tr>
-		    <td width="79" class="TextLogin">Usuario :
-	        <td width="246"><input name="usuario"  type="text" id="usuario" size="20" maxlength="20"></td>
-	      </tr>
-		  <tr>
-		    <td class="TextLogin">Password:</td>
-		    <td><input name="pw" type="password" id="password" size="20" maxlength="10"></td>
-	      </tr>
-		  <tr>
-		    <td class="TextLogin">Password:</td>
-		    <td><input name="pwConfirm" type="password" id="passwordConfirm" size="20" maxlength="10"></td>
-	      </tr>          
-		  <tr>
-		    <td class="TextLogin">Email:</td>
-		    <td><input name="email" type="text" id="email" size="32" maxlength="32"></td>
+		    <td width="50%" class="TextLogin">Cantidad Solicitada :
+	        <td width="50%"><input name="usuario"  type="text" id="nBonus" size="20" maxlength="20"> 
+	        &euro; </td>
 	      </tr>
           <tr>
-          <td colspan="2" class="botonSubmit"><input type="button" value="Registrar usuario" onClick="registraUsuario()"></td>
+          <td colspan="2" class="botonSubmit"><input type="button" value="Solicitar Compra" onClick="solicitarCompraBonus()"></td>
           </tr>
           <tr>
             <td colspan="2" class="botonSubmit" id="result">&nbsp;</td>
           </tr>
           <tr>
-            <td height="92" id="infoArea" colspan="2" class="botonSubmit">
-            <textarea name="textoLogin" cols="50" rows="4" id="textoLogin">Introducir los datos de usuario, password, la confirmacion de la password y tu Email de contacto.</textarea></td>
+            <td height="92" colspan="2" class="TextoArea" id="infoArea" ><p>Puede obtener Saldo para el juego a traves de este Formulario. El gestor de sala atendera sus peticiones y una vez hecho el pago, su saldo quedara actualizado. En ese momento recibira un Email de confirmacion.</p>
+            <p>! Suerte !</p></td>
           </tr>
         </table>
 		<p>

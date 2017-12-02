@@ -39,7 +39,9 @@ public class PocketBingo implements Serializable {
     private int delay = 1500;
     
     private  Vector<UserBean> usuariosManualesEnJuego = new Vector<UserBean>();
-	private String nCartonesManuales="0";    
+	private String nCartonesManuales="0"; 
+	
+	
     
     /* 
      * IdState :

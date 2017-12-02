@@ -116,6 +116,63 @@ public int queryAlta(String query) {
 	   return nFilas;
 
 		
-	}	   
+	}
+public int updateQueryCompraBonus(String consultaUsuario,String consultaCaja){
+
+		  //Consulta doble de actualizacion con transaccion
+	      //preparing some objects for connection 
+	      Statement stmt = null;
+	      int nRowsUpdated=0;
+		    
+	   try 
+	   {
+	      //connect to DB 
+	      currentCon = ConnectionManager.getConnection();
+	      currentCon.setAutoCommit(false);
+	      stmt=currentCon.createStatement();
+	      nRowsUpdated = stmt.executeUpdate(consultaUsuario);  
+	      
+	      nRowsUpdated = stmt.executeUpdate(consultaCaja);  
+	      currentCon.commit();
+
+	   }catch (Exception ex) 
+	   		{
+		   			try {
+						currentCon.rollback();
+					} catch (SQLException e) {
+						System.out.println("Rollback fallada:" + e);
+					}
+		   			System.out.println("consulta de actualizacion fallada:" + ex);
+	   		} 
+		    
+	   //some exception handling
+	   finally 
+	   {
+	      if (rs != null)	{
+	         try {
+	            rs.close();
+	         } catch (Exception e) {}
+	            rs = null;
+	         }
+		
+	      if (stmt != null) {
+	         try {
+	            stmt.close();
+	         } catch (Exception e) {}
+	            stmt = null;
+	         }
+		
+	      if (currentCon != null) {
+	         try {
+	            currentCon.close();
+	         } catch (Exception e) {
+	         }
+
+	         currentCon = null;
+	      }
+	   }
+
+	return nRowsUpdated;
+}
 
 }

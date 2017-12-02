@@ -66,7 +66,23 @@ import javax.websocket.Session;
 	    //Mapa de premios comprobados de todas las salas (Ojo filtrar por sala)(Liquidacion de premios)
 	    private Map<PeticionPremio,Carton>  pilaAnunciaPremios;
 	    
+	    //Pila de peticiones de compra Bonus
+	    private Map<Long ,PeticionBonus> peticionesBonus;
+	    
+	    public void registraPeticionBonus(Long idReg,PeticionBonus pb){
+	    	this.peticionesBonus.put(idReg, pb);
+	    }
+	    public Set getPeticionBonus(){
+	    	return this.peticionesBonus.keySet();
+	    }	    
+	    public PeticionBonus getPeticionBonus(Integer idReg){
+	    	return this.peticionesBonus.get(idReg);
+	    }
 
+	    public void borraPeticionBonus(Integer idReg){
+	    	this.listaPeticionesPremios.remove(idReg);
+	    }
+	    
 	    public Thread getHiloSala(String sala) {
 			return this.hiloSala.get(sala);
 		}
@@ -142,6 +158,7 @@ import javax.websocket.Session;
                 this.hiloSala = new ConcurrentHashMap<>();
                 this.listaPeticionesPremios = new ConcurrentHashMap<>();
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
+                this.peticionesBonus = new ConcurrentHashMap<>();
 	    }
 		
 

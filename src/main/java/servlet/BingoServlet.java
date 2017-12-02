@@ -75,7 +75,7 @@ public class BingoServlet extends HttpServlet{
 	      out.write("\r\n");
 	      out.write("<table width=\"100%\" border=\"1\" cellspacing=\"2\" class=\"ano\">\r\n");
 	      out.write("  <tr>\r\n");
-	      out.write("    <td padding=0 width=\"12%\"><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" ><label id=\"sala\">");
+	      out.write("    <td padding=0 width=\"12%\"><a href=Portal.jsp><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" ></a><label id=\"sala\">");
 	      out.print(sala);
 	      out.write("</label>");
 	      out.print(" "+user);

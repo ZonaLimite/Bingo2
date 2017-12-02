@@ -1,10 +1,20 @@
+<%@ page language="java" 
+    contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+%>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%! HttpSession mySession = null;%>
+<%! String resp = null;%>
+<%
+		resp = request.getParameter("resp");
 
+%>
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script src="javascript/utilDialogos.js"></script>
+
 <meta charset="ISO-8859-1">
 <title>Bingo Paco Home</title>
 <style type="text/css">
@@ -33,6 +43,8 @@
 	background-color: #000;
 }
 </style>
+
+
 </head>
 <body class="cuerpo">
 	
@@ -62,7 +74,7 @@
 		</td>
           </tr>
           <tr>
-            <td colspan="2" class="botonSubmit" id="resp">Pasen y vean</td>
+            <td colspan="2" class="botonSubmit" id="resp"><%if(!(resp==null)){%><label class="Bienvenido" ><%out.print(resp); %></label></td><%} %>
           </tr>
           <tr>
             <td class="botonSubmit">
