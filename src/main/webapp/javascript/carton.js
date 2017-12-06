@@ -149,6 +149,9 @@ function iniciar() {
 	//Plantilla JQuery para Dialogo Cartones//
 	
 	$( "#spinner" ).spinner();
+	$( "#spinner" ).spinner({
+		  min: 0
+		});
 	$("#spinner").attr("readonly","true");
 	$( "#cartones" ).dialog({ autoOpen: false ,
 								 modal: true,
@@ -179,17 +182,19 @@ function iniciar() {
 		      },
 		      click: function() {
 		    	  habilitarBotonesBingo();
+		          $("#feedback").text("Computando cartones...Espere");  
 		    	  $.post("gestorComprasCartones",$( "#requestForm" ).serialize(), function(responseText){
 		    		  //responsetext devuelve text/plain
 		    		  $("#feedback").text( responseText);
 			    	  result = document.getElementById("feedback").textContent;
 			    	  indexError = result.lastIndexOf("Error");	
 			    	  if(indexError>=0)return;
-			    	 
+			    	  
 			    	  obtenerDatosCartones();
 			    	  visualizaDatosCartones();
 			    	  innerHTMLCartones();
 			    	  refreshDatosCartones();
+			    	  $("#feedback").text("! Compra realizada Ok ¡"); 
 		    	  });
 		    	  
 		    	  //socket_send(mensaje);

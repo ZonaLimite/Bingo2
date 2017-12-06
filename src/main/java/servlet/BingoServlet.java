@@ -570,7 +570,7 @@ public class BingoServlet extends HttpServlet{
 	      out.write("<p>\r\n");
 	      out.write("  <input name=\"videoON\" type=\"checkbox\" value=\"true\" checked>Activar Video\r\n");
 	      out.write("</p>\r\n");
-	      out.write("<input name=\"starsON\" type=\"checkbox\" value=\"true\" checked>Activar StartsField\r\n");
+	      out.write("<p><input name=\"starsON\" type=\"checkbox\" value=\"true\" checked>Activar StartsField\r\n");
 	      out.write("</p>\r\n");
 	      out.write("\r\n");
 	      out.write("<hr width=\"75%\"/>\r\n");

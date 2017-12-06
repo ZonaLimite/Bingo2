@@ -211,13 +211,15 @@ public class ComprobadorPremios {
     	boolean hayBingo=false;
     	PeticionPremio userBeanPeticiones=null;;   	
     	
-    		Iterator<UserBean> it =userbeans.iterator();
-    		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
-    		while(it.hasNext()){
-
+    	Iterator<UserBean> it =userbeans.iterator();
+    	//Iterador Usuarios
+    	while(it.hasNext()){
+    				
     			UserBean user = it.next();
     			Vector<Carton>vCarton = user.getvCarton();	
     			Iterator<Carton> itCarton = vCarton.iterator();
+    			//Iterador Cartones de Usuario
+    			
     			while(itCarton.hasNext()){
     				Carton carton = (Carton)itCarton.next();
     				int numeros[][] = carton.getNumeros();
@@ -245,11 +247,15 @@ public class ComprobadorPremios {
     					}
     				}
     				log.info("Result Control Bingo de "+ user.getUsername()+ " y carton " + carton.getnRef() + " = " + resultControlBingo  );
-					if (resultControlBingo == 2775 ) {
-						//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
+    				//Si es un carton con Premio
 					String key = user.getUsername();
-					userBeanPeticiones = gestorSesions.getListaPeticionesPremios().get(key);
-						if(!(userBeanPeticiones==null)){
+    				userBeanPeticiones = gestorSesions.getListaPeticionesPremios().get(key);
+    				if (resultControlBingo == 2775 ) {
+						//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
+    
+    					
+    					//Si se ha solicitado el Bingo 
+    					if(!(userBeanPeticiones==null)){
 							if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Bingo")){
 								gestorSesions.getPilaAnunciaPremios(sala).put(userBeanPeticiones, carton);
 								
@@ -263,35 +269,40 @@ public class ComprobadorPremios {
 								}
     							hayBingo=true;
 							}
-
-						}else{
+						//Si tiene Bingo y no le ha solicitado, le damos una oportunidad
+    					}else{
 							try {
-								user.getSesionSocket().getBasicRemote().sendText("Habia Bingo y no le has cantado ...");
-								
+								user.getSesionSocket().getBasicRemote().sendText("! Habia Bingo en Carton "+ carton.getnRef()+"  y no le cantas? ... ¡");
+								Thread.sleep(5000);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						
 						}
+    				//Si no es un carton con Bingo y se ha solicitado la peticion de premio ...(sino no hago nada)
 					}else{
 					
 						try {
-							if(esteUsuarioYaTienePremio(userBeanPeticiones,gestorSesions.getPilaAnunciaPremios(sala))){
-								
-							}else{
-								user.getSesionSocket().getBasicRemote().sendText("No tienes Linea... ");
-							}						user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
-							log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
+							if(!(userBeanPeticiones==null)){
+								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Bingo")){
+									//Si este carton no tiene Premio, pero si hay ya algun otro carton premiado de este usuario
+									if(esteUsuarioYaTienePremio(userBeanPeticiones,gestorSesions.getPilaAnunciaPremios(sala))){
+
+									}else{
+											log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
+											user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
+									}		
+								}						
+							}
 						} catch (IOException e) {
 							// 		TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-				}
-    				
-    			}                                                                                                                                                                                                    
-    		}
-    		return hayBingo;
+				   }
+    		}	                                                                                                                                                                                                    
+    	}
+    	return hayBingo;
     } 
     public synchronized boolean comprobarBingoDeCarton(String sala,String nRef,  UserBean user){
     	//Comprobacion de carton en faceta "super"
