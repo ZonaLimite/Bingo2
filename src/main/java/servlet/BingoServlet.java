@@ -117,9 +117,11 @@ public class BingoServlet extends HttpServlet{
 	      out.write("             <span >\r\n");
 	      out.write("\t\t\t <div id=\"my_poster\"> \t\r\n");
 	      out.write("              <video id=\"medio\" class=\"fotom\" preload=\"auto\" >\r\n");
-	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
-	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
+	      
+	     
 	      out.write("\t\t\t<source src=\"http://boga.esy.es/video/BingoInes.webm\" type=\"video/webm\" >\r\n");
+	      //out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
+	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
 	      out.write("   \t         HTML5 video is not supported by this browser \r\n");
 	      out.write("   \t         </video>\r\n");
 	      out.write("   \t         </div>\r\n");
