@@ -692,8 +692,9 @@ function getRootUri() {
 			port="8000";
 		}
 		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
-        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
-                (document.location.port == "" ? "" : document.location.port) + nameEndPoint;
+        /*return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+                (document.location.port == "" ? "" : document.location.port) + nameEndPoint;*/
+        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ nameEndPoint;
     
 }
 
