@@ -153,8 +153,6 @@ public class ComprobadorPremios {
     					for(int c=0; c<9 ; c++){
     						int numero = numeros[f][c];
     						if(numerosCalled.contains(numero)){
-    							//	Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero cono OK)
-    							//De momento no lo enviamos/
 
     								if(f==0)resultControlLinea+=5;
     								if(f==1)resultControlLinea+=50;	

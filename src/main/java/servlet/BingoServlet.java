@@ -18,19 +18,20 @@ public class BingoServlet extends HttpServlet{
 	 */
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
+		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
 		if(mySession!=null){
 			System.out.println("la mySesion "+ mySession.getId());
 			//Comprobacion de HttpSession registrada aqui
 			
 			user = req.getParameter("usuario");//
+			if(mySession.getAttribute("usuario")==null) res.sendRedirect(url); //logged-in page // 
 			sala = req.getParameter("sala");
 			perfil =req.getParameter("perfil");
 			
 		}else{
 			System.out.print("la sesion es null");
-	        String url="Login.html";
+	        
 	        res.sendRedirect(url); //logged-in page // 
 	        return;
 		}
@@ -73,14 +74,14 @@ public class BingoServlet extends HttpServlet{
 	      out.write("<div id=\"agrupar\">\r\n");
 	      out.write("<header id=\"cabecera\">\r\n");
 	      out.write("\r\n");
-	      out.write("<table width=\"100%\" border=\"1\" cellspacing=\"2\" class=\"ano\">\r\n");
-	      out.write("  <tr>\r\n");
+	      out.write("<table width=\"100%\" border=\"1\" cellspacing=\"2\" class=\"ano\">");
+	      out.write("  <tr>");
 	      out.write("    <td padding=0 width=\"12%\"><a href=Portal.jsp><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" ></a><label id=\"sala\">");
 	      out.print(sala);
-	      out.write("</label>");
-	      out.print(" "+user);
-	      out.write("</td>\r\n");
-	      out.write("    <td width=\"68%\" class=\"ano\" >! BIENVENIDOS BINGO 2017 ¡<nav id=\"menu\">\r\n");
+	      out.write("</label>\r\n");
+	      out.print("<label class=\"labelUser\">"+user+"</label>");
+	      out.write("</td>");
+	      out.write("    <td width=\"68%\" class=\"ano\" >! BINGO 2018 ¡<nav id=\"menu\">\r\n");
 	      out.write("    <label id=\"iniciar\" CLASS=\"menu_li\" >INICIAR</label>\r\n");
 	      out.write("    <label id=\"resume\" CLASS=\"menu_li\" >RESUMIR</label>\r\n");
 	      out.write("\t<label id=\"lab_cartones\" CLASS=\"menu_li\" >CARTONES</label>\r\n");
@@ -500,7 +501,7 @@ public class BingoServlet extends HttpServlet{
 	      out.write("</div>\r\n");
 	      out.write("<article>\r\n");
 	      out.write("\r\n");
-	      out.write("<p><label id=\"foot\"> BINGO 2016</label>></p>    \r\n");
+	      out.write("<p><label id=\"foot\"> BINGO 2018</label>></p>    \r\n");
 	      out.write("\r\n");
 	      out.write("\r\n");
 	      out.write("\r\n");

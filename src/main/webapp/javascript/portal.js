@@ -20,8 +20,28 @@ function iniciar2(){
 		botonCerrarSesion = document.getElementById("botonCerrarSesion");
 		botonCerrarSesion.onclick = function(){window.location.replace("HtmlPortal?comando=CerrarSesion");};
 		botonCompraBonos = document.getElementById("compraBonos");
-		botonCompraBonos.onclick = function(){mostrarHTML("Solicitud Bonus");};
+		botonCompraBonos.onclick = function(){mostrarHTML("Solicitud Bonus")};
+		botonVolcadoBonos = document.getElementById("volcadoBonos");
+		if(botonVolcadoBonos!=null){
+			botonVolcadoBonos.onclick = function(){
+			mostrarHTML("VolcadoPeticionesBonus");
+			};
+		}
+		botonJugadores = document.getElementById("botonJugadores");
+		if(botonJugadores!=null){
+			botonJugadores.onclick = function(){
+			mostrarHTML("ConfigurarJugadores");
+			};
+		}
+		botonCartones = document.getElementById("botonCartones");
+		if(botonCartones!=null){
+			botonCartones.onclick = function(){
+			mostrarHTML("ConfigurarCartones");
+			};
+		}		
+		
 	}
+	
 }	
 
 

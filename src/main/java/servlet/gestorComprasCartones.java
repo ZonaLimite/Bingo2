@@ -136,11 +136,12 @@ public class gestorComprasCartones extends HttpServlet {
             String nSerie;
             Blob blob;
             st = con.createStatement();
-            //Preguntar cuantos cartones hay registrados/Reservamos los 100 ultimos para juego en papel.
+            //Preguntar cuantos cartones hay registrados/Reservamos los 190 ultimos para juego en papel.
              ResultSet rs = st.executeQuery("Select count('idCarton')from cartonesbingo");
+             //Tenemos registrados 1190  cartones en total
              if(rs.next()){
                  maxRegs=rs.getInt(1);
-                 if(maxRegs>200)maxRegs = maxRegs -100;
+                 if(maxRegs>1000)maxRegs = maxRegs -190;
              }
              Set<Carton> sCartones = gestorSesions.dameSetCartonesEnJuego(sala);
              //Elegir uno, que no este ya en juego//

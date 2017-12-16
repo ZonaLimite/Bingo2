@@ -24,5 +24,4 @@ public class PeticionBonus {
 
 		this.bonus = cantidad;
 	}
-
 }

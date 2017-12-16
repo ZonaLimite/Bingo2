@@ -46,7 +46,7 @@
   	<label class="labelUser">Saldo : <span id="saldo">
   	<span id="saldo">
   	<label class="saldo" id="saldo">0</label>
-  	</span>  	</span> Euros</label>
+  	Euros</label>
   	<a href=Portal.jsp><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></a>
   	<label id="sala"><%out.print(sala);%></label>
     <span class="labelUser">

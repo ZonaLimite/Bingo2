@@ -69,18 +69,20 @@ import javax.websocket.Session;
 	    //Pila de peticiones de compra Bonus
 	    private Map<Long ,PeticionBonus> peticionesBonus;
 	    
+	    
+	    
 	    public void registraPeticionBonus(Long idReg,PeticionBonus pb){
 	    	this.peticionesBonus.put(idReg, pb);
 	    }
-	    public Set getPeticionBonus(){
+	    public Set<Long> getPeticionBonus(){
 	    	return this.peticionesBonus.keySet();
 	    }	    
-	    public PeticionBonus getPeticionBonus(Integer idReg){
+	    public PeticionBonus getPeticionBonus(Long idReg){
 	    	return this.peticionesBonus.get(idReg);
 	    }
 
-	    public void borraPeticionBonus(Integer idReg){
-	    	this.listaPeticionesPremios.remove(idReg);
+	    public void borraPeticionBonus(Long idReg){
+	    	this.peticionesBonus.remove(idReg);
 	    }
 	    
 	    public Thread getHiloSala(String sala) {
@@ -147,6 +149,7 @@ import javax.websocket.Session;
 	    public void init() {
                 //Recuperacion contexto salas Bingo
 			this.jugadasSalas=readContext("bingo");
+			//this.jugadasSalas=null;
 	        if(this.jugadasSalas==null){
 	        	this.jugadasSalas = new ConcurrentHashMap<>();
 	        	log.info("Gestor inicializado por jugadas salas =null");
@@ -159,6 +162,7 @@ import javax.websocket.Session;
                 this.listaPeticionesPremios = new ConcurrentHashMap<>();
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
                 this.peticionesBonus = new ConcurrentHashMap<>();
+              
 	    }
 		
 

@@ -49,11 +49,13 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			carton = cartonUsuarioPorNRef (usuario, perfil, ordCarton,idHttpSession);
 		}
 		if(comando.equals("DatosCartones")){
+			UtilDatabase uDatabase= new UtilDatabase();
 			UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil, idHttpSession);
 			String sala = userbean.getSalonInUse();
 			float precioCarton = new Float(gestorSesions.getJugadasSalas(sala).getPrecioCarton());
-			float saldoUsuario = userbean.getSaldo();
-			int cartonesManuales = new Integer(gestorSesions.getJugadasSalas(sala).getnCartonesManuales());
+			float saldoUsuario = new Float(uDatabase.consultaSQLUnica("Select Saldo From usuarios Where User = '"+userbean.getUsername()+"'"));
+			userbean.setSaldo(saldoUsuario);
+			int cartonesManuales = new Integer(gestorSesions.getJugadasSalas(sala).calculaNcartonesManuales());
 			int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 			int nCartonesEnJuego = gestorSesions.dameSetCartonesEnJuego(sala).size() + cartonesManuales;
 			int porCientoCantaor = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoCantaor());

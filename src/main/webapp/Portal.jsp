@@ -33,7 +33,7 @@
 		user = (String)mySession.getAttribute("usuario");
 		perfil = (String)mySession.getAttribute("perfil");
 		sala = (String)mySession.getAttribute("sala");
-		//if(user==null)response.sendRedirect("Login.html");
+		if(user==null)response.sendRedirect("Login.html");
 	}else{
 		System.out.print("la sesion es null");
 		response.sendRedirect("Login.html");
@@ -51,8 +51,16 @@
     <ul class="nav">
       <li class="botonEnlace" id="AccessBingo">Acceso Bingo</li>
 	  <li class="botonEnlace" id="botonRanking">Ranking Bingo</li>
-	  <li class="botonEnlace" id="compraBonos">Compra Bonos</li>	  
-	  <li class="botonEnlace" id="botonEstadisticas">Estadisticas</li>
+	  <li class="botonEnlace" id="compraBonos">Compra Bonos</li>
+	<%if(user.equals("super")){%>
+		<li class="botonEnlace" id="volcadoBonos">Checkeo Bonos
+		       <select name="idSala" id="idSala" >
+       				<option value="sala1" selected>Sala1</option>
+      			</select></td>
+	   <li class="botonEnlace" id="botonJugadores">Jugadores</li> 
+	   <li class="botonEnlace" id="botonCartones">Cartones</li>  	        			
+	<% }%>  
+
 	  <li class="botonEnlace" id="botonCerrarSesion">CerrarSesion</li>               
     </ul>
   <!-- end .sidebar1 -->
@@ -72,9 +80,8 @@
 </div>
 
   <footer>
-    <address>
-      Contenido de dirección
-    </address>
+    <address id="resultMonitor">
+      Preparado...</address>
   </footer>
   <!-- end .container --></div>
 <input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">  

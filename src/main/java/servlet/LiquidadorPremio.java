@@ -30,7 +30,6 @@ public class LiquidadorPremio {
 		this.gestorSesions=gs;
 	}
     public boolean liquidacionPremios(String sala){
-		//ESto deberia ir en otra fase separada
 		//Tratamiento comprobacion peticiones premios
     	boolean hayPremios=false;
     	pilaAnunciaPremios= gestorSesions.getPilaAnunciaPremios(sala);
@@ -50,7 +49,7 @@ public class LiquidadorPremio {
 					if(premioCobrado>0){
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
-						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+", enhorabuena");
+						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+", enhorabuena " +pp.getUserbean().getUsername());
 					}
  					
 					hayPremios=true;
@@ -141,7 +140,11 @@ public class LiquidadorPremio {
 	
     private boolean realizarLiquidacionTransaccion(float valorPremio, UserBean myUser){
         boolean okeyCompra=false;
-        float saldoRestante = myUser.getSaldo() + valorPremio;
+        UtilDatabase udatabase = new UtilDatabase();
+        float saldoActual = new Float(udatabase.consultaSQLUnica("Select Saldo from usuarios Where User = '"+myUser.getUsername()+"'"));
+        /////////////////////////////////////////////////////
+        float saldoRestante = saldoActual + valorPremio;
+        /////////////////////////////////////////////////////
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
         simbolos.setDecimalSeparator('.');
         DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);

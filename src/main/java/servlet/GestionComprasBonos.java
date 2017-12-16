@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import com.google.gson.Gson;
 
@@ -28,42 +31,105 @@ public class GestionComprasBonos extends HttpServlet {
 
     @Override
     protected synchronized void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession httpSessionAComparar = req.getSession(false);
+        HttpSession hS = req.getSession(false);
         UserBean user_ = null;
-        PocketBingo pocketBingoSala= null;
+
+        String comando = req.getParameter("comando");
         //Identificacion de la sesion de usuario//
-        if(httpSessionAComparar!=null){
-            String usuario = req.getParameter("usuario");
-            String sala = req.getParameter("sala");
-            int nBonus = new Integer(req.getParameter("nBonus"));
+        if(hS!=null ){
+        	if(comando.equals("PeticionCompraBonus")){
+        		String usuario = req.getParameter("usuario");
+        		String sala = req.getParameter("sala");
+        		String sBonus = req.getParameter("nBonus");
+        		if(sBonus.contains(",")){
+        			sBonus=sBonus.replaceAll(",", ".");
+        			System.out.println("sBonus="+sBonus);
+        		}
+        
+        		float nBonus = new Float(sBonus);
 
-            user_= gestorSesions.dameUserBeansPorUser(usuario, "jugador", httpSessionAComparar.getId());
-            if(user_==null){
-                String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
-                resp.getWriter().print(mensaje);
-                return;
-            }
-            
-            pocketBingoSala= gestorSesions.getJugadasSalas(user_.getSalonInUse());
- 
-            //Comprobacion estado Pocket Bingo en "Finalized"
- 
- 
-           	//realizarCompraTransaccion();
-           	registroPeticionCompraCartones(user_,nBonus,sala);
+        		user_= gestorSesions.dameUserBeansPorUser(usuario, "jugador", hS.getId());
+        		if(user_==null){
+        			String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
+        			resp.getWriter().print(mensaje);
+        			return;
+        		}
 
-        	 
-         	resp.setContentType("application/json");
-         	resp.setCharacterEncoding("UTF-8");           	
-            String mensaje="!Solicitud de peticion compra cartones, efectuada¡";
-			 String json = new Gson().toJson(mensaje);	    	
-			 resp.getWriter().write(json);
-//
-       		System.out.println(gestorSesions.getPeticionBonus().toString()+"Solicitud ok");
-            
+        		//realizarCompraTransaccion();
+        		registroPeticionCompraBonus(user_,nBonus,sala);
+  	 
+        		resp.setContentType("application/json");
+        		resp.setCharacterEncoding("UTF-8");           	
+        		String mensaje="!Solicitud de peticion compra cartones, efectuada¡";
+        		String json = new Gson().toJson(mensaje);	    	
+        		resp.getWriter().write(json);
+        		System.out.println(gestorSesions.getPeticionBonus().toString()+"Solicitud ok");
+        	}
+        	
+           	if(comando.equals("VolcarListadoCompraBonus")){ 
+           		String sala = req.getParameter("sala");
+           		
+        		resp.setContentType("application/json");
+        		resp.setCharacterEncoding("UTF-8");           	
+        		String mensaje = volcarRegistroPeticionesBonus(sala);
+        		String json = new Gson().toJson(mensaje);	    	
+        		resp.getWriter().write(json);
+        		//System.out.println(gestorSesions.getPeticionBonus().toString()+"Volcado hecho:\n"+mensaje);           		
+           	}
+           	if(comando.equals("RealizarPagoCompraBonus")){ 
+           		if(hS.getAttribute("usuario")==null){
+        			String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
+        			resp.getWriter().print(mensaje);
+        			return;
+        		}           		
+           		String sala = req.getParameter("sala");
+           		String idBonus = req.getParameter("idBonus");
+           		
+        		resp.setContentType("application/json");
+        		resp.setCharacterEncoding("UTF-8");           	
+        		String mensaje = realizarPagoCompraBonus(idBonus);
+        		String json = new Gson().toJson(mensaje);	    	
+        		resp.getWriter().write(json);
+        		//System.out.println(gestorSesions.getPeticionBonus().toString()+"Volcado hecho:\n"+mensaje);           		
+           	}
+           	if(comando.equals("BorrarRegistroPeticionBonus")){
+           		String idBonus = req.getParameter("idBonus");
+           		Long lIdtransaccion = new Long(idBonus);
+           		gestorSesions.borraPeticionBonus(lIdtransaccion);
+        		String mensaje = "Linea registro de Bonus borrada para id="+idBonus;
+        		String json = new Gson().toJson(mensaje);	    	
+        		resp.getWriter().write(json);          		
+           	}
+           	
+
         }
     }
-    private void registroPeticionCompraCartones(UserBean myUser, float nBonus, String sala){
+    public String volcarRegistroPeticionesBonus(String sala){
+    	Set<Long> keysHora =gestorSesions.getPeticionBonus();
+    	Iterator<Long> itLongHora = keysHora.iterator();
+    	UtilDatabase udatabase = new UtilDatabase();
+    	String volcado="<table width='97%' border='1' align='center' class='Tabla'><tr bgcolor='#003399'>";
+    	volcado+="<td width=\"50%\" height=\"72\" class=\"Cabecera\" >Peticiones compra Bonus Pendientes</td>";
+    	volcado+="<td width=\"25%\"><p align=\"center\"><input type=\"button\" width=\"30px\" name=\"Mostrar Peticiones\" value=\"Mostrar Peticiones\" onclick=\"volcarPeticionesBonus()\"></p></td>";
+    	volcado+="<td ><label class=\"soloCaja\" >CAJA : </label ><input  class=\"Caja\" type=\"text\" value='"+udatabase.consultaSQLUnica("Select SaldoCaja From caja")+"'/p></td></tr>";
+    	volcado+="<tr><td class=\"Cabecera\">Usuario</td><td  class=\"Cabecera\">Bonus</td> <td  class=\"Cabecera\">Checking</td></tr>";
+    	while(itLongHora.hasNext()){
+    		
+    		Long hora = (Long)itLongHora.next();
+    		PeticionBonus pBonus = gestorSesions.getPeticionBonus(hora);
+    		if(pBonus.getSala().equals(sala)){
+    			UserBean uBean = pBonus.getUserbean();
+    			float bonus = pBonus.getBonus();
+    			volcado+="<tr class='fondosLineas'><td  class='otro'><label class='AIzquierdas'>"+uBean.getUsername()+"</label></td>";
+    		    volcado+="<td class='otro'><label class='AIzquierdas'>"+pBonus.getBonus()+"</label></td>";
+    		    volcado+="<td class='otro'><input type='button' value='Pagado' onclick=\"realizarPagoBonus('"+hora+"')\"><label> </label><input type='button' value='Eliminar' onclick=\"borrarRegistroPeticionBonus('"+hora+"')\"></td></tr>";
+    		
+    		}
+    	}
+    	return volcado;
+    	
+    }
+    private void registroPeticionCompraBonus(UserBean myUser, float nBonus, String sala){
     	//Se puede incluir en un vector en gestorSession, las peticiones de compra Bonus, para cuando pueda el super
     	//atender una lista de peticiones con usuario,nBonus de compra confirmando entonces la compra efectuada
     	PeticionBonus pbonus = new PeticionBonus();
@@ -76,30 +142,55 @@ public class GestionComprasBonos extends HttpServlet {
     	
     }
 
-    private boolean realizarCompraBonos(float precioCompra, UserBean myUser){
-        boolean okeyCompra=false;
+    private String realizarPagoCompraBonus(String idTransaccion){
+    	Long lIdtransaccion = new Long(idTransaccion);
+    	PeticionBonus pb = gestorSesions.getPeticionBonus(lIdtransaccion);
+    	String result="";
+    	boolean okeyCompra=false;
+        float precioCompra = pb.getBonus();
+        UserBean ub = pb.getUserbean();
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+        UtilDatabase udatabase = new UtilDatabase();
         //Formateador de datos decimales. Limitado a dos digitos.
         simbolos.setDecimalSeparator('.');
         DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
         ///////////////////////////////////////////////////////
-        float saldoRestante = myUser.getSaldo() + precioCompra;
+        float saldoRestanteUser = ub.getSaldo() + precioCompra;
+        float valorActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
+        float valorFinalCaja = valorActualCaja + precioCompra;
         ///////////////////////////////////////////////////////
-        String consultaUsuario = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
-        String consultaCaja = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
+        String consultaUsuario = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestanteUser)+" WHERE User = '"+pb.getUserbean().getUsername()+"'";
+        String consultaCaja = "UPDATE caja SET SaldoCaja = "+formateador.format(valorFinalCaja);
 
 
-        ///// TRansaccion sobre Saldo y Caja
-        UtilDatabase udatabase = new UtilDatabase();
-        int result=udatabase.updateQueryCompraBonus(consultaUsuario,consultaCaja);
-        if(result>0){
-        	myUser.setSaldo(new  Float(formateador.format(saldoRestante)));
-        	//Actualizar saldo Caja
-        	//Enviar un email de confirmacion
-        	okeyCompra=true;
+        //Transaccion sobre Saldo y Caja
+ 
+        int updates=udatabase.updateQueryCompraBonus(consultaUsuario,consultaCaja);
+        if(updates>0){
+
+        	//Actualizar datos de saldo de usuario en tiempo real
+        	ub.setSaldo(new  Float(formateador.format(saldoRestanteUser)));
+        	try {
+				Session session = ub.getSesionSocket();
+				if(session==null){
+					
+				}else{
+						session.getBasicRemote().sendText("RefreshDatosCartones");
+						session.getBasicRemote().sendText("! Saldo Actualizado ¡");
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("Channel is closed");
+			}
+        	//borrar registro Peticion Bonus
+        	gestorSesions.borraPeticionBonus(lIdtransaccion);
+
+        	//Actualizar saldo Caja(pendiente)
+        	//Enviar un email de confirmacion(Pendiente)
+        	result="TransaccionOK";
         }
         
-        return okeyCompra;
+        return result;
     }
 
 

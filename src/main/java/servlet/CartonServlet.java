@@ -18,19 +18,20 @@ public class CartonServlet extends HttpServlet{
 	 */
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
+		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
 		if(mySession!=null){
 			System.out.println("la mySesion "+ mySession.getId());
 			//Comprobacion de HttpSession registrada aqui
 			
 			user = req.getParameter("usuario");//
+			if(mySession.getAttribute("usuario")==null) res.sendRedirect(url); //logged-in page // 
 			sala = req.getParameter("sala");
 			perfil =req.getParameter("perfil");
 			
 		}else{
 			System.out.print("la sesion es null");
-	        String url="Login.html";
+	        
 	        res.sendRedirect(url); //logged-in page // 
 	        return;
 		}
@@ -130,7 +131,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("</table>\r\n");
 	      out.write("</header>\r\n");
 	      out.write("<article id=\"innerHTMLCartones\">\r\n");
-	      out.write("\t\t<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->\r\n");
+	      out.write("\t\t<!--Espacio para cartones via Servlet (WriterCartonesServlet)  -->\r\n");
 	      out.write("</article>\r\n");
 	      out.write("</div>\r\n");
 	      out.write("<div id=\"cartones\" title=\"Compra de cartones\"> \r\n");

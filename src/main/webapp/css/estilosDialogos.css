@@ -1,7 +1,6 @@
 .Cabecera {
 	font-weight: bolder;
 	text-align: center;
-	text-decoration: underline;
 	background-color: #09F;
 	color: #FFF;
 	border-top-color: #00F;
@@ -9,6 +8,7 @@
 	border-bottom-color: #00F;
 	border-left-color: #00F;
 	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: underline;
 }
 .BotonRequest {
 	display: none;
@@ -35,13 +35,14 @@
 	border-bottom-color: #96C;
 	border-left-color: #96C;
 	background-color: #000;
+	text-align: center;
 }
 .fondosLineas {
 }
 .otro {
 	text-align: left;
 	position: relative;
-	background-color: #FFD69D;
+	background-color: #C6D580;
 	border-top-color: #00F;
 	border-right-color: #00F;
 	border-bottom-color: #00F;
@@ -53,8 +54,6 @@
 	float: none;
 	display: inherit;
 }
-.Tabla tr td p label {
-	color: #FFF;
 	
 .botonSubmit {
 	text-align: center;
@@ -81,3 +80,24 @@
 	background-color: #000;
 }
 	
+.Caja {
+	width: 50%;
+	background-color: #000;
+	color: #9F0;
+	font-size: 16px;
+}
+.soloCaja {
+	color: #FFF;
+}
+.cantidadCartones {
+	background-color: #F13C0E;
+	float: none;
+	font-size: 24px;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+.padding0 {
+
+
+}

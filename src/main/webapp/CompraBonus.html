@@ -32,9 +32,11 @@
 }
 .TextoArea {
 	padding: 30px;
+	text-align: justify;
 }
 </style>
-  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<link href="css/estilosDialogos.css" rel="stylesheet" type="text/css">
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
   <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="javascript/utilDialogos.js"></script>
 
@@ -47,8 +49,8 @@
 			<td colspan="2" class="rotulo">Solicitud compra Bonus Bingo Home</td>
           </tr>
 		  <tr>
-		    <td width="50%" class="TextLogin">Cantidad Solicitada :
-	        <td width="50%"><input name="usuario"  type="text" id="nBonus" size="20" maxlength="20"> 
+		    <td width="50%" class="TextLogin">Cantidad :
+	        <td width="50%"><input name="usuario"  type="text" class="Caja" id="nBonus" size="20" maxlength="20" value="0"> 
 	        &euro; </td>
 	      </tr>
           <tr>

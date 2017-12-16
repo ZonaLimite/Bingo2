@@ -1,8 +1,14 @@
 package servlet;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -37,9 +43,47 @@ public class PocketBingo implements Serializable {
     private String porcientoBingo="80";
     private String porcientoCantaor="0";
     private int delay = 1500;
+    private String nCartonesManuales="0"; 
     
-    private  Vector<UserBean> usuariosManualesEnJuego = new Vector<UserBean>();
-	private String nCartonesManuales="0"; 
+    //Mapa de Asignacion cartones a usuarios manuales
+    private Map<String,Integer>  mapaUsuarioCarton= new LinkedHashMap<>();
+    
+    
+    public void AsignaNCartonesA(String usuario, int nCartones){
+    	mapaUsuarioCarton.put(usuario, nCartones);
+    }
+    public int dimeCartonesDe(String usuario){
+    	return mapaUsuarioCarton.get(usuario);
+    	
+    }
+    public int calculaNcartonesManuales(){
+    	int nCM=0;
+    	Collection<Integer> c = mapaUsuarioCarton.values();
+    	Iterator<Integer> itC = c.iterator();
+    	while(itC.hasNext()){
+    		nCM+=itC.next();
+    	}
+    	this.setnCartonesManuales(""+nCM);
+    	return nCM;
+    }
+    
+	public Vector<String> getUsuariosManualesEnJuego() {
+	
+		Set<String> setUsuarios = mapaUsuarioCarton.keySet();
+		Iterator<String> itUsuarios = setUsuarios.iterator();
+		Vector<String> v = new Vector<String>();
+		while(itUsuarios.hasNext()){
+			v.add(itUsuarios.next());
+		}
+		return v;
+	}
+	public void removerUsuariosManualesEnJuego(String sEnJuego) {
+		this.mapaUsuarioCarton.remove(sEnJuego);
+	}
+	public void añadirUsuariosManualesEnJuego(String sEnJuego) {
+		this.mapaUsuarioCarton.put(sEnJuego, 0);
+	}
+	
 	
 	
     

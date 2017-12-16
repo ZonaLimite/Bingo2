@@ -239,7 +239,7 @@ private UserBean userBean;
 		break;
 	
 	case "Bingo":
-		if(!pb.isLineaCantada() || pb.isBingoCantado() ||  pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Linea") || pb.getIdState().equals("PremiosRecopiladosBingo") || pb.getIdState().equals("BingoOk") || pb.getIdState().equals("EndBalls"))return;
+		if(!pb.isLineaCantada() || pb.isBingoCantado() ||  pb.getIdState().equals("ComprobandoLinea") || pb.getIdState().equals("Linea") || pb.getIdState().equals("PremiosRecopiladosBingo") || pb.getIdState().equals("BingoOk") || pb.getIdState().equals("EndBalls")|| pb.getIdState().equals("Finalized"))return;
 
 		if(gestorSesions.addPeticionPremios(userBean,"Bingo")){
 

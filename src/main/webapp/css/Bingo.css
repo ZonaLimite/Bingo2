@@ -130,7 +130,11 @@ display: block;
 	border-bottom-color: #903;
 	border-left-color: #903;
 }
-
+.labelUser {
+	font-family: "Hotel Coral Essex";
+	font-size: 14px;
+	color: #0F0;
+}
 .valorInfo {
 	color: #FFE479;
 	font-weight: bolder;
