@@ -564,8 +564,7 @@ function borrarNumerosCarton(){
 	
 }
 function creaSocket(sala){
-	var wsUri = getRootUri() + sala+"?usuario="+document.getElementById("usuario").value+"&"+
-									  "sala="+ sala + "&perfil="+document.getElementById("perfil").value;
+	var wsUri = getRootUri() + sala+"?usuario="+document.getElementById("usuario").value+"&sala="+ sala + "&perfil="+document.getElementById("perfil").value;
 	socket=new WebSocket(wsUri);
 	
 	//socket=new WebSocket("ws://localhost:8080/wildfly/sala1");by Example
