@@ -580,14 +580,14 @@ function getRootUri() {
 	    
 		if(document.location.hostname=="localhost"){
 			nameEndPoint = "/wildfly-1.0/";//haber
-			port="8080";
+			port=":8080";
 		}
 		else{
 			nameEndPoint="/";
-			port="8000";
+			port="";
 		}
 		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
-        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + nameEndPoint;
+        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) +port+nameEndPoint;
     
 }
 
