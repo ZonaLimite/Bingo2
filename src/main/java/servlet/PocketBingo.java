@@ -48,10 +48,28 @@ public class PocketBingo implements Serializable {
     //Mapa de Asignacion cartones a usuarios manuales
     private Map<String,Integer>  mapaUsuarioCarton= new LinkedHashMap<>();
     
+    //Mapa de preferencias cartones de usuario
+    private Map<String,Integer>  mapaPrefsCarton= new LinkedHashMap<>();
+    
+    public void AsignaPreferCarton(String usuario, int nCartones){
+    	mapaPrefsCarton.put(usuario, nCartones);
+    }
     
     public void AsignaNCartonesA(String usuario, int nCartones){
     	mapaUsuarioCarton.put(usuario, nCartones);
     }
+    
+    public int dimePreferCartonDe(String usuario){
+    	return mapaPrefsCarton.get(usuario);
+    	
+    }
+    public void resetCartonesUsuariosOffLine(){
+    	Iterator<String> itKeysOffLine = mapaUsuarioCarton.keySet().iterator();
+    	while(itKeysOffLine.hasNext()){
+    		mapaUsuarioCarton.put(itKeysOffLine.next(), 0);
+    	}
+    }
+    
     public int dimeCartonesDe(String usuario){
     	return mapaUsuarioCarton.get(usuario);
     	
@@ -77,6 +95,20 @@ public class PocketBingo implements Serializable {
 		}
 		return v;
 	}
+	public Vector<String> getUsuariosManualesEnJuegoConCartones() {
+		
+		Set<String> setUsuarios = mapaUsuarioCarton.keySet();
+		Iterator<String> itUsuarios = setUsuarios.iterator();
+		Vector<String> v = new Vector<String>();
+		while(itUsuarios.hasNext()){
+			String usuario = itUsuarios.next();
+			if(mapaUsuarioCarton.get(usuario)>0)v.add(usuario);
+			
+		}
+		return v;
+	}	
+	
+
 	public void removerUsuariosManualesEnJuego(String sEnJuego) {
 		this.mapaUsuarioCarton.remove(sEnJuego);
 	}

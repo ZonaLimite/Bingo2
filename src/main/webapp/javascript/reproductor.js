@@ -94,6 +94,7 @@ var comboTexto;
 var labelTexto;
 var comandoHandshake;
 
+
 function iniciar() {
 	salaInUse = document.getElementById("sala");
 	rangos=eval(nombreRangos);
@@ -211,27 +212,30 @@ function iniciar() {
 	//Manejo JQuery//
 	
 	//Plantilla JQuery para Dialogo Preguntar Premios cartones//
-	
+	$( "#spinner_milenas" ).spinner();
 	$( "#spinner_centenas" ).spinner();
 	$( "#spinner_decenas" ).spinner();
 	$( "#spinner_unidades" ).spinner();
-
+	$( "#spinner_milenas" ).attr("readonly","true");
 	$("#spinner_centenas").attr("readonly","true");
 	$("#spinner_decenas").attr("readonly","true");
 	$("#spinner_unidades").attr("readonly","true");
 	$( "#premiosForm" ).dialog({ autoOpen: false ,
 								 modal: true,
 								 height: 'auto',
-								 width: 360});
+								 width: 450});
 	$( "#premiosForm" ).dialog({
 		  create: function( event, ui ) {
 			  event.preventDefault();
+			  
+			  
 		  }
 	});
 	
 	$( "#premiosForm" ).dialog({
 		open: function( event, ui ) {
 			  event.preventDefault();
+			  fillPlayersOffLine();
 			  $("#feedback").text("Indique numero carton premiado-->");
 		  }
 		});
@@ -245,11 +249,14 @@ function iniciar() {
 		      },
 		      click: function() {
 		
-				  nRefCarton = ""+$( "#spinner_centenas" ).spinner( "value" )+
+				  nRefCarton = ""+
+				  $( "#spinner_milenas" ).spinner( "value" )+
+				  $( "#spinner_centenas" ).spinner( "value" )+
   		          $( "#spinner_decenas" ).spinner( "value" )+
   		          $( "#spinner_unidades" ).spinner( "value" );
 				  document.getElementById("nRef").value=nRefCarton;
-					comandoHandshake=document.getElementById("comandoHandshake").value;
+				  comandoHandshake=document.getElementById("comandoHandshake").value;
+				  document.getElementById("jugador").value =document.getElementById("playersOffLine").value; 
 				
 		    	  
 		    	  $.post("Handshake",$( "#requestPremios" ).serialize(), function(responseText){
@@ -420,6 +427,39 @@ function iniciar() {
 		});
 		bucle3 = setInterval(function(){ mostrarFecha() }, 1000);
 
+}
+function fillPlayersOffLine(){
+	//servlet de servicio --->GestionUsuariosServlet
+	var params = new Object();
+	var selectPlayersOffLine=document.getElementById("playersOffLine");
+	params.comando="GetPlayersOffLine";
+	params.sala=document.getElementById("idSala").value;
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestionUsuarios",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			long = selectPlayersOffLine.length; 
+			for(i=0;i<long;i++){
+				selectPlayersOffLine.options[0] = null;
+			}
+			for(i=0;i<data.length;i++){
+					
+			        var option = document.createElement("option"); //Creamos la opcion
+			        option.label = data[i]; //Metemos el texto en la opción
+			        option.value = data[i]; //Metemos el value en la opción
+			        
+			        selectPlayersOffLine.appendChild(option); //Metemos la opción en el select
+			    
+			}
+			
+
+	});
+	return
+	
 }
 function fullscreen(e){
     if (e.webkitRequestFullScreen) {
@@ -685,16 +725,16 @@ function getRootUri() {
 	    
 		if(document.location.hostname=="localhost"){
 			nameEndPoint = "/wildfly-1.0/";//haber
-			port="8080";
+			port=":8080";
 		}
 		else{
 			nameEndPoint="/";
-			port="8000";
+			port="";
 		}
 		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
         /*return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
                 (document.location.port == "" ? "" : document.location.port) + nameEndPoint;*/
-        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ nameEndPoint;
+        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
     
 }
 
@@ -714,8 +754,8 @@ function refreshDatosCartones(){
 	// el manejador (Case DATOSCARTONES), ya con las variables actualizadas
 	// se visualzia el dato en la tabla llamando a visualizaDatosCartones.
 	socket_send("JSON#GET_DATOS_CARTONES");
-	
 }
+
 function visualizaDatosCartones(){
 	sumaCaja = precioCarton*nCartones;
 	sumaTantos = porCientoLinea+porCientoBingo+porCientoCantaor;
@@ -915,6 +955,8 @@ function recibido(e){
 		case "WarningFinalizando":
 			    show_InMessage("Atencion, finalizando partida; ¿Hay mas Bingos?","blink");
 			    break;
+		case "requestRefreshDatos":
+					socket_send(comanda)
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);
 				nCartones=parseInt(arrayMessages[2]);

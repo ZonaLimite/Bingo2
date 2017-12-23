@@ -25,7 +25,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		PrintWriter pw = null;
 		String comando = req.getParameter("comando");
-
+		
 		
 		if(comando.equals("MostrarLogin")){
 		    res.setContentType("text/html");
@@ -35,7 +35,7 @@ public class HtmlPortalServlet extends HttpServlet{
 		if(comando.equals("MostrarUsuarios")){
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");
-			res.sendRedirect("PlantillaListaJugadores.html");
+			res.sendRedirect("GamerStatus.jsp");
 		}		
 		if(comando.equals("MostrarNuevoUsuario")){
 		    res.setContentType("text/html");
@@ -45,7 +45,8 @@ public class HtmlPortalServlet extends HttpServlet{
 		if(comando.equals("Solicitud Bonus")){
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");
-			res.sendRedirect("CompraBonus.html");
+		    String usuario = req.getParameter("usuario");
+			res.sendRedirect("CompraBonus.jsp?usuario='"+usuario+"'");
 		}
 		if(comando.equals("VolcadoPeticionesBonus")){
 			//res.sendRedirect("PlantillaVolcadoBonus.jsp");}
@@ -86,8 +87,23 @@ public class HtmlPortalServlet extends HttpServlet{
 				e.printStackTrace();
 			}
 		    writeHTMLConfiguradorCartones(pw,sala);	 
+		}
+		if(comando.equals("MostrarGamerStatus")){
+			
+		    res.setContentType("text/html");
+		    res.setCharacterEncoding("UTF-8");
+		    //res.sendRedirect("ConfiguracionCartonesPlaying.jsp");
+		  
+			String sala = req.getParameter("sala");
+		    try {
+				pw= res.getWriter();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    writeHTMLGamerStatus(pw, sala );
 		}		
-
+		
 	}
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String comando = req.getParameter("comando");
@@ -104,6 +120,7 @@ public class HtmlPortalServlet extends HttpServlet{
 		Vector<String[]> vectorResultsSQL1 = null;
 		PocketBingo pb = gestorSesions.getJugadasSalas(sala);
 		Vector<String> vJugadores = pb.getUsuariosManualesEnJuego();
+		
         //arrayCampos[1] = 1.User
 	  vectorResultsSQL1 = udatabase.dameVectorResultsSQL("Select User From usuarios Order by idUsuarios", 1);
 
@@ -133,13 +150,13 @@ public class HtmlPortalServlet extends HttpServlet{
         		String user = array[0];	
         		
       out.write("");
-      out.write("        \t\t<option value=\"");
+      out.write("        <option value=\"");
       out.print(user );
       out.write('"');
       out.write('>');
       out.print(user );
       out.write("</option>");
-      out.write("      \t  ");
+      out.write("        ");
 } 
       out.write("");
       out.write("      </select>");
@@ -150,9 +167,9 @@ public class HtmlPortalServlet extends HttpServlet{
       out.write("      </p>");
       out.write("   ");
       out.write("    </td>");
-      out.write("\t<td >");
-      out.write("\t  <label class=\"soloCaja\" >SALA :</label >");
-      out.write("\t");
+      out.write("<td >");
+      out.write("  <label class=\"soloCaja\" >SALA :</label >");
+      out.write("");
       out.write("    <input  class=\"Caja\" type=\"text\" Id=\"sala\" value=\"sala1\"/p></td>    ");
       out.write("    </tr>");
       out.write("  <tr>");
@@ -183,6 +200,8 @@ public class HtmlPortalServlet extends HttpServlet{
 	private void writeHTMLConfiguradorCartones(PrintWriter out, String sala){
 		 Vector<String> jEnJuego =null;
 		 UtilDatabase udatabase = new UtilDatabase();	      out.write("<!doctype html>");
+	    
+	      out.write("<!doctype html>");
 	      out.write("<html>");
 	      out.write("<head>");
 	      out.write("<meta charset=\"utf-8\">");
@@ -190,75 +209,172 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("<link href=\"css/estilosDialogos.css\" rel=\"stylesheet\" type=\"text/css\">");
 	      out.write("<script src=\"javascript/utilDialogos.js\"></script>");
 	      out.write("</head>");
-	      out.write("");
+	    
 	      out.write("<body>");
-	      out.write("");
 	      out.write("<table id=\"resultLines\" width=\"97%\" border=\"1\" align=\"center\" class=\"Tabla\">");
-	      out.write("  <tr bgcolor=\"#003399\">");
-	      out.write("    <td  width=\"50%\" height=\"72\" class=\"Cabecera\" ><p>Asignacion Cartones</p>");
+	      out.write("  <tr bgcolor=\"#003399\" id=\"fila\">");
+	      out.write("    <td  width=\"43%\" height=\"72\" class=\"Cabecera\" ><p>Asignacion Cartones</p>");
 	      out.write("      <form name=\"form1\" method=\"post\" action=\"\">");
-	      out.write("        <select class=\"Caja\" name=\"OnLinePlayers\" id=\"OnLinePlayers\">");
+	      out.write("        <select  onChange=\"valorCombo(this.value)\" value=\"\" class=\"Caja\" name=\"OnLinePlayers\" id=\"OnLinePlayers\">");
 	      out.write("          ");
-	      	jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
-	      		
-	        for(int i=0; i < jEnJuego.size();i++){
-	        String user= jEnJuego.elementAt(i);
-	        		
+		  jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+		      		
+		        for(int i=0; i < jEnJuego.size();i++){
+		        String user= jEnJuego.elementAt(i);
+		        		
+		      out.write("");
+		      out.write("        <option value=\"");
+		      out.print(user );
+		      out.write('"');
+		      out.write('>');
+		      out.print(user );
+		      out.write("</option>");
+
+		} 
 	      out.write("");
-	      out.write("        \t\t<option value=\"");
-	      out.print(user );
-	      out.write('"');
-	      out.write('>');
-	      out.print(user );
-	      out.write("</option>");
-
-	} 
-
 	      out.write("      </select>");
 	      out.write("      </form>");
 	      out.write(" ");
-
-	      out.write("    <td width=\"25%\"><table width=\"100%\" border=\"1\">\r\n");
-	      out.write("  <tr>\r\n");
-	      out.write("    <td><input type=\"button\" class=\"cantidadCartones\" value=\"1\"></td>\r\n");
-	      out.write("    <td><input type=\"button\" class=\"cantidadCartones\" value=\"2\"></td>\r\n");
-	      out.write("    <td><input type=\"button\" class=\"cantidadCartones\" value=\"3\"></td>\r\n");
-	      out.write("  </tr>\r\n");
-	      out.write("  <tr>\r\n");
-	      out.write("    <td><input type=\"button\" class=\"cantidadCartones\" value=\"4\"></td>\r\n");
-	      out.write("    <td><input type=\"button\" class=\"cantidadCartones\" value=\"5\"></td>\r\n");
-	      out.write("    <td><input type=\"button\" class=\"cantidadCartones\" value=\"6\"></td>\r\n");
-	      out.write("\r\n");
-	      out.write("  </tr>\r\n");
-	      out.write("</table>\r\n");
-	      out.write("</td>\r\n");
-	      
-	      out.write("<td >");
-	      out.write("<label class=\"soloCaja\" >Precio Carton:</label >");
-	      out.write("<input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\"1 €\"/p></td>");
+	      out.write("    <td colspan=\"2\"   width=\"42%\"><table width=\"100%\" border=\"1\">");
+	      out.write("  <tr>");
+	      out.write("    <td><input onClick=\"valorCarton('1')\" type=\"button\" class=\"cantidadCartones\" value=\"1\"></td>");
+	      out.write("    <td><input onClick=\"valorCarton('2')\" type=\"button\" class=\"cantidadCartones\" value=\"2\"></td>");
+	      out.write("    <td><input onClick=\"valorCarton('3')\" type=\"button\" class=\"cantidadCartones\" value=\"3\"></td>");
+	      out.write("  </tr>");
+	      out.write("  <tr>");
+	      out.write("    <td><input onClick=\"valorCarton('4')\" type=\"button\" class=\"cantidadCartones\" value=\"4\" ></td>");
+	      out.write("    <td><input onClick=\"valorCarton('5')\" type=\"button\" class=\"cantidadCartones\" value=\"5\"></td>");
+	      out.write("    <td><input onClick=\"valorCarton('6')\" id=\"valorCarton6\" type=\"button\" class=\"cantidadCartones\" value=\"6\"></td>");
+	      out.write("");
+	      out.write("  </tr>");
+	      out.write("</table>");
+	      out.write("</td>");
+	      out.write("    ");
+	      out.write("<td  width=\"15%\">");
+	      out.write("  <label class=\"soloCaja\" >Precio Carton<br>");
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+gestorSesions.getJugadasSalas(sala).getPrecioCarton()+" €\"/p>");
+	      out.write("  <br>");
+	      out.write("  <input type=\"button\" onclick=\"comprarTodosLosCartones()\" class=\"soloRojo\" name=\"Quitar2\" id=\"Quitar2\" value=\"Comprar Todos\">");
+	      out.write(" </td>    ");
 	      out.write("    </tr>");
 	      out.write("  <tr>");
 	      out.write("    <td class=\"Cabecera\">Usuarios en Juego</td>");
-	      out.write("    <td  class=\"Cabecera\">Saldo</td>");
+	      out.write("    <td  class=\"Cabecera\">Saldo (€)</td>");
 	      out.write("    <td  class=\"Cabecera\">Cartones</td>");
+	      out.write("    <td  class=\"Cabecera\">Comprar</td>");
 	      out.write("  </tr>");
-	      
+	     // out.write("<----------------------------------------------------------------------->");
+	      	jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+      		
 	        for(int i=0; i < jEnJuego.size();i++){
-	        String usuarioEnJuego= jEnJuego.elementAt(i);	      
-	      out.write("<tr class=\"fondosLineas\" >");
+	        	String usuarioEnJuego = jEnJuego.elementAt(i);
+	        
+	      out.write("<tr onclick=\"valorCombo('"+usuarioEnJuego +"')\" class=\"fondosLineas\" id=\""+usuarioEnJuego +"\">");
 	      out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+usuarioEnJuego+"</label></td>");
-	      out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+usuarioEnJuego+"'")+"€</label></td>");
 	      out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">");
-	      out.write("    <input type=\"button\" name=\"Quitar\" id=\"Quitar\" value=\"Comprar\"> ");
-	      out.write(gestorSesions.getJugadasSalas(sala).dimeCartonesDe(usuarioEnJuego)+"</label></td>");
+	      out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+usuarioEnJuego+"'")+" </label></td>");
+	      out.write("    <td class=\"otroCentro\">"+gestorSesions.getJugadasSalas(sala).dimeCartonesDe(usuarioEnJuego)+"<span class=\"AIzquierdas\">");
+	      out.write("      ");
+	      out.write("    </span></td>");
+	      out.write("    <td class=\"otroCentro\">");
+	      //gestorSesions.getJugadasSalas(sala).AsignaPreferCarton(usuarioEnJuego, 1);
+	      out.write("      <input type=\"button\"  class=\"soloRojo\" onclick=\"comprarCartones('"+usuarioEnJuego+"','"+gestorSesions.getJugadasSalas(sala).dimePreferCartonDe(usuarioEnJuego)+"')\"  value=\"Comprar "+gestorSesions.getJugadasSalas(sala).dimePreferCartonDe(usuarioEnJuego)+"\">");
+	      out.write("   </td>");
 	      out.write("</tr>");
 	      }
-	      
+	      //out.write("<----------------------------------------------------------------------->");
 	      out.write(" ");
 	      out.write("</table>");
 	      out.write("");
 	      out.write("</body>");
-	      out.write("</html>");		
+	      out.write("</html>");
+	}
+	private void writeHTMLGamerStatus(PrintWriter out, String sala){
+		  Vector<String> jEnJuego =null;	
+		  UtilDatabase udatabase = new UtilDatabase();
+			//arrayCampos[1] =1.User
+			String vCaja = udatabase.consultaSQLUnica("Select SaldoCaja From caja");
+
+	      out.write("\r\n");
+	      out.write("<!doctype html>\r\n");
+	      out.write("<html>\r\n");
+	      out.write("<head>\r\n");
+	      out.write("<meta charset=\"utf-8\">\r\n");
+	      out.write("<title>Documento sin título</title>\r\n");
+	      out.write("<link href=\"css/estilosDialogos.css\" rel=\"stylesheet\" type=\"text/css\">\r\n");
+	      out.write("<script src=\"javascript/utilDialogos.js\"></script>\r\n");
+	      out.write("</head>\r\n");
+	      out.write("\r\n");
+	      out.write("<body>\r\n");
+	      out.write("\r\n");
+	      out.write("<table id=\"resultLines\" width=\"97%\" border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
+	      out.write("  <tr bgcolor=\"#003399\" id=\"fila\">\r\n");
+	      out.write("    <td  width=\"50%\" height=\"72\"  ><span class=\"soloCaja\">CAJA BINGO</span>\r\n");
+	      out.write("      <form name=\"form1\" method=\"post\" action=\"\">\r\n");
+	      out.write("        <span class=\"soloCaja\">\r\n");
+	      out.write("        <input  class=\"Caja\" type=\"text\" Id=\"precioCarton2\" value=\""+vCaja+" €\"/p>\r\n");
+	      out.write("        </span>\r\n");
+	      out.write("      </form>\r\n");
+	      out.write(" \r\n");
+	      out.write("    <td colspan=\"1\">\r\n");
+	      out.write("      <label class=\"soloCaja\" >1 CARTON<br>\r\n");
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+gestorSesions.getJugadasSalas(sala).getPrecioCarton() +"€\"/p>\r\n");
+	      out.write("    <br></td>\r\n");
+	      out.write("   <td colspan=\"2\">\r\n");
+	      out.write("      <label class=\"soloCaja\" >TOT.CARTONES<br>\r\n");
+			int cartonesManuales = new Integer(gestorSesions.getJugadasSalas(sala).calculaNcartonesManuales());
+			int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
+			int nCartonesEnJuego = gestorSesions.dameSetCartonesEnJuego(sala).size() + cartonesManuales;
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"totalCartones\" value=\""+nCartonesEnJuego+" €\"/p>\r\n");
+	      out.write("    <br></td> \r\n");
+	      out.write("\t</tr>\r\n");
+	      out.write("  <tr>\r\n");
+	      out.write("    <td class=\"Cabecera\">USUARIOS EN JUEGO</td>\r\n");
+	      out.write("    <td width=\"30%\"  class=\"Cabecera\">SALDO</td>\r\n");
+	      out.write("    <td  class=\"Cabecera\">CARDs</td>\r\n");
+	      out.write("    <td width=\"30%\"  class=\"Cabecera\">PERFIL</td>\r\n");
+	      out.write("  </tr>\r\n");
+	      out.write("\r\n");
+	      //UsuariosManuales
+	      jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+	      for(int i=0; i < jEnJuego.size();i++){
+	    	  String user= jEnJuego.elementAt(i);
+	    	  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
+	    	  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
+	    	  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    	  
+	    	  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    	  out.write("    <td class=\"otroCentro\">"+gestorSesions.getJugadasSalas(sala).dimeCartonesDe(user)+"<span class=\"AIzquierdas\">\r\n");
+	    	  out.write("      \r\n");
+	    	  out.write("    </span></td>\r\n");
+	    	  out.write("    <td class=\"otroCentro\">"+"MANUAL"+"</td>\r\n");
+	    	  out.write("</tr>\r\n");
+	      }
+	      //Usuarios electronicos
+	      Set<UserBean> jElectronicos = gestorSesions.dameUserBeansEnPortal("jugador");
+	      Iterator<UserBean> itjElectronicos = jElectronicos.iterator();
+	     while(itjElectronicos.hasNext()){
+	    	  UserBean userbean = itjElectronicos.next();
+	    	  if(userbean.getSalonInUse().equals(sala)){
+	    		  String user= userbean.getUsername();
+	    		  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
+	    		  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
+	    		  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    		  
+	    		  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    		  out.write("    <td class=\"otroCentro\">"+userbean.getvCarton().size()+"<span class=\"AIzquierdas\">\r\n");
+	    		  out.write("      \r\n");
+	    		  out.write("    </span></td>\r\n");
+	    		  out.write("    <td class=\"otroCentro\">"+"DIGITAL"+"</td>\r\n");
+	    		  out.write("</tr>\r\n");
+	    	  }
+	     }
+	      out.write("\r\n");
+	      out.write(" \r\n");
+	      out.write("</table>\r\n");
+	      out.write("\r\n");
+	      out.write("</body>\r\n");
+	      out.write("</html>\r\n");		
 	}
 	private void writeHTMLVolcadoPeticionesBonus(PrintWriter out, String sala){
     	Set<Long> keysHora =gestorSesions.getPeticionBonus();
@@ -286,9 +402,9 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("    <td width=\"25%\">");
 	      out.write("      <p align=\"center\"><input type=\"button\" width=\"30px\" name=\"Mostrar Peticiones\" value=\"Mostrar Peticiones\" onclick=\"volcarPeticionesBonus()\"></p>");
 	      out.write("    </td>");
-	      out.write("\t<td >");
-	      out.write("\t  <label class=\"soloCaja\" >CAJA :</label >");
-	      out.write("\t");
+	      out.write("<td >");
+	      out.write("  <label class=\"soloCaja\" >CAJA :</label >");
+	      out.write("");
 	      out.write("    <input  class=\"Caja\" type=\"text\" value=\"");
 	      out.print(vCaja );
 	      out.write("\"></td>    ");

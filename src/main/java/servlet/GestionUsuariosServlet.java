@@ -1,6 +1,11 @@
 package servlet;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.inject.Inject;
@@ -10,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.jboss.logging.Logger;
 
@@ -38,6 +44,7 @@ public class GestionUsuariosServlet extends HttpServlet {
 		String password = req.getParameter("password");
 		String eMail = req.getParameter("email");
 		String comando = req.getParameter("comando");
+		
 
 	if(comando.equals("AltaUsuario")){
 	    res.setContentType("application/json");
@@ -74,6 +81,7 @@ public class GestionUsuariosServlet extends HttpServlet {
 		    
 			String sala = req.getParameter("sala");
 			gestorSesions.getJugadasSalas(sala).añadirUsuariosManualesEnJuego(usuario);
+			gestorSesions.getJugadasSalas(sala).AsignaPreferCarton(usuario, 0);
 			String HTML = HTMLTablaJugadores(sala) ;
 			String json = new Gson().toJson(HTML);	
 		    res.setContentType("text/html");
@@ -88,10 +96,132 @@ public class GestionUsuariosServlet extends HttpServlet {
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");			
 			res.getWriter().write(json);
+			triggerRefreshDatos(sala);
 		
 	}
+	if(comando.equals("AjustarPreferenciasCarton")){
+		int valorPreferenciaCarton = new Integer(req.getParameter("prefCarton"));
+		String sala = req.getParameter("sala");
+		
+		gestorSesions.getJugadasSalas(sala).AsignaPreferCarton(usuario, valorPreferenciaCarton);
+		String json = new Gson().toJson("Cartones Asignados :"+valorPreferenciaCarton +" a " +usuario);	
+	    res.setContentType("text/html");
+	    res.setCharacterEncoding("UTF-8");			
+		res.getWriter().write(json);
+	}
+	if(comando.equals("ComprarCartones")){
+		int nCarton= new Integer(req.getParameter("nCarton"));
+		String sJugador = req.getParameter("usuario");
+		String sala = req.getParameter("sala");
+		String resultMensaje="";
+		resultMensaje = transaccionCompraCartonOffLine(sJugador,sala, nCarton);
+		String json = new Gson().toJson(resultMensaje);	
+	    res.setContentType("text/html");
+	    res.setCharacterEncoding("UTF-8");			
+		res.getWriter().write(json);	        
+	}
+	if(comando.equals("GetPlayersOffLine")){
+		String sala = req.getParameter("sala");
+		Vector<String> playersConCartones = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuegoConCartones();
+		String usersOffLine[] = new String[playersConCartones.size()];
+		for(int i=0;i<playersConCartones.size();i++){
+		
+			usersOffLine[i]=playersConCartones.elementAt(i);
+		
+		}
+		String json = new Gson().toJson(usersOffLine);	
+	    res.setContentType("text/html");
+	    res.setCharacterEncoding("UTF-8");			
+		res.getWriter().write(json);
+		triggerRefreshDatos(sala);
+	}	
+	
+	if(comando.equals("ComprarTodosLosCartones")){
+		int nCarton=0;
+		String sJugador="";
+		String resultMensaje="";
+		String sala = req.getParameter("sala");
+		
+		Vector<String> jugadoresOffLine = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+		
+		Iterator<String> itKeys = jugadoresOffLine.iterator();
+		while(itKeys.hasNext()){
+			sJugador = itKeys.next();
+			nCarton = gestorSesions.getJugadasSalas(sala).dimePreferCartonDe(sJugador);
+			resultMensaje +=transaccionCompraCartonOffLine(sJugador,sala, nCarton)+ "<br>";
+		}
+		
+	    res.setContentType("text/html");
+	    res.setCharacterEncoding("UTF-8");			
+		res.getWriter().write(resultMensaje);	        
+		
 	}
 	
+	}
+	private String transaccionCompraCartonOffLine(String sJugador,String sala, int nCarton){
+		UtilDatabase udatabase = new UtilDatabase();
+		float saldoSJugador = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+sJugador+"'"));
+		float precioCarton = new Float(gestorSesions.getJugadasSalas(sala).getPrecioCarton());
+		float precioCompra = precioCarton * nCarton;
+		String resultMensaje="";
+		if(precioCompra>saldoSJugador){
+				resultMensaje="No hay suficiente Saldo para hacer la compra de cartones para "+sJugador;	
+
+		}else{
+			float saldoRestante = saldoSJugador - precioCompra;
+	        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+	        //Formateador de datos decimales. Limitado a dos digitos.
+	        simbolos.setDecimalSeparator('.');
+	        DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+
+	        String Consulta = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+sJugador+"'";
+	        System.out.println("Compra Manual carton :" +Consulta);
+	       
+	        int result=UtilDatabase.updateQuery(Consulta);
+	       
+	        if(result>0){
+	        	gestorSesions.getJugadasSalas(sala).AsignaNCartonesA(sJugador,gestorSesions.getJugadasSalas(sala).dimeCartonesDe(sJugador)+ nCarton);
+	    		resultMensaje="Cartones comprados :"+nCarton+" a " +sJugador;
+	    		triggerRefreshDatos(sala);
+	    		
+	        }
+        	
+
+		}
+		return resultMensaje;
+	}
+	private void triggerRefreshDatos(String salaInUse){
+		PocketBingo pb = gestorSesions.getJugadasSalas(salaInUse);
+		String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
+		precioCarton=pb.getPrecioCarton();
+		//Hay que distinguir entre cartones electronicos y manuales
+		//EL cuadro de Dialogo debe considerar las dos facetas
+		// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
+		// Implementado ambos tipos de datos
+	
+		int nCartones = new Integer(pb.calculaNcartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
+		porCientoLinea=pb.getPorcientoLinea();
+		porCientoBingo=pb.getPorcientoBingo();
+		porCientoCantaor=pb.getPorcientoCantaor();
+		String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
+		enviarMensajeAPerfil(construirScript,"supervisor");
+		enviarMensajeAPerfil("RefreshDatosCartones","jugador");
+	}
+	
+	private void enviarMensajeAPerfil(String textMessage,String perfil){
+		  	try {
+				Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
+				Iterator<UserBean> itBeans= myUsersbean.iterator();
+				while (itBeans.hasNext()){
+					Session sesionActiva = itBeans.next().getSesionSocket();
+					sesionActiva.getBasicRemote().sendText(textMessage);
+				}
+					//log.info("Enviando desde servidor a navegador:"+textMessage);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	}
 	private String HTMLTablaJugadores(String sala){
 		   Vector<String> vJugadores = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
 		   UtilDatabase udatabase= new UtilDatabase();

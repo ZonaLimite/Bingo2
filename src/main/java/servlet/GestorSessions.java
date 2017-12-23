@@ -238,7 +238,8 @@ import javax.websocket.Session;
 	    }
 
 	    public synchronized void resetCartones(String sala){
-                Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
+            //Borrado de cartones automaticos    
+	    	Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
                 Iterator it = usuarios.iterator();
                 while(it.hasNext()){
                     UserBean ub = (UserBean) it.next();
@@ -247,7 +248,9 @@ import javax.websocket.Session;
                         log.info("vector cartones inicializado (EndBalls) para sala"+ sala);
                     }
                 }
-            }
+	    	//Borrado de cartones OffLine
+	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
+	    }
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
                 Set<Carton> setCartones = new LinkedHashSet<>();
                   Set<UserBean> usuarios = dameUserBeans("jugador");
@@ -426,6 +429,8 @@ import javax.websocket.Session;
 	            			  log.info("Coleccionado UserBean por usuario:"+ub.getUsername() +" y perfil "+perfil+" y iDHttpSession : "+ idHttpSession);  
 	            			return ub;
 	            			
+	            		  }else{
+	            			 ub = null;
 	            		  }
 	             }
 	         }

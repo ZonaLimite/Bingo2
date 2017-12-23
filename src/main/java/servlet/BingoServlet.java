@@ -2,7 +2,10 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Vector;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,10 +15,12 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/WriterHeaderBingo")
 public class BingoServlet extends HttpServlet{
-	private String user,sala,perfil;
-	/**
-	 * 
-	 */
+	
+@Inject
+private GestorSessions gestorSesions;	
+	
+private String user,sala,perfil;
+
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url="Portal.jsp";
@@ -120,7 +125,7 @@ public class BingoServlet extends HttpServlet{
 	      
 	     
 	      out.write("\t\t\t<source src=\"http://boga.esy.es/video/BingoInes.webm\" type=\"video/webm\" >\r\n");
-	      //out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
+	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
 	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
 	      out.write("   \t         HTML5 video is not supported by this browser \r\n");
 	      out.write("   \t         </video>\r\n");
@@ -607,17 +612,33 @@ public class BingoServlet extends HttpServlet{
 	      out.write("<div id=\"premiosForm\" title=\"- Comprobacion cartones -\">\r\n");
 	      out.write("<form id=\"requestPremios\">\r\n");
 	      out.write("\r\n");
-	      out.write("<label>Numero de carton premiado?</label>\r\n");
+	      out.write("<label>Carton a comprobar de Jugador</label>\r\n");
 	      out.write("<br>\r\n");
-	      out.write("<input id=\"spinner_centenas\" type=\"text\" value=\"1\" name=\"nSpin1\" style=\" width : 27px;\">\r\n");
-	      out.write("<input id=\"spinner_decenas\" type=\"text\" value=\"1\" name=\"nSpin2\" style=\" width : 27px;\">\r\n");
-	      out.write("<input id=\"spinner_unidades\" type=\"text\"  value=\"1\" name=\"nSpin3\" style=\" width : 27px;\">\r\n");
+	      out.write("<table>");
+	      out.write("<tr>");
+	      out.write("<td>");
+	      out.write("<input id=\"spinner_milenas\" type=\"text\" value=\"0\" name=\"nSpin1\" style=\" width : 27px;\">\r\n");
+	      out.write("<input id=\"spinner_centenas\" type=\"text\" value=\"0\" name=\"nSpin1\" style=\" width : 27px;\">\r\n");
+	      out.write("<input id=\"spinner_decenas\" type=\"text\" value=\"0\" name=\"nSpin2\" style=\" width : 27px;\">\r\n");
+	      out.write("<input id=\"spinner_unidades\" type=\"text\"  value=\"1\" name=\"nSpin3\" style=\" width : 27px;\">\r\n</td>");
+	      out.write("<td>");
+	      	out.write("<select id=\"playersOffLine\" name=\"playersOffLine\">");
+	      	/*
+	      	Vector<String> vJugadoresOffLine = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+	        for(int i=0; i < vJugadoresOffLine.size();i++){
+	        String user= vJugadoresOffLine.elementAt(i);
+	        	if(gestorSesions.getJugadasSalas(sala).dimeCartonesDe(user)>0){
+	        		out.write("<option value=\""+user+"\">"+user+"</option>");
+	        	}
+	      	}*/
+	      	out.write("</select></td>");
+	      out.write("</tr>");
+	      out.write("</table>");
 	      out.write("<input type=\"hidden\" id=\"nRef\" name=\"nRef\" value=\"0\">\r\n");
 	      out.write("<input type=\"hidden\" id=\"comandoHandshake\" name=\"comandoHandshake\" value=\"\">\r\n");
-	      out.write("<input type=\"hidden\" id=\"sala\" name=\"sala\" value=\"");
-	out.print(sala); 
-	      out.write("\">\r\n");
-	      out.write("<input type=\"hidden\" id=\"usuario\"  name=\"usuario\" value=\"");
+	      out.write("<input type=\"hidden\" id=\"idSala\" name=\"idSala\" value=\""+sala+"\">\r\n");
+	      out.write("<input type=\"hidden\" id=\"jugador\" name=\"jugador\" value=\"\">\r\n");
+	      out.write("<input type=\"hidden\" id=\"usuario\"  name=\"usuario\" value=\"\"");
 	out.print(user); 
 	      out.write("\">\r\n");
 	      out.write("<br>\r\n");

@@ -337,7 +337,7 @@ private UserBean userBean;
 				// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
 				// Implementado ambos tipos de datos
 			
-				int nCartones = new Integer(pb.getnCartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
+				int nCartones = new Integer(pb.calculaNcartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
 				porCientoLinea=pb.getPorcientoLinea();
 				porCientoBingo=pb.getPorcientoBingo();
 				porCientoCantaor=pb.getPorcientoCantaor();

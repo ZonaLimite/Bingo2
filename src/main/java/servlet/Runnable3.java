@@ -100,6 +100,7 @@ public class Runnable3 implements Runnable{
         }
     	for(int i=orden; i < maxNumbers+1 ;i++)   {
           log.info("IdState en inicio bucle"+pb.getIdState()); 
+          
           n=0;// Garantizando que hay bloqueo de hilo,sino se ajusta lo contrario
           synchronized(this){
             try{
@@ -297,10 +298,10 @@ public class Runnable3 implements Runnable{
            					break;
            				}
                			if(pb.getIdState().equals("EndBalls")){
-               				enviarMensajeAPerfil("EndBalls","supervisor");
-               				enviarMensajeAPerfil("EndBalls","jugador"); 
                				gestorSesions.resetCartones(estaSalaEs);
                				pb.resetNumerosCalled();
+               				enviarMensajeAPerfil("EndBalls","supervisor");
+               				enviarMensajeAPerfil("EndBalls","jugador"); 
                				pb.setIdState("Finalized");
                				return;
                			}

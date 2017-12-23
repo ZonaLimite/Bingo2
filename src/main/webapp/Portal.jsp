@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="vieport" content="width=800, initial-scale=1, orientation=landscape">
+<meta name="vieport" content="width=642, initial-scale=1, orientation=landscape">
 <title>Bingo Boga Home</title>
   <link href="css/Carton.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -71,17 +71,13 @@
        
         
 
-<div class="portante">
-	<!-- Espacio HTML Dinamico -->
-</div>
 
 
 <!-- end .content -->
 </div>
 
-  <footer>
-    <address id="resultMonitor">
-      Preparado...</address>
+  <footer id="resultMonitor">
+ 		ready...
   </footer>
   <!-- end .container --></div>
 <input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">  

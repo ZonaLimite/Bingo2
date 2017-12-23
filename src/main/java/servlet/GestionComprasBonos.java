@@ -49,10 +49,16 @@ public class GestionComprasBonos extends HttpServlet {
         		float nBonus = new Float(sBonus);
 
         		user_= gestorSesions.dameUserBeansPorUser(usuario, "jugador", hS.getId());
-        		if(user_==null){
-        			String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
-        			resp.getWriter().print(mensaje);
-        			return;
+        		if(user_==null){//Son jugadores offline
+
+        			/*String mensaje="Error,Usuario no esta registrado o \nno esta On Line ";
+        			String json = new Gson().toJson(mensaje);	    	
+            		resp.getWriter().write(json);
+        			return;*/
+        		UserBean ubOffLine = new UserBean();
+        		ubOffLine.setUsername(usuario);
+        		
+        		user_=ubOffLine;
         		}
 
         		//realizarCompraTransaccion();
@@ -90,6 +96,7 @@ public class GestionComprasBonos extends HttpServlet {
         		String mensaje = realizarPagoCompraBonus(idBonus);
         		String json = new Gson().toJson(mensaje);	    	
         		resp.getWriter().write(json);
+        		triggerRefreshDatos(sala);
         		//System.out.println(gestorSesions.getPeticionBonus().toString()+"Volcado hecho:\n"+mensaje);           		
            	}
            	if(comando.equals("BorrarRegistroPeticionBonus")){
@@ -155,7 +162,7 @@ public class GestionComprasBonos extends HttpServlet {
         simbolos.setDecimalSeparator('.');
         DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
         ///////////////////////////////////////////////////////
-        float saldoRestanteUser = ub.getSaldo() + precioCompra;
+        float saldoRestanteUser = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User='"+ ub.getUsername()+"'")) + precioCompra;
         float valorActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
         float valorFinalCaja = valorActualCaja + precioCompra;
         ///////////////////////////////////////////////////////
@@ -170,28 +177,46 @@ public class GestionComprasBonos extends HttpServlet {
 
         	//Actualizar datos de saldo de usuario en tiempo real
         	ub.setSaldo(new  Float(formateador.format(saldoRestanteUser)));
-        	try {
-				Session session = ub.getSesionSocket();
-				if(session==null){
-					
-				}else{
-						session.getBasicRemote().sendText("RefreshDatosCartones");
-						session.getBasicRemote().sendText("! Saldo Actualizado ¡");
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.err.println("Channel is closed");
-			}
+
         	//borrar registro Peticion Bonus
         	gestorSesions.borraPeticionBonus(lIdtransaccion);
 
         	//Actualizar saldo Caja(pendiente)
         	//Enviar un email de confirmacion(Pendiente)
-        	result="TransaccionOK";
+        	result="TransaccionOK para Jugador:" + ub.getUsername() +" (Añadir Saldo:"+ precioCompra+")";
         }
         
         return result;
     }
-
-
+	private void triggerRefreshDatos(String salaInUse){
+		PocketBingo pb = gestorSesions.getJugadasSalas(salaInUse);
+		String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
+		precioCarton=pb.getPrecioCarton();
+		//Hay que distinguir entre cartones electronicos y manuales
+		//EL cuadro de Dialogo debe considerar las dos facetas
+		// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
+		// Implementado ambos tipos de datos
+	
+		int nCartones = new Integer(pb.calculaNcartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
+		porCientoLinea=pb.getPorcientoLinea();
+		porCientoBingo=pb.getPorcientoBingo();
+		porCientoCantaor=pb.getPorcientoCantaor();
+		String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
+		enviarMensajeAPerfil(construirScript,"supervisor");
+		enviarMensajeAPerfil("RefreshDatosCartones","jugador");
+	}
+	private void enviarMensajeAPerfil(String textMessage,String perfil){
+	  	try {
+			Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
+			Iterator<UserBean> itBeans= myUsersbean.iterator();
+			while (itBeans.hasNext()){
+				Session sesionActiva = itBeans.next().getSesionSocket();
+				sesionActiva.getBasicRemote().sendText(textMessage);
+			}
+				//log.info("Enviando desde servidor a navegador:"+textMessage);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+}
 }

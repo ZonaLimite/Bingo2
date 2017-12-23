@@ -25,10 +25,10 @@
 <body>
 
 <table id="resultLines" width="97%" border="1" align="center" class="Tabla">
-  <tr bgcolor="#003399">
+  <tr bgcolor="#003399" id="fila">
     <td  width="50%" height="72" class="Cabecera" ><p>Asignacion Cartones</p>
       <form name="form1" method="post" action="">
-        <select class="Caja" name="OnLinePlayers" id="OnLinePlayers">
+        <select  onChange="valorCombo(this.value)" class="Caja" name="OnLinePlayers" id="OnLinePlayers">
           <%
         	for(int i=0; i < vectorResultsSQL.size();i++){
 				String array[] = vectorResultsSQL.elementAt(i);
@@ -39,7 +39,7 @@
       </select>
       </form>
  
-    <td width="25%"><table width="100%" border="1">
+    <td colspan="2"   width="30%"><table width="100%" border="1">
   <tr>
     <td><input onClick="valorCarton('1')" type="button" class="cantidadCartones" value="1"></td>
     <td><input onClick="valorCarton('2')" type="button" class="cantidadCartones" value="2"></td>
@@ -54,22 +54,30 @@
 </table>
 </td>
     	
-	<td >
-	  <label class="soloCaja" >Precio Carton:</label >
-	  <input  class="Caja" type="text" Id="precioCarton" value="1 €"/p></td>    
+	<td  width="30%">
+	  <label class="soloCaja" >Precio Carton<br>
+      </label ><input  class="Caja" type="text" Id="precioCarton" value="0 €"/p>
+	  <br>
+	  <input name="Botón" type="button" class="soloRojo" value="Comprar Todos">
+	 </td>    
     </tr>
   <tr>
     <td class="Cabecera">Usuarios en Juego</td>
     <td  class="Cabecera">Saldo</td>
     <td  class="Cabecera">Cartones</td>
+    <td  class="Cabecera">Comprar</td>
   </tr>
 <----------------------------------------------------------------------->
-<tr class="fondosLineas" >
-    <td class="otro"><label class="AIzquierdas">Diego Perez Galdos</label></td>
-    <td class="otro"><label class="AIzquierdas">120 €</label></td>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">Diego Perez </label></td>
     <td class="otro"><label class="AIzquierdas">
-    <input type="button" name="Quitar" id="Quitar" value="Comprar">
-    0</label></td>
+    120 €</label></td>
+    <td class="otroCentro">0<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">
+      <input type="button" name="Quitar" id="Quitar" value="Comprar 1">
+   </td>
 </tr>
 <----------------------------------------------------------------------->
  

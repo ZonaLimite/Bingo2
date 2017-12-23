@@ -469,11 +469,9 @@
 
 
 
-<footer>
+<footer id="footer" class="footerClass">
   <div class="Comander2">
-  
-    <input type="submit" name="comando" id="comando" value="Enviar">
-    <label for="text_comando"></label>
+<input type="submit" name="comando" id="comando" value="Enviar">
     <input type="text" name="text_comando" id="text_comando">
     <input type="button" id="notify">
       
@@ -488,51 +486,53 @@
 	  
 	  
 	    <input id="c_Range" value="Play Range" type="button">
-   	  
   </div>   
   
-</footer>
+
 
 
 
 <div id="opciones" title="Preferencias">
 
 ELEGIR CANTAOR
-<select name="cantaor">
-<option value="0">Seleccione un cantaor</option>
-<!--<option value="Lola">Lola (velocida Lenta)</option>-->
-	<option value="Ines">Ines (velocida Rapida)<option>
-</select>
-<p>&nbsp;
+    <select name="cantaor">
+      <option value="0">Seleccione un cantaor</option>
+      <!--<option value="Lola">Lola (velocida Lenta)</option>-->
+      <option value="Ines">Ines (velocida Rapida)
+      <option>
+    </select>
+
+  <p>&nbsp;
 </p>
 <form > 
   <table width="200">
     <tr>
       <td><label>
         <input type="radio" name="Codecs" value="MP4" id="Codecs_0">
-        MP4</label></td>
+        MP4</label>      </td>
     </tr>
     <tr>
       <td><label>
         <input type="radio" name="Codecs" value="OGG" id="Codecs_1">
-        OGG</label></td>
+        OGG</label>      </td>
     </tr>
     <tr>
       <td><label>
         <input type="radio" name="Codecs" value="WEBM" id="Codecs_2"  checked>
-        WebM</label></td>
+        WebM</label>      </td>
     </tr>
   </table>
 </form>
 <p>
-  <input name="videoON" type="checkbox" value="true" checked>Activar Video
-</p>
-<input name="starsON" type="checkbox" value="true" checked>Activar StartsField
+<input name="videoON" type="checkbox" value="true" checked>
+  Activar Video  </p>
+<input name="starsON" type="checkbox" value="true" checked>
+Activar StartsField
 </p>
 
 <hr width="75%"/>
-
 <label>Tamano Maximo numeros</label>
+
 <div id="slider"></div>
 <p>
 <input type="text" id="maxTamano">
@@ -544,44 +544,45 @@ ELEGIR CANTAOR
 
 <div id="cartones" title="Configuracion cartones"> 
 <form>
-<label >Precio Carton(€):</label><input type="text" id="PrecioCarton">
+<label >Precio Carton(€):</label>
+  <input type="text" id="PrecioCarton">
 <br>
-<label >N: Cartones en Juego:</label><input type="text"  id="NCartonesJuego">
+<label >N: Cartones en Juego:</label>
+<input type="text"  id="NCartonesJuego">
 <br>
-<label >N: Cartones Manuales:</label><input type="text" id="NCartonesManuales">
+<label >N: Cartones Manuales:</label>
+<input type="text" id="NCartonesManuales">
 <br>
-<label >Asignacion % Premio Linea:</label><input type="text" id="porcientoLinea">
+<label >Asignacion % Premio Linea:</label>
+<input type="text" id="porcientoLinea">
 <br>
-<label >Asignacion % Premio Bingo:</label><input type="text" id="porcientoBingo">
+<label >Asignacion % Premio Bingo:</label>
+<input type="text" id="porcientoBingo">
 <br>
-<label >Asignacion % Cantaor     :</label><input type="text" id="porcientoCantaor">
-
+<label >Asignacion % Cantaor     :</label>
+<input type="text" id="porcientoCantaor">
 </form>
 </div>
 
 <div id="premiosForm" title="- Comprobacion cartones -">
 <form id="requestPremios">
-
 <label>Numero de carton premiado?</label>
 <br>
-<input id="spinner_centenas" type="text" value="1" name="nSpin1" style=" width : 27px;">
-<input id="spinner_decenas" type="text" value="1" name="nSpin2" style=" width : 27px;">
+<input id="spinner_milenas" type="text" value="0" name="nSpin0" style=" width : 27px;">
+<input id="spinner_centenas" type="text" value="0" name="nSpin1" style=" width : 27px;">
+<input id="spinner_decenas" type="text" value="0" name="nSpin2" style=" width : 27px;">
 <input id="spinner_unidades" type="text"  value="1" name="nSpin3" style=" width : 27px;">
 <input type="hidden" id="nRef" name="nRef" value="0">
 <input type="hidden" id="sala" name="sala" value="<%out.print(sala); %>">
 <input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">
 <br>
-<label id="feedback" style=" width : 100%;"></label>
 </form>
 </div>
-
-
-
 <audio id="audioWeb">
   	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
 	Your browser does not support the audio element.
 </audio>
-
+</footer>
 </body>
 
 </html>

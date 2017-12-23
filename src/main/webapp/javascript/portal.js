@@ -16,7 +16,7 @@ function iniciar2(){
 		botonAccessBingo = document.getElementById("AccessBingo");
 		botonAccessBingo.onclick = function(){ window.location.replace(url);};
 		botonUsuarios = document.getElementById("botonRanking");
-		botonUsuarios.onclick = function(){ mostrarHTML("MostrarUsuarios");};	
+		botonUsuarios.onclick = function(){ mostrarHTML("MostrarGamerStatus");};	
 		botonCerrarSesion = document.getElementById("botonCerrarSesion");
 		botonCerrarSesion.onclick = function(){window.location.replace("HtmlPortal?comando=CerrarSesion");};
 		botonCompraBonos = document.getElementById("compraBonos");

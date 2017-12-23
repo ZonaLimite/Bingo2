@@ -30,8 +30,8 @@ public class HandshakeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String objetoaConvertir="";
 		String sala, usuario, nRef, comando;
-		sala= req.getParameter("sala");
-		usuario = req.getParameter("usuario");
+		sala= req.getParameter("idSala");
+		usuario = req.getParameter("jugador");
 		String numero= req.getParameter("nRef");
 		int iNumero = new Integer(numero);
 		nRef=""+iNumero;
@@ -44,10 +44,10 @@ public class HandshakeServlet extends HttpServlet {
 			UserBean myUSER = new UserBean();
 			myUSER.setSalonInUse(user.getSalonInUse()) ;
 			myUSER.setSesionSocket(user.getSesionSocket());
-			myUSER.setUserName("Carton_"+nRef);
+			myUSER.setUserName(usuario);
 
 			if(cp.comprobarLineaDeCarton(sala, nRef, myUSER)){
-				objetoaConvertir = "! Carton "+ nRef+ " premiado para Linea ¡\n ¿Hay algun carton mas a comprobar?";
+				objetoaConvertir = "! Carton :"+ nRef+ " de "+usuario + " Premio Linea ¡\n ¿Hay algun carton mas a comprobar?";
 
 			}else{
 				objetoaConvertir = "Se Siente ..., Carton no premiado o ya esta registrado el premio\n ¿Hay algun carton mas a comprobar?";
@@ -60,10 +60,10 @@ public class HandshakeServlet extends HttpServlet {
 			UserBean myUSER = new UserBean();
 			myUSER.setSalonInUse(user.getSalonInUse()) ;
 			myUSER.setSesionSocket(user.getSesionSocket());
-			myUSER.setUserName("Carton_"+nRef);
+			myUSER.setUserName(usuario);
 
 			if(cp.comprobarBingoDeCarton(sala, nRef, myUSER)){
-				objetoaConvertir = "! Carton "+ nRef+ " premiado para Bingo ¡\n ¿Hay algun carton mas a comprobar?";
+				objetoaConvertir = "! Carton :"+ nRef+ " de "+usuario +" Premio Bingo ¡\n ¿Hay algun carton mas a comprobar?";
 
 			}else{
 				objetoaConvertir = "Se Siente ..., Carton no premiado o ya esta registrado este premio\n ¿Hay algun carton mas a comprobar?";

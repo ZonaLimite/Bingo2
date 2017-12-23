@@ -43,7 +43,7 @@ function solicitarCompraBonus(){
 	var infoArea=document.getElementById("infoArea");
 	
 	params.nBonus=document.getElementById("nBonus").value;
-	params.usuario=document.getElementById("usuario").value ;
+	params.usuario=registeredPlayers.value;
 	params.sala=document.getElementById("sala").value;
 	params.comando="PeticionCompraBonus"
 
@@ -186,8 +186,95 @@ function mostrarHTML(comando){
 	});
 
 }
+function valorCombo(usuario){
+	laSelect =document.getElementById("OnLinePlayers"); 
+	laSelect.value=usuario;
+	lasOptions = laSelect.options;
+	for(j=0;j<lasOptions.length;j++){
+		objectTR = document.getElementById(lasOptions[j].value);
+		elementsTD = objectTR.childNodes;
+		for(i=0;i<elementsTD.length;i++){
+			if(elementsTD[i].nodeName=="TD"){
+				if(lasOptions[j].value==usuario){
+					elementsTD[i].style.color="#FFF";
+				}else{
+					elementsTD[i].style.color="#F00";
+				}
+			}
+		}
+	}
+}
+function valorCarton(valor){
+	//servlet de servicio --->GestionUsuariosServlet
+	
+	var params = new Object();
 
+	params.comando="AjustarPreferenciasCarton";
+	params.sala=document.getElementById("sala").value;	
+	params.prefCarton=valor;
+	comboUsuario = document.getElementById("OnLinePlayers");
+	if(comboUsuario.value=="")return;
+	params.usuario=comboUsuario.value;
+	$.ajax({
+		  type: 'POST',
+		  url: "GestionUsuarios",
+		  data: params,
+		  dataType:"html",
+		  async:true
+		}).done(function( data ) {
+			content =document.getElementById("resultMonitor");
+			content.innerHTML = data;
+			mostrarHTML("ConfigurarCartones");
+			comboUsuario.selectedIndex = "-1";
+			
+	});
+	
+}
+function comprarTodosLosCartones(){
+	//servlet de servicio --->GestionUsuariosServlet
+	
+	var params = new Object();
 
+	params.comando="ComprarTodosLosCartones";
+	params.sala=document.getElementById("sala").value;	
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestionUsuarios",
+		  data: params,
+		  dataType:"html",
+		  async:true
+		}).done(function( data ) {
+			content =document.getElementById("resultMonitor");
+			content.innerHTML = data;
+			mostrarHTML("ConfigurarCartones");
+			
+	});
+			
+}
+function comprarCartones(usuario,nCarton){
+	//servlet de servicio --->GestionUsuariosServlet
+	
+	var params = new Object();
+
+	params.comando="ComprarCartones";
+	params.sala=document.getElementById("sala").value;	
+	params.nCarton=nCarton;
+	params.usuario=usuario;
+	$.ajax({
+		  type: 'POST',
+		  url: "GestionUsuarios",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			content =document.getElementById("resultMonitor");
+			content.innerHTML = data;
+			mostrarHTML("ConfigurarCartones");
+			
+	});
+		
+}
 function hacerLogin(){
 	//servlet de servicio --->HtmlDinamicoServLet
 	
