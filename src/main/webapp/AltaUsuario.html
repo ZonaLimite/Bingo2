@@ -6,29 +6,64 @@
 <style type="text/css">
 .botonSubmit {
 	text-align: center;
-	color: #F00;
+	color: #0F0;
 	font-weight: bold;
 	font-size: 18px;
-}
-.rotulo {
-	text-align: center;
-	font-weight: bold;
-}
-.TextLogin {
-	text-align: center;
-}
-.TablaLogin {
-	background-color: #06F;
-	color: #FFF;
+	background-color: #000;
 	border-top-style: groove;
 	border-right-style: groove;
 	border-bottom-style: groove;
 	border-left-style: groove;
+	border-top-color: #FF0000;
+	border-right-color: #FF0000;
+	border-bottom-color: #FF0000;
+	border-left-color: #FF0000;
+}
+.rotulo {
+	text-align: center;
+	font-weight: bold;
+	color: #F4EFCF;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	border-top-color: #309;
+	border-right-color: #309;
+	border-bottom-color: #309;
+	border-left-color: #309;
+}
+.TextLogin {
+	text-align: center;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.TablaLogin {
+	background-color: #1D3841;
+	color: #F30;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
 	font-size: 18px;
 	font-weight: bold;
+	border-top-color: #30C;
+	border-right-color: #30C;
+	border-bottom-color: #30C;
+	border-left-color: #30C;
 }
 .cuerpo {
-	background-color: #000;
+	background-color: #1D3841;
+}
+.divDatos {
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+.textAreas {
+	font-family: Tahoma, Geneva, sans-serif;
 }
 </style>
   <script src="//code.jquery.com/jquery-1.12.4.js"></script>
@@ -41,33 +76,34 @@
 		<form>
 		<table class="TablaLogin" width="90%" border="1" align="center">
 		  <tr>
-			<td colspan="2" class="rotulo">Nueva Alta de usuario</td>
+			<td class="rotulo"><a href=Portal.jsp><img src="images/IconoBola.jpg" width="93" height="65"></a></td>
+            <td class="rotulo">Nueva Alta de usuario</td>
           </tr>
 		  <tr>
 		    <td width="79" class="TextLogin">Usuario :
-	        <td width="246"><input name="usuario"  type="text" id="usuario" size="20" maxlength="20"></td>
+	        <td width="246" class="divDatos"><input name="usuario"  type="text" id="usuario" size="20" maxlength="20">	        </td>
 	      </tr>
 		  <tr>
 		    <td class="TextLogin">Password:</td>
-		    <td><input name="pw" type="password" id="password" size="20" maxlength="10"></td>
+		    <td class="divDatos"><input name="pw" type="password" id="password" size="20" maxlength="10"></td>
 	      </tr>
 		  <tr>
 		    <td class="TextLogin">Password:</td>
-		    <td><input name="pwConfirm" type="password" id="passwordConfirm" size="20" maxlength="10"></td>
+		    <td class="divDatos"><input name="pwConfirm" type="password" id="passwordConfirm" size="20" maxlength="10"></td>
 	      </tr>          
 		  <tr>
 		    <td class="TextLogin">Email:</td>
-		    <td><input name="email" type="text" id="email" size="32" maxlength="32"></td>
+		    <td class="divDatos"><input name="email" type="text" id="email" size="32" maxlength="32"></td>
 	      </tr>
           <tr>
-          <td colspan="2" class="botonSubmit"><input type="button" value="Registrar usuario" onClick="registraUsuario()"></td>
+          <td class="divDatos" align="center" colspan="2"><input class="botonSubmit" type="button" value="Registrar usuario" onClick="registraUsuario()"></td>
           </tr>
           <tr>
-            <td colspan="2" class="botonSubmit" id="result">&nbsp;</td>
+            <td class="divDatos"colspan="2" id="result">&nbsp;</td>
           </tr>
           <tr>
-            <td height="92" id="infoArea" colspan="2" class="botonSubmit">
-            <textarea name="textoLogin" cols="50" rows="4" id="textoLogin">Introducir los datos de usuario, password, la confirmacion de la password y tu Email de contacto.</textarea></td>
+            <td align="center" height="92" id="infoArea" colspan="2" class="divDatos">
+            <textarea class="textAreas" name="textoLogin" cols="50" rows="4" id="textoLogin">Introducir los datos de usuario, password, la confirmacion de la password y tu Email de contacto.</textarea></td>
           </tr>
         </table>
 		<p>

@@ -37,6 +37,10 @@
 	text-align: left;
 	font-size: 26px;
 	background-color: #004040;
+	border-top-color: #00F;
+	border-right-color: #00F;
+	border-bottom-color: #00F;
+	border-left-color: #00F;
 }
 
 .Tabla {
@@ -44,15 +48,11 @@
 	border-right-style: groove;
 	border-bottom-style: groove;
 	border-left-style: groove;
-	border-top-color: #96C;
-	border-right-color: #96C;
-	border-bottom-color: #96C;
-	border-left-color: #96C;
 	background-color: #000;
 	text-align: center;
 }
 .fondosLineas {
-	background-color: #004040;
+	background-color: #F13C0E;
 }
 .otro {
 	text-align: left;

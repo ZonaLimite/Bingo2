@@ -258,8 +258,8 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write(" </td>    ");
 	      out.write("    </tr>");
 	      out.write("  <tr>");
-	      out.write("    <td class=\"Cabecera\">Usuarios en Juego</td>");
-	      out.write("    <td  class=\"Cabecera\">Saldo (€)</td>");
+	      out.write("    <td class=\"Cabecera\">Usuarios</td>");
+	      out.write("    <td  class=\"Cabecera\">Saldo</td>");
 	      out.write("    <td  class=\"Cabecera\">Cartones</td>");
 	      out.write("    <td  class=\"Cabecera\">Comprar</td>");
 	      out.write("  </tr>");
@@ -317,7 +317,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("      </form>\r\n");
 	      out.write(" \r\n");
 	      out.write("    <td colspan=\"1\">\r\n");
-	      out.write("      <label class=\"soloCaja\" >1 CARTON<br>\r\n");
+	      out.write("      <label class=\"soloCaja\" >CARTON<br>\r\n");
 	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+gestorSesions.getJugadasSalas(sala).getPrecioCarton() +"€\"/p>\r\n");
 	      out.write("    <br></td>\r\n");
 	      out.write("   <td colspan=\"2\">\r\n");
@@ -325,11 +325,11 @@ public class HtmlPortalServlet extends HttpServlet{
 			int cartonesManuales = new Integer(gestorSesions.getJugadasSalas(sala).calculaNcartonesManuales());
 			int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 			int nCartonesEnJuego = gestorSesions.dameSetCartonesEnJuego(sala).size() + cartonesManuales;
-	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"totalCartones\" value=\""+nCartonesEnJuego+" €\"/p>\r\n");
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"totalCartones\" value=\""+nCartonesEnJuego+"\"/p>\r\n");
 	      out.write("    <br></td> \r\n");
 	      out.write("\t</tr>\r\n");
 	      out.write("  <tr>\r\n");
-	      out.write("    <td class=\"Cabecera\">USUARIOS EN JUEGO</td>\r\n");
+	      out.write("    <td class=\"Cabecera\">USUARIOS</td>\r\n");
 	      out.write("    <td width=\"30%\"  class=\"Cabecera\">SALDO</td>\r\n");
 	      out.write("    <td  class=\"Cabecera\">CARDs</td>\r\n");
 	      out.write("    <td width=\"30%\"  class=\"Cabecera\">PERFIL</td>\r\n");
