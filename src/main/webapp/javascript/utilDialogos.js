@@ -60,11 +60,55 @@ function solicitarCompraBonus(){
 	return
 }
 
+function solicitarLiquidacionBonus(){
+	//servlet de servicio --->GestionComprasBonos
+	var params = new Object();
+	var textresult=document.getElementById("result");
+	var infoArea=document.getElementById("infoArea");
+	
+	params.nBonus=document.getElementById("nBonus").value;
+	params.usuario=registeredPlayers.value;
+	params.sala=document.getElementById("sala").value;
+	params.comando="PeticionLiquidacionBonus"
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestorComprasBonus",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			textresult.innerHTML=data;
+			infoArea.innerHTML="";
+	});
+	return
+}
+
 function volcarPeticionesBonus(){
 	//servlet de servicio --->GestionComprasBonos
 	var params = new Object();
 	var resultLines=document.getElementById("resultLines");
 	params.comando="VolcarListadoCompraBonus";
+
+	params.sala=document.getElementById("idSala").value;
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestorComprasBonus",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			resultLines.innerHTML=data;
+
+	});
+	return
+}
+function volcarPeticionesLiquidacionesBonus(){
+	//servlet de servicio --->GestionComprasBonos
+	var params = new Object();
+	var resultLines=document.getElementById("resultLines");
+	params.comando="VolcarListadoliquidacionBonus";
 
 	params.sala=document.getElementById("idSala").value;
 
@@ -102,6 +146,27 @@ function realizarPagoBonus(idBonus){
 	});
 	return;	
 }
+function realizarLiquidacionBonus(idBonus){
+	//servlet de servicio --->GestionComprasBonos
+	var params = new Object();
+	var resultLines=document.getElementById("resultLines");
+	params.comando="RealizarLiquidacionBonus";
+	params.sala=document.getElementById("idSala").value;
+	params.idBonus=idBonus;
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestorComprasBonus",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			resultMonitor = document.getElementById("resultMonitor");			
+			volcarPeticionesLiquidacionesBonus();
+			resultMonitor.innerHTML=data;
+	});
+	return;	
+}
 function borrarRegistroPeticionBonus(idBonus){
 	//servlet de servicio --->GestionComprasBonos
 	var params = new Object();
@@ -121,6 +186,28 @@ function borrarRegistroPeticionBonus(idBonus){
 			volcarPeticionesBonus();
 			resultMonitor.innerHTML=data;
 
+	});
+	return;		
+}
+function borrarRegistroPeticionLiquidacionBonus(idBonus){
+	//servlet de servicio --->GestionComprasBonos
+	var params = new Object();
+	var resultLines=document.getElementById("resultLines");
+	params.comando="BorrarRegistroPeticionLiquidacionBonus";
+	params.sala=document.getElementById("idSala").value;
+	params.idBonus=idBonus;
+
+	$.ajax({
+		  type: 'POST',
+		  url: "GestorComprasBonus",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			resultMonitor = document.getElementById("resultMonitor");
+			volcarPeticionesLiquidacionesBonus();
+			resultMonitor.innerHTML=data;
+			
 	});
 	return;		
 }

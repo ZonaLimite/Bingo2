@@ -361,3 +361,11 @@ display: block;
 .classMessage {
 
 }
+#premiosForm {
+	background-color: #06F;
+	color: #FFF;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+}

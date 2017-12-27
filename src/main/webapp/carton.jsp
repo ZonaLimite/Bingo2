@@ -110,6 +110,7 @@
 		<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
 </article>
 </div>
+<footer id="footer" class="footerClass">
 <div id="cartones" title="Compra de cartones"> 
 <form id="requestForm">
 
@@ -135,6 +136,7 @@
   	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
 	Your browser does not support the audio element....
 </audio>
+</footer>
 </body>
 
 </html>

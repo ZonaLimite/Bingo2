@@ -49,7 +49,7 @@ public class LiquidadorPremio {
 					if(premioCobrado>0){
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
-						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+", bien " +pp.getUserbean().getUsername());
+						ubPremiado.getSesionSocket().getBasicRemote().sendText("!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+"\n ! Bien " +pp.getUserbean().getUsername()+" ¡");
 					}
  					
 					hayPremios=true;

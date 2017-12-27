@@ -48,6 +48,12 @@ public class HtmlPortalServlet extends HttpServlet{
 		    String usuario = req.getParameter("usuario");
 			res.sendRedirect("CompraBonus.jsp?usuario='"+usuario+"'");
 		}
+		if(comando.equals("Solicitud Liquidacion")){
+		    res.setContentType("text/html");
+		    res.setCharacterEncoding("UTF-8");
+		    String usuario = req.getParameter("usuario");
+			res.sendRedirect("SolicitudLiquidacionBonus.jsp?usuario='"+usuario+"'");
+		}
 		if(comando.equals("VolcadoPeticionesBonus")){
 			//res.sendRedirect("PlantillaVolcadoBonus.jsp");}
 			String sala = req.getParameter("sala");
@@ -59,6 +65,17 @@ public class HtmlPortalServlet extends HttpServlet{
 			}
 		    writeHTMLVolcadoPeticionesBonus(pw,sala);
 		}
+		if(comando.equals("VolcadoPeticionesLiquidacionBonus")){
+			//res.sendRedirect("PlantillaVolcadoBonus.jsp");}
+			String sala = req.getParameter("sala");
+		    try {
+				pw= res.getWriter();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    writeHTMLVolcadoPeticionesLiquidacionBonus(pw,sala);
+		}		
 		if(comando.equals("ConfigurarJugadores")){
 			
 		    res.setContentType("text/html");
@@ -425,6 +442,64 @@ public class HtmlPortalServlet extends HttpServlet{
 	  			out.write("<tr class='fondosLineas'><td  class='otro'><label class='AIzquierdas'>"+uBean.getUsername()+"</label></td>");
 	  			out.write("<td class='otro'><label class='AIzquierdas'>"+pBonus.getBonus()+"</label></td>");
 	  			out.write("<td class='otro'><input type='button' value='Pagado' onclick=\"realizarPagoBonus('"+hora+"')\"><label> </label><input type='button' value='Eliminar' onclick=\"borrarRegistroPeticionBonus('"+hora+"')\"></td></tr>");
+	  		
+	  		}
+	  }	        
+
+      out.write("</table>");
+      out.write("</body>");
+      out.write("</html>");
+      out.flush();
+	}
+	private void writeHTMLVolcadoPeticionesLiquidacionBonus(PrintWriter out, String sala){
+
+		UtilDatabase udatabase = new UtilDatabase();
+        //arrayCampos[1] =1.User
+		String vCaja = udatabase.consultaSQLUnica("Select SaldoCaja From caja");
+
+	      out.write("");
+	      out.write("<!doctype html>");
+	      out.write("<html>");
+	      out.write("<head>");
+	      out.write("<meta charset=\"utf-8\">");
+	      out.write("<title>Liquidacion Bonus</title>");
+	      out.write("<link href=\"css/estilosDialogos.css\" rel=\"stylesheet\" type=\"text/css\">");
+	      out.write("<script src=\"javascript/utilDialogos.js\"></script>");
+	      out.write("");
+	      out.write("</head>");
+	      out.write("");
+	      out.write("<body>");
+	      out.write("");
+	      out.write("<table id=\"resultLines\" width=\"97%\" border=\"1\" align=\"center\" class=\"Tabla\" >");
+	      out.write("  <tr bgcolor=\"#003399\">");
+	      out.write("    <td  width=\"50%\" height=\"72\" class=\"Cabecera\" >Peticiones Liquidacion Bonus Pendientes</td>");
+	      out.write("    <td width=\"25%\">");
+	      out.write("      <p align=\"center\"><input type=\"button\" width=\"30px\" name=\"Mostrar Peticiones\" value=\"Mostrar Peticiones\" onclick=\"volcarPeticionesLiquidacionBonus()\"></p>");
+	      out.write("    </td>");
+	      out.write("<td >");
+	      out.write("  <label class=\"soloCaja\" >CAJA :</label >");
+	      out.write("");
+	      out.write("    <input  class=\"Caja\" type=\"text\" value=\"");
+	      out.print(vCaja );
+	      out.write("\"></td>    ");
+	      out.write("    </tr>");
+	      out.write("  <tr>");
+	      out.write("    <td class=\"Cabecera\">Usuario</td>");
+	      out.write("    <td  class=\"Cabecera\">Bonus</td>");
+	      out.write("    <td  class=\"Cabecera\">Checking</td>");
+	      out.write("  </tr>");
+	      Set<Long> keysHora =gestorSesions.getPeticionLiquidacionBonus();
+	      Iterator<Long> itLongHora = keysHora.iterator();
+	      while(itLongHora.hasNext()){
+	  		
+	  		Long Keyhora = (Long)itLongHora.next();
+	  		PeticionLiquidacionBonus pBonus = gestorSesions.getPeticionLiquidacionBonus(Keyhora);
+	  		if(pBonus.getSala().equals(sala)){
+	  			UserBean uBean = pBonus.getUserbean();
+
+	  			out.write("<tr class='fondosLineas'><td  class='otro'><label class='AIzquierdas'>"+uBean.getUsername()+"</label></td>");
+	  			out.write("<td class='otro'><label class='AIzquierdas'>"+pBonus.getBonus()+"</label></td>");
+	  			out.write("<td class='otro'><input type='button' value='Pagado' onclick=\"realizarLiquidacionBonus('"+Keyhora+"')\"><label> </label><input type='button' value='Eliminar' onclick=\"borrarRegistroPeticionLiquidacionBonus('"+Keyhora+"')\"></td></tr>");
 	  		
 	  		}
 	  }	        

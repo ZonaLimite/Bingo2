@@ -134,6 +134,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("\t\t<!--Espacio para cartones via Servlet (WriterCartonesServlet)  -->\r\n");
 	      out.write("</article>\r\n");
 	      out.write("</div>\r\n");
+	      out.write("<footer id=\"footer\" class=\"footerClass\">");
 	      out.write("<div id=\"cartones\" title=\"Compra de cartones\"> \r\n");
 	      out.write("<form id=\"requestForm\">\r\n");
 	      out.write("\r\n");
@@ -166,6 +167,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("  \t<source src=\"http://boga.esy.es/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
 	      out.write("\tYour browser does not support the audio element....\r\n");
 	      out.write("</audio>\r\n");
+	      out.write("</footer>");
 	      out.write("</body>\r\n");
 	      out.write("\r\n");
 	      out.write("</html>\r\n");

@@ -21,6 +21,14 @@ function iniciar2(){
 		botonCerrarSesion.onclick = function(){window.location.replace("HtmlPortal?comando=CerrarSesion");};
 		botonCompraBonos = document.getElementById("compraBonos");
 		botonCompraBonos.onclick = function(){mostrarHTML("Solicitud Bonus")};
+		botonSolicitudLiquidarBonos = document.getElementById("liquidarBonos");
+		botonSolicitudLiquidarBonos.onclick = function(){mostrarHTML("Solicitud Liquidacion")};
+		botonVolcadoLiquidacionBonos = document.getElementById("volcadoLiquidacion");
+		if(botonVolcadoLiquidacionBonos!=null){
+			botonVolcadoLiquidacionBonos.onclick = function(){
+			mostrarHTML("VolcadoPeticionesLiquidacionBonus");
+			};
+		}		
 		botonVolcadoBonos = document.getElementById("volcadoBonos");
 		if(botonVolcadoBonos!=null){
 			botonVolcadoBonos.onclick = function(){

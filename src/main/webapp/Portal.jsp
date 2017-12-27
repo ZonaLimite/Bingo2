@@ -52,11 +52,13 @@
       <li class="botonEnlace" id="AccessBingo">Acceso Bingo</li>
 	  <li class="botonEnlace" id="botonRanking">Ranking Bingo</li>
 	  <li class="botonEnlace" id="compraBonos">Compra Bonos</li>
+	  <li class="botonEnlace" id="liquidarBonos">Liquidar Bonos</li>
 	<%if(user.equals("super")){%>
 		<li class="botonEnlace" id="volcadoBonos">Checkeo Bonos
 		       <select name="idSala" id="idSala" >
        				<option value="sala1" selected>Sala1</option>
       			</select></td>
+       <li class="botonEnlace" id="volcadoLiquidacion">Checkeo Liquidacion</li>  	       
 	   <li class="botonEnlace" id="botonJugadores">Jugadores</li> 
 	   <li class="botonEnlace" id="botonCartones">Cartones</li>  	        			
 	<% }%>  

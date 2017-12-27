@@ -68,19 +68,37 @@ import javax.websocket.Session;
 	    
 	    //Pila de peticiones de compra Bonus
 	    private Map<Long ,PeticionBonus> peticionesBonus;
+
+
+		//Pila de peticiones de Liquidacion Bonus
+	    private Map<Long ,PeticionLiquidacionBonus> peticionesLiquidacionBonus;	    
+
 	    
-	    
-	    
+	    public PeticionLiquidacionBonus getPeticionesLiquidacionBonus(Long idReg) {
+			return this.peticionesLiquidacionBonus.get(idReg);
+		}
+
 	    public void registraPeticionBonus(Long idReg,PeticionBonus pb){
 	    	this.peticionesBonus.put(idReg, pb);
 	    }
+	    public void registraPeticionLiquidacionBonus(Long idReg,PeticionLiquidacionBonus pb){
+	    	this.peticionesLiquidacionBonus.put(idReg, pb);
+	    }
+	    public Set<Long> getPeticionLiquidacionBonus(){
+	    	return this.peticionesLiquidacionBonus.keySet();
+	    }	    
+	    public PeticionLiquidacionBonus getPeticionLiquidacionBonus(Long idReg){
+	    	return this.peticionesLiquidacionBonus.get(idReg);
+	    }	    
 	    public Set<Long> getPeticionBonus(){
 	    	return this.peticionesBonus.keySet();
 	    }	    
 	    public PeticionBonus getPeticionBonus(Long idReg){
 	    	return this.peticionesBonus.get(idReg);
 	    }
-
+	    public void borraPeticionLiquidacionBonus(Long idReg){
+	    	this.peticionesLiquidacionBonus.remove(idReg);
+	    }
 	    public void borraPeticionBonus(Long idReg){
 	    	this.peticionesBonus.remove(idReg);
 	    }
@@ -162,7 +180,7 @@ import javax.websocket.Session;
                 this.listaPeticionesPremios = new ConcurrentHashMap<>();
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
                 this.peticionesBonus = new ConcurrentHashMap<>();
-              
+                this.peticionesLiquidacionBonus = new ConcurrentHashMap<>();
 	    }
 		
 
