@@ -153,3 +153,7 @@
 .footerClass {
 	visibility: hidden;
 }
+.content2 {
+	overflow-y: scroll;
+	float: left;
+}

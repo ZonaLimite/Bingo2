@@ -81,7 +81,8 @@
   <footer id="resultMonitor">
  		ready...
   </footer>
-  <!-- end .container --></div>
+  <!-- end .container -->
+</div>
 <input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">  
 <input type="hidden" id="perfil"  name="perfil" value="<%out.print(perfil); %>">
 <input type="hidden" id="sala"  name="sala" value="<%out.print(sala); %>">    

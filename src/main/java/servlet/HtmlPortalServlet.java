@@ -323,7 +323,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("</head>\r\n");
 	      out.write("\r\n");
 	      out.write("<body>\r\n");
-	      out.write("\r\n");
+	     
 	      out.write("<table id=\"resultLines\" width=\"97%\" border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
 	      out.write("  <tr bgcolor=\"#003399\" id=\"fila\">\r\n");
 	      out.write("    <td  width=\"50%\" height=\"72\"  ><span class=\"soloCaja\">CAJA BINGO</span>\r\n");
@@ -352,6 +352,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("    <td width=\"30%\"  class=\"Cabecera\">PERFIL</td>\r\n");
 	      out.write("  </tr>\r\n");
 	      out.write("\r\n");
+	      
 	      //UsuariosManuales
 	      jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
 	      for(int i=0; i < jEnJuego.size();i++){
@@ -389,6 +390,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("\r\n");
 	      out.write(" \r\n");
 	      out.write("</table>\r\n");
+	      
 	      out.write("\r\n");
 	      out.write("</body>\r\n");
 	      out.write("</html>\r\n");		
