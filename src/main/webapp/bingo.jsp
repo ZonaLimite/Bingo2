@@ -74,7 +74,9 @@
       <td rowspan="10" class="panel" > 
             <article class="Comander" >
              <span >
-			 <div id="my_poster"> 	
+			 <div id="my_poster">
+             
+
               <video id="medio" class="fotom" preload="auto" >
    		    <source src="http://boga.esy.es/video/BingoInes.mov" type="video/mp4">
    		    <source src="http://boga.esy.es/video/BingoInes.ogv" type="video/ogg">
@@ -112,8 +114,248 @@
 	        
     	</tr>
 </table>
+<div class="flotador">
+<div class="content2">
+<table id="resultLines2" width="97%" border="1" align="center" class="Tabla">
+
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td width="40%" class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td width="30%" class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td  width="15%" class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td width="15%"class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr><tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
+<tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
+    <td class="otro"><label class="AIzquierdas">lOLA aRRANZ</label></td>
+    <td class="otro"><label class="AIzquierdas">
+    120 €</label></td>
+    <td class="otroCentro">10<span class="AIzquierdas">
+      
+    </span></td>
+    <td class="otroCentro">Manual</td>
+</tr>
 
 
+ 
+</table>
+</div>
+</div>
 	
 	          <span class="Comander">
 	          <canvas id="canvas_bola" class="canvasBola">

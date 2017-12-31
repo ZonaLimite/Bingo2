@@ -357,6 +357,7 @@ display: block;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
+	visibility: visible;
 }
 .classMessage {
 
@@ -368,4 +369,8 @@ display: block;
 	border-right-style: groove;
 	border-bottom-style: groove;
 	border-left-style: groove;
+}
+.flotador {
+	height: 400px;
+	overflow-y: scroll;
 }

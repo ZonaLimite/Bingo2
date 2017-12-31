@@ -109,7 +109,7 @@
 }
 	
 .Caja {
-	width: 60%;
+	width: 50%;
 	background-color: #000;
 	color: #6F0;
 	font-size: 20px;
@@ -154,6 +154,5 @@
 	visibility: hidden;
 }
 .content2 {
-	overflow-y: scroll;
-	float: left;
+
 }
