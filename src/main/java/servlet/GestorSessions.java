@@ -285,6 +285,22 @@ import javax.websocket.Session;
                 }
                 return setCartones;
             }
+	    public synchronized int dameNumeroJugadoresConCartones(String sala){
+            Set<String> setJugadores = new LinkedHashSet<>();
+              Set<UserBean> usuarios = this.dameUserBeansEnPortal("jugador");
+              Iterator<UserBean> it = usuarios.iterator();
+              while(it.hasNext()){
+                UserBean ub = (UserBean) it.next();
+                if(ub.getSalonInUse().equals(sala)){
+                    Vector<Carton> vCartonesUser = ub.getvCarton();
+                    if(vCartonesUser.size()>0){
+                        
+                        setJugadores.add(ub.getUsername());
+                    }
+              }
+            }
+            return setJugadores.size();
+        }	    
             
 	    public synchronized Map<String,Carton> dameMapUsuariosYCartonesEnJuego(String perfil,String sala){
                 HashMap<String,Carton> relacion = new HashMap<>();

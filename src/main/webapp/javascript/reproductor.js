@@ -93,6 +93,8 @@ var largoCeldaMensajes;
 var comboTexto;
 var labelTexto;
 var comandoHandshake;
+var iDGamerStatus;
+var canvas;
 
 
 function iniciar() {
@@ -202,6 +204,8 @@ function iniciar() {
 	boton_play_range= document.getElementById("c_Range");
 	boton_play_range.onclick = function(){play_range2(document.getElementById("seek_ini").value,document.getElementById("seek_fin").value)};
 	posterImage=document.getElementById("my_poster");
+
+	iDGamerStatus = document.getElementById("GameStatus");
 	window.onresize = function(e){
 		//e.preventDefault();
 		resizeBolas();
@@ -471,11 +475,25 @@ function fullscreen(e){
 function enciendeVideo(){
 	if(videoEnable=="true")video.style.visibility="visible";
 	posterImage.style.visibility="hidden";
+	switchGamerCanvasOff();
 }
 
 function apagaVideo(){
 	video.style.visibility="hidden";
+	switchGamerCanvasOn();
 
+}
+function switchGamerCanvasOff(){
+	iDGamerStatus.style.visibility="hidden";
+	iDGamerStatus.style.height="0px";
+	canvas.style.visibility="visible";
+	canvas.style.height="100%";
+}
+function switchGamerCanvasOn(){
+	iDGamerStatus.style.visibility="visible";
+	iDGamerStatus.style.height="300px";
+	canvas.style.visibility="hidden";
+	canvas.style.height="0px";
 }
 
 function apagaLinea(){

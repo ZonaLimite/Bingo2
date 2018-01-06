@@ -7,6 +7,7 @@
 <%@ page import="java.util.Vector" %>
 <%! HttpSession mySession = null;%>
 <%! String user = null;%>
+<%! String vCaja = null;%>
 <%! Vector<String[]> vectorResultsSQL = null;%>
 <%
 		UtilDatabase udatabase = new UtilDatabase();
@@ -16,6 +17,8 @@
 		}
         //arrayCampos[1] =1.User
 		vectorResultsSQL = udatabase.dameVectorResultsSQL("Select User From usuarios Order by idUsuarios", 1);
+		
+		String vSaldoUser = udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'");
 
 %>
 <!DOCTYPE html>
@@ -53,8 +56,11 @@
                       	<option value="<%=user %>" selected><%=user %></option>
                       <%}%>
       </select>
-	        <td width="50%"><input name="nBonus"  type="text" class="Caja" id="nBonus" size="20" maxlength="5" value="0"> 
-	        &euro; </td>
+	        <td width="50%"><input name="nBonus"  type="text" class="Caja" id="nBonus" size="20" maxlength="5" value="0">	        	&euro;
+            <br>
+	       	<label > Saldo Actual:</label>
+	        <label> <%=vSaldoUser %> &euro;</label></td>
+            
 	      </tr>
           <tr>
           <td colspan="2" class="botonSubmit"><input type="button" value="Solicitar Liquidacion" onClick="solicitarLiquidacionBonus()"></td>

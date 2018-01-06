@@ -31,10 +31,9 @@
 }
 .AIzquierdas {
 	padding-left: 12px;
-	font-weight: bolder;
+	font-weight: normal;
 	font-family: "Hotel Coral Essex";
 	color: #f00;
-	text-align: left;
 	font-size: 26px;
 	background-color: #004040;
 	border-top-color: #00F;
@@ -102,6 +101,7 @@
 	border-right-style: groove;
 	border-bottom-style: groove;
 	border-left-style: groove;
+	font-size: 18px;
 }
 .cuerpo {
 	background-color: #000;
@@ -109,7 +109,7 @@
 }
 	
 .Caja {
-	width: 50%;
+	width: 70%;
 	background-color: #000;
 	color: #6F0;
 	font-size: 20px;
@@ -119,6 +119,18 @@
 	border-left-style: inset;
 	font-family: "Lucida Console", Monaco, monospace;
 	font-weight: bolder;
+}
+.Saldo {
+	background-color: #000;
+	color: #6F0;
+	font-size: 20px;
+	border-top-style: inset;
+	border-right-style: inset;
+	border-bottom-style: inset;
+	border-left-style: inset;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-weight: bolder;
+	width: 50px;
 }
 .soloCaja {
 	color: #FFF;
@@ -154,5 +166,12 @@
 	visibility: hidden;
 }
 .content2 {
+
+
+}
+.GamerSatus {
+	visibility: visible;
+	height: 100%;
+
 
 }

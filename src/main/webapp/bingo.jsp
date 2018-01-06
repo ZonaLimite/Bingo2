@@ -359,7 +359,7 @@
 	
 	          <span class="Comander">
 	          <canvas id="canvas_bola" class="canvasBola">
-	           hola
+	         
               </canvas>
 	
        

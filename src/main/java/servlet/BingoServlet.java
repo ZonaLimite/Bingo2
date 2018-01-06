@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.inject.Inject;
@@ -69,6 +70,8 @@ private String user,sala,perfil;
 	      out.write("<script src=\"javascript/reproductor.js\"></script>\r\n");
 	      out.write("\r\n");
 	      out.write("<link href=\"css/Bingo.css\" rel=\"stylesheet\" type=\"text/css\">\r\n");
+	      out.write("<link href=\"css/estilosDialogos.css\" rel=\"stylesheet\" type=\"text/css\">\r\n");
+
 	      out.write("</head>\r\n");
 	      out.write("\r\n");
 
@@ -117,7 +120,7 @@ private String user,sala,perfil;
 	      out.write("      <td class=\"panel\"> \r\n");
 	      out.write("            <label id=\"40\" class=\"numeros\" >40</label>             \r\n");
 	      out.write("        </td>\r\n");
-	      out.write("      <td rowspan=\"10\" class=\"panel\" > \r\n");
+	      out.write("      <td rowspan=\"10\" class=\"panel\" width=\"30%\"> \r\n");
 	      out.write("            <article class=\"Comander\" >\r\n");
 	      out.write("             <span >\r\n");
 	      out.write("\t\t\t <div id=\"my_poster\"> \t\r\n");
@@ -160,7 +163,102 @@ private String user,sala,perfil;
 	      out.write("\t        \r\n");
 	      out.write("    \t</tr>\r\n");
 	      out.write("</table>\r\n");
-	      out.write("\t\r\n");
+		  UtilDatabase udatabase = new UtilDatabase();
+		  String vCaja = udatabase.consultaSQLUnica("Select SaldoCaja From caja");
+
+	      out.write("<div id=\"GameStatus\" class=\"GamerSatus\">\r\n");
+	      out.write("<div class=\"content2\">\r\n");
+	      out.write("\r\n");
+	      out.write("<table id=\"resultLines\"  border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
+	      out.write("  <tr bgcolor=\"#003399\" id=\"fila\">\r\n");
+	      out.write("    <td colspan=\"1\"><label class=\"soloCaja\" >CAJA <br></label>\r\n");
+	      out.write("      \r\n");
+	      out.write("        <input  class=\"Caja\" type=\"text\" Id=\"precioCarton2\" value=\""+vCaja+" €\">\r\n");
+	      out.write("    \r\n");
+	      out.write("    \r\n");
+	      out.write("    <td colspan=\"1\">\r\n");
+	      out.write("      <label class=\"soloCaja\" >CARTON<br>\r\n");
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+gestorSesions.getJugadasSalas(sala).getPrecioCarton() +" €\">\r\n");
+	      out.write("    </td>\r\n");
+	      out.write("   <td colspan=\"2\">\r\n");
+	      out.write("      <label class=\"soloCaja\" >JUGADORES<br>\r\n");
+	      int totalJugadores = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuegoConCartones().size() + gestorSesions.dameNumeroJugadoresConCartones(sala);
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+totalJugadores+"\">\r\n");
+	      out.write("    <br></td> \r\n");
+	      out.write("  </tr>\r\n");
+	      out.write("\r\n");
+	      out.write("  </table>\r\n");
+	      out.write("</div>\r\n");
+	      out.write("<div class=\"content2\">\r\n");
+	      out.write("\r\n");
+	      out.write("<table id=\"resultLines2\" border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
+	      out.write("\r\n");
+	      out.write("  <tr>\r\n");
+	      out.write("    <td width=\"45%\"class=\"Cabecera\">USUARIOS</td>\r\n");
+	      out.write("    <td width=\"20%\"  class=\"Cabecera\">SALDO</td>\r\n");
+	      out.write("    <td width=\"15%\" class=\"Cabecera\">CARDS</td>\r\n");
+	      out.write("    <td width=\"20%\"  class=\"Cabecera\">PERFIL</td>\r\n");
+	      out.write("  </tr>\r\n");
+	      out.write("</table>\r\n");
+	      out.write("</div>\r\n");
+	      out.write("\r\n");
+	      out.write("<div class=\"flotador\">\r\n");
+	      out.write("<div class=\"content2\">\r\n");
+	      out.write("<table id=\"resultLines2\" border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
+	      Vector<String> jEnJuego;
+	      //UsuariosManuales
+	      jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+	      for(int i=0; i < jEnJuego.size();i++){
+	    	  String user= jEnJuego.elementAt(i);
+	    	  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
+	    	  out.write("    <td width =\"50%\" class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
+	    	  out.write("    <td width =\"20%\" class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    	  
+	    	  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    	  out.write("    <td width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">"+gestorSesions.getJugadasSalas(sala).dimeCartonesDe(user)+"</label><span class=\"AIzquierdas\">\r\n");
+	    	  out.write("      \r\n");
+	    	  out.write("    </span></td>\r\n");
+	    	  out.write("    <td width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">"+"MANUAL"+"</label></td>\r\n");
+	    	  out.write("</tr>\r\n");
+	      }
+	      //Usuarios electronicos
+	      Set<UserBean> jElectronicos = gestorSesions.dameUserBeansEnPortal("jugador");
+	      Iterator<UserBean> itjElectronicos = jElectronicos.iterator();
+	     while(itjElectronicos.hasNext()){
+	    	  UserBean userbean = itjElectronicos.next();
+	    	  if(userbean.getSalonInUse().equals(sala)){
+	    		  String user= userbean.getUsername();
+	    		  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
+	    		  out.write("    <td width =\"50%\" class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
+	    		  out.write("    <td width =\"20%\" class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    		  
+	    		  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    		  out.write("    <td width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">"+userbean.getvCarton().size()+"</label><span class=\"AIzquierdas\">\r\n");
+	    		  out.write("      \r\n");
+	    		  out.write("    </span></td>\r\n");
+	    		  out.write("    <td width =\"15%\" class=\"otroCentro\"<label class=\"AIzquierdas\">>"+"DIGITAL"+"</label></td>\r\n");
+	    		  out.write("</tr>\r\n");
+	    	  }
+	     }
+	      
+	      
+	     /* 
+	      out.write("<tr onclick=\"valorCombo('elnombre')\" class=\"fondosLineas\" id=\"fila\">\r\n");
+	      out.write("    <td width =\"50%\" class=\"otro\"><label class=\"AIzquierdas\">Lola Arranz</label></td>\r\n");
+	      out.write("    <td width =\"20%\" class=\"otro\"><label class=\"AIzquierdas\">120 €</label></td>\r\n");
+	      out.write("    <td  width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">6</label></td>\r\n");
+	      out.write("    <td width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">Manual</label></td></tr>");
+	      */
+	      
+
+
+	      out.write("</table>\r\n");
+	      out.write("</div>\r\n");
+	      out.write("</div>\r\n");
+	      out.write("</div>\r\n");	      
+	      
+	      
+	      
 	      out.write("\t          <span class=\"Comander\"><span class=\"Comander\">\r\n");
 	      out.write("\t          <canvas id=\"canvas_bola\" class=\"canvasBola\">\r\n");
 	      out.write("\t           \r\n");
