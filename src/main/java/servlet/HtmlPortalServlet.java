@@ -109,7 +109,7 @@ public class HtmlPortalServlet extends HttpServlet{
 			
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");
-		    //res.sendRedirect("ConfiguracionCartonesPlaying.jsp");
+		    //res.sendRedirect("ConfiguracionCartonesPlaying.jsp");2
 		  
 			String sala = req.getParameter("sala");
 		    try {
