@@ -338,7 +338,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+gestorSesions.getJugadasSalas(sala).getPrecioCarton() +"€\"/p>\r\n");
 	      out.write("    <br></td>\r\n");
 	      out.write("   <td colspan=\"2\">\r\n");
-	      out.write("      <label class=\"soloCaja\" >TOT.CARTONES<br>\r\n");
+	      out.write("      <label class=\"soloCaja\" >TOTAL CARTONES<br>\r\n");
 			int cartonesManuales = new Integer(gestorSesions.getJugadasSalas(sala).calculaNcartonesManuales());
 			int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 			int nCartonesEnJuego = gestorSesions.dameSetCartonesEnJuego(sala).size() + cartonesManuales;
