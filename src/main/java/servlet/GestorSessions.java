@@ -271,7 +271,7 @@ import javax.websocket.Session;
 	    }
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
                 Set<Carton> setCartones = new LinkedHashSet<>();
-                  Set<UserBean> usuarios = dameUserBeans("jugador");
+                  Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
                   Iterator<UserBean> it = usuarios.iterator();
                   while(it.hasNext()){
                     UserBean ub = (UserBean) it.next();

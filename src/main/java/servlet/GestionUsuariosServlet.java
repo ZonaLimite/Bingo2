@@ -167,11 +167,13 @@ public class GestionUsuariosServlet extends HttpServlet {
 		String resultMensaje="";
 		if(precioCompra>saldoSJugador){
 				resultMensaje="No hay suficiente Saldo para hacer la compra de cartones para "+sJugador;	
-
-		}else if(!(statusJuego.equals("Finalized"))){
-				resultMensaje="Compras cartones No permitidas. Partida aun no finalizada";
+				return resultMensaje;
 		}
-		else{
+		if(!(statusJuego.equals("Finalized"))){
+				resultMensaje="Compras cartones No permitidas. Partida aun no finalizada";
+				return resultMensaje;
+		}
+			//Formateo datos y TRansaccion compra carton
 			float saldoRestante = saldoSJugador - precioCompra;
 	        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
 	        //Formateador de datos decimales. Limitado a dos digitos.
@@ -187,11 +189,7 @@ public class GestionUsuariosServlet extends HttpServlet {
 	        	gestorSesions.getJugadasSalas(sala).AsignaNCartonesA(sJugador,gestorSesions.getJugadasSalas(sala).dimeCartonesDe(sJugador)+ nCarton);
 	    		resultMensaje="Cartones comprados :"+nCarton+" a " +sJugador;
 	    		triggerRefreshDatos(sala);
-	    		
 	        }
-        	
-
-		}
 		return resultMensaje;
 	}
 	private void triggerRefreshDatos(String salaInUse){
