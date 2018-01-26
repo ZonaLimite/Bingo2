@@ -163,11 +163,15 @@ public class GestionUsuariosServlet extends HttpServlet {
 		float saldoSJugador = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+sJugador+"'"));
 		float precioCarton = new Float(gestorSesions.getJugadasSalas(sala).getPrecioCarton());
 		float precioCompra = precioCarton * nCarton;
+		String statusJuego = gestorSesions.getJugadasSalas(sala).getIdState();
 		String resultMensaje="";
 		if(precioCompra>saldoSJugador){
 				resultMensaje="No hay suficiente Saldo para hacer la compra de cartones para "+sJugador;	
 
-		}else{
+		}else if(!(statusJuego.equals("Finalized"))){
+				resultMensaje="Compras cartones No permitidas. Partida aun no finalizada";
+		}
+		else{
 			float saldoRestante = saldoSJugador - precioCompra;
 	        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
 	        //Formateador de datos decimales. Limitado a dos digitos.
