@@ -286,7 +286,8 @@ import javax.websocket.Session;
                 return setCartones;
             }
 	    public synchronized int dameNumeroJugadoresConCartones(String sala){
-            Set<String> setJugadores = new LinkedHashSet<>();
+	    	
+	    	  Set<String> setJugadores = new LinkedHashSet<>();
               Set<UserBean> usuarios = this.dameUserBeansEnPortal("jugador");
               Iterator<UserBean> it = usuarios.iterator();
               while(it.hasNext()){
@@ -297,9 +298,10 @@ import javax.websocket.Session;
                         
                         setJugadores.add(ub.getUsername());
                     }
+                }
               }
-            }
-            return setJugadores.size();
+                    
+              return setJugadores.size();
         }	    
             
 	    public synchronized Map<String,Carton> dameMapUsuariosYCartonesEnJuego(String perfil,String sala){

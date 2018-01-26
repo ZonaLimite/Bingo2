@@ -167,6 +167,7 @@ private String user,sala,perfil;
 		  String vCaja = udatabase.consultaSQLUnica("Select SaldoCaja From caja");
 
 	      out.write("<div id=\"GameStatus\" class=\"GamerSatus\">\r\n");
+	      /*
 	      out.write("<div class=\"content2\">\r\n");
 	      out.write("\r\n");
 	      out.write("<table id=\"resultLines\"  border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
@@ -241,20 +242,11 @@ private String user,sala,perfil;
 	    	  }
 	     }
 	      
-	      
-	     /* 
-	      out.write("<tr onclick=\"valorCombo('elnombre')\" class=\"fondosLineas\" id=\"fila\">\r\n");
-	      out.write("    <td width =\"50%\" class=\"otro\"><label class=\"AIzquierdas\">Lola Arranz</label></td>\r\n");
-	      out.write("    <td width =\"20%\" class=\"otro\"><label class=\"AIzquierdas\">120 €</label></td>\r\n");
-	      out.write("    <td  width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">6</label></td>\r\n");
-	      out.write("    <td width =\"15%\" class=\"otroCentro\"><label class=\"AIzquierdas\">Manual</label></td></tr>");
-	      */
-	      
-
 
 	      out.write("</table>\r\n");
 	      out.write("</div>\r\n");
 	      out.write("</div>\r\n");
+	      */
 	      out.write("</div>\r\n");	      
 	      
 	      

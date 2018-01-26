@@ -736,7 +736,27 @@ function creaSocket(sala){
 function finalizarPartida(){
 	socket_send("Finalize");
 }
+function mostrarHTML(comando){
+	//servlet de servicio --->HtmlDinamicoServLet
+	
+	var params = new Object();
 
+	params.comando=comando;
+	params.sala=document.getElementById("idSala").value;	
+
+	$.ajax({
+		  type: 'POST',
+		  url: "HtmlPortal",
+		  data: params,
+		  dataType:"html",
+		  async:true
+		}).done(function( data ) {
+			content =document.getElementById("GameStatus");
+			content.innerHTML = data;
+
+	});
+
+}
 function getRootUri() {
 	/*Web Sockets on OpenShift 2 work over ports 8000 for ws and 8443 for wss,*/
 	
@@ -772,6 +792,7 @@ function refreshDatosCartones(){
 	// el manejador (Case DATOSCARTONES), ya con las variables actualizadas
 	// se visualzia el dato en la tabla llamando a visualizaDatosCartones.
 	socket_send("JSON#GET_DATOS_CARTONES");
+	
 }
 
 function visualizaDatosCartones(){
@@ -800,6 +821,7 @@ function visualizaDatosCartones(){
 	datoCartones.textContent=""+nCartones;
 	datoLinea.textContent=xLinea+" €";
 	datoBingo.textContent=xBingo+" €";
+	mostrarHTML("MostrarGamerStatusWithPlayers");
 }
 function resizeBolas(tamanoMenu){
 	//alert("olas");

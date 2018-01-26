@@ -119,6 +119,21 @@ public class HtmlPortalServlet extends HttpServlet{
 				e.printStackTrace();
 			}
 		    writeHTMLGamerStatus(pw, sala );
+		}
+		if(comando.equals("MostrarGamerStatusWithPlayers")){
+			
+		    res.setContentType("text/html");
+		    res.setCharacterEncoding("UTF-8");
+		    //res.sendRedirect("ConfiguracionCartonesPlaying.jsp");2
+		  
+			String sala = req.getParameter("sala");
+		    try {
+				pw= res.getWriter();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    writeHTMLGamerStatusWithPlayers(pw, sala );
 		}		
 		
 	}
@@ -343,6 +358,93 @@ public class HtmlPortalServlet extends HttpServlet{
 			int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 			int nCartonesEnJuego = cartonesAutomaticos + cartonesManuales;
 	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"totalCartones\" value=\""+nCartonesEnJuego+"\"/p>\r\n");
+	      out.write("    <br></td> \r\n");
+	      out.write("\t</tr>\r\n");
+	      out.write("  <tr>\r\n");
+	      out.write("    <td class=\"Cabecera\">USUARIOS</td>\r\n");
+	      out.write("    <td width=\"30%\"  class=\"Cabecera\">SALDO</td>\r\n");
+	      out.write("    <td  class=\"Cabecera\">CARDs</td>\r\n");
+	      out.write("    <td width=\"30%\"  class=\"Cabecera\">PERFIL</td>\r\n");
+	      out.write("  </tr>\r\n");
+	      out.write("\r\n");
+	      
+	      //UsuariosManuales
+	      jEnJuego = gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuego();
+	      for(int i=0; i < jEnJuego.size();i++){
+	    	  String user= jEnJuego.elementAt(i);
+	    	  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
+	    	  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
+	    	  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    	  
+	    	  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    	  out.write("    <td class=\"otroCentro\">"+gestorSesions.getJugadasSalas(sala).dimeCartonesDe(user)+"<span class=\"AIzquierdas\">\r\n");
+	    	  out.write("      \r\n");
+	    	  out.write("    </span></td>\r\n");
+	    	  out.write("    <td class=\"otroCentro\">"+"MANUAL"+"</td>\r\n");
+	    	  out.write("</tr>\r\n");
+	      }
+	      //Usuarios electronicos
+	      Set<UserBean> jElectronicos = gestorSesions.dameUserBeansEnPortal("jugador");
+	      Iterator<UserBean> itjElectronicos = jElectronicos.iterator();
+	     while(itjElectronicos.hasNext()){
+	    	  UserBean userbean = itjElectronicos.next();
+	    	  if(userbean.getSalonInUse().equals(sala)){
+	    		  String user= userbean.getUsername();
+	    		  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
+	    		  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
+	    		  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    		  
+	    		  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    		  out.write("    <td class=\"otroCentro\">"+userbean.getvCarton().size()+"<span class=\"AIzquierdas\">\r\n");
+	    		  out.write("      \r\n");
+	    		  out.write("    </span></td>\r\n");
+	    		  out.write("    <td class=\"otroCentro\">"+"DIGITAL"+"</td>\r\n");
+	    		  out.write("</tr>\r\n");
+	    	  }
+	     }
+	      out.write("\r\n");
+	      out.write(" \r\n");
+	      out.write("</table>\r\n");
+	      
+	      out.write("\r\n");
+	      out.write("</body>\r\n");
+	      out.write("</html>\r\n");		
+	}
+	private void writeHTMLGamerStatusWithPlayers(PrintWriter out, String sala){
+		  Vector<String> jEnJuego =null;	
+		  UtilDatabase udatabase = new UtilDatabase();
+			//arrayCampos[1] =1.User
+			String vCaja = udatabase.consultaSQLUnica("Select SaldoCaja From caja");
+
+	      out.write("\r\n");
+	      out.write("<!doctype html>\r\n");
+	      out.write("<html>\r\n");
+	      out.write("<head>\r\n");
+	      out.write("<meta charset=\"utf-8\">\r\n");
+	      out.write("<title>Documento sin título</title>\r\n");
+	      out.write("<link href=\"css/estilosDialogos.css\" rel=\"stylesheet\" type=\"text/css\">\r\n");
+	      out.write("<script src=\"javascript/utilDialogos.js\"></script>\r\n");
+	      out.write("</head>\r\n");
+	      out.write("\r\n");
+	      out.write("<body>\r\n");
+	     
+	      out.write("<table id=\"resultLines\" width=\"97%\" border=\"1\" align=\"center\" class=\"Tabla\">\r\n");
+	      out.write("  <tr bgcolor=\"#003399\" id=\"fila\">\r\n");
+	      out.write("    <td  width=\"50%\" height=\"72\"  ><span class=\"soloCaja\">CAJA</span>\r\n");
+	      out.write("      <form name=\"form1\" method=\"post\" action=\"\">\r\n");
+	      out.write("        <span class=\"soloCaja\">\r\n");
+	      out.write("        <input  class=\"Caja\" type=\"text\" Id=\"precioCarton2\" value=\""+vCaja+" €\"/p>\r\n");
+	      out.write("        </span>\r\n");
+	      out.write("      </form>\r\n");
+	      out.write(" \r\n");
+	      out.write("    <td colspan=\"1\">\r\n");
+	      out.write("      <label class=\"soloCaja\" >CARTON<br>\r\n");
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"precioCarton\" value=\""+gestorSesions.getJugadasSalas(sala).getPrecioCarton() +"€\"/p>\r\n");
+	      out.write("    <br></td>\r\n");
+	      out.write("   <td colspan=\"2\">\r\n");
+	      out.write("      <label class=\"soloCaja\" >JUGADORES<br>\r\n");
+	      
+	      out.write("      </label ><input  class=\"Caja\" type=\"text\" Id=\"totalJugadores\" value=\""+(gestorSesions.getJugadasSalas(sala).getUsuariosManualesEnJuegoConCartones().size()+gestorSesions.dameNumeroJugadoresConCartones(sala))+"\"/p>\r\n");
 	      out.write("    <br></td> \r\n");
 	      out.write("\t</tr>\r\n");
 	      out.write("  <tr>\r\n");
