@@ -65,10 +65,11 @@ public class gestorComprasCartones extends HttpServlet {
                     return;
              } 
             //comprobarSaldoUsuario();
+            UtilDatabase udatabase = new UtilDatabase();
             String mensaje2="";
             float precioCarton = new Float (pocketBingoSala.getPrecioCarton());
             float precioCompraActual = nCartonesAComprar * precioCarton;
-            float saldoUsuario = user_.getSaldo();
+            float saldoUsuario = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User='"+usuario+"'"));
             if(precioCompraActual > saldoUsuario){
                 String mensaje="Error,No hay saldo suficiente";
                 resp.getWriter().print(mensaje);
@@ -96,7 +97,9 @@ public class gestorComprasCartones extends HttpServlet {
         simbolos.setDecimalSeparator('.');
         DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
         ///////////////////////////////////////////////////////
-        float saldoRestante = myUser.getSaldo() - precioCompra;
+        UtilDatabase udatabase = new UtilDatabase();
+        float saldoUsuario = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User='"+myUser.getUsername()+"'"));
+        float saldoRestante = saldoUsuario - precioCompra;
         ///////////////////////////////////////////////////////
         String Consulta = "UPDATE usuarios SET Saldo = "+formateador.format(saldoRestante)+" WHERE User = '"+myUser.getUsername()+"'";
         System.out.println(Consulta);
@@ -197,8 +200,8 @@ public class gestorComprasCartones extends HttpServlet {
             Logger.getLogger(gestorComprasCartones.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try {
-                if(con!=null)con.close();
                 if(st!=null)st.close();
+                if(con!=null)con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(gestorComprasCartones.class.getName()).log(Level.SEVERE, null, ex);
             }

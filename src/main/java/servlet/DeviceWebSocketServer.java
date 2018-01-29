@@ -344,7 +344,6 @@ private UserBean userBean;
 				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
 				enviarMensajeAPerfil(construirScript,"supervisor");
 				enviarMensajeAPerfil(construirScript,"jugador");
-				
 				break;
 				
 			case "SET_DATOS_DELAY"://JSON#SET_DATOS_DELAY#delay

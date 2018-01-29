@@ -201,7 +201,7 @@ import javax.websocket.Session;
 
 	    			if (myVector==null)myVector= new Vector<UserBean>();
 	    			UserBean ubam= sesionUtilizada(usuarioAComparar,perfilAComparar,userBean);
-		    		//Vaya tela
+		    		//Aqui se añade una nueva sesion UserBean al usuario,
 		    			myVector.add(ubam);
 		    			sessions.put(user, myVector);
 		    			log.info("UserBean de user:"+userBean.getUsername()+",perfil:"+userBean.getPerfil()+" añadido a mapa para user:"+user);
