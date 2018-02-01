@@ -114,7 +114,7 @@ display: block;
 	font-weight: bold;
 	font-family: "Courier New", Courier, monospace;
 	border: 2px solid #1D3841;
-	width: 90%;
+	width: 97%;
 }
 .celdaInfo {
 	font-size: large;
@@ -374,6 +374,6 @@ display: block;
 	border-left-style: groove;
 }
 .flotador {
-	height: 306px;
+	height: 290px;
 	overflow-y: auto;
 }

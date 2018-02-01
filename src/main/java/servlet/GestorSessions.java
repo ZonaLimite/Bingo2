@@ -207,6 +207,7 @@ import javax.websocket.Session;
 		    			log.info("UserBean de user:"+userBean.getUsername()+",perfil:"+userBean.getPerfil()+" añadido a mapa para user:"+user);
 		    			insertado=true;
 		    			log.info("Jugadores presente:"+ sessions.keySet().toString() );
+		    			this.triggerRefreshDatos(ubam.getSalonInUse());
 	    	}else{	
 	    		insertado=false;
 	    	}
@@ -520,7 +521,6 @@ import javax.websocket.Session;
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
 	    	
-	    	
 	         while (itClaves.hasNext()){
 	             String usuarios = itClaves.next();
 	             Vector<UserBean> vectorUserBean =sessions.get(usuarios);
@@ -528,11 +528,10 @@ import javax.websocket.Session;
 	             while(itUsersBean.hasNext()){	
 
 	            		  UserBean ub = itUsersBean.next();
-	            		  //String idSession = ub.getSesionSocket().getId();
-                                  String idSession = ub.getSesionHttp().getId();
-                                  String userb = ub.getUsername();
+	            		  String idSession = ub.getSesionHttp().getId();
+                          String userb = ub.getUsername();
 	            		  if(idSession.equals(idSesionAComparar)&& userb.equals(usuario)){
-	            			//vectorUserBean.remove(ub);//b
+	            			
 	            			  String usuarioInvalidado = ub.getUsername();
 	            			  Session mySession = ub.getSesionSocket();
 	            			  try {
@@ -544,11 +543,11 @@ import javax.websocket.Session;
 								//e.printStackTrace();
 							}
 	            			  itUsersBean.remove();
-	            			  
+	            			  this.triggerRefreshDatos(ub.getSalonInUse());
 	            			log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
 	            			
 	            			if(vectorUserBean.size()==0){
-	            				//sessions.remove(ub.getUsername());
+	            				//Si no queda ninguna sesion ,eliminamos la clave completa de usuario
 	            				itClaves.remove();
 	            			}
 	            			log.info("Sesiones abiertas :"+sessions.keySet().toString());
@@ -557,7 +556,33 @@ import javax.websocket.Session;
 	         }
 	        
 	    }
-	    
+		private void triggerRefreshDatos(String salaInUse){
+			PocketBingo pb = this.getJugadasSalas(salaInUse);
+			String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
+			precioCarton=pb.getPrecioCarton();
+			int nCartones = new Integer(pb.calculaNcartonesManuales()) + this.dameSetCartonesEnJuego(salaInUse).size();
+			porCientoLinea=pb.getPorcientoLinea();
+			porCientoBingo=pb.getPorcientoBingo();
+			porCientoCantaor=pb.getPorcientoCantaor();
+			String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
+			enviarMensajeAPerfil(construirScript,"supervisor");
+			enviarMensajeAPerfil("RefreshDatosCartones","jugador");
+		}
+		
+		private void enviarMensajeAPerfil(String textMessage,String perfil){
+			  	try {
+					Set<UserBean> myUsersbean = this.dameUserBeans(perfil);
+					Iterator<UserBean> itBeans= myUsersbean.iterator();
+					while (itBeans.hasNext()){
+						Session sesionActiva = itBeans.next().getSesionSocket();
+						sesionActiva.getBasicRemote().sendText(textMessage);
+					}
+						//log.info("Enviando desde servidor a navegador:"+textMessage);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		}	    
 
 	    
 	    private PocketBingo leePocket(String sala, Session sesion){

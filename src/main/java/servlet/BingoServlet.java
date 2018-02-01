@@ -134,7 +134,7 @@ private String user,sala,perfil;
 	      out.write("   \t         </video>\r\n");
 	      out.write("   \t         </div>\r\n");
 	      out.write("            </span>\r\n");
-	      out.write("              <table   align=\"center\" class=\"tablaInfo\">\r\n");
+	      out.write("              <table align=\"center\" class=\"tablaInfo\">\r\n");
 	      out.write("     \t\t<tr>\r\n");
 	      out.write("\t        <td width=\"26%\" class=\"celdaInfo\"><span class=\"Comander\"><span class=\"Comander\">BOLA N:</span></span></td>\r\n");
 	      out.write("\t        <td width=\"4%\" id=\"datoOrdenBola\" class=\"celdaInfo\"  ><span class=\"Comander\"><span class=\"Comander\">\r\n");

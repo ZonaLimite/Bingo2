@@ -87,6 +87,7 @@ public class GestionUsuariosServlet extends HttpServlet {
 		    res.setContentType("text/html");
 		    res.setCharacterEncoding("UTF-8");			
 			res.getWriter().write(json);
+			triggerRefreshDatos(sala);
 	}
 	if(comando.equals("RemoveJugador")){
 			String sala = req.getParameter("sala");
@@ -196,11 +197,6 @@ public class GestionUsuariosServlet extends HttpServlet {
 		PocketBingo pb = gestorSesions.getJugadasSalas(salaInUse);
 		String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
 		precioCarton=pb.getPrecioCarton();
-		//Hay que distinguir entre cartones electronicos y manuales
-		//EL cuadro de Dialogo debe considerar las dos facetas
-		// Por lo tanto debe haber dos variables, uno para cada tipo de faceta de cartones.
-		// Implementado ambos tipos de datos
-	
 		int nCartones = new Integer(pb.calculaNcartonesManuales()) + this.gestorSesions.dameSetCartonesEnJuego(salaInUse).size();
 		porCientoLinea=pb.getPorcientoLinea();
 		porCientoBingo=pb.getPorcientoBingo();
