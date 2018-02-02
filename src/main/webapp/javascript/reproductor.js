@@ -879,7 +879,9 @@ function recibido(e){
 		 
 	comando=arrayMessages[0];
 		switch(comando) {
-		    
+		case "RetroMessage":
+				show_InMessage(arrayMessages[1],arrayMessages[2])
+				break;
 		//Cantar numero y mostrar orden bola
 		case "cantarNumero":
 	    	    myRango=sacarRangos(arrayMessages[1]);

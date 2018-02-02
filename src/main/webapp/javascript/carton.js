@@ -665,7 +665,9 @@ function recibido(e){
 	comando=arrayMessages[0];
 	if(!(comando=="DATOSCARTONES")&&!(comando=="ApagaLinea")&&!(comando=="numeroOK"))	show_InMessage(e.data);
 		switch(comando) {
-		    
+		case "RetroMessage":
+			show_InMessage(arrayMessages[1],arrayMessages[2])
+			break;   
 		//Cantar numero y mostrar orden bola
 		case "cantarNumero":
 	    	    //myRango=sacarRangos(arrayMessages[1]);
