@@ -317,6 +317,7 @@ function valorCarton(valor){
 	});
 	
 }
+
 function comprarTodosLosCartones(){
 	//servlet de servicio --->GestionUsuariosServlet
 	
@@ -359,6 +360,26 @@ function comprarCartones(usuario,nCarton){
 			content.innerHTML = data;
 			mostrarHTML("ConfigurarCartones");
 			
+	});
+		
+}
+function consultaSaldo(){
+	//servlet de servicio --->GestionUsuariosServlet
+	
+	var params = new Object();
+	
+	params.comando="consultarSaldoUsuario";
+	params.usuario=document.getElementById("registeredPlayers").value;
+	$.ajax({
+		  type: 'POST',
+		  url: "GestorComprasBonus",
+		  data: params,
+		  dataType:"json",
+		  async:true
+		}).done(function( data ) {
+			content =document.getElementById("sSaldo");
+			content.innerHTML = data + " Euros";
+			document.getElementById("nBonus").value=data;
 	});
 		
 }

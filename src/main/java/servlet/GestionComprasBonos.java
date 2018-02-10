@@ -186,6 +186,13 @@ public class GestionComprasBonos extends HttpServlet {
         		String json = new Gson().toJson(mensaje);	    	
         		resp.getWriter().write(json);          		
            	}          	
+           	if(comando.equals("consultarSaldoUsuario")){
+           		String user = req.getParameter("usuario");
+           		UtilDatabase udatabase = new UtilDatabase();
+           		String sSaldo = udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'");
+        		String json = new Gson().toJson(sSaldo);	    	
+        		resp.getWriter().write(json);          		
+           	}          	
 
         }
     }

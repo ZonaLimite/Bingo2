@@ -43,7 +43,7 @@
 		  <tr>
 		    <td width="50%" class="TextLogin">
        
-                    <select class="Caja" name="registeredPlayers" id="registeredPlayers">
+                    <select onchange="consultaSaldo()"class="Caja" name="registeredPlayers" id="registeredPlayers">
                       <%if(user.equals("super")){
 			         
         				for(int i=0; i < vectorResultsSQL.size();i++){
@@ -56,10 +56,10 @@
                       	<option value="<%=user %>" selected><%=user %></option>
                       <%}%>
       </select>
-	        <td width="50%"><input name="nBonus"  type="text" class="Caja" id="nBonus" size="20" maxlength="5" value="0">	        	&euro;
+	        <td width="50%"><input name="nBonus"  type="text" class="Caja" id="nBonus" size="20" maxlength="5" value="<%=vSaldoUser %>">	        	&euro;
             <br>
 	       	<label > Saldo Actual:</label>
-	        <label> <%=vSaldoUser %> &euro;</label></td>
+	        <label id="sSaldo"> <%=vSaldoUser %> &euro;</label></td>
             
 	      </tr>
           <tr>
