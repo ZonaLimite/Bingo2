@@ -216,7 +216,7 @@ import javax.websocket.Session;
 	    //Comprueba si la sesion Http esta utilizada y el perfil
 	
 	    public synchronized UserBean sesionUtilizada(String usuarioAComparar,String perfilAComparar,UserBean userbean){
-	    	UserBean myUserBean=userbean;;
+	    	UserBean myUserBean=userbean;
 
 	    	
 	    	String  idSesionHttpAComparar = userbean.getSesionHttp().getId();

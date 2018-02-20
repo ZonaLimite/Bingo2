@@ -478,7 +478,7 @@ public class HtmlPortalServlet extends HttpServlet{
 	    	  out.write("</tr>\r\n");
 	      }
 	      //Usuarios electronicos
-	      Set<UserBean> jElectronicos = gestorSesions.dameUserBeansEnPortal("jugador");
+	      Set<UserBean> jElectronicos = gestorSesions.dameUserBeans("jugador",sala);
 	      Iterator<UserBean> itjElectronicos = jElectronicos.iterator();
 	     while(itjElectronicos.hasNext()){
 	    	  UserBean userbean = itjElectronicos.next();
