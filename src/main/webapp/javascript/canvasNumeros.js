@@ -5,7 +5,7 @@ var context;
 var imageData;
 
 var elementDrawing;
-var delay = 800; // how much long u have to hold click in MS
+var delay = 600; // how much long u have to hold click in MS
 
 /*
 document.addEventListener('touchstart', function(event) {
