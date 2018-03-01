@@ -131,18 +131,21 @@ public void attributeAdded(HttpSessionBindingEvent event) {
 
 @Override
 public void attributeRemoved(HttpSessionBindingEvent event) {
-    String nameEvent = event.getName();
+
 
     //if(nameEvent.contains("usuario")){
-    if(nameEvent.equals("usuario")){
+
     /*    	
     StringTokenizer st = new StringTokenizer(nameEvent,"_");
         String atributo = st.nextToken();
         String usuario = st.nextToken(); */
         //UserBean ub = (UserBean)event.getValue();//
     	//Se elimina el userbean asociado a esta sesion Http ("Se avisara a el usuario para que renove la sesion").
-    	gestorSesions.removeUserBean(event.getSession(),(String)event.getValue());
-        //remove(ub.getSesionHttp());
+    	//remove(ub.getSesionHttp());
+    String nameEvent = event.getName();
+	if(nameEvent.equals("usuario")){
+    gestorSesions.removeUserBean(event.getSession(),(String)event.getValue());
+
     	System.out.println("Se accede a metodo deteccion atributo removido para "+(String)event.getValue());
     }
         

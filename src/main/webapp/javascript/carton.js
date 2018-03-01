@@ -111,7 +111,6 @@ function iniciar() {
 	audio = document.getElementById("audioWeb");
 	audio.style.opacity = "0";
 	
-	
 	boton_Linea= document.getElementById("boton_Linea");
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
@@ -770,6 +769,7 @@ function recibido(e){
 		    	break;
 		case "SesionHttpCaducada":
 				show_InMessage("Sesion Http caducada","blink");
+				document.location.replace("Login.jsp?resp='Sesion Http Caducada'");
 				break;
 		case "DATOSCARTONES":
 				precioCarton=parseFloat(arrayMessages[1]);

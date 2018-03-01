@@ -99,7 +99,7 @@ private UserBean userBean;
 	//guardaPocket(salaInUse,mySesion);
 
 	log.info("Ocurrido error : "+ error.getMessage());
-	error.printStackTrace();
+	//error.printStackTrace();
 }
 
 @OnMessage
@@ -147,6 +147,11 @@ private UserBean userBean;
 		// Si las hay: se envia Info_PocketAbierto
 		// Si no es un newGame
 		this.enviarMensajeAPerfil("Info_PocketAbierto","supervisor");
+		break;
+		
+	case "autoGame":
+		//autoGame Dinamico , permite jugar sin intervencion del supervisor
+		//
 		break;
 	case "newGame":
 		//this.borraPocket("user", session);vcfb

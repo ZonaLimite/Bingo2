@@ -327,9 +327,10 @@ public class Runnable3 implements Runnable{
                		case "Finalize":
                         gestorSesions.resetCartones(estaSalaEs);
                         pb.resetNumerosCalled();
+                        pb.setIdState("Finalized");
                			enviarMensajeAPerfil("EndBalls","supervisor");
                			enviarMensajeAPerfil("EndBalls","jugador");               			
-               			pb.setIdState("Finalized");
+               			
                			return;
                }
            }

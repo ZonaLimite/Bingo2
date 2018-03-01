@@ -195,7 +195,7 @@ import javax.websocket.Session;
 	    public synchronized boolean add(String user,UserBean userBean) {
 	    	boolean insertado = false;
 	    	if( !(userBean.getStatusPlayer().equals("playingBingo"))){
-	    	String usuarioAComparar = userBean.getUsername();
+	    		String usuarioAComparar = userBean.getUsername();
 	    		String perfilAComparar = userBean.getPerfil();
 	    		Vector<UserBean> myVector = sessions.get(user);//
 
