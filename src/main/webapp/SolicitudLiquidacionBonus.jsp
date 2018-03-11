@@ -14,6 +14,8 @@
 		mySession = request.getSession(false);
 		if(mySession!=null){
 			user = (String)mySession.getAttribute("usuario");
+		}else{
+			return;
 		}
         //arrayCampos[1] =1.User
 		vectorResultsSQL = udatabase.dameVectorResultsSQL("Select User From usuarios Order by idUsuarios", 1);

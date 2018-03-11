@@ -176,6 +176,7 @@ public class ComprobadorPremios {
 										
 										    	if (nRef.equals(nRefDeEste))return false;
 										    }
+										    log.info("Hay Linea ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
 											gestorSesions.getPilaAnunciaPremios(sala).put(peticionLineaManual, carton);
 											
 										} catch (IOException e) {
@@ -340,14 +341,14 @@ public class ComprobadorPremios {
 					if (resultControlBingo == 2775 ) {
 						try {
 							user.getSesionSocket().getBasicRemote().sendText("Hay premio Bingo, Enhorabuena ");
-
+							
 							String key = user.getUsername();	//PeticionPremio userBeanPeticiones = this.listaPeticionesPremios.get(key);
 							PeticionPremio peticionBingoManual = new PeticionPremio();
 							peticionBingoManual.setPremio("Bingo");
 							peticionBingoManual.setUserbean(user);
 							//Un control para no repetir el registro de premio sobre el mismo carton
 						    Collection<Carton> cartones = gestorSesions.getPilaAnunciaPremios(sala).values();
-						    Iterator itCartones = cartones.iterator();
+						    Iterator<Carton>itCartones = cartones.iterator();
 						    while(itCartones.hasNext()){
 						    	Carton esteCarton = (Carton)itCartones.next();
 						    	String nRefDeEste =esteCarton.getnRef()+""; 
@@ -355,7 +356,7 @@ public class ComprobadorPremios {
 						    	if (nRef.equals(nRefDeEste))return false;
 						    }
 							gestorSesions.getPilaAnunciaPremios(sala).put(peticionBingoManual, carton);
-							
+							log.info("Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -363,7 +364,7 @@ public class ComprobadorPremios {
 						hayBingo=true;
 						
 					}else{
-						//if(!hayLinea){
+						//if(!hayBingo){
 						try {
 							user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
 							log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());

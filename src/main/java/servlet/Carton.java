@@ -85,6 +85,7 @@ public class Carton {
 	public synchronized Carton consultaObjetoCarton(String nrefCarton){
 	    Carton carton = new Carton();
 	    //Connection con = ConnectionManager.getConexionMySQL("localhost", "paco", "ntmanager","wildfly");
+	    
 	    Connection con = ConnectionManager.getConnection();
 	    Statement st=null;
 	    ResultSet rs=null;

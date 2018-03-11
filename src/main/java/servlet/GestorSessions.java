@@ -240,10 +240,25 @@ import javax.websocket.Session;
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
 	            			 myUserBean.setvCarton(cartones);
-	            			 if(idSesionHttpAComparar.equals(ub.getSesionHttp().getId())){
-	            				 //Vamos a probar a no borrar la sesion duplicada, haber que pasa
-	            				 itUsersBean.remove();
-	            			 }
+	            			 //if(idSesionHttpAComparar.equals(ub.getSesionHttp().getId())){
+	            				 //El problema no esta en aqui, sino en el control de sesiones caducadas
+	            				 //ya que se declaran un unico nombre de atirbuto de sesion ¨"Usuario"
+	            				 //y solo es posible detectar una caducidad de sesion, todas las demas
+	            				 //quedan descontroladas, porque solo se declara un atributo siempre
+	            				 //para todas las distintas sesiones que se van creando
+	            				 //se solucionaria si se declarasen atributos unicos e indpendientes personalizados
+	            				 //para cada apertura se sesion, al atributo de sesion.
+	            				 //AUNQUE ESO IMPLICARIA REDISEÑAR LAS LLAMADAS A SERVLETS DE BINGO Y CARTON, CON PARAMTROS EN LA URL
+	            				 //A DIFERENCIA DE METERLOS EN ATRIBUTO DE SESION COMO AHORA
+	            				 try {
+	            					 ub.getSesionHttp().invalidate();
+	            					 log.info("sesion invalidadpor duplicada usuario");
+	            				 } catch(java.lang.IllegalStateException iex) {
+	            					 log.info("repetida excepcion invalidada");
+	            				 }
+	            				 //itUsersBean.remove();
+	            				 
+	            			 //}
 	            			 log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
 	            			 return myUserBean;
 	            			 

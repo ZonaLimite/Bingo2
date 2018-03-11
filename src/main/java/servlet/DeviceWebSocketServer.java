@@ -66,7 +66,7 @@ private UserBean userBean;
 		//if(pb==null)pb= new PocketBingo();
 		//session.getUserProperties().put("sala1",pb);
 		//this.gestorSesions.add(userBean.getUsername(), userBean);
-		Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
+		//Set<UserBean> juegoUserBeans = gestorSesions.dameUserBeans("supervisor");
 		mySesion.getUserProperties().put("gestorSesiones",gestorSesions);
 		log.info("Grabados userBeans en sesion");
 		
@@ -161,9 +161,10 @@ private UserBean userBean;
 		pb= gestorSesions.getJugadasSalas(salaInUse);
 		if(pb==null){
 			pb= new PocketBingo();
+			pb.setDelay(delay);
 		}
 		pb.initPocket();
-		pb.setDelay(delay);
+		delay=pb.getDelay();
 		//this.guardaPocket("sala1", this.mySesion);
 		gestorSesions.setJugadasSalas(salaInUse,pb);
 		runnable3 = new Runnable3(this.mySesion,delay);
@@ -336,6 +337,7 @@ private UserBean userBean;
 			
 			case "GET_DATOS_CARTONES"://JSON#GET_DATOS_CARTONES#.........
 				String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
+				int page_delay;
 				precioCarton=pb.getPrecioCarton();
 				//Hay que distinguir entre cartones electronicos y manuales
 				//EL cuadro de Dialogo debe considerar las dos facetas
@@ -346,7 +348,8 @@ private UserBean userBean;
 				porCientoLinea=pb.getPorcientoLinea();
 				porCientoBingo=pb.getPorcientoBingo();
 				porCientoCantaor=pb.getPorcientoCantaor();
-				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
+				page_delay=pb.getDelay();
+				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor+"_"+page_delay;
 				enviarMensajeAPerfil(construirScript,"supervisor");
 				enviarMensajeAPerfil(construirScript,"jugador");
 				break;

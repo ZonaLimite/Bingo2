@@ -95,6 +95,7 @@ var labelTexto;
 var comandoHandshake;
 var iDGamerStatus;
 var canvas;
+var delay;
 
 
 function iniciar() {
@@ -118,7 +119,7 @@ function iniciar() {
     cajaFecha = document.getElementById("CajaDcha");
     etiquetaOrden = document.getElementById("labelOrden");
     audio = document.getElementById("audioWeb");
-    
+    delay= document.getElementById("delay");
 	boton_play = document.getElementById("play");
 	boton_play.onclick = function() {reanudar()};
 	
@@ -212,7 +213,7 @@ function iniciar() {
 	}
 	show_InMessage("Ancho Canvas="+canvas.width+",alto="+canvas.height);
 	creaSocket(salaInUse.textContent);
-
+	
 	//Manejo JQuery//
 	
 	//Plantilla JQuery para Dialogo Preguntar Premios cartones//
@@ -1005,8 +1006,11 @@ function recibido(e){
 				porCientoLinea=parseInt(arrayMessages[3]);
 				porCientoBingo=parseInt(arrayMessages[4]);
 				porCientoCantaor=parseInt(arrayMessages[5]);
-				//callback
+				delay.value=parseInt(arrayMessages[6]);
 				visualizaDatosCartones();
+				break;
+		case "RefreshDatosCartones":
+				visualizaDatosCartones()
 				break;
 		default:
         		

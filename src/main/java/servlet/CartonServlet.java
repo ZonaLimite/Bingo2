@@ -21,11 +21,16 @@ public class CartonServlet extends HttpServlet{
 		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
 		if(mySession!=null){
-			System.out.println("la mySesion "+ mySession.getId());
+			
 			//Comprobacion de HttpSession registrada aqui
 			
 			user = req.getParameter("usuario");//
-			if(mySession.getAttribute("usuario")==null) res.sendRedirect(url); //logged-in page // 
+			if(mySession.getAttribute("usuario")==null) {
+				res.sendRedirect(url); //logged-in page //
+				System.out.println("Usuario no registrado");
+				return;
+			}
+			System.out.println("la mySesion "+ mySession.getId());
 			sala = req.getParameter("sala");
 			perfil =req.getParameter("perfil");
 			
