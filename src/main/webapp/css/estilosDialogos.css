@@ -109,7 +109,7 @@
 }
 	
 .Caja {
-	width: 70%;
+	width: 80%;
 	background-color: #000;
 	color: #6F0;
 	font-size: 20px;
@@ -119,6 +119,7 @@
 	border-left-style: inset;
 	font-family: "Lucida Console", Monaco, monospace;
 	font-weight: bolder;
+	text-align: center;
 }
 .Saldo {
 	background-color: #000;
@@ -174,4 +175,14 @@
 	height: 100%;
 
 
+}
+.ResalteNum {
+	border-top-style: dashed;
+	border-right-style: dashed;
+	border-bottom-style: dashed;
+	border-left-style: dashed;
+	border-top-color: #FF3;
+	border-right-color: #FF3;
+	border-bottom-color: #FF3;
+	border-left-color: #FF3;
 }

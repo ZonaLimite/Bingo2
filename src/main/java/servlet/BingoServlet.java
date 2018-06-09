@@ -282,7 +282,7 @@ private String user,sala,perfil;
 	      out.write("       <td class=\"panel\">\r\n");
 	      out.write("         <label id=\"1\" class=\"numeros\" >01</label>\r\n");
 	      out.write("       </td>\r\n");
-	      out.write("               <td class=\"panel\"> \r\n");
+	      out.write("        <td class=\"panel\"> \r\n");
 	      out.write("            <label id=\"11\" class=\"numeros\" >11</label>             \r\n");
 	      out.write("        </td>\r\n");
 	      out.write("      <td class=\"panel\"> \r\n");

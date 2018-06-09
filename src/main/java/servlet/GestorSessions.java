@@ -235,7 +235,7 @@ import javax.websocket.Session;
 	            		  UserBean ub = itUsersBean.next();
 	            		  String perfil = ub.getPerfil();
 	            		  String usuario = ub.getUsername();
-	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar)){
+	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar)&& !(userbean.getPerfil().equals("supervisor"))){
 	            			 
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
