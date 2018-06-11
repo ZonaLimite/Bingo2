@@ -177,12 +177,11 @@
 
 }
 .ResalteNum {
-	border-top-style: dashed;
-	border-right-style: dashed;
-	border-bottom-style: dashed;
-	border-left-style: dashed;
-	border-top-color: #FF3;
-	border-right-color: #FF3;
-	border-bottom-color: #FF3;
-	border-left-color: #FF3;
+	background-color: #000000;
+	padding: 2px;
+	text-align: center;
+	visibility: visible;
+	opacity: 0.9;
+	vertical-align: middle;
+	border: 1px dashed #FF3;
 }

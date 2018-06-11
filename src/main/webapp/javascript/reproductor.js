@@ -1031,18 +1031,33 @@ function apagarNumero(n){
 }
 function encenderNumero(numero,modo){
 	if(numero=="0")return;
+	desmarcarTodosPaneles();
 	document.getElementById(numero).style.color="#FF3333";//255,91,91
 	flagBucle4=0;
 	contBackground=200;
 	contBackground2=91;
 	if(modo=="simple"){
 	}else{
+		if(!(bucle4==null)){
+			window.clearInterval(bucle4);
+			bucle4=null;
+			//alert("bucle4 no es null");
+		}
 		bucle4 = setInterval(function(){ recrearFondo(numero) }, 50);
+		marcarBordePanel(numero);
 	}
 	
 }
+function marcarBordePanel(num){
+	document.getElementById("pan"+num).className = "ResalteNum";
+}
+function desmarcarTodosPaneles(){
+	for(i=1;i < 91;i++){
+		document.getElementById("pan"+i).className = "panel";	
+	}
+}
 function recrearFondo(num){
-	if(contBackground==0 && contBackground2==0){
+	if(contBackground <=0 && contBackground2 <=0){
 		window.clearInterval(bucle4);
 		bucle4=null;
 	}
@@ -1051,6 +1066,7 @@ function recrearFondo(num){
 	if(contBackground<0)contBackground=0;
 	if(contBackground2<0)contBackground2=0;
 	_color = 'rgba(' + contBackground+ ',' +contBackground2 + ','+contBackground2+',1)';
+	document.getElementById("pan"+num).style.backgroundColor=_color;
 	document.getElementById(num).style.backgroundColor=_color;
 	
 }
