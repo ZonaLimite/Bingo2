@@ -236,7 +236,7 @@ import javax.websocket.Session;
 	            		  String perfil = ub.getPerfil();
 	            		  String usuario = ub.getUsername();
 	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar)&& !(userbean.getPerfil().equals("supervisor"))){
-	            			 
+	            			  log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
 	            			 myUserBean.setvCarton(cartones);
@@ -251,15 +251,17 @@ import javax.websocket.Session;
 	            				 //AUNQUE ESO IMPLICARIA REDISEÑAR LAS LLAMADAS A SERVLETS DE BINGO Y CARTON, CON PARAMTROS EN LA URL
 	            				 //A DIFERENCIA DE METERLOS EN ATRIBUTO DE SESION COMO AHORA
 	            				 try {
+	            					 log.info("se va a invalidar esta sesion por duplicada usuario");
 	            					 ub.getSesionHttp().invalidate();
-	            					 log.info("sesion invalidadpor duplicada usuario");
+	            					 
 	            				 } catch(java.lang.IllegalStateException iex) {
-	            					 log.info("repetida excepcion invalidada");
+	            					 itUsersBean.remove();
+	            					 log.info("excepcion al invalidar sesion http (IllegalStateException). Borrado manual de Userbean en gestor sessions");
 	            				 }
-	            				 //itUsersBean.remove();
+	            				 
 	            				 
 	            			 //}
-	            			 log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
+	            			 
 	            			 return myUserBean;
 	            			 
 	            		  }else{
