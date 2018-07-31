@@ -385,7 +385,8 @@ function consultaSaldo(){
 }
 function hacerLogin(){
 	//servlet de servicio --->HtmlDinamicoServLet
-	
+	//Yo aqui pasaria el nombre de usuario de parametro, y haria el paso al portal con
+	//Portal.jsp&user=usuario
 	var params = new Object();
 	params.un=document.getElementById("un").value ;
 	params.pw=document.getElementById("pw").value;	

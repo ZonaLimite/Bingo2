@@ -52,6 +52,7 @@ public class UserAwareConfigurator extends Configurator {
 	        config.getUserProperties().put("perfil", perfil);
 	        config.getUserProperties().put("usuario", usuario);		
 	        //config.getUserProperties().put("userBean", user);
+	        //la hhtpSession nos srive para entablar un canal de comunicacion entre las dos partes del socket,en cuestion.
 	        config.getUserProperties().put("idHttpSession", httpSession.getId());
 	    }
 
