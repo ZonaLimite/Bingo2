@@ -66,7 +66,7 @@ try
         	  //Utilizamos el atributo de sesion usuario para hacer seguimiento de sesiones Http mediante 
         	  //la implementacion de la interface "implements HttpSessionAttributeListener"
         	  
-        	  	  //session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
+        	 //session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
         	 session.setAttribute("usuario",user.getUsername());
         	 session.setAttribute("perfil",user.getPerfil());
              session.setAttribute("sala",user.getSalonInUse());
