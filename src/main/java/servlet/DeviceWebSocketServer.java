@@ -302,7 +302,7 @@ private UserBean userBean;
 	
 	case "Finalize":
 		if(!(hilo3==null)){
-				pb.setIdState("EndBalls");
+				//pb.setIdState("EndBalls");
 				pb.setReasonInterrupt("Finalize");
 				hilo3.interrupt();
 		}else{

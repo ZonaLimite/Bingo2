@@ -47,7 +47,7 @@ public class ComprobadorPremios {
     						int numero = numeros[f][c];
     						if(numerosCalled.contains(numero)){
     							//Enviar mensaje de encender numero a Carton por numero OK (En cliente marcar el numero como OK)
-    							//De momento no lo enviamos/
+    							
     							
     							   try {
     									user.getSesionSocket().getBasicRemote().sendText("numeroOK_"+carton.getnOrden()+"F"+(f+1)+"C"+(c+1));

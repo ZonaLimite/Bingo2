@@ -149,7 +149,35 @@ import javax.websocket.Session;
 			}
 			
 		}
-
+		private float CalcularValorPremioLineaUsuario(int nCartones, PocketBingo pb) {
+			//Calcula el valor a restar del Saldo caja, de laparte de Linea de una Jugada
+			//para nCartones de usuario en Juego
+			float precioCarton =  new Float(pb.getPrecioCarton());
+			float sumaCaja = precioCarton*nCartones;
+			float porCientoLinea = new Float(pb.getPorcientoLinea());
+			float porCientoBingo = new Float(pb.getPorcientoBingo());
+			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
+			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
+			// 
+			float xLinea = (new Float(((sumaCaja*porCientoLinea)/sumaTantos)));
+			return xLinea;
+		}
+		
+		private float CalcularValorPremioBingoUsario(int nCartones,PocketBingo pb){
+			//Calcula el valor a restar del Saldo caja, de la parte de Bingo de una Jugada
+			//para nCartones de usuario en Juego
+			float precioCarton =  new Float(pb.getPrecioCarton());
+			float sumaCaja = precioCarton*nCartones;
+			float porCientoLinea = new Float(pb.getPorcientoLinea());
+			float porCientoBingo = new Float(pb.getPorcientoBingo());
+			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
+			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
+			 
+			
+			float xBingo = (new Float(((sumaCaja*porCientoBingo)/sumaTantos)));
+			return xBingo;
+		}
+		
 		public synchronized boolean addPeticionPremios(UserBean userbean,String premio) {
 			boolean registrado = false;
 			String key = userbean.getUsername();
@@ -279,7 +307,10 @@ import javax.websocket.Session;
                 Iterator it = usuarios.iterator();
                 while(it.hasNext()){
                     UserBean ub = (UserBean) it.next();
+                    
                     if(ub.getSalonInUse().equals(sala)){
+                    	//Regulacion ajuste de caja si procede.
+                    	ajustarCajaPorJugadaFinalizada(ub);
                         ub.setvCarton(new Vector<Carton>());
                         log.info("vector cartones inicializado (EndBalls) para sala"+ sala);
                     }
@@ -534,6 +565,10 @@ import javax.websocket.Session;
 	    }
 	    public synchronized void removeUserBean(HttpSession session,String usuario) {
 	    	//Utilizado para eliminar userbeans del mapa sessions.El usuario queda off_line(Sesion caducada)
+	    	
+	    	//Un control extra, aqui es, que si el usuario tiene cartones en juego, el valor en juego de dichos
+	    	//cartones ha de restarse al saldo en caja, para que esat no se desvirtue.
+	    	
 	    	String idSesionAComparar = session.getId();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -548,8 +583,12 @@ import javax.websocket.Session;
 	            		  String idSession = ub.getSesionHttp().getId();
                           String userb = ub.getUsername();
 	            		  if(idSession.equals(idSesionAComparar)&& userb.equals(usuario)){
-	            			
+	            			  //Rutina Ajuste Caja  
 	            			  String usuarioInvalidado = ub.getUsername();
+	            			  if(!(usuarioInvalidado.equals("super"))) {
+	            				 //Aqui ajustamos la caja si el usuario abandona o se finaliza la partida
+	            				  ajustarCajaPorJugadaFinalizada(ub);
+	            			  }
 	            			  Session mySession = ub.getSesionSocket();
 	            			  try {
 	            				  if (!(mySession==null)){
@@ -559,8 +598,11 @@ import javax.websocket.Session;
 								log.info(e.getMessage());
 								//e.printStackTrace();
 							}
+
 	            			  itUsersBean.remove();
 	            			  this.triggerRefreshDatos(ub.getSalonInUse());
+
+	            			  
 	            			log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
 	            			
 	            			if(vectorUserBean.size()==0){
@@ -573,6 +615,60 @@ import javax.websocket.Session;
 	         }
 	        
 	    }
+	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
+			  if(ub.getvCarton().size()>0) {
+					
+				String sala=ub.getSalonInUse();
+				PocketBingo pb = this.getJugadasSalas(sala);
+			  	float xValorADescontar = 0;
+			  	//Ojo esto solo hay que hacerlo si ha cantado el usuario
+			  	//Lo cual implica marcar los cartones que han sido premiados.
+			  	//pendiente
+			  	String hayCartonesPremiados = comprobarSihayCartonPremiado(ub.getvCarton());
+			  	if(hayCartonesPremiados.equals("Nada")){
+			  		
+			  			xValorADescontar = this.CalcularValorPremioBingoUsario(ub.getvCarton().size(), pb)+this.CalcularValorPremioLineaUsuario(ub.getvCarton().size(), pb);
+			  	
+		  		}else {
+			  		if(hayCartonesPremiados.equals("Linea")) {
+			  			xValorADescontar = this.CalcularValorPremioBingoUsario(ub.getvCarton().size(), pb);
+
+		  		}
+
+		  		}	
+			  		//Saldo de caja Actual=
+		        UtilDatabase udatabase = new UtilDatabase();
+		        float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From Caja"));
+		        /////////////////////////////////////////////////////
+		        float saldoActualizado = saldoActualCaja - xValorADescontar;
+		        /////////////////////////////////////////////////////
+		        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+		        simbolos.setDecimalSeparator('.');
+		        DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+		        
+		        String Consulta = "UPDATE caja SET SaldoCaja = "+ formateador.format(saldoActualizado ) ;
+		        
+		        int result=UtilDatabase.updateQuery(Consulta);	            			        
+		        log.info("Resultado consulta '"+Consulta+ " Ha sido :"+result);
+		  	}	
+	
+	    }
+		private String comprobarSihayCartonPremiado(Vector<Carton> vCarton) {
+			//results --> Nada,Linea,Bingo,Linea&Bingo
+			String results="Nada";
+			boolean Linea = false;
+			boolean Bingo = false;
+			for(int i=0;i<vCarton.size();i++) {
+				Carton carton = vCarton.get(i) ;
+				if (carton.isBingoCantado())Bingo=true;
+				if (carton.isLineaCantado())Linea=true;
+			}
+			if(Linea)results="Linea";
+			if(Bingo)results="Bingo";
+			if(Linea&&Bingo)results="Linea&Bingo";
+			return results;
+		}
+
 		private void triggerRefreshDatos(String salaInUse){
 			PocketBingo pb = this.getJugadasSalas(salaInUse);
 			String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;
@@ -586,7 +682,7 @@ import javax.websocket.Session;
 			enviarMensajeAPerfil("RefreshDatosCartones","jugador");
 		}
 		
-		private void enviarMensajeAPerfil(String textMessage,String perfil){
+		public void enviarMensajeAPerfil(String textMessage,String perfil){
 			  	try {
 					Set<UserBean> myUsersbean = this.dameUserBeans(perfil);
 					Iterator<UserBean> itBeans= myUsersbean.iterator();

@@ -487,8 +487,9 @@ public class HtmlPortalServlet extends HttpServlet{
 	    		  out.write("<tr class=\"fondosLineas\" id=\"fila\">\r\n");
 	    		  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">"+user+"</label></td>\r\n");
 	    		  out.write("    <td class=\"otro\"><label class=\"AIzquierdas\">\r\n");
+	    		  String saldoUser = udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'");
 	    		  
-	    		  out.write(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User ='"+user+"'")+" </label></td>");
+	    		  out.write(saldoUser+" </label></td>");
 	    		  out.write("    <td class=\"otroCentro\">"+userbean.getvCarton().size()+"<span class=\"AIzquierdas\">\r\n");
 	    		  out.write("      \r\n");
 	    		  out.write("    </span></td>\r\n");

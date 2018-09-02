@@ -66,7 +66,7 @@ public class UtilDatabase {
 
 	return nRowsUpdated;
 }
-public String consultaSQLUnica(String querySQL){
+public synchronized String consultaSQLUnica(String querySQL){
 	
     //preparing some objects for connection 
     Statement stmt = null;
@@ -227,7 +227,7 @@ public int queryAlta(String query) {
 
 		
 	}
-public int updateQueryCompraBonus(String consultaUsuario,String consultaCaja){
+public synchronized int updateQueryCompraBonus(String consultaUsuario,String consultaCaja){
 
 		  //Consulta doble de actualizacion con transaccion
 	      //preparing some objects for connection 

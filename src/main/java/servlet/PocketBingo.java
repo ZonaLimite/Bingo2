@@ -23,8 +23,7 @@ public class PocketBingo implements Serializable {
 	private static final long serialVersionUID = -5953174463423977451L;
 	private int numeroOrden = 0;
     private String idPlayer = "";
-    //Este HashMap recopila los cartones en juego de cada user.
-    //la key del mapa representa
+ 
     
     private Vector numerosCalled = new Vector() ;
     private int lastNumber;

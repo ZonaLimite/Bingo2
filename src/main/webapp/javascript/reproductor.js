@@ -491,10 +491,12 @@ function switchGamerCanvasOff(){
 	canvas.style.height="100%";
 }
 function switchGamerCanvasOn(){
+	
 	iDGamerStatus.style.visibility="visible";
 	iDGamerStatus.style.height="300px";
 	canvas.style.visibility="hidden";
 	canvas.style.height="0px";
+	//visualizaDatosCartones();
 }
 
 function apagaLinea(){
@@ -1010,7 +1012,7 @@ function recibido(e){
 				visualizaDatosCartones();
 				break;
 		case "RefreshDatosCartones":
-				visualizaDatosCartones()
+				visualizaDatosCartones();
 				break;
 		default:
         		
