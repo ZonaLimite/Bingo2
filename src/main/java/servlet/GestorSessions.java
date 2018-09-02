@@ -638,7 +638,7 @@ import javax.websocket.Session;
 		  		}	
 			  		//Saldo de caja Actual=
 		        UtilDatabase udatabase = new UtilDatabase();
-		        float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From Caja"));
+		        float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
 		        /////////////////////////////////////////////////////
 		        float saldoActualizado = saldoActualCaja - xValorADescontar;
 		        /////////////////////////////////////////////////////
