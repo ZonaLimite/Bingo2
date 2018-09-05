@@ -149,7 +149,7 @@ import javax.websocket.Session;
 			}
 			
 		}
-		private float CalcularValorPremioLineaUsuario(int nCartones, PocketBingo pb) {
+		private float CalcularValorPremioLineaUsuario(String sala,int nCartones, PocketBingo pb) {
 			//Calcula el valor a restar del Saldo caja, de laparte de Linea de una Jugada
 			//para nCartones de usuario en Juego
 			float precioCarton =  new Float(pb.getPrecioCarton());
@@ -158,12 +158,12 @@ import javax.websocket.Session;
 			float porCientoBingo = new Float(pb.getPorcientoBingo());
 			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
 			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-			// 
-			float xLinea = (new Float(((sumaCaja*porCientoLinea)/sumaTantos)));
+			float numeropremiosLinea = this.computarNumeroDePremiosRepartidos(sala)[0]+1;
+			float xLinea = (new Float(((sumaCaja*porCientoLinea)/sumaTantos))/numeropremiosLinea);
 			return xLinea;
 		}
-		
-		private float CalcularValorPremioBingoUsario(int nCartones,PocketBingo pb){
+
+		private float CalcularValorPremioBingoUsario(String sala,int nCartones,PocketBingo pb){
 			//Calcula el valor a restar del Saldo caja, de la parte de Bingo de una Jugada
 			//para nCartones de usuario en Juego
 			float precioCarton =  new Float(pb.getPrecioCarton());
@@ -172,9 +172,9 @@ import javax.websocket.Session;
 			float porCientoBingo = new Float(pb.getPorcientoBingo());
 			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
 			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-			 
+			float numeropremiosBingo = this.computarNumeroDePremiosRepartidos(sala)[1]+1;
 			
-			float xBingo = (new Float(((sumaCaja*porCientoBingo)/sumaTantos)));
+			float xBingo = (new Float(((sumaCaja*porCientoBingo)/sumaTantos))/numeropremiosBingo);
 			return xBingo;
 		}
 		
@@ -316,7 +316,31 @@ import javax.websocket.Session;
                     }
                 }
 	    	//Borrado de cartones OffLine
-	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
+	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine(this.computarNumeroDePremiosRepartidos(sala));
+	    }
+	    private int[] computarNumeroDePremiosRepartidos(String sala) {
+	    	int aResultPremios[] = new int[2];
+	    	aResultPremios[0]=0;//Las Lineas premiadas
+	    	aResultPremios[1]=0;//Los Bingos premiados
+	
+	    	//Estos cartones solo tienen un premio por jugador
+	    	Set<Carton> sCartons = this.dameSetCartonesEnJuego(sala);
+	    	Vector<Carton> vCartons = this.getJugadasSalas(sala).getCartonesManualesPremiados();
+	    	//Calculo sobre los automaticos
+	    	Iterator<Carton> itCAutomaticos = sCartons.iterator();
+	    	while(itCAutomaticos.hasNext()) {
+	    		Carton c= itCAutomaticos.next();
+	    		if (c.isLineaCantado())aResultPremios[0]=aResultPremios[0]++;
+	    		if (c.isBingoCantado())aResultPremios[0]=aResultPremios[1]++;
+	    	}
+	    	//Calculo sobre los manuales
+	    	Iterator<Carton> itCManuales = vCartons.iterator();
+	    	while(itCManuales.hasNext()) {
+	    		Carton c= itCAutomaticos.next();
+	    		if (c.isLineaCantado())aResultPremios[0]=aResultPremios[0]++;
+	    		if (c.isBingoCantado())aResultPremios[0]=aResultPremios[1]++;
+	    	}
+	    	return aResultPremios;
 	    }
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
                 Set<Carton> setCartones = new LinkedHashSet<>();
@@ -623,15 +647,15 @@ import javax.websocket.Session;
 			  	float xValorADescontar = 0;
 			  	//Ojo esto solo hay que hacerlo si ha cantado el usuario
 			  	//Lo cual implica marcar los cartones que han sido premiados.
-			  	//pendiente
+			  
 			  	String hayCartonesPremiados = comprobarSihayCartonPremiado(ub.getvCarton());
 			  	if(hayCartonesPremiados.equals("Nada")){
 			  		
-			  			xValorADescontar = this.CalcularValorPremioBingoUsario(ub.getvCarton().size(), pb)+this.CalcularValorPremioLineaUsuario(ub.getvCarton().size(), pb);
+			  			xValorADescontar = this.CalcularValorPremioBingoUsario(sala,ub.getvCarton().size(), pb)+this.CalcularValorPremioLineaUsuario(sala,ub.getvCarton().size(), pb);
 			  	
 		  		}else {
 			  		if(hayCartonesPremiados.equals("Linea")) {
-			  			xValorADescontar = this.CalcularValorPremioBingoUsario(ub.getvCarton().size(), pb);
+			  			xValorADescontar = this.CalcularValorPremioBingoUsario(sala,ub.getvCarton().size(), pb);
 
 		  		}
 

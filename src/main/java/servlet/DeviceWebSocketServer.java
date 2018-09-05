@@ -301,17 +301,18 @@ private UserBean userBean;
 		break;
 	
 	case "Finalize":
-		if(!(hilo3==null)){
+		/*if(!(hilo3==null)){
 				//pb.setIdState("EndBalls");
 				pb.setReasonInterrupt("Finalize");
 				hilo3.interrupt();
-		}else{
-			gestorSesions.resetCartones(this.salaInUse);
+		}else{*/
+			pb.setIdState("Finalized");
 			pb.resetNumerosCalled();
+			gestorSesions.resetCartones(this.salaInUse);
 			enviarMensajeAPerfil("EndBalls","supervisor");
 			enviarMensajeAPerfil("EndBalls","jugador");               			
-			pb.setIdState("Finalized");
-		}
+			
+		//}
 		
 		break;
 	}

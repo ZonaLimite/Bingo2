@@ -47,8 +47,8 @@ public class LiquidadorPremio {
 					//Si la transaccion de liquidacion se completa. lo anunciamos
 					float premioCobrado = this.saldarPremio(sala, ubPremiado, pp.getPremio());
 					if(premioCobrado>0){
-						//Considerar que en realidad solo un carton del jugador estara  premiado,
-						//aunque hayan sido varios premiados a la vez, que es lo que queremos en este caso
+						//Considerar que en realidad solo un carton del jugador estara  premiado aqui,
+						//aunque hayan sido varios lineas o bingos  a la vez, que es lo que queremos en este caso
 						
 						if(pp.getPremio().equals("Linea"))carton.setLineaCantado(true);
 						if(pp.getPremio().equals("Bingo"))carton.setBingoCantado(true);

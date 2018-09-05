@@ -305,7 +305,10 @@ public class Runnable3 implements Runnable{
                				pb.setIdState("Finalized");
                				return;
                			}
-
+               			if(pb.getIdState().equals("Finalized")){
+               				//Se ha alcanzado el estado finalizado, no hay nada mas que hacer
+               				return;
+               			}
                			try {
                				delay=pb.getDelay();
                				Thread.sleep(delay);
@@ -324,14 +327,7 @@ public class Runnable3 implements Runnable{
                				}
                				break;
                				
-               		case "Finalize":
-                        gestorSesions.resetCartones(estaSalaEs);
-                        pb.resetNumerosCalled();
-                        pb.setIdState("Finalized");
-               			enviarMensajeAPerfil("EndBalls","supervisor");
-               			enviarMensajeAPerfil("EndBalls","jugador");               			
-               			
-               			return;
+               		
                }
            }
           

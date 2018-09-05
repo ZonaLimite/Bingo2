@@ -178,6 +178,8 @@ public class ComprobadorPremios {
 										    }
 										    log.info("Hay Linea ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
 											gestorSesions.getPilaAnunciaPremios(sala).put(peticionLineaManual, carton);
+											carton.setLineaCantado(true);
+											gestorSesions.getJugadasSalas(sala).registraCartonPremiado(user.getUsername(), carton);
 											
 										} catch (IOException e) {
 											// TODO Auto-generated catch block
@@ -356,6 +358,8 @@ public class ComprobadorPremios {
 						    	if (nRef.equals(nRefDeEste))return false;
 						    }
 							gestorSesions.getPilaAnunciaPremios(sala).put(peticionBingoManual, carton);
+							carton.setBingoCantado(true);
+							gestorSesions.getJugadasSalas(sala).registraCartonPremiado(user.getUsername(), carton);
 							log.info("Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
