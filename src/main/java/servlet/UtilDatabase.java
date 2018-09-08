@@ -69,13 +69,14 @@ public class UtilDatabase {
 public synchronized String consultaSQLUnica(String querySQL){
 	
     //preparing some objects for connection 
+	Connection connection = null;;
     Statement stmt = null;
     ResultSet rs = null;
     String valor="";
   try {
     //connect to DB 
-    currentCon = ConnectionManager.getConnection();
-    stmt=currentCon.createStatement();
+    connection = ConnectionManager.getConnection();
+    stmt=connection.createStatement();
     if(stmt.execute(querySQL)){
     	rs=stmt.getResultSet();
     	if(rs.next())valor = rs.getString(1);
@@ -103,13 +104,13 @@ public synchronized String consultaSQLUnica(String querySQL){
           stmt = null;
        }
 	
-    if (currentCon != null) {
+    if (connection != null) {
        try {
-          currentCon.close();
+    	   connection.close();
        } catch (Exception e) {
        }
 
-       currentCon = null;
+       connection = null;
     }
  }
 
@@ -122,11 +123,11 @@ public Vector<String[]> dameVectorResultsSQL(String querySQL,int nCampos ){
     //preparing some objects for connection 
     Statement stmt = null;
     ResultSet rs = null;
-
+    Connection con2 = null;
   try {
     //connect to DB 
-    currentCon = ConnectionManager.getConnection();
-    stmt=currentCon.createStatement();
+    con2 = ConnectionManager.getConnection();
+    stmt=con2.createStatement();
     if(stmt.execute(querySQL)){
     	rs=stmt.getResultSet();
 			int contOrden=0;
@@ -163,13 +164,13 @@ public Vector<String[]> dameVectorResultsSQL(String querySQL,int nCampos ){
           stmt = null;
        }
 	
-    if (currentCon != null) {
+    if (con2 != null) {
        try {
-          currentCon.close();
+    	   con2.close();
        } catch (Exception e) {
        }
 
-       currentCon = null;
+       con2 = null;
     }
  }
   
@@ -181,12 +182,12 @@ public int queryAlta(String query) {
 		   ResultSet rs=null;
 		   Statement stmt=null;
 		   int nFilas=0;
-		    
+		   Connection con3 = null; 
 	   try 
 	   {
 	      //connect to DB 
-	      currentCon = ConnectionManager.getConnection();
-	      stmt=currentCon.createStatement();
+	      con3 = ConnectionManager.getConnection();
+	      stmt=con3.createStatement();
 	      //"INSERT INTO usuarios VALUES ('"+usuario+"','"+ password +"','"+ email+"', 'jugador', 0)"
 	      nFilas =stmt.executeUpdate(query);
 
@@ -213,13 +214,13 @@ public int queryAlta(String query) {
 	            stmt = null;
 	         }
 		
-	      if (currentCon != null) {
+	      if (con3 != null) {
 	         try {
-	            currentCon.close();
+	        	 con3.close();
 	         } catch (Exception e) {
 	         }
 
-	         currentCon = null;
+	         con3 = null;
 	      }
 
 	   }

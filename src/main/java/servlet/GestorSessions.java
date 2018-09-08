@@ -149,35 +149,6 @@ import javax.websocket.Session;
 			}
 			
 		}
-		private float CalcularValorPremioLineaUsuario(String sala,int nCartones, PocketBingo pb) {
-			//Calcula el valor a restar del Saldo caja, de laparte de Linea de una Jugada
-			//para nCartones de usuario en Juego
-			float precioCarton =  new Float(pb.getPrecioCarton());
-			float sumaCaja = precioCarton*nCartones;
-			float porCientoLinea = new Float(pb.getPorcientoLinea());
-			float porCientoBingo = new Float(pb.getPorcientoBingo());
-			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
-			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-			float numeropremiosLinea = this.computarNumeroDePremiosRepartidos(sala)[0]+1;
-			float xLinea = (new Float(((sumaCaja*porCientoLinea)/sumaTantos))/numeropremiosLinea);
-			return xLinea;
-		}
-
-		private float CalcularValorPremioBingoUsario(String sala,int nCartones,PocketBingo pb){
-			//Calcula el valor a restar del Saldo caja, de la parte de Bingo de una Jugada
-			//para nCartones de usuario en Juego
-			float precioCarton =  new Float(pb.getPrecioCarton());
-			float sumaCaja = precioCarton*nCartones;
-			float porCientoLinea = new Float(pb.getPorcientoLinea());
-			float porCientoBingo = new Float(pb.getPorcientoBingo());
-			float porCientoCantaor = new Float(pb.getPorcientoCantaor());
-			float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-			float numeropremiosBingo = this.computarNumeroDePremiosRepartidos(sala)[1]+1;
-			
-			float xBingo = (new Float(((sumaCaja*porCientoBingo)/sumaTantos))/numeropremiosBingo);
-			return xBingo;
-		}
-		
 		public synchronized boolean addPeticionPremios(UserBean userbean,String premio) {
 			boolean registrado = false;
 			String key = userbean.getUsername();
@@ -312,35 +283,12 @@ import javax.websocket.Session;
                     	//Regulacion ajuste de caja si procede.
                     	ajustarCajaPorJugadaFinalizada(ub);
                         ub.setvCarton(new Vector<Carton>());
-                        log.info("vector cartones inicializado (EndBalls) para sala"+ sala);
+                       
                     }
                 }
 	    	//Borrado de cartones OffLine
-	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine(this.computarNumeroDePremiosRepartidos(sala));
-	    }
-	    private int[] computarNumeroDePremiosRepartidos(String sala) {
-	    	int aResultPremios[] = new int[2];
-	    	aResultPremios[0]=0;//Las Lineas premiadas
-	    	aResultPremios[1]=0;//Los Bingos premiados
-	
-	    	//Estos cartones solo tienen un premio por jugador
-	    	Set<Carton> sCartons = this.dameSetCartonesEnJuego(sala);
-	    	Vector<Carton> vCartons = this.getJugadasSalas(sala).getCartonesManualesPremiados();
-	    	//Calculo sobre los automaticos
-	    	Iterator<Carton> itCAutomaticos = sCartons.iterator();
-	    	while(itCAutomaticos.hasNext()) {
-	    		Carton c= itCAutomaticos.next();
-	    		if (c.isLineaCantado())aResultPremios[0]=aResultPremios[0]++;
-	    		if (c.isBingoCantado())aResultPremios[0]=aResultPremios[1]++;
-	    	}
-	    	//Calculo sobre los manuales
-	    	Iterator<Carton> itCManuales = vCartons.iterator();
-	    	while(itCManuales.hasNext()) {
-	    		Carton c= itCAutomaticos.next();
-	    		if (c.isLineaCantado())aResultPremios[0]=aResultPremios[0]++;
-	    		if (c.isBingoCantado())aResultPremios[0]=aResultPremios[1]++;
-	    	}
-	    	return aResultPremios;
+	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
+	        
 	    }
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
                 Set<Carton> setCartones = new LinkedHashSet<>();
@@ -640,59 +588,42 @@ import javax.websocket.Session;
 	        
 	    }
 	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
-			  if(ub.getvCarton().size()>0) {
-					
+			 
+				int bingoCantado=0;
 				String sala=ub.getSalonInUse();
 				PocketBingo pb = this.getJugadasSalas(sala);
 			  	float xValorADescontar = 0;
-			  	//Ojo esto solo hay que hacerlo si ha cantado el usuario
-			  	//Lo cual implica marcar los cartones que han sido premiados.
-			  
-			  	String hayCartonesPremiados = comprobarSihayCartonPremiado(ub.getvCarton());
-			  	if(hayCartonesPremiados.equals("Nada")){
-			  		
-			  			xValorADescontar = this.CalcularValorPremioBingoUsario(sala,ub.getvCarton().size(), pb)+this.CalcularValorPremioLineaUsuario(sala,ub.getvCarton().size(), pb);
-			  	
-		  		}else {
-			  		if(hayCartonesPremiados.equals("Linea")) {
-			  			xValorADescontar = this.CalcularValorPremioBingoUsario(sala,ub.getvCarton().size(), pb);
+			    float xCuantoHasJugado = ub.getvCarton().size()*new Float(pb.getPrecioCarton());
+			    float xCuantoHeGanado = 0;
+			    Vector<Carton> cartonesPremiados = pb.getCartonesManualesPremiados(ub.getUsername());
+			    if(!(cartonesPremiados==null)){
+			    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
+			  		while(itVectorCarton.hasNext()) {
+			  			Carton c = itVectorCarton.next();
+			  			if(c.isBingoCantado())return;
+			  			xCuantoHeGanado =+ c.getPremiosAcumulados();
+			  		}
+			  		xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
 
-		  		}
-
-		  		}	
-			  		//Saldo de caja Actual=
-		        UtilDatabase udatabase = new UtilDatabase();
-		        float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
-		        /////////////////////////////////////////////////////
-		        float saldoActualizado = saldoActualCaja - xValorADescontar;
-		        /////////////////////////////////////////////////////
-		        DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-		        simbolos.setDecimalSeparator('.');
-		        DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
-		        
-		        String Consulta = "UPDATE caja SET SaldoCaja = "+ formateador.format(saldoActualizado ) ;
-		        
-		        int result=UtilDatabase.updateQuery(Consulta);	            			        
-		        log.info("Resultado consulta '"+Consulta+ " Ha sido :"+result);
-		  	}	
-	
+			    }else {
+			    	xValorADescontar = xCuantoHasJugado;
+			    }
+		  		//Saldo de caja Actual=
+		  		UtilDatabase udatabase = new UtilDatabase();
+		  		float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
+		  		/////////////////////////////////////////////////////
+		  		float saldoActualizado = saldoActualCaja - xValorADescontar;
+		  		/////////////////////////////////////////////////////
+		  		DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+		  		simbolos.setDecimalSeparator('.');
+		  		DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+	        
+		  		String Consulta = "UPDATE caja SET SaldoCaja = "+ formateador.format(saldoActualizado ) ;
+	        
+		  		int result=UtilDatabase.updateQuery(Consulta);	            			        
+		  		log.info("Cantidad ajustada Caja para jugador Elec. :'"+ub.getUsername()+" Ha sido :"+xValorADescontar);
+		  		log.info("El valor de caja ahora es :"+saldoActualizado);
 	    }
-		private String comprobarSihayCartonPremiado(Vector<Carton> vCarton) {
-			//results --> Nada,Linea,Bingo,Linea&Bingo
-			String results="Nada";
-			boolean Linea = false;
-			boolean Bingo = false;
-			for(int i=0;i<vCarton.size();i++) {
-				Carton carton = vCarton.get(i) ;
-				if (carton.isBingoCantado())Bingo=true;
-				if (carton.isLineaCantado())Linea=true;
-			}
-			if(Linea)results="Linea";
-			if(Bingo)results="Bingo";
-			if(Linea&&Bingo)results="Linea&Bingo";
-			return results;
-		}
-
 		private void triggerRefreshDatos(String salaInUse){
 			PocketBingo pb = this.getJugadasSalas(salaInUse);
 			String precioCarton,porCientoLinea,porCientoBingo,porCientoCantaor;

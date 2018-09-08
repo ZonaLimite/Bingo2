@@ -26,7 +26,20 @@ public class Carton {
 	private boolean lineaCantado=false;//
 	private boolean bingoCantado=false;
 	private int nOrden=0;
-	
+	private boolean CartonManual=false;
+	private float premiosAcumulados=0;
+	public float getPremiosAcumulados() {
+		return premiosAcumulados;
+	}
+	public void setPremiosAcumulados(float premiosAcumulados) {
+		this.premiosAcumulados = premiosAcumulados;
+	}
+	public boolean isCartonManual() {
+		return CartonManual;
+	}
+	public void setCartonManual(boolean cartonManual) {
+		CartonManual = cartonManual;
+	}
 	public int getnOrden() {
 		return nOrden;
 	}

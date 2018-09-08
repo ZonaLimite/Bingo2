@@ -52,6 +52,7 @@ public class LiquidadorPremio {
 						
 						if(pp.getPremio().equals("Linea"))carton.setLineaCantado(true);
 						if(pp.getPremio().equals("Bingo"))carton.setBingoCantado(true);
+						gestorSesions.getJugadasSalas(sala).registraCartonPremiado(pp, carton, premioCobrado);
 					    gestorSesions.enviarMensajeAPerfil("RefreshDatosCartones", "supervisor");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
