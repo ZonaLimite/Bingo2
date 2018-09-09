@@ -32,11 +32,11 @@ public class ComprobadorPremios {
     		Iterator<UserBean> it = userbeans.iterator();
     		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
     		while(it.hasNext()){
-
+    			String salirBucleCarton="No";
     			UserBean user = it.next();
     			Vector<Carton>vCarton = user.getvCarton();	
     			Iterator<Carton> itCarton = vCarton.iterator();
-    			while(itCarton.hasNext()){
+    			while(itCarton.hasNext() && salirBucleCarton.equals("No")){
     				Carton carton = (Carton)itCarton.next();
     				int numeros[][] = carton.getNumeros();
     				resultControlLinea=0;
@@ -89,6 +89,7 @@ public class ComprobadorPremios {
 	    							try {
 										user.getSesionSocket().getBasicRemote().sendText("Habia Linea y no la has cantado ...");
 										f=3;
+										salirBucleCarton="Si";
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -216,13 +217,13 @@ public class ComprobadorPremios {
     	Iterator<UserBean> it =userbeans.iterator();
     	//Iterador Usuarios
     	while(it.hasNext()){
-    				
+    			String salirBucleCarton="No";	
     			UserBean user = it.next();
     			Vector<Carton>vCarton = user.getvCarton();	
     			Iterator<Carton> itCarton = vCarton.iterator();
     			//Iterador Cartones de Usuario
     			
-    			while(itCarton.hasNext()){
+    			while(itCarton.hasNext() && salirBucleCarton.equals("No")){
     				Carton carton = (Carton)itCarton.next();
     				int numeros[][] = carton.getNumeros();
     				resultControlBingo=0;
@@ -275,7 +276,8 @@ public class ComprobadorPremios {
     					}else{
 							try {
 								user.getSesionSocket().getBasicRemote().sendText("! Habia Bingo en Carton "+ carton.getnRef()+"  y no le cantas? ... ¡");
-								Thread.sleep(5000);
+								//Thread.sleep(5000);
+								salirBucleCarton="Si";
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -285,18 +287,16 @@ public class ComprobadorPremios {
     				//Si no es un carton con Bingo y se ha solicitado la peticion de premio ...(sino no hago nada)
 					}else{
 					
-						try {
-							if(!(userBeanPeticiones==null)){
-								if(userBeanPeticiones.getUserbean().getSalonInUse().equals(sala)&&userBeanPeticiones.getPremio().equals("Bingo")){
-									//Si este carton no tiene Premio, pero si hay ya algun otro carton premiado de este usuario
-									if(esteUsuarioYaTienePremio(userBeanPeticiones,gestorSesions.getPilaAnunciaPremios(sala))){
-
-									}else{
-											log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
-											user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
-									}		
-								}						
-							}
+							try {
+								//Para no borrar un premio anunciado antes, solo se procesa esta parte si no ha habido
+								//premio antes.
+								if(esteUsuarioYaTienePremio(userBeanPeticiones,gestorSesions.getPilaAnunciaPremios(sala))){
+									
+								}else{
+									user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
+								}
+								
+								log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());
 						} catch (IOException e) {
 							// 		TODO Auto-generated catch block
 							e.printStackTrace();

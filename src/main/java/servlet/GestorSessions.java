@@ -288,6 +288,8 @@ import javax.websocket.Session;
                 }
 	    	//Borrado de cartones OffLine
 	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
+	        this.getJugadasSalas(sala).setBingoCantado(false);
+	        this.getJugadasSalas(sala).setLineaCantada(false);
 	        
 	    }
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
@@ -588,10 +590,11 @@ import javax.websocket.Session;
 	        
 	    }
 	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
-			 
-				int bingoCantado=0;
+			 	
+				
 				String sala=ub.getSalonInUse();
 				PocketBingo pb = this.getJugadasSalas(sala);
+				if(pb.isBingoCantado())return;
 			  	float xValorADescontar = 0;
 			    float xCuantoHasJugado = ub.getvCarton().size()*new Float(pb.getPrecioCarton());
 			    float xCuantoHeGanado = 0;
@@ -600,7 +603,7 @@ import javax.websocket.Session;
 			    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
 			  		while(itVectorCarton.hasNext()) {
 			  			Carton c = itVectorCarton.next();
-			  			if(c.isBingoCantado())return;
+			  			
 			  			xCuantoHeGanado =+ c.getPremiosAcumulados();
 			  		}
 			  		xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;

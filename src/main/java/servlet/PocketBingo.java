@@ -115,7 +115,7 @@ public class PocketBingo implements Serializable {
     }
     private void ajustarCajaPorJugadaFinalizada(String usuario) {
 		
-
+    	if(this.isBingoCantado())return;
 	  	float xValorADescontar = 0;
 	    float xCuantoHasJugado = this.mapaUsuarioCarton.get(usuario)*new Float(this.getPrecioCarton());
 	    float xCuantoHeGanado = 0;

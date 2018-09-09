@@ -50,9 +50,17 @@ public class LiquidadorPremio {
 						//Considerar que en realidad solo un carton del jugador estara  premiado aqui,
 						//aunque hayan sido varios lineas o bingos  a la vez, que es lo que queremos en este caso
 						
-						if(pp.getPremio().equals("Linea"))carton.setLineaCantado(true);
-						if(pp.getPremio().equals("Bingo"))carton.setBingoCantado(true);
+						if(pp.getPremio().equals("Linea")) {
+							carton.setLineaCantado(true);
+							gestorSesions.getJugadasSalas(sala).setLineaCantada(true);
+						}
+						if(pp.getPremio().equals("Bingo")) {
+							carton.setBingoCantado(true);
+							gestorSesions.getJugadasSalas(sala).setBingoCantado(true);
+						}
+						
 						gestorSesions.getJugadasSalas(sala).registraCartonPremiado(pp, carton, premioCobrado);
+						
 					    gestorSesions.enviarMensajeAPerfil("RefreshDatosCartones", "supervisor");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
