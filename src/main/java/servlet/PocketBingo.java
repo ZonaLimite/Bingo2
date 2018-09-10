@@ -18,7 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PocketBingo implements Serializable {
     
-	
+    public PocketBingo() {
+    	this.mapaUsuarioCarton.put("super",0);
+    	AsignaPreferCarton("super", 0);
+    }
 	/**
 	 * 
 	 */
@@ -45,7 +48,7 @@ public class PocketBingo implements Serializable {
     private String porcientoCantaor="0";
     private int delay = 1500;
     private String nCartonesManuales="0"; 
-    
+
     //Mapa de Asignacion premios manuales cantados
     //          nombre usuario,Vector cartones premiados (si los hay)
     private Map<String,Vector<Carton>>  cartonesManualesPremiados= new LinkedHashMap<>();
@@ -110,17 +113,28 @@ public class PocketBingo implements Serializable {
     		mapaUsuarioCarton.put(sUser, 0);
     		System.out.println("reset de cartones offLine para "+ sUser);
     	}
-    	//poner a 0 mapaPremosmaualesCantados
+    	//poner a 0 mapaPremosmaualesCantados y cartones de super
     	cartonesManualesPremiados= new LinkedHashMap<>();
+    	AsignaNCartonesA("super",0);
+    }
+    private void traspasoDeCartonesASuper(String usuario) {
+    	
+    	int numeroCartonesSocio = this.dimeCartonesDe(usuario);
+    	int numeroCartonesSuper = this.dimeCartonesDe("super");
+    	AsignaNCartonesA("super",numeroCartonesSuper+numeroCartonesSocio);
     }
     private void ajustarCajaPorJugadaFinalizada(String usuario) {
-		
+		//Modo 
     	if(this.isBingoCantado())return;
 	  	float xValorADescontar = 0;
 	    float xCuantoHasJugado = this.mapaUsuarioCarton.get(usuario)*new Float(this.getPrecioCarton());
 	    float xCuantoHeGanado = 0;
 	    Vector<Carton> cartonesPremiados = this.getCartonesManualesPremiados(usuario);
 	    if(!(cartonesPremiados==null)){
+	    	//La excepcion de tratamiento esta aqui
+	    	//Si alguien se va (Cierra Sesion o caduca su sesion)y ha tenido algun premio
+	    	//Si la partida todavia no esta finalizada y modo distinto de manual
+	    	
 	    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
 	  			while(itVectorCarton.hasNext()) {
 	  				Carton c = itVectorCarton.next();
@@ -129,9 +143,12 @@ public class PocketBingo implements Serializable {
 	  				
 	  			}
 	  			xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
+	    		traspasoDeCartonesASuper(usuario);
 
 	    }else {
 	    	xValorADescontar = xCuantoHasJugado;
+	    	
+
 	    }
   		//Saldo de caja Actual=
   		UtilDatabase udatabase = new UtilDatabase();
@@ -189,6 +206,7 @@ public class PocketBingo implements Serializable {
 	
 
 	public void removerUsuariosManualesEnJuego(String sEnJuego) {
+		
 		ajustarCajaPorJugadaFinalizada(sEnJuego);
 		mapaUsuarioCarton.put(sEnJuego, 0);
 		System.out.println("reset de cartones offLine para "+ sEnJuego);
@@ -220,6 +238,9 @@ public class PocketBingo implements Serializable {
         //BORRA LOS CARTONES MANUALES DE LOS JUGADORES PRESENTES
     	//Inicializar lista
     	cartonesManualesPremiados= new LinkedHashMap<>();
+    	//super esta presente,sin cartones
+    	this.mapaUsuarioCarton.put("super",0);
+    	AsignaPreferCarton("super", 0);
     }
    
     

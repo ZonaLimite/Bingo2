@@ -32,11 +32,11 @@ public class ComprobadorPremios {
     		Iterator<UserBean> it = userbeans.iterator();
     		//HashMap<UserBean,Carton>  pilaAnunciaPremios = new HashMap<UserBean,Carton> ();
     		while(it.hasNext()){
-    			String salirBucleCarton="No";
+    			String hayPremioPresente="No";
     			UserBean user = it.next();
     			Vector<Carton>vCarton = user.getvCarton();	
     			Iterator<Carton> itCarton = vCarton.iterator();
-    			while(itCarton.hasNext() && salirBucleCarton.equals("No")){
+    			while(itCarton.hasNext()){
     				Carton carton = (Carton)itCarton.next();
     				int numeros[][] = carton.getNumeros();
     				resultControlLinea=0;
@@ -82,14 +82,14 @@ public class ComprobadorPremios {
 											e.printStackTrace();
 										}
     	    							hayLinea=true;
-    	    							f=3;
+    	    							//f=3;
     								}
 
     							}else{
 	    							try {
 										user.getSesionSocket().getBasicRemote().sendText("Habia Linea y no la has cantado ...");
-										f=3;
-										salirBucleCarton="Si";
+										//f=3;
+										hayPremioPresente="Si";
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -107,7 +107,8 @@ public class ComprobadorPremios {
     								if(esteUsuarioYaTienePremio(userBeanPeticiones,gestorSesions.getPilaAnunciaPremios(sala))){
     									
     								}else{
-    									user.getSesionSocket().getBasicRemote().sendText("No tienes Linea... ");
+    									//Para evitar que se sobrescriban mensajes anteriores
+    									if(hayPremioPresente.equals("No"))user.getSesionSocket().getBasicRemote().sendText("No tienes Linea... ");
     								}
     								
     								log.info("No Hay Linea ,result:"+resultControlLinea +" Carton:" + carton.getnRef());
@@ -217,13 +218,13 @@ public class ComprobadorPremios {
     	Iterator<UserBean> it =userbeans.iterator();
     	//Iterador Usuarios
     	while(it.hasNext()){
-    			String salirBucleCarton="No";	
+    			String hayPremioPresente="No";	
     			UserBean user = it.next();
     			Vector<Carton>vCarton = user.getvCarton();	
     			Iterator<Carton> itCarton = vCarton.iterator();
     			//Iterador Cartones de Usuario
     			
-    			while(itCarton.hasNext() && salirBucleCarton.equals("No")){
+    			while(itCarton.hasNext()){
     				Carton carton = (Carton)itCarton.next();
     				int numeros[][] = carton.getNumeros();
     				resultControlBingo=0;
@@ -275,9 +276,9 @@ public class ComprobadorPremios {
 						//Si tiene Bingo y no le ha solicitado, le damos una oportunidad
     					}else{
 							try {
-								user.getSesionSocket().getBasicRemote().sendText("! Habia Bingo en Carton "+ carton.getnRef()+"  y no le cantas? ... ¡");
+								user.getSesionSocket().getBasicRemote().sendText("! Hay Bingo en Carton "+ carton.getnRef()+"  y no le cantas? ... ¡");
 								//Thread.sleep(5000);
-								salirBucleCarton="Si";
+								hayPremioPresente="Si";
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -293,7 +294,7 @@ public class ComprobadorPremios {
 								if(esteUsuarioYaTienePremio(userBeanPeticiones,gestorSesions.getPilaAnunciaPremios(sala))){
 									
 								}else{
-									user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
+									if(hayPremioPresente.equals("No"))user.getSesionSocket().getBasicRemote().sendText("No tienes Bingo... ");
 								}
 								
 								log.info("No Hay Bingo ,result:"+resultControlBingo +" Carton:" + carton.getnRef());

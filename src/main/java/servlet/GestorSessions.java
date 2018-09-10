@@ -560,8 +560,11 @@ import javax.websocket.Session;
 	            			  //Rutina Ajuste Caja  
 	            			  String usuarioInvalidado = ub.getUsername();
 	            			  if(!(usuarioInvalidado.equals("super"))) {
-	            				 //Aqui ajustamos la caja si el usuario abandona o se finaliza la partida
+	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
+	            				  //para que la asignacion de premios inicial sea coherente y
+	            				  //los demas premios sean asignados correctamente
 	            				  ajustarCajaPorJugadaFinalizada(ub);
+	            				  
 	            			  }
 	            			  Session mySession = ub.getSesionSocket();
 	            			  try {
@@ -589,6 +592,14 @@ import javax.websocket.Session;
 	         }
 	        
 	    }
+	    private void traspasoDeCartonesASuper(UserBean ub) {
+	    	PocketBingo pb= this.getJugadasSalas(ub.getSalonInUse());
+	    	int numeroCartonesSocio = ub.getvCarton().size();
+	    	int numeroCartonesSuper = pb.dimeCartonesDe("super");
+	    	pb.AsignaNCartonesA("super",numeroCartonesSuper+numeroCartonesSocio);
+	    	
+	    	
+	    }
 	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
 			 	
 				
@@ -600,6 +611,7 @@ import javax.websocket.Session;
 			    float xCuantoHeGanado = 0;
 			    Vector<Carton> cartonesPremiados = pb.getCartonesManualesPremiados(ub.getUsername());
 			    if(!(cartonesPremiados==null)){
+			    	
 			    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
 			  		while(itVectorCarton.hasNext()) {
 			  			Carton c = itVectorCarton.next();
@@ -607,9 +619,12 @@ import javax.websocket.Session;
 			  			xCuantoHeGanado =+ c.getPremiosAcumulados();
 			  		}
 			  		xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
-
+			  		traspasoDeCartonesASuper(ub);
+			  
 			    }else {
-			    	xValorADescontar = xCuantoHasJugado;
+			    	//xValorADescontar = xCuantoHasJugado;
+			    	traspasoDeCartonesASuper(ub);
+			    	
 			    }
 		  		//Saldo de caja Actual=
 		  		UtilDatabase udatabase = new UtilDatabase();
