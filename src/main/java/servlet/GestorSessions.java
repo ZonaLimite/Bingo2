@@ -281,7 +281,8 @@ import javax.websocket.Session;
                     
                     if(ub.getSalonInUse().equals(sala)){
                     	//Regulacion ajuste de caja si procede.
-                    	ajustarCajaPorJugadaFinalizada(ub);
+                    	//ajustarCajaPorJugadaFinalizada(ub);
+                    	this.traspasoDeCartonesASuper(ub);
                         ub.setvCarton(new Vector<Carton>());
                        
                     }
@@ -563,30 +564,33 @@ import javax.websocket.Session;
 	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
 	            				  //para que la asignacion de premios inicial sea coherente y
 	            				  //los demas premios sean asignados correctamente
-	            				  ajustarCajaPorJugadaFinalizada(ub);
-	            				  
-	            			  }
-	            			  Session mySession = ub.getSesionSocket();
-	            			  try {
-	            				  if (!(mySession==null)){
-	            					  mySession.getBasicRemote().sendText("SesionHttpCaducada");
+	            				  if(this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized")) {
+	            					  ajustarCajaPorJugadaFinalizada(ub);
+	            				  }else {
+	            					  traspasoDeCartonesASuper(ub);
 	            				  }
-							} catch (IOException e) {
-								log.info(e.getMessage());
+	            				  Session mySession = ub.getSesionSocket();
+	            				  try {
+	            					  if (!(mySession==null)){
+	            					  mySession.getBasicRemote().sendText("SesionHttpCaducada");
+	            					  }
+	            				  } catch (IOException e) {
+	            					  log.info(e.getMessage());
 								//e.printStackTrace();
-							}
+	            				  }
 
-	            			  itUsersBean.remove();
-	            			  this.triggerRefreshDatos(ub.getSalonInUse());
+	            				  itUsersBean.remove();
+	            				  this.triggerRefreshDatos(ub.getSalonInUse());
 
 	            			  
-	            			log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
+	            				  log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
 	            			
-	            			if(vectorUserBean.size()==0){
-	            				//Si no queda ninguna sesion ,eliminamos la clave completa de usuario
-	            				itClaves.remove();
-	            			}
-	            			log.info("Sesiones abiertas :"+sessions.keySet().toString());
+	            				  if(vectorUserBean.size()==0){
+	            					  //Si no queda ninguna sesion ,eliminamos la clave completa de usuario
+	            					  itClaves.remove();
+	            				  }
+	            				  log.info("Sesiones abiertas :"+sessions.keySet().toString());
+	            			  }
 	            		  }
 	             }
 	         }
@@ -622,8 +626,8 @@ import javax.websocket.Session;
 			  		traspasoDeCartonesASuper(ub);
 			  
 			    }else {
-			    	//xValorADescontar = xCuantoHasJugado;
-			    	traspasoDeCartonesASuper(ub);
+			    	xValorADescontar = xCuantoHasJugado;
+			    	//traspasoDeCartonesASuper(ub);
 			    	
 			    }
 		  		//Saldo de caja Actual=

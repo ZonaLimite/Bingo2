@@ -106,6 +106,7 @@ public class PocketBingo implements Serializable {
     	
     }
     public void resetCartonesUsuariosOffLine(){
+    	
     	Iterator<String> itKeysOffLine = mapaUsuarioCarton.keySet().iterator();
     	while(itKeysOffLine.hasNext()){
     		String sUser = itKeysOffLine.next();
@@ -143,7 +144,7 @@ public class PocketBingo implements Serializable {
 	  				
 	  			}
 	  			xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
-	    		traspasoDeCartonesASuper(usuario);
+	    		
 
 	    }else {
 	    	xValorADescontar = xCuantoHasJugado;
@@ -207,11 +208,17 @@ public class PocketBingo implements Serializable {
 
 	public void removerUsuariosManualesEnJuego(String sEnJuego) {
 		
-		ajustarCajaPorJugadaFinalizada(sEnJuego);
+		
+		if(this.getIdState().equals("Finalized")) {
+			ajustarCajaPorJugadaFinalizada(sEnJuego);
+		}else {
+			traspasoDeCartonesASuper(sEnJuego);
+		}
 		mapaUsuarioCarton.put(sEnJuego, 0);
+		
 		System.out.println("reset de cartones offLine para "+ sEnJuego);
 		this.mapaUsuarioCarton.remove(sEnJuego);
-		this.cartonesManualesPremiados.remove(sEnJuego);
+		//this.cartonesManualesPremiados.remove(sEnJuego);
 	}
 	public void añadirUsuariosManualesEnJuego(String sEnJuego) {
 		this.mapaUsuarioCarton.put(sEnJuego, 0);
