@@ -108,12 +108,17 @@ public class PocketBingo implements Serializable {
     public void resetCartonesUsuariosOffLine(){
     	
     	Iterator<String> itKeysOffLine = mapaUsuarioCarton.keySet().iterator();
+    	int cantidadCartones = 0;
     	while(itKeysOffLine.hasNext()){
     		String sUser = itKeysOffLine.next();
-    		ajustarCajaPorJugadaFinalizada(sUser);
+    		cantidadCartones =cantidadCartones + mapaUsuarioCarton.get(sUser);
     		mapaUsuarioCarton.put(sUser, 0);
     		System.out.println("reset de cartones offLine para "+ sUser);
     	}
+    	ajustarPremiosCantados(cantidadCartones);
+
+    	
+    	
     	//poner a 0 mapaPremosmaualesCantados y cartones de super
     	cartonesManualesPremiados= new LinkedHashMap<>();
     	AsignaNCartonesA("super",0);
@@ -123,6 +128,43 @@ public class PocketBingo implements Serializable {
     	int numeroCartonesSocio = this.dimeCartonesDe(usuario);
     	int numeroCartonesSuper = this.dimeCartonesDe("super");
     	AsignaNCartonesA("super",numeroCartonesSuper+numeroCartonesSocio);
+    }
+    private void ajustarPremiosCantados(int cantidadCartones) {
+		//Modo 
+    	if(this.isBingoCantado())return;
+	  	float xValorADescontar = 0;
+	    float xCuantoHasJugado = cantidadCartones*new Float(this.getPrecioCarton());
+	    float xCuantoHeGanado = 0;
+	    Set cartonesUsuariosPremiados = cartonesManualesPremiados.keySet();
+	    Iterator<String> iTusuariosPremiados = cartonesUsuariosPremiados.iterator();
+	    while(iTusuariosPremiados.hasNext()) {
+	    	Vector<Carton> cartonesPremiados = this.getCartonesManualesPremiados(iTusuariosPremiados.next());
+
+	    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
+	  			while(itVectorCarton.hasNext()) {
+	  				Carton c = itVectorCarton.next();
+	  				
+	  				xCuantoHeGanado =+ c.getPremiosAcumulados();
+	  				
+	  			}
+	    }
+		xValorADescontar =+ (xCuantoHasJugado - xCuantoHeGanado);
+		
+  		//Saldo de caja Actual=
+  		UtilDatabase udatabase = new UtilDatabase();
+  		float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
+  		/////////////////////////////////////////////////////
+  		float saldoActualizado = saldoActualCaja - xValorADescontar;
+  		/////////////////////////////////////////////////////
+  		DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+  		simbolos.setDecimalSeparator('.');
+  		DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+    
+  		String Consulta = "UPDATE caja SET SaldoCaja = "+ formateador.format(saldoActualizado ) ;
+    
+  		int result=UtilDatabase.updateQuery(Consulta);	            			        
+  		System.out.println("Cantidad ajustada Caja por Premios Ha sido :"+xValorADescontar);
+  		System.out.println("El valor de caja ahora es :"+saldoActualizado);
     }
     private void ajustarCajaPorJugadaFinalizada(String usuario) {
 		//Modo 
