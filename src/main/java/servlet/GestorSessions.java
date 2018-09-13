@@ -281,18 +281,18 @@ import javax.websocket.Session;
                     
                     if(ub.getSalonInUse().equals(sala)){
                     	//Regulacion ajuste de caja si procede.
-                    	//ajustarCajaPorJugadaFinalizada(ub);
-                    	this.traspasoDeCartonesASuper(ub);
+                    	ajustarCajaPorJugadaFinalizada(ub);
+                    	//this.traspasoDeCartonesASuper(ub);
                         ub.setvCarton(new Vector<Carton>());
-                       
                     }
                 }
+                
 	    	//Borrado de cartones OffLine
 	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
-	        this.getJugadasSalas(sala).setBingoCantado(false);
-	        this.getJugadasSalas(sala).setLineaCantada(false);
+
 	        
 	    }
+	    
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
                 Set<Carton> setCartones = new LinkedHashSet<>();
                   Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
@@ -564,11 +564,8 @@ import javax.websocket.Session;
 	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
 	            				  //para que la asignacion de premios inicial sea coherente y
 	            				  //los demas premios sean asignados correctamente
-	            				  if(this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized")) {
-	            					  ajustarCajaPorJugadaFinalizada(ub);
-	            				  }else {
-	            					  traspasoDeCartonesASuper(ub);
-	            				  }
+	            				  this.ajustarCajaPorJugadaFinalizada(ub);
+	            				  
 	            				  Session mySession = ub.getSesionSocket();
 	            				  try {
 	            					  if (!(mySession==null)){
@@ -604,9 +601,8 @@ import javax.websocket.Session;
 	    	
 	    	
 	    }
+	    
 	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
-			 	
-				
 				String sala=ub.getSalonInUse();
 				PocketBingo pb = this.getJugadasSalas(sala);
 				if(pb.isBingoCantado())return;
@@ -614,6 +610,7 @@ import javax.websocket.Session;
 			    float xCuantoHasJugado = ub.getvCarton().size()*new Float(pb.getPrecioCarton());
 			    float xCuantoHeGanado = 0;
 			    Vector<Carton> cartonesPremiados = pb.getCartonesManualesPremiados(ub.getUsername());
+			    
 			    if(!(cartonesPremiados==null)){
 			    	
 			    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
@@ -622,29 +619,26 @@ import javax.websocket.Session;
 			  			
 			  			xCuantoHeGanado =+ c.getPremiosAcumulados();
 			  		}
-			  		xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
-			  		traspasoDeCartonesASuper(ub);
-			  
-			    }else {
-			    	xValorADescontar = xCuantoHasJugado;
-			    	//traspasoDeCartonesASuper(ub);
-			    	
+			  		this.traspasoDeCartonesASuper(ub);
 			    }
+			    	
+			    xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
 		  		//Saldo de caja Actual=
 		  		UtilDatabase udatabase = new UtilDatabase();
-		  		float saldoActualCaja = new Float(udatabase.consultaSQLUnica("Select SaldoCaja From caja"));
+		  		float saldoActualUser = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User='"+ub.getUsername()+"'"));
 		  		/////////////////////////////////////////////////////
-		  		float saldoActualizado = saldoActualCaja - xValorADescontar;
+		  		float saldoActualizadoUser = saldoActualUser + xValorADescontar;
 		  		/////////////////////////////////////////////////////
 		  		DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
 		  		simbolos.setDecimalSeparator('.');
 		  		DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
 	        
-		  		String Consulta = "UPDATE caja SET SaldoCaja = "+ formateador.format(saldoActualizado ) ;
+		  		String Consulta = "UPDATE usuarios SET Saldo = "+ formateador.format(saldoActualizadoUser )+ " Where User='"+ub.getUsername()+"'" ;
 	        
-		  		int result=UtilDatabase.updateQuery(Consulta);	            			        
-		  		log.info("Cantidad ajustada Caja para jugador Elec. :'"+ub.getUsername()+" Ha sido :"+xValorADescontar);
-		  		log.info("El valor de caja ahora es :"+saldoActualizado);
+		  		if(UtilDatabase.updateQuery(Consulta)>0) {;	           			        
+		  			log.info("Cantidad ajustada Caja para jugador Elec. :'"+ub.getUsername()+" Ha sido :"+xValorADescontar);
+		  			log.info("El valor de caja ahora es :"+saldoActualizadoUser);
+		  		}
 	    }
 		private void triggerRefreshDatos(String salaInUse){
 			PocketBingo pb = this.getJugadasSalas(salaInUse);

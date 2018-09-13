@@ -116,7 +116,7 @@ public class ComprobadorPremios {
     								// 		TODO Auto-generated catch block
     								e.printStackTrace();
     							}
-    						//}	
+    						
     					}
     				}
     			}                                                                                                                                                                                                    
@@ -255,8 +255,7 @@ public class ComprobadorPremios {
 					String key = user.getUsername();
     				userBeanPeticiones = gestorSesions.getListaPeticionesPremios().get(key);
     				if (resultControlBingo == 2775 ) {
-						//	user.getSesionSocket().getBasicRemote().sendText("Hay Linea ,result:"+resultControlLinea);
-    
+					 
     					
     					//Si se ha solicitado el Bingo 
     					if(!(userBeanPeticiones==null)){

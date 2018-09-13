@@ -34,7 +34,8 @@ public class UtilDatabase {
 
 	   }catch (Exception ex) 
 	   		{
-		   			System.out.println("consulta de actualizacion fallada:" + ex);
+		   			System.out.println("consulta de actualizacion fallada:" + query);
+		   			System.out.println(ex);
 	   		} 
 		    
 	   //some exception handling
