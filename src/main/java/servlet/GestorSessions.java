@@ -203,9 +203,9 @@ import javax.websocket.Session;
 		    		//Aqui se añade una nueva sesion UserBean al usuario,
 		    			myVector.add(ubam);
 		    			sessions.put(user, myVector);
+		    			this.getJugadasSalas(userBean.getSalonInUse()).removerUsuariosManualesEnJuego(user);
 		    			log.info("UserBean de user:"+userBean.getUsername()+",perfil:"+userBean.getPerfil()+" añadido a mapa para user:"+user);
 		    			insertado=true;
-		    			log.info("Jugadores presente:"+ sessions.keySet().toString() );
 		    			this.triggerRefreshDatos(ubam.getSalonInUse());
 	    	}else{	
 	    		insertado=false;
@@ -565,7 +565,12 @@ import javax.websocket.Session;
 	            				  //para que la asignacion de premios inicial sea coherente y
 	            				  //los demas premios sean asignados correctamente
 	            				  this.ajustarCajaPorJugadaFinalizada(ub);
-	            				  
+	            				  //this.getJugadasSalas(ub.getSalonInUse()).removePremioJugador(userb);
+	            				    if(!(this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized"))) {
+	            				    	traspasoDeCartonesASuper(ub);
+	            				    }else {
+	            				    	
+	            				    }
 	            				  Session mySession = ub.getSesionSocket();
 	            				  try {
 	            					  if (!(mySession==null)){
@@ -596,8 +601,8 @@ import javax.websocket.Session;
 	    private void traspasoDeCartonesASuper(UserBean ub) {
 	    	PocketBingo pb= this.getJugadasSalas(ub.getSalonInUse());
 	    	int numeroCartonesSocio = ub.getvCarton().size();
-	    	int numeroCartonesSuper = pb.dimeCartonesDe("super");
-	    	pb.AsignaNCartonesA("super",numeroCartonesSuper+numeroCartonesSocio);
+	    	//int numeroCartonesSuper = pb.dimeCartonesDe("super");
+	    	pb.AsignaNCartonesA(ub.getUsername(),numeroCartonesSocio);
 	    	
 	    	
 	    }
@@ -619,9 +624,9 @@ import javax.websocket.Session;
 			  			
 			  			xCuantoHeGanado =+ c.getPremiosAcumulados();
 			  		}
-			  		this.traspasoDeCartonesASuper(ub);
+			  		
 			    }
-			    	
+		
 			    xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
 		  		//Saldo de caja Actual=
 		  		UtilDatabase udatabase = new UtilDatabase();

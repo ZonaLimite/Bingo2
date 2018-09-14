@@ -80,6 +80,7 @@ public class gestorComprasCartones extends HttpServlet {
             	boolean comoHaIdo = realizarCompraTransaccion(precioCompraActual,user_);
             	if(comoHaIdo){
             		cargarVectordeCartonesdeUsuario(user_,nCartonesAComprar);
+            		int numeroCartonesActuales = user_.getvCarton().size();
             		mensaje2="Inf,Compra de cartones efectuada";
             	}else{
             		mensaje2="Err,Fallo transaccion compra";
