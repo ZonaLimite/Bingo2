@@ -1,8 +1,16 @@
 package servlet;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class PremiosUsuario {
+public class PremiosUsuario implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	int cantidadJugada;
+	Vector<Carton> premios = new Vector<Carton>();
+	
 	public int getCantidadJugada() {
 		return cantidadJugada;
 	}
@@ -15,7 +23,6 @@ public class PremiosUsuario {
 	public void setPremios(Vector<Carton> premios) {
 		this.premios = premios;
 	}
-	int cantidadJugada;
-	Vector<Carton> premios = new Vector<Carton>();
+
 
 }

@@ -121,7 +121,11 @@ public class PocketBingo implements Serializable {
      	this.ajustarCajaPorJugadaFinalizada();
 
     	//poner a 0 mapaPremosmaualesCantados y inicializar
-    	//mapaUsuarioCarton.put("super", 0);
+	    Set<String> jugadoresAhora = this.mapaUsuarioCarton.keySet();
+	    Iterator<String> itJugadoresAhora = jugadoresAhora.iterator();
+	    while(itJugadoresAhora.hasNext()) {
+	    	mapaUsuarioCarton.put(itJugadoresAhora.next(), 0);
+	    }
     	cartonesManualesPremiados= new LinkedHashMap<>();
         this.setBingoCantado(false);
         this.setLineaCantada(false);

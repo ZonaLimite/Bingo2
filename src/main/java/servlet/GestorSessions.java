@@ -276,7 +276,7 @@ import javax.websocket.Session;
 	    public synchronized void resetCartones(String sala){
             //Borrado de cartones automaticos    
 	    	Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
-                Iterator it = usuarios.iterator();
+                Iterator<UserBean> it = usuarios.iterator();
                 while(it.hasNext()){
                     UserBean ub = (UserBean) it.next();
                     
