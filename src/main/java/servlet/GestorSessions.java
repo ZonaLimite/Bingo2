@@ -290,7 +290,9 @@ import javax.websocket.Session;
                 
 	    	//Borrado de cartones OffLine
 	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
-	        
+	        // Por si acaso , borrado buffers solicitud premios
+			this.borrarListaPeticionPremios(sala);
+			this.borrarListaPremiosLiquidados(sala);
 	      
 	        
 	    }

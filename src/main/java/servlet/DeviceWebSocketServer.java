@@ -177,6 +177,7 @@ private UserBean userBean;
 		}
 		hilo3 = threadFactory.newThread(runnable3);
 		gestorSesions.addHiloSala(salaInUse, hilo3);
+		
 		log.info("Antes de arrancar hilo3");
 		//pb= (PocketBingo)this.mySesion.getUserProperties().get("sala1");
 		

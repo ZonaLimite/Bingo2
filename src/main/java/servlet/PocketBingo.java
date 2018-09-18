@@ -50,7 +50,7 @@ public class PocketBingo implements Serializable {
     private String nCartonesManuales="0"; 
 
     //Mapa de Asignacion premios manuales cantados
-    //          nombre usuario,Vector cartones premiados (si los hay)
+    //          nombre usuario,Objeto PremiosUsuario
     private Map<String,PremiosUsuario>  cartonesManualesPremiados= new LinkedHashMap<>();
     
     //Mapa de Asignacion cartones a usuarios manuales
