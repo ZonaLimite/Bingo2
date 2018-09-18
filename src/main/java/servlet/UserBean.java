@@ -19,9 +19,18 @@ public class UserBean {
     private Session sesionSocket;
     private Vector<Carton> vCarton = new Vector();
     private float saldo=0;
+    private String type;
     
     
-    public Integer getNumeroCartones() {
+    public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Integer getNumeroCartones() {
 		return numeroCartones;
 	}
 

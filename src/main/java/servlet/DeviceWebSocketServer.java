@@ -311,7 +311,7 @@ private UserBean userBean;
 			gestorSesions.resetCartones(this.salaInUse);
 			enviarMensajeAPerfil("EndBalls","supervisor");
 			enviarMensajeAPerfil("EndBalls","jugador");               			
-			
+			//Pendiente interrumpir hilo para que pare ya
 		//}
 		
 		break;

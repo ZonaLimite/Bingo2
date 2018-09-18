@@ -40,7 +40,7 @@ public class LiquidadorPremio {
 			log.info("En el iterador hay objetos premio");
 			PeticionPremio pp =  itPremiados.next();
 			UserBean ubPremiado =pp.getUserbean();
-			
+			int cantidadCartonesJugados=0;
 			if(ubPremiado.getSalonInUse().equals(sala)){
 				Carton carton  = pilaAnunciaPremios.get(pp);
 				try {
@@ -58,8 +58,9 @@ public class LiquidadorPremio {
 							carton.setBingoCantado(true);
 							gestorSesions.getJugadasSalas(sala).setBingoCantado(true);
 						}
-						
-						gestorSesions.getJugadasSalas(sala).registraCartonPremiado(pp, carton, premioCobrado);
+						if(ubPremiado.getType().equals("Digital"))cantidadCartonesJugados = ubPremiado.getvCarton().size();
+						if(ubPremiado.getType().equals("Manual"))cantidadCartonesJugados =gestorSesions.getJugadasSalas(sala).dimeCartonesDe(ubPremiado.getUsername());
+						gestorSesions.getJugadasSalas(sala).registraCartonPremiado(pp, carton, premioCobrado,cantidadCartonesJugados);
 						
 					    gestorSesions.enviarMensajeAPerfil("RefreshDatosCartones", "supervisor");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");

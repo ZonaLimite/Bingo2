@@ -45,6 +45,7 @@ public class HandshakeServlet extends HttpServlet {
 			myUSER.setSalonInUse(user.getSalonInUse()) ;
 			myUSER.setSesionSocket(user.getSesionSocket());
 			myUSER.setUserName(usuario);
+			myUSER.setType("Manual");
 
 			if(cp.comprobarLineaDeCarton(sala, nRef, myUSER)){
 				objetoaConvertir = "! Carton :"+ nRef+ " de "+usuario + " Premio Linea ¡\n ¿Hay algun carton mas a comprobar?";

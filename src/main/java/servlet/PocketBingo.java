@@ -19,8 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PocketBingo implements Serializable {
     
     public PocketBingo() {
-    	this.mapaUsuarioCarton.put("super",0);
-    	AsignaPreferCarton("super", 0);
+    	//this.mapaUsuarioCarton.put("super",0);
+    	//AsignaPreferCarton("super", 0);
     }
 	/**
 	 * 
@@ -51,7 +51,7 @@ public class PocketBingo implements Serializable {
 
     //Mapa de Asignacion premios manuales cantados
     //          nombre usuario,Vector cartones premiados (si los hay)
-    private Map<String,Vector<Carton>>  cartonesManualesPremiados= new LinkedHashMap<>();
+    private Map<String,PremiosUsuario>  cartonesManualesPremiados= new LinkedHashMap<>();
     
     //Mapa de Asignacion cartones a usuarios manuales
     private Map<String,Integer>  mapaUsuarioCarton= new LinkedHashMap<>();
@@ -59,36 +59,45 @@ public class PocketBingo implements Serializable {
     //Mapa de preferencias cartones de usuario
     private Map<String,Integer>  mapaPrefsCarton= new LinkedHashMap<>();
     
+
+    
     public void AsignaPreferCarton(String usuario, int nCartones){
     	mapaPrefsCarton.put(usuario, nCartones);
     }
     public Vector<Carton> getCartonesManualesPremiados(String usuario) {
-    	
-    	return this.cartonesManualesPremiados.get(usuario);
+    	if(this.cartonesManualesPremiados.get(usuario)==null) {
+    		return null;
+    	}else {
+    		return this.cartonesManualesPremiados.get(usuario).getPremios();
+    	}
+    
+    }
+    public boolean estaJugandoAManual(String user) {
+    	if (this.mapaUsuarioCarton.get(user)==null) {
+    		return false;
+    	}else {
+    		return true;
+    	}
     }
     public void AsignaNCartonesA(String usuario, int nCartones){
     	mapaUsuarioCarton.put(usuario, nCartones);
     }
-    public void registraCartonPremiado(PeticionPremio petPremio, Carton carton, float valorPremiado) {
+    public void registraCartonPremiado(PeticionPremio petPremio, Carton carton, float valorPremiado, int numeroCartonesEnJuego) {
     	//Pendiente aqui
     	String usuario = petPremio.getUserbean().getUsername();
-    	Vector<Carton> v = this.cartonesManualesPremiados.get(usuario);
-    	if(v==null) {
-    		v = new Vector<Carton>();
-    		if(petPremio.getPremio().equals("Linea"))carton.setLineaCantado(true);
-			if(petPremio.getPremio().equals("Bingo"))carton.setBingoCantado(true);
-			float valorSuma = carton.getPremiosAcumulados()+valorPremiado;
-			System.out.println("No habia vector,se va a añadir un carton con premio de:"+valorSuma);
-			carton.setPremiosAcumulados(valorSuma);
-			v.add(carton);
-		 	this.cartonesManualesPremiados.put(usuario,v);
-    	}else {
+    	PremiosUsuario pu = this.cartonesManualesPremiados.get(usuario);
+    	if(pu==null)pu=new PremiosUsuario();
+    	Vector<Carton> v = pu.getPremios();
+    	if(v==null)v = new Vector<Carton>(); 
+  
 			if(v.contains(carton)) {
 					if(petPremio.getPremio().equals("Linea"))v.get(v.indexOf(carton)).setLineaCantado(true);
 					if(petPremio.getPremio().equals("Bingo"))v.get(v.indexOf(carton)).setBingoCantado(true);
 					float valorSuma =v.get(v.indexOf(carton)).getPremiosAcumulados()+valorPremiado;
 					v.get(v.indexOf(carton)).setPremiosAcumulados(valorSuma);
 					System.out.println("Si habia vector,se va a modificar un carton con premio de:"+valorSuma);
+					pu.setCantidadJugada(numeroCartonesEnJuego);
+					
 			}else {
 				
 				if(petPremio.getPremio().equals("Linea"))carton.setLineaCantado(true);
@@ -97,8 +106,11 @@ public class PocketBingo implements Serializable {
 				System.out.println("Si habia vector, pero no el carton.Se va a añadir un carton con premio de "+valorSuma);
 				carton.setPremiosAcumulados(valorSuma);
 				v.add(carton);
+				pu.setCantidadJugada(numeroCartonesEnJuego);
+				pu.setPremios(v);
+				this.cartonesManualesPremiados.put(usuario, pu);
 			}
-    	}
+    	
     }
 
     public int dimePreferCartonDe(String usuario){
@@ -109,7 +121,7 @@ public class PocketBingo implements Serializable {
      	this.ajustarCajaPorJugadaFinalizada();
 
     	//poner a 0 mapaPremosmaualesCantados y inicializar
-    	mapaUsuarioCarton.put("super", 0);
+    	//mapaUsuarioCarton.put("super", 0);
     	cartonesManualesPremiados= new LinkedHashMap<>();
         this.setBingoCantado(false);
         this.setLineaCantada(false);
@@ -126,15 +138,16 @@ public class PocketBingo implements Serializable {
 	  	float xValorADescontar = 0;
 
 	    float xCuantoHeGanado = 0;
-	    Set keysPremiados = this.cartonesManualesPremiados.keySet();
-	    Set jugadoresAhora = this.mapaUsuarioCarton.keySet();
+	   
+	    Set<String> jugadoresAhora = this.mapaUsuarioCarton.keySet();
 	    Iterator<String> itJugadoresAhora = jugadoresAhora.iterator();
 	    while(itJugadoresAhora.hasNext()) {
 	    	String usuario = itJugadoresAhora.next();
-	    	float xCuantoHasJugado = this.mapaUsuarioCarton.get(usuario)*new Float(this.getPrecioCarton());
+	    	float xCuantoHasJugado = 0;
+	    	xCuantoHeGanado = 0;
 	    	Vector<Carton> cartonesPremiados = this.getCartonesManualesPremiados(usuario);
 	    	if(!(cartonesPremiados==null)){
-	    	
+	    		//xCuantoHasJugado = this.cartonesManualesPremiados.get(usuario).getCantidadJugada()*new Float(this.getPrecioCarton());;
 	    		Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
 	    		while(itVectorCarton.hasNext()) {
 	    			Carton c = itVectorCarton.next();
@@ -142,7 +155,10 @@ public class PocketBingo implements Serializable {
 	    			xCuantoHeGanado =+ c.getPremiosAcumulados();
 	    		}
 	    		
+	    	}else {
+	    		
 	    	}
+	    	xCuantoHasJugado= this.dimeCartonesDe(usuario)*new Float(this.getPrecioCarton());;
 	    	xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
 	    	//	Saldo de caja Actual=
 	    	UtilDatabase udatabase = new UtilDatabase();
@@ -156,13 +172,59 @@ public class PocketBingo implements Serializable {
     
 	    	String Consulta = "UPDATE usuarios SET Saldo = "+ formateador.format(saldoActualizadoUser )+ " Where User='"+usuario+"'" ;
     
-	    	if(UtilDatabase.updateQuery(Consulta)>0) {;	           			        
+	    	if(UtilDatabase.updateQuery(Consulta)>0) {	           			        
 	    		System.out.println("Cantidad ajustada Caja para jugador Elec. :'"+usuario+" Ha sido :"+xValorADescontar);
 	    		System.out.println("El valor de caja ahora es :"+saldoActualizadoUser);
 	    	}
 	    	this.cartonesManualesPremiados.remove(usuario);
 	    	mapaUsuarioCarton.put(usuario, 0);
 	    }	
+
+    }
+    private void ajustarCajaPorJugadaFinalizada(String usuario) {
+		//Modo 
+    	if(this.isBingoCantado())return;
+	  	float xValorADescontar = 0;
+
+	    float xCuantoHeGanado = 0;
+	   
+
+	    	float xCuantoHasJugado = 0;
+	    	xCuantoHeGanado = 0;
+	    	Vector<Carton> cartonesPremiados = this.getCartonesManualesPremiados(usuario);
+	    	if(!(cartonesPremiados==null)){
+	    		//xCuantoHasJugado = this.cartonesManualesPremiados.get(usuario).getCantidadJugada()*new Float(this.getPrecioCarton());;
+	    		Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
+	    		while(itVectorCarton.hasNext()) {
+	    			Carton c = itVectorCarton.next();
+	  			
+	    			xCuantoHeGanado =+ c.getPremiosAcumulados();
+	    		}
+	    		
+	    	}else {
+	    		
+	    	}
+	    	xCuantoHasJugado= this.dimeCartonesDe(usuario)*new Float(this.getPrecioCarton());;
+	    	xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
+	    	//	Saldo de caja Actual=
+	    	UtilDatabase udatabase = new UtilDatabase();
+	    	float saldoActualUser = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User='"+usuario+"'"));
+	    	//	///////////////////////////////////////////////////
+	    	float saldoActualizadoUser = saldoActualUser + xValorADescontar;
+	    	/////////////////////////////////////////////////////
+	    	DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+	    	simbolos.setDecimalSeparator('.');
+	    	DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
+    
+	    	String Consulta = "UPDATE usuarios SET Saldo = "+ formateador.format(saldoActualizadoUser )+ " Where User='"+usuario+"'" ;
+    
+	    	if(UtilDatabase.updateQuery(Consulta)>0) {	           			        
+	    		System.out.println("Cantidad ajustada Caja para jugador Elec. :'"+usuario+" Ha sido :"+xValorADescontar);
+	    		System.out.println("El valor de caja ahora es :"+saldoActualizadoUser);
+	    	}
+	    	this.cartonesManualesPremiados.remove(usuario);
+	    	mapaUsuarioCarton.put(usuario, 0);
+	    	
 
     }
 	public int dimeCartonesDe(String usuario){
@@ -208,7 +270,13 @@ public class PocketBingo implements Serializable {
 		//No se pueden quitar en juego
 		//this.traspasoDeCartonesASuper(sEnJuego);
 		String stateSala = this.getIdState();
-		if(stateSala.equals("Finalized"))this.mapaUsuarioCarton.remove(sEnJuego);
+		if(stateSala.equals("Finalized")) {
+			if(!(this.mapaUsuarioCarton.get(sEnJuego)==null)) {
+				this.ajustarCajaPorJugadaFinalizada(sEnJuego);
+				this.mapaUsuarioCarton.remove(sEnJuego);
+			}
+			
+		}
 		//this.removePremioJugador(sEnJuego);
 	}
 	public void añadirUsuariosManualesEnJuego(String sEnJuego) {

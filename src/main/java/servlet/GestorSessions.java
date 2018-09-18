@@ -184,12 +184,13 @@ import javax.websocket.Session;
 		
 
 
-		@Override
+		
 		@PreDestroy
-		final public void finalize(){
+		final public void contextSaver(){
 			log.info("El resultado de registrarContexto ha sido : "+this.registraContexto("bingo",this.jugadasSalas) );			
 			
 		}
+		
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
 	    public synchronized boolean add(String user,UserBean userBean) {
 	    	boolean insertado = false;
@@ -289,7 +290,8 @@ import javax.websocket.Session;
                 
 	    	//Borrado de cartones OffLine
 	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
-
+	        
+	      
 	        
 	    }
 	    
@@ -564,12 +566,12 @@ import javax.websocket.Session;
 	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
 	            				  //para que la asignacion de premios inicial sea coherente y
 	            				  //los demas premios sean asignados correctamente
-	            				  this.ajustarCajaPorJugadaFinalizada(ub);
+	            				  
 	            				  //this.getJugadasSalas(ub.getSalonInUse()).removePremioJugador(userb);
-	            				    if(!(this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized"))) {
-	            				    	traspasoDeCartonesASuper(ub);
+	            				    if((this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized"))) {
+	            				    	this.ajustarCajaPorJugadaFinalizada(ub);
 	            				    }else {
-	            				    	
+	            				    	traspasoDeCartonesA(ub);
 	            				    }
 	            				  Session mySession = ub.getSesionSocket();
 	            				  try {
@@ -598,11 +600,12 @@ import javax.websocket.Session;
 	         }
 	        
 	    }
-	    private void traspasoDeCartonesASuper(UserBean ub) {
+	    private void traspasoDeCartonesA(UserBean ub) {
 	    	PocketBingo pb= this.getJugadasSalas(ub.getSalonInUse());
 	    	int numeroCartonesSocio = ub.getvCarton().size();
 	    	//int numeroCartonesSuper = pb.dimeCartonesDe("super");
 	    	pb.AsignaNCartonesA(ub.getUsername(),numeroCartonesSocio);
+	    	pb.AsignaPreferCarton(ub.getUsername(),0);
 	    	
 	    	
 	    }
@@ -626,7 +629,7 @@ import javax.websocket.Session;
 			  		}
 			  		
 			    }
-		
+			    
 			    xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
 		  		//Saldo de caja Actual=
 		  		UtilDatabase udatabase = new UtilDatabase();
@@ -813,7 +816,7 @@ import javax.websocket.Session;
 	            }
 
 	        } catch (SQLException ex) {
-                Logger.getLogger("RegistroContexto").info("Ha habido problema SQl a l registrar contexto:"+ ex);
+                Logger.getLogger("RegistroContexto").info("Ha habido problema SQl al registrar contexto:"+ ex);
 
 	        }finally{
 	            if(myCon!=null)try {
