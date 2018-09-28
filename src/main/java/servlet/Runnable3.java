@@ -264,13 +264,14 @@ public class Runnable3 implements Runnable{
                 	pb.setNumeroOrden(i);
                 }
                 log.info("Orden antes del wait "+ pb.getNumeroOrden()+ "n= "+n);
- 
+                //Establecimiento control de tiempo de juego//Time out too wait
    	            wait(n); 
    				
 
 
             } catch (InterruptedException ex) {
         	   log.info("He sido interrumpido y numnero ordem es:"+i);
+        	    //Podemos ajustar un retardo alto aqui por defecto
                n=0;
         	   String reasonInterrupt=pb.getReasonInterrupt();
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());

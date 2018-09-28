@@ -77,10 +77,10 @@ public class gestorComprasCartones extends HttpServlet {
             } else{           
             
             	//realizarCompraTransaccion();
-            	boolean comoHaIdo = realizarCompraTransaccion(precioCompraActual,user_);
-            	if(comoHaIdo){
+            	int comoHaIdo = realizarCompraTransaccion(precioCompraActual,user_);
+            	if(comoHaIdo==1){
             		cargarVectordeCartonesdeUsuario(user_,nCartonesAComprar);
-            		int numeroCartonesActuales = user_.getvCarton().size();
+            		
             		mensaje2="Inf,Compra de cartones efectuada";
             	}else{
             		mensaje2="Err,Fallo transaccion compra";
@@ -91,8 +91,8 @@ public class gestorComprasCartones extends HttpServlet {
         }
     }
 
-    private boolean realizarCompraTransaccion(float precioCompra, UserBean myUser){
-        boolean okeyCompra=false;
+    private int realizarCompraTransaccion(float precioCompra, UserBean myUser){
+        int okeyCompra=0;
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
         //Formateador de datos decimales. Limitado a dos digitos.
         simbolos.setDecimalSeparator('.');
@@ -108,7 +108,7 @@ public class gestorComprasCartones extends HttpServlet {
         int result=UtilDatabase.updateQuery(Consulta);
         if(result>0){
         	myUser.setSaldo(new  Float(formateador.format(saldoRestante)));
-        	okeyCompra=true;
+        	okeyCompra=1;
         }
         
         return okeyCompra;

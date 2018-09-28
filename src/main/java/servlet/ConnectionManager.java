@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -18,18 +19,20 @@ public class ConnectionManager {
    static Connection con;
    static String url;
    static Logger log = Logger.getLogger("ConnectionDatabase");
-   //Obtencion de conexion con JNDI      
+   
+   //Obtencion de conexion con JNDI y marcado del datasource como un recurso//
+   @Resource(name="java:jboss/datasources/MySQLDS")
+   static javax.sql.DataSource datasource ;
+
    static Connection getConnection(){
  
 	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS";//Probando
-	    
+
 	    Connection result = null;
 	    try {
 	      Context initialContext = new InitialContext();
-	      if ( initialContext == null){
-	        log.info("JNDI problem. Cannot get InitialContext.");
-	      }
-	      DataSource datasource = (DataSource)initialContext.lookup(DATASOURCE_CONTEXT);
+
+	      datasource = (DataSource)initialContext.lookup(DATASOURCE_CONTEXT);
 	      if (datasource != null) {
 	        result = datasource.getConnection();
 	      }

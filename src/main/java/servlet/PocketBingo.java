@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -30,7 +29,7 @@ public class PocketBingo implements Serializable {
     private String idPlayer = "";
  
     
-    private Vector numerosCalled = new Vector() ;
+    private Vector<Integer> numerosCalled = new Vector<Integer>() ;
     private int lastNumber;
     private int newBola;
     private String reasonInterrupt;
