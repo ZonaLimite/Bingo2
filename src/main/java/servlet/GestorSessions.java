@@ -588,7 +588,7 @@ import javax.websocket.Session;
 	            				  itUsersBean.remove();
 	            				  this.triggerRefreshDatos(ub.getSalonInUse());
 
-	            			  
+	            				  
 	            				  log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
 	            			
 	            				  if(vectorUserBean.size()==0){
@@ -600,7 +600,7 @@ import javax.websocket.Session;
 	            		  }
 	             }
 	         }
-	        
+	         this.registraContexto("bingo",this.jugadasSalas);
 	    }
 	    private void traspasoDeCartonesA(UserBean ub) {
 	    	PocketBingo pb= this.getJugadasSalas(ub.getSalonInUse());
@@ -608,6 +608,7 @@ import javax.websocket.Session;
 	    	//int numeroCartonesSuper = pb.dimeCartonesDe("super");
 	    	pb.AsignaNCartonesA(ub.getUsername(),numeroCartonesSocio);
 	    	pb.AsignaPreferCarton(ub.getUsername(),0);
+	    	this.registraContexto("bingo",this.jugadasSalas);
 	    	
 	    	
 	    }
