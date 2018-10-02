@@ -71,6 +71,9 @@ public class PocketBingo implements Serializable {
     	}
     
     }
+    public void deleteCartonesManualesPremiados(String user) {
+    	this.cartonesManualesPremiados.remove(user);
+    }
     public boolean estaJugandoAManual(String user) {
     	if (this.mapaUsuarioCarton.get(user)==null) {
     		return false;

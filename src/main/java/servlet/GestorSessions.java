@@ -240,6 +240,7 @@ import javax.websocket.Session;
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
 	            			 myUserBean.setvCarton(cartones);
+	            			 ub.setvCarton(new Vector<Carton>());
 	            			 //if(idSesionHttpAComparar.equals(ub.getSesionHttp().getId())){
 	            				 //El problema no esta en aqui, sino en el control de sesiones caducadas
 	            				 //ya que se declaran un unico nombre de atirbuto de sesion ¨"Usuario"
@@ -256,7 +257,7 @@ import javax.websocket.Session;
 	            					 
 	            				 } catch(java.lang.IllegalStateException iex) {
 	            					 itUsersBean.remove();
-	            					 log.info("excepcion al invalidar sesion http (IllegalStateException). Borrado manual de Userbean en gestor sessions");
+	            					 log.info("excepcion al invalidar sesion http ("+iex.toString()+"). Borrado manual de Userbean en gestor sessions");
 	            				 }
 	            				 
 	            				 
@@ -649,6 +650,7 @@ import javax.websocket.Session;
 		  		if(UtilDatabase.updateQuery(Consulta)>0) {;	           			        
 		  			log.info("Cantidad ajustada Caja para jugador Elec. :'"+ub.getUsername()+" Ha sido :"+xValorADescontar);
 		  			log.info("El valor de caja ahora es :"+saldoActualizadoUser);
+		  			pb.deleteCartonesManualesPremiados(ub.getUsername());
 		  		}
 	    }
 		private void triggerRefreshDatos(String salaInUse){
