@@ -36,6 +36,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.naming.event.EventContext;
+import javax.naming.event.NamingEvent;
+import javax.naming.event.NamingExceptionEvent;
+import javax.naming.event.ObjectChangeListener;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -43,7 +50,7 @@ import javax.websocket.Session;
 
 	@Startup
 	@Singleton
-	public class GestorSessions implements Serializable{
+	public class GestorSessions implements Serializable {
             /**
               * 
             */
@@ -180,11 +187,8 @@ import javax.websocket.Session;
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
                 this.peticionesBonus = new ConcurrentHashMap<>();
                 this.peticionesLiquidacionBonus = new ConcurrentHashMap<>();
-	    }
-		
+		}
 
-
-		
 		@PreDestroy
 		final public void contextSaver(){
 			log.info("El resultado de registrarContexto ha sido : "+this.registraContexto("bingo",this.jugadasSalas) );			
@@ -886,3 +890,11 @@ import javax.websocket.Session;
 	    }
 
 }
+	class ChangePocketBingoHandler implements ObjectChangeListener {
+	    public void objectChanged(NamingEvent evt) {
+	        System.out.println("Evento de cambio on PocketBingo:"+evt.getNewBinding());
+	    }
+	    public void namingExceptionThrown(NamingExceptionEvent evt) {
+	        System.out.println(evt.getException());
+	    }
+	}	

@@ -11,10 +11,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.naming.event.NamingEvent;
+import javax.naming.event.NamingExceptionEvent;
+import javax.naming.event.ObjectChangeListener;
+
 /**
  *
  * @author hormigueras
  */
+
 public class PocketBingo implements Serializable {
     
     public PocketBingo() {
@@ -58,7 +65,7 @@ public class PocketBingo implements Serializable {
     //Mapa de preferencias cartones de usuario
     private Map<String,Integer>  mapaPrefsCarton= new LinkedHashMap<>();
     
-
+    //---------------------------------------------------------------------
     
     public void AsignaPreferCarton(String usuario, int nCartones){
     	mapaPrefsCarton.put(usuario, nCartones);
@@ -435,5 +442,6 @@ public class PocketBingo implements Serializable {
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}
+
 
 }
