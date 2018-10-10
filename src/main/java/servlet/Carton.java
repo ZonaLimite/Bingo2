@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,8 +11,12 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Carton {
-	
+public class Carton implements Serializable{
+	//Se hace Carton serializable
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int nRef;
 	private String nCarton;
 	private String nSerie;
@@ -26,7 +31,20 @@ public class Carton {
 	private boolean lineaCantado=false;//
 	private boolean bingoCantado=false;
 	private int nOrden=0;
-	
+	private boolean CartonManual=false;
+	private float premiosAcumulados=0;
+	public float getPremiosAcumulados() {
+		return premiosAcumulados;
+	}
+	public void setPremiosAcumulados(float premiosAcumulados) {
+		this.premiosAcumulados = premiosAcumulados;
+	}
+	public boolean isCartonManual() {
+		return CartonManual;
+	}
+	public void setCartonManual(boolean cartonManual) {
+		CartonManual = cartonManual;
+	}
 	public int getnOrden() {
 		return nOrden;
 	}

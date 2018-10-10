@@ -609,14 +609,14 @@ function refreshDatosCartones(){
 function playAudioPremioLinea(){
 	numAudio =Math.floor((Math.random() * 2) + 1);
 	//document.getElementById("myDIV").style.opacity = "1";
-	audio.src="http://boga.esy.es/audio/AudioLinea"+numAudio+".mp3";
+	audio.src="https://bingohome.000webhostapp.com/audio/AudioLinea"+numAudio+".mp3";
 	audio.play();
 	
 }
 function playAudioPremioBingo(){
 	numAudio =Math.floor((Math.random() * 2) + 1);
 	//document.getElementById("myDIV").style.opacity = "1";
-	audio.src="http://boga.esy.es/audio/AudioBingo"+numAudio+".mp3";
+	audio.src="https://bingohome.000webhostapp.com/audio/AudioBingo"+numAudio+".mp3";
 	audio.play();
 }
 function visualizaDatosCartones(){

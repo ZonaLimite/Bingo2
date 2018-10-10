@@ -491,10 +491,12 @@ function switchGamerCanvasOff(){
 	canvas.style.height="100%";
 }
 function switchGamerCanvasOn(){
+	
 	iDGamerStatus.style.visibility="visible";
 	iDGamerStatus.style.height="300px";
 	canvas.style.visibility="hidden";
 	canvas.style.height="0px";
+	//visualizaDatosCartones();
 }
 
 function apagaLinea(){
@@ -538,12 +540,12 @@ function elegirCantaor(cantaor){
 		    if (valCodecs=="MP4") {
 		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
 		    	if(cantaor=="Lola"){
-					nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
+					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoLola.mov";
 					nombreRangos="rangosLola";
 					
 		    	}
 		    	if(cantaor=="Ines"){
-					nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
+					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoInes.mov";
 					nombreRangos="rangosInes";
 				}
 
@@ -553,11 +555,11 @@ function elegirCantaor(cantaor){
 		    if (valCodecs=="OGG") {
 		      //msg.innerHTML += "ogg is " + playMsg + " supported<br/>";
 				if(cantaor=="Lola"){
-					nombreFileVideo="http://boga.esy.es/video/BingoLola.ogv";
+					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoLola.ogv";
 					nombreRangos="rangosLola";
 				}
 		    	if(cantaor=="Ines"){
-					nombreFileVideo="http://boga.esy.es/video/BingoInes.ogv";
+					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoInes.ogv";
 							
 					nombreRangos="rangosInes";
 				}
@@ -566,12 +568,12 @@ function elegirCantaor(cantaor){
 		    }
 		    if (valCodecs=="WEBM") {
 		    	if(cantaor=="Lola"){
-					nombreFileVideo="http://boga.esy.es/video/BingoLola.webm";
+					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoLola.webm";
 									
 					nombreRangos="rangosLola";
 				}
 		    	if(cantaor=="Ines"){
-					nombreFileVideo="http://boga.esy.es/video/BingoInes.webm";
+					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoInes.webm";
 										
 					nombreRangos="rangosInes";
 				}
@@ -1010,7 +1012,7 @@ function recibido(e){
 				visualizaDatosCartones();
 				break;
 		case "RefreshDatosCartones":
-				visualizaDatosCartones()
+				visualizaDatosCartones();
 				break;
 		default:
         		

@@ -169,7 +169,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("\r\n");
 	      out.write("</span>\r\n");
 	      out.write("<audio id=\"audioWeb\" class=\"audioClass\" controls >\r\n");
-	      out.write("  \t<source src=\"http://boga.esy.es/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
+	      out.write("  \t<source src=\"https://bingohome.000webhostapp.com/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
 	      out.write("\tYour browser does not support the audio element....\r\n");
 	      out.write("</audio>\r\n");
 	      out.write("</footer>");

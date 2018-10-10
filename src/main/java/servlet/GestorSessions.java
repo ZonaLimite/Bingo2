@@ -36,6 +36,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.naming.event.EventContext;
+import javax.naming.event.NamingEvent;
+import javax.naming.event.NamingExceptionEvent;
+import javax.naming.event.ObjectChangeListener;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -43,7 +50,7 @@ import javax.websocket.Session;
 
 	@Startup
 	@Singleton
-	public class GestorSessions implements Serializable{
+	public class GestorSessions implements Serializable {
             /**
               * 
             */
@@ -149,7 +156,6 @@ import javax.websocket.Session;
 			}
 			
 		}
-
 		public synchronized boolean addPeticionPremios(UserBean userbean,String premio) {
 			boolean registrado = false;
 			String key = userbean.getUsername();
@@ -181,16 +187,14 @@ import javax.websocket.Session;
                 this.pilaAnunciaPremios = new ConcurrentHashMap<>();
                 this.peticionesBonus = new ConcurrentHashMap<>();
                 this.peticionesLiquidacionBonus = new ConcurrentHashMap<>();
-	    }
-		
+		}
 
-
-		@Override
 		@PreDestroy
-		final public void finalize(){
+		final public void contextSaver(){
 			log.info("El resultado de registrarContexto ha sido : "+this.registraContexto("bingo",this.jugadasSalas) );			
 			
 		}
+		
 	    //Añade un nuevo elemento activo a la sesion dada, si no existe ya.(su Sesion)
 	    public synchronized boolean add(String user,UserBean userBean) {
 	    	boolean insertado = false;
@@ -204,9 +208,9 @@ import javax.websocket.Session;
 		    		//Aqui se añade una nueva sesion UserBean al usuario,
 		    			myVector.add(ubam);
 		    			sessions.put(user, myVector);
+		    			this.getJugadasSalas(userBean.getSalonInUse()).removerUsuariosManualesEnJuego(user);
 		    			log.info("UserBean de user:"+userBean.getUsername()+",perfil:"+userBean.getPerfil()+" añadido a mapa para user:"+user);
 		    			insertado=true;
-		    			log.info("Jugadores presente:"+ sessions.keySet().toString() );
 		    			this.triggerRefreshDatos(ubam.getSalonInUse());
 	    	}else{	
 	    		insertado=false;
@@ -236,10 +240,11 @@ import javax.websocket.Session;
 	            		  String perfil = ub.getPerfil();
 	            		  String usuario = ub.getUsername();
 	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar)&& !(userbean.getPerfil().equals("supervisor"))){
-	            			 
+	            			  log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
 	            			 myUserBean.setvCarton(cartones);
+	            			 ub.setvCarton(new Vector<Carton>());
 	            			 //if(idSesionHttpAComparar.equals(ub.getSesionHttp().getId())){
 	            				 //El problema no esta en aqui, sino en el control de sesiones caducadas
 	            				 //ya que se declaran un unico nombre de atirbuto de sesion ¨"Usuario"
@@ -251,15 +256,17 @@ import javax.websocket.Session;
 	            				 //AUNQUE ESO IMPLICARIA REDISEÑAR LAS LLAMADAS A SERVLETS DE BINGO Y CARTON, CON PARAMTROS EN LA URL
 	            				 //A DIFERENCIA DE METERLOS EN ATRIBUTO DE SESION COMO AHORA
 	            				 try {
+	            					 log.info("se va a invalidar esta sesion por duplicada usuario");
 	            					 ub.getSesionHttp().invalidate();
-	            					 log.info("sesion invalidadpor duplicada usuario");
+	            					 
 	            				 } catch(java.lang.IllegalStateException iex) {
-	            					 log.info("repetida excepcion invalidada");
+	            					 itUsersBean.remove();
+	            					 log.info("excepcion al invalidar sesion http ("+iex.toString()+"). Borrado manual de Userbean en gestor sessions");
 	            				 }
-	            				 //itUsersBean.remove();
+	            				 
 	            				 
 	            			 //}
-	            			 log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
+	            			 
 	            			 return myUserBean;
 	            			 
 	            		  }else{
@@ -274,17 +281,27 @@ import javax.websocket.Session;
 	    public synchronized void resetCartones(String sala){
             //Borrado de cartones automaticos    
 	    	Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
-                Iterator it = usuarios.iterator();
+                Iterator<UserBean> it = usuarios.iterator();
                 while(it.hasNext()){
                     UserBean ub = (UserBean) it.next();
+                    
                     if(ub.getSalonInUse().equals(sala)){
+                    	//Regulacion ajuste de caja si procede.
+                    	ajustarCajaPorJugadaFinalizada(ub);
+                    	//this.traspasoDeCartonesASuper(ub);
                         ub.setvCarton(new Vector<Carton>());
-                        log.info("vector cartones inicializado (EndBalls) para sala"+ sala);
                     }
                 }
+                
 	    	//Borrado de cartones OffLine
 	        this.getJugadasSalas(sala).resetCartonesUsuariosOffLine();
+	        // Por si acaso , borrado buffers solicitud premios
+			this.borrarListaPeticionPremios(sala);
+			this.borrarListaPremiosLiquidados(sala);
+	      
+	        
 	    }
+	    
 	    public synchronized Set<Carton> dameSetCartonesEnJuego(String sala){
                 Set<Carton> setCartones = new LinkedHashSet<>();
                   Set<UserBean> usuarios = dameUserBeansEnPortal("jugador");
@@ -532,6 +549,10 @@ import javax.websocket.Session;
 	    }
 	    public synchronized void removeUserBean(HttpSession session,String usuario) {
 	    	//Utilizado para eliminar userbeans del mapa sessions.El usuario queda off_line(Sesion caducada)
+	    	
+	    	//Un control extra, aqui es, que si el usuario tiene cartones en juego, el valor en juego de dichos
+	    	//cartones ha de restarse al saldo en caja, para que esat no se desvirtue.
+	    	
 	    	String idSesionAComparar = session.getId();
 	    	Set<String> juegoClaves= sessions.keySet();	    	
 	    	Iterator<String> itClaves = juegoClaves.iterator();
@@ -546,30 +567,95 @@ import javax.websocket.Session;
 	            		  String idSession = ub.getSesionHttp().getId();
                           String userb = ub.getUsername();
 	            		  if(idSession.equals(idSesionAComparar)&& userb.equals(usuario)){
-	            			
+	            			  //Rutina Ajuste Caja  
 	            			  String usuarioInvalidado = ub.getUsername();
-	            			  Session mySession = ub.getSesionSocket();
-	            			  try {
-	            				  if (!(mySession==null)){
+	            			  if(!(usuarioInvalidado.equals("super"))) {
+	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
+	            				  //para que la asignacion de premios inicial sea coherente y
+	            				  //los demas premios sean asignados correctamente
+	            				  
+	            				  //this.getJugadasSalas(ub.getSalonInUse()).removePremioJugador(userb);
+	            				    if((this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized"))) {
+	            				    	this.ajustarCajaPorJugadaFinalizada(ub);
+	            				    }else {
+	            				    	traspasoDeCartonesA(ub);
+	            				    }
+	            				  Session mySession = ub.getSesionSocket();
+	            				  try {
+	            					  if (!(mySession==null)){
 	            					  mySession.getBasicRemote().sendText("SesionHttpCaducada");
-	            				  }
-							} catch (IOException e) {
-								log.info(e.getMessage());
+	            					  }
+	            				  } catch (IOException e) {
+	            					  log.info(e.getMessage());
 								//e.printStackTrace();
-							}
-	            			  itUsersBean.remove();
-	            			  this.triggerRefreshDatos(ub.getSalonInUse());
-	            			log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
+	            				  }
+
+	            				  itUsersBean.remove();
+	            				  this.triggerRefreshDatos(ub.getSalonInUse());
+
+	            				  
+	            				  log.info("Removido userbean por atributo HttpSession invalidado :"+usuarioInvalidado);
 	            			
-	            			if(vectorUserBean.size()==0){
-	            				//Si no queda ninguna sesion ,eliminamos la clave completa de usuario
-	            				itClaves.remove();
-	            			}
-	            			log.info("Sesiones abiertas :"+sessions.keySet().toString());
+	            				  if(vectorUserBean.size()==0){
+	            					  //Si no queda ninguna sesion ,eliminamos la clave completa de usuario
+	            					  itClaves.remove();
+	            				  }
+	            				  log.info("Sesiones abiertas :"+sessions.keySet().toString());
+	            			  }
 	            		  }
 	             }
 	         }
+	         this.registraContexto("bingo",this.jugadasSalas);
+	    }
+	    private void traspasoDeCartonesA(UserBean ub) {
+	    	PocketBingo pb= this.getJugadasSalas(ub.getSalonInUse());
+	    	int numeroCartonesSocio = ub.getvCarton().size();
+	    	//int numeroCartonesSuper = pb.dimeCartonesDe("super");
+	    	pb.AsignaNCartonesA(ub.getUsername(),numeroCartonesSocio);
+	    	pb.AsignaPreferCarton(ub.getUsername(),0);
+	    	this.registraContexto("bingo",this.jugadasSalas);
+	    	
+	    	
+	    }
+	    
+	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
+				String sala=ub.getSalonInUse();
+				PocketBingo pb = this.getJugadasSalas(sala);
+				if(pb.isBingoCantado())return;
+			  	float xValorADescontar = 0;
+			    float xCuantoHasJugado = ub.getvCarton().size()*new Float(pb.getPrecioCarton());
+			    float xCuantoHeGanado = 0;
+			    Vector<Carton> cartonesPremiados = pb.getCartonesManualesPremiados(ub.getUsername());
+			    
+			    if(!(cartonesPremiados==null)){
+			    	
+			    	Iterator<Carton> itVectorCarton = cartonesPremiados.iterator();
+			  		while(itVectorCarton.hasNext()) {
+			  			Carton c = itVectorCarton.next();
+			  			
+			  			xCuantoHeGanado =+ c.getPremiosAcumulados();
+			  		}
+			  		
+			    }
+			    
+			    xValorADescontar = xCuantoHasJugado - xCuantoHeGanado;
+		  		//Saldo de caja Actual=
+		  		UtilDatabase udatabase = new UtilDatabase();
+		  		float saldoActualUser = new Float(udatabase.consultaSQLUnica("Select Saldo From usuarios Where User='"+ub.getUsername()+"'"));
+		  		/////////////////////////////////////////////////////
+		  		float saldoActualizadoUser = saldoActualUser + xValorADescontar;
+		  		/////////////////////////////////////////////////////
+		  		DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+		  		simbolos.setDecimalSeparator('.');
+		  		DecimalFormat formateador = new DecimalFormat("#######.##",simbolos);
 	        
+		  		String Consulta = "UPDATE usuarios SET Saldo = "+ formateador.format(saldoActualizadoUser )+ " Where User='"+ub.getUsername()+"'" ;
+	        
+		  		if(UtilDatabase.updateQuery(Consulta)>0) {;	           			        
+		  			log.info("Cantidad ajustada Caja para jugador Elec. :'"+ub.getUsername()+" Ha sido :"+xValorADescontar);
+		  			log.info("El valor de caja ahora es :"+saldoActualizadoUser);
+		  			pb.deleteCartonesManualesPremiados(ub.getUsername());
+		  		}
 	    }
 		private void triggerRefreshDatos(String salaInUse){
 			PocketBingo pb = this.getJugadasSalas(salaInUse);
@@ -584,7 +670,7 @@ import javax.websocket.Session;
 			enviarMensajeAPerfil("RefreshDatosCartones","jugador");
 		}
 		
-		private void enviarMensajeAPerfil(String textMessage,String perfil){
+		public void enviarMensajeAPerfil(String textMessage,String perfil){
 			  	try {
 					Set<UserBean> myUsersbean = this.dameUserBeans(perfil);
 					Iterator<UserBean> itBeans= myUsersbean.iterator();
@@ -739,7 +825,7 @@ import javax.websocket.Session;
 	            }
 
 	        } catch (SQLException ex) {
-                Logger.getLogger("RegistroContexto").info("Ha habido problema SQl a l registrar contexto:"+ ex);
+                Logger.getLogger("RegistroContexto").info("Ha habido problema SQl al registrar contexto:"+ ex);
 
 	        }finally{
 	            if(myCon!=null)try {
@@ -804,3 +890,11 @@ import javax.websocket.Session;
 	    }
 
 }
+	class ChangePocketBingoHandler implements ObjectChangeListener {
+	    public void objectChanged(NamingEvent evt) {
+	        System.out.println("Evento de cambio on PocketBingo:"+evt.getNewBinding());
+	    }
+	    public void namingExceptionThrown(NamingExceptionEvent evt) {
+	        System.out.println(evt.getException());
+	    }
+	}	

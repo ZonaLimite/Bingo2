@@ -264,13 +264,14 @@ public class Runnable3 implements Runnable{
                 	pb.setNumeroOrden(i);
                 }
                 log.info("Orden antes del wait "+ pb.getNumeroOrden()+ "n= "+n);
- 
+                //Establecimiento control de tiempo de juego//Time out too wait
    	            wait(n); 
    				
 
 
             } catch (InterruptedException ex) {
         	   log.info("He sido interrumpido y numnero ordem es:"+i);
+        	    //Podemos ajustar un retardo alto aqui por defecto
                n=0;
         	   String reasonInterrupt=pb.getReasonInterrupt();
         	   log.info("Interrupt recibido (reason):"+ reasonInterrupt + " IdState:" + pb.getIdState());
@@ -305,7 +306,10 @@ public class Runnable3 implements Runnable{
                				pb.setIdState("Finalized");
                				return;
                			}
-
+               			if(pb.getIdState().equals("Finalized")){
+               				//Se ha alcanzado el estado finalizado, no hay nada mas que hacer
+               				return;
+               			}
                			try {
                				delay=pb.getDelay();
                				Thread.sleep(delay);
@@ -324,14 +328,7 @@ public class Runnable3 implements Runnable{
                				}
                				break;
                				
-               		case "Finalize":
-                        gestorSesions.resetCartones(estaSalaEs);
-                        pb.resetNumerosCalled();
-                        pb.setIdState("Finalized");
-               			enviarMensajeAPerfil("EndBalls","supervisor");
-               			enviarMensajeAPerfil("EndBalls","jugador");               			
-               			
-               			return;
+               		
                }
            }
           

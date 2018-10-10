@@ -385,7 +385,8 @@ function consultaSaldo(){
 }
 function hacerLogin(){
 	//servlet de servicio --->HtmlDinamicoServLet
-	
+	//Yo aqui pasaria el nombre de usuario de parametro, y haria el paso al portal con
+	//Portal.jsp&user=usuario
 	var params = new Object();
 	params.un=document.getElementById("un").value ;
 	params.pw=document.getElementById("pw").value;	
@@ -399,11 +400,16 @@ function hacerLogin(){
 		}).done(function( data ) {
 			if(data=="Si"){
 				window.location.replace("Portal.jsp");	
-			}else{
-			
+			}
+			if(data=="No"){
 				myResp =document.getElementById("resp");
 				myResp.innerHTML="Usuario no registrado o password incorrecta";
 			}
+			if(data=="2Users"){
+				myResp =document.getElementById("resp");
+				myResp.innerHTML="Este usuario esta jugando ya en modo manual. No se puede jugar en los dos modos de juego a la vez";
+			}			
+			
 	});
 
 }

@@ -40,17 +40,34 @@ public class LiquidadorPremio {
 			log.info("En el iterador hay objetos premio");
 			PeticionPremio pp =  itPremiados.next();
 			UserBean ubPremiado =pp.getUserbean();
-			
+			int cantidadCartonesJugados=0;
 			if(ubPremiado.getSalonInUse().equals(sala)){
 				Carton carton  = pilaAnunciaPremios.get(pp);
 				try {
 					//Si la transaccion de liquidacion se completa. lo anunciamos
 					float premioCobrado = this.saldarPremio(sala, ubPremiado, pp.getPremio());
 					if(premioCobrado>0){
+						//Considerar que en realidad solo un carton del jugador estara  premiado aqui,
+						//aunque hayan sido varios lineas o bingos  a la vez, que es lo que queremos en este caso
+						
+						if(pp.getPremio().equals("Linea")) {
+							carton.setLineaCantado(true);
+							gestorSesions.getJugadasSalas(sala).setLineaCantada(true);
+						}
+						if(pp.getPremio().equals("Bingo")) {
+							carton.setBingoCantado(true);
+							gestorSesions.getJugadasSalas(sala).setBingoCantado(true);
+						}
+						if(ubPremiado.getType().equals("Digital"))cantidadCartonesJugados = ubPremiado.getvCarton().size();
+						if(ubPremiado.getType().equals("Manual"))cantidadCartonesJugados =gestorSesions.getJugadasSalas(sala).dimeCartonesDe(ubPremiado.getUsername());
+						gestorSesions.getJugadasSalas(sala).registraCartonPremiado(pp, carton, premioCobrado,cantidadCartonesJugados);
+						
+					    gestorSesions.enviarMensajeAPerfil("RefreshDatosCartones", "supervisor");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
 						String message = "!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+"\n ! Bien " +pp.getUserbean().getUsername()+" ¡";
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RetroMessage_"+message+"_blink");
+						gestorSesions.enviarMensajeAPerfil("RetroMessage_"+message+"_blink", "supervisor");
 					}
  					
 					hayPremios=true;
@@ -85,7 +102,7 @@ public class LiquidadorPremio {
 	private float saldarPremioLinea(String sala,UserBean user){
 		float premio = 0;//
 		PocketBingo pb = gestorSesions.getJugadasSalas(sala);
-		//Lo cogemos de aqui
+
 		int cartonesAutomaticos = gestorSesions.dameSetCartonesEnJuego(sala).size();
 		int numeroCartonesEnJuego = cartonesAutomaticos + new Integer(pb.getnCartonesManuales());
 		Map<PeticionPremio,Carton> pilaPremios = gestorSesions.getPilaAnunciaPremios(sala);
@@ -124,7 +141,7 @@ public class LiquidadorPremio {
 		float porCientoBingo = new Float(pb.getPorcientoBingo());
 		float porCientoCantaor = new Float(pb.getPorcientoCantaor());
 		float sumaTantos = porCientoLinea+porCientoBingo + porCientoCantaor;
-		// 
+		 
 		
 		float xBingo = (new Float(((sumaCaja*porCientoBingo)/sumaTantos))/numeroPremios);
 		if(user.getUsername().contains("Carton"))return xBingo;

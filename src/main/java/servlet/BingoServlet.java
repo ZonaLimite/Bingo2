@@ -127,9 +127,9 @@ private String user,sala,perfil;
 	      out.write("              <video id=\"medio\" class=\"fotom\" preload=\"auto\" >\r\n");
 	      
 	     
-	      out.write("\t\t\t<source src=\"http://boga.esy.es/video/BingoInes.webm\" type=\"video/webm\" >\r\n");
-	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
-	      out.write("   \t\t    <source src=\"http://boga.esy.es/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
+	      out.write("\t\t\t<source src=\"https://bingohome.000webhostapp.com/video/BingoInes.webm\" type=\"video/webm\" >\r\n");
+	      out.write("   \t\t    <source src=\"https://bingohome.000webhostapp.com/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
+	      out.write("   \t\t    <source src=\"https://bingohome.000webhostapp.com/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
 	      out.write("   \t         HTML5 video is not supported by this browser \r\n");
 	      out.write("   \t         </video>\r\n");
 	      out.write("   \t         </div>\r\n");
@@ -739,7 +739,7 @@ private String user,sala,perfil;
 	      out.write("\r\n");
 	      out.write("\r\n");	      
 	      out.write("<audio id=\"audioWeb\">\r\n");
-	      out.write("  \t<source src=\"http://boga.esy.es/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
+	      out.write("  \t<source src=\"https://bingohome.000webhostapp.com/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
 	      out.write("\tYour browser does not support the audio element.\r\n");
 	      out.write("</audio>\r\n");
 	      out.write("\r\n");

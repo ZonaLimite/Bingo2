@@ -52,8 +52,7 @@ try
      String perfil = user.getPerfil(); 		    
      if (user.isValid()){
           
-    	 HttpSession session = request.getSession(true);
-    	 user.setSesionHttp(session);
+
     	 PocketBingo pb = gestorSesions.getJugadasSalas(user.getSalonInUse());
     	 if(pb==null ){
     		  pb= new PocketBingo();
@@ -63,26 +62,36 @@ try
     	 }
     	  
          if(perfil.equals("jugador")){
-        	  //Utilizamos el atributo de sesion usuario para hacer seguimiento de sesiones Http mediante 
-        	  //la implementacion de la interface "implements HttpSessionAttributeListener"
-        	  
-        	  	  //session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
-        	 session.setAttribute("usuario",user.getUsername());
-        	 session.setAttribute("perfil",user.getPerfil());
-             session.setAttribute("sala",user.getSalonInUse());
+        	 //Un control para verificar si este jugador ya esta jugando en modo manual y tiene cartones
+        	 
+        	 if(pb.estaJugandoAManual(user.getUsername())==true && !(pb.getIdState().equals("Finalized"))){
+        		 okLogin="2Users";
+        	 }else {
+        		 //Utilizamos el atributo de sesion usuario para hacer seguimiento de sesiones Http mediante 
+        		 //la implementacion de la interface "implements HttpSessionAttributeListener"
+            	 HttpSession session = request.getSession(true);
+            	 user.setSesionHttp(session);
+        		 user.setType("Digital");
+        		 //session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
+        		 session.setAttribute("usuario",user.getUsername());
+        		 session.setAttribute("perfil",user.getPerfil());
+        		 session.setAttribute("sala",user.getSalonInUse());
         	  	  
-        	  //Registramos el usuario a traves de un bean que representa todos los atributos del mismo
-        	  //en un singleton con alcance de aplicacion
+        		 //Registramos el usuario a traves de un bean que representa todos los atributos del mismo
+        		 //en un singleton con alcance de aplicacion
                   gestorSesions.add(user.getUsername(), user);
                   okLogin="Si";
                   //String url="WriterHeaderCarton?usuario="+user.getUsername()+"&sala="+user.getSalonInUse()+"&perfil="+perfil;
                   //String url="Portal.jsp";
                   //log.info("Voy ha hacer el response");
                   //response.sendRedirect(url); //logged-in page // 
+        	 }
          }
 
          if(perfil.equals("supervisor")){
         	  //session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
+        	  HttpSession session = request.getSession(true);
+        	  user.setSesionHttp(session);
         	  session.setAttribute("usuario",user.getUsername());
         	  session.setAttribute("perfil",user.getPerfil());
         	  session.setAttribute("sala",user.getSalonInUse());
