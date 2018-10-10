@@ -347,7 +347,14 @@ if [ -d $LOCAL_SOURCE_DIR/modules ]; then
   chmod -R g+rw /wildfly/provided_modules
 fi
 echo "...done"
-echo "... Aqui te espero"
+echo "Preparando estructuras de directorios para Driver SQL..."
+mkdir /wildfly/modules/system/layers/base/com
+mkdir /wildfly/modules/system/layers/base/com/mysql
+mkdir /wildfly/modules/system/layers/base/com/mysql/main
+echo "Copiando artifacts para driver SQl a ./com/mysql/main..."
+ cp -r modules/module.xml /wildfly/modules/system/layers/base/com/mysql/main
+ cp -r modules/mysql-connector-java-8.0.12.jar /wildfly/modules/system/layers/base/com/mysql/main
+echo "hecho"
 # This logic is intended to deploy the app as part of assemble
 # but many apps fail to deploy because they require additional
 # resources to be present, eg databases, which are not available
