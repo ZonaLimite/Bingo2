@@ -348,7 +348,7 @@ if [ -d $LOCAL_SOURCE_DIR/modules ]; then
 fi
 echo "...done"
 echo "Preparando estructuras de directorios para Driver SQL..."
-mkdir /wildfly/modules/system/layers/base/com
+
 mkdir /wildfly/modules/system/layers/base/com/mysql
 mkdir /wildfly/modules/system/layers/base/com/mysql/main
 echo "Copiando artifacts para driver SQl a ./com/mysql/main..."
