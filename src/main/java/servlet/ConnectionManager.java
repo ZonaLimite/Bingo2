@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.ejb.Singleton;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -20,13 +21,13 @@ public class ConnectionManager {
    static String url;
    static Logger log = Logger.getLogger("ConnectionDatabase");
    
-   //Obtencion de conexion con JNDI y marcado del datasource como un recurso//
-   @Resource(name="java:jboss/datasources/MySQLDS")
-   static javax.sql.DataSource datasource ;
+   //Obtencion de conexion con JNDI y marcado del datasource como un recurso//Esto no funciona
+   @Resource(lookup = "java:jboss/datasources/MySQLDS2")
+   private static javax.sql.DataSource datasource ;
 
    static Connection getConnection(){
  
-	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS";//Probando
+	   String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS2";//Probando2
 
 	    Connection result = null;
 	    try {
@@ -48,6 +49,7 @@ public class ConnectionManager {
 	    }
 	    return result;
     }
+
     public static Connection getConnection(String ipServer,String user,String pwd, String schema ){
     	Connection myConnection=null;
     	 myConnection = getConexionMySQL(ipServer,user,pwd, schema);

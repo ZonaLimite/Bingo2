@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.naming.Context;
@@ -54,8 +55,11 @@ import javax.websocket.Session;
             /**
               * 
             */
-            private static final long serialVersionUID = -124517853214941713L;
-            Logger log = Logger.getLogger("GestorSessions");
+		@Resource(lookup = "java:jboss/datasources/MySQLDS2")
+		private static javax.sql.DataSource datasource ;
+		   
+        private static final long serialVersionUID = -124517853214941713L;
+        Logger log = Logger.getLogger("GestorSessions");
 		
         //Mapa seguimiento sesiones de usuario
 	    private Map<String, Vector<UserBean>> sessions;
@@ -796,6 +800,7 @@ import javax.websocket.Session;
 	  
 	        try {
 	            myCon = ConnectionManager.getConnection();
+	        	
 	            Statement st = myCon.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 
                 ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
@@ -888,13 +893,18 @@ import javax.websocket.Session;
 	        }
 	        return myJuegosSalas;//	    
 	    }
+	    private Connection getConnection(){
+	 	   
+	   		Connection result = null;
+	        try {
+				result= datasource.getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return result;
+    }
 
 }
-	class ChangePocketBingoHandler implements ObjectChangeListener {
-	    public void objectChanged(NamingEvent evt) {
-	        System.out.println("Evento de cambio on PocketBingo:"+evt.getNewBinding());
-	    }
-	    public void namingExceptionThrown(NamingExceptionEvent evt) {
-	        System.out.println(evt.getException());
-	    }
-	}	
+
+		

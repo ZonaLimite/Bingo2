@@ -143,7 +143,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jta="true" jndi-name="java:jboss/datasources/MySQLDS" pool-name="MySqlDS" enabled="true" use-ccm="true">
+                <datasource jta="true" jndi-name="java:jboss/datasources/MySQLDS" pool-name="MySqlDS" enabled="false" use-ccm="true">
                     <connection-url>jdbc:mysql://mysql:3306/wildfly</connection-url>
                     <driver-class>com.mysql.jdbc.Driver</driver-class>
                     <driver>mysql-connector-java-5.1.42-bin.jar_com.mysql.jdbc.Driver_5_1</driver>
@@ -157,9 +157,30 @@
                         <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
                     </validation>
                 </datasource>
+                <datasource jta="true" jndi-name="java:jboss/datasources/MySQLDS2" pool-name="MySqlDS2" enabled="true" use-ccm="true">
+                    <connection-url>jdbc:mysql://mysql:3306/wildfly</connection-url>
+                    <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+                    <connection-property name="serverTimezone">
+                        UTC
+                    </connection-property>
+                    <driver>mysql</driver>
+                    <security>
+                        <user-name>paco</user-name>
+                        <password>ntmanager</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <background-validation>true</background-validation>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+                    </driver>
+                    <driver name="mysql" module="com.mysql">
+                        <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+                        <xa-datasource-class>com.mysql.cj.jdbc.MysqlXADataSource</xa-datasource-class>
                     </driver>
                 </drivers>
             </datasources>
