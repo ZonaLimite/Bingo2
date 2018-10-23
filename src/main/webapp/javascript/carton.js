@@ -575,21 +575,26 @@ function creaSocket(sala){
 	
 }
 function getRootUri() {
-	/*Web Sockets on OpenShift work over ports 8000 for ws and 8443 for wss,*/
-	    
-		if(document.location.hostname=="localhost"){
-			nameEndPoint = "/wildfly-1.0/";//haber
+	/*Web Sockets on OpenShift 2 work over ports 8000 for ws and 8443 for wss,*/
+	
+	    var hostname = document.location.hostname;
+		if(hostname.search("bingo")==-1){
+			
+			nameEndPoint = "/wildfly-1.0/";//haber si asi funciona a nivel red local
 			port=":8080";
+
+
 		}
 		else{
 			nameEndPoint="/";
 			port="";
 		}
 		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
-        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) +port+nameEndPoint;
+        /*return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+                (document.location.port == "" ? "" : document.location.port) + nameEndPoint;*/
+        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
     
 }
-
 function abierto(){
 	show_InMessage("socket abierto");
 	obtenerDatosCartones();// desde Ajax
