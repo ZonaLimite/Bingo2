@@ -763,10 +763,13 @@ function mostrarHTML(comando){
 function getRootUri() {
 	/*Web Sockets on OpenShift 2 work over ports 8000 for ws and 8443 for wss,*/
 	
-	    
-		if(document.location.hostname=="localhost"){
-			nameEndPoint = "/wildfly-1.0/";//haber
+	    var hostname = document.location.hostname;
+		if(hostname.search("bingo")==-1){
+			
+			nameEndPoint = "/wildfly-1.0/";//haber si asi detectamos cunado esta en red local
 			port=":8080";
+
+
 		}
 		else{
 			nameEndPoint="/";
