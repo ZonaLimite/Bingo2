@@ -766,7 +766,7 @@ function getRootUri() {
 	    var hostname = document.location.hostname;
 		if(hostname.search("bingo")==-1){
 			
-			nameEndPoint = "/wildfly-1.0/";//haber si asi detectamos cunado esta en red local
+			nameEndPoint = "/wildfly-1.0/";//haber 
 			port=":8080";
 
 
