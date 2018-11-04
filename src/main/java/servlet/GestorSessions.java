@@ -574,9 +574,7 @@ import javax.websocket.Session;
 	            			  //Rutina Ajuste Caja  
 	            			  String usuarioInvalidado = ub.getUsername();
 	            			  
-	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
-	            				  //para que la asignacion de premios inicial sea coherente y
-	            				  //los demas premios sean asignados correctamente
+	            				 
 	            			  	  if(!(usuarioInvalidado.equals("super"))) {
 	            				  
 	            				    if((this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized"))) {
