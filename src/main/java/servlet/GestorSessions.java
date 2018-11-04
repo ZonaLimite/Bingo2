@@ -573,17 +573,18 @@ import javax.websocket.Session;
 	            		  if(idSession.equals(idSesionAComparar)&& userb.equals(usuario)){
 	            			  //Rutina Ajuste Caja  
 	            			  String usuarioInvalidado = ub.getUsername();
-	            			  if(!(usuarioInvalidado.equals("super"))) {
+	            			  
 	            				 //Aqui traspasamos los cartones de este usuario si los tiene a super
 	            				  //para que la asignacion de premios inicial sea coherente y
 	            				  //los demas premios sean asignados correctamente
+	            			  	  if(!(usuarioInvalidado.equals("super"))) {
 	            				  
-	            				  //this.getJugadasSalas(ub.getSalonInUse()).removePremioJugador(userb);
 	            				    if((this.getJugadasSalas(ub.getSalonInUse()).getIdState().equals("Finalized"))) {
 	            				    	this.ajustarCajaPorJugadaFinalizada(ub);
 	            				    }else {
 	            				    	traspasoDeCartonesA(ub);
 	            				    }
+	            			  	  }
 	            				  Session mySession = ub.getSesionSocket();
 	            				  try {
 	            					  if (!(mySession==null)){
@@ -605,7 +606,7 @@ import javax.websocket.Session;
 	            					  itClaves.remove();
 	            				  }
 	            				  log.info("Sesiones abiertas :"+sessions.keySet().toString());
-	            			  }
+	            			  
 	            		  }
 	             }
 	         }
