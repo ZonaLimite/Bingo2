@@ -71,6 +71,7 @@ public class PocketBingo implements Serializable {
     	mapaPrefsCarton.put(usuario, nCartones);
     }
     public Vector<Carton> getCartonesManualesPremiados(String usuario) {
+    	if(this.cartonesManualesPremiados==null)cartonesManualesPremiados= new LinkedHashMap<>();
     	if(this.cartonesManualesPremiados.get(usuario)==null) {
     		return null;
     	}else {
