@@ -12,7 +12,7 @@ public class UserBean {
     private String firstName;
     private String lastName;
     private String perfil;
-    private String statusPlayer="notPlayingBingo";//Se usaba ete campo sin haber sido inicializado
+    private String statusPlayer="notPlayingBingo";//Se usaba este campo sin haber sido inicializado
     private String salonInUse;
     private Integer numeroCartones=0;
     private HttpSession sesionHttp;

@@ -1,7 +1,9 @@
 	package servlet;
 
 	 
-	import javax.websocket.*;
+	import java.io.IOException;
+
+import javax.websocket.*;
 	import javax.websocket.server.ServerEndpoint;
 	 
 	  
@@ -18,6 +20,14 @@
 	    @OnOpen
 	    public void myOnOpen(Session session) {
 	        System.out.println("WebSocket opened: " + session.getId());
+	        System.out.println("enviado1");
+	        try {
+				session.getBasicRemote().sendText("Enhorabuena");//
+				System.out.println("enviado2");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 	 
 	    @OnClose
