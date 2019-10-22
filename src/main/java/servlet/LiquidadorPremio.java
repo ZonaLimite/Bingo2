@@ -30,7 +30,7 @@ public class LiquidadorPremio {
 		this.gestorSesions=gs;
 	}
     public boolean liquidacionPremios(String sala){
-		//Tratamiento comprobacion peticiones premios
+		//Tratamiento comprobacion peticiones premios(Liquidacion premios)
     	boolean hayPremios=false;
     	pilaAnunciaPremios= gestorSesions.getPilaAnunciaPremios(sala);
 		Set<PeticionPremio> userBeansPremiados = pilaAnunciaPremios.keySet();
