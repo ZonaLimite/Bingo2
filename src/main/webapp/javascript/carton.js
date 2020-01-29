@@ -55,8 +55,6 @@ var contBackground=255;
 var contBackground2=91;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
-//var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
-var nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
 var cajaFecha;
 var arrayMessages=null;
 var copYColor,my_color;
@@ -92,6 +90,7 @@ var hayNumerosParaCantar="No";
 var valueScale=14;
 var status="";
 var bucle10=null;
+var ipWebServer="http://bogaservice.es/wildfly";
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -150,7 +149,7 @@ function iniciar() {
 	$( "#spinner" ).spinner();
 	$( "#spinner" ).spinner({
 		  min: 0
-		});
+	});
 	$("#spinner").attr("readonly","true");
 	$( "#cartones" ).dialog({ autoOpen: false ,
 								 modal: true,
@@ -163,7 +162,7 @@ function iniciar() {
 			 // mensaje="JSON#GET_DATOS_CARTONES#";
 			  //socket_send(mensaje);
 		  }
-		});
+	});
 	$( "#cartones" ).dialog({
 		open: function( event, ui ) {
 			  event.preventDefault();
@@ -259,9 +258,10 @@ function iniciar() {
 	
 		$( "#welcome" ).dialog( "open" );		
 }
+
 function trampaAudio(){
 	audio.style.opacity = "1";
-	audio.src="http://boga.esy.es/audio/AudioLinea1.mp3";
+	audio.src=ipWebServer+"/audio/AudioLinea1.mp3";
 	audio.play();
 	audio.pause();
 	audio.style.opacity = "0";
@@ -614,14 +614,14 @@ function refreshDatosCartones(){
 function playAudioPremioLinea(){
 	numAudio =Math.floor((Math.random() * 2) + 1);
 	//document.getElementById("myDIV").style.opacity = "1";
-	audio.src="https://bingohome.000webhostapp.com/audio/AudioLinea"+numAudio+".mp3";
+	audio.src=ipWebServer+"/audio/AudioLinea"+numAudio+".mp3";
 	audio.play();
 	
 }
 function playAudioPremioBingo(){
 	numAudio =Math.floor((Math.random() * 2) + 1);
 	//document.getElementById("myDIV").style.opacity = "1";
-	audio.src="https://bingohome.000webhostapp.com/audio/AudioBingo"+numAudio+".mp3";
+	audio.src=ipWebServer+"/audio/AudioBingo"+numAudio+".mp3";
 	audio.play();
 }
 function visualizaDatosCartones(){

@@ -21,11 +21,13 @@ public class BingoServlet extends HttpServlet{
 private GestorSessions gestorSesions;	
 	
 private String user,sala,perfil;
-
+//utilizando el DNS de amazon
+private String ipWebServer ="http://bogaservice.es/wildfly/";
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
+		
 		if(mySession!=null){
 			System.out.println("la mySesion "+ mySession.getId());
 			//Comprobacion de HttpSession registrada aqui
@@ -127,9 +129,9 @@ private String user,sala,perfil;
 	      out.write("              <video id=\"medio\" class=\"fotom\" preload=\"auto\" >\r\n");
 	      
 	     
-	      out.write("\t\t\t<source src=\"https://bingohome.000webhostapp.com/video/BingoInes.webm\" type=\"video/webm\" >\r\n");
-	      out.write("   \t\t    <source src=\"https://bingohome.000webhostapp.com/video/BingoInes.mov\" type=\"video/mp4\">\r\n");
-	      out.write("   \t\t    <source src=\"https://bingohome.000webhostapp.com/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
+	      out.write("\t\t\t<source src=\""+ this.ipWebServer+ "/video/BingoInes.webm\" type=\"video/webm\" >\r\n");
+	      out.write("   \t\t    <source src=\""+ this.ipWebServer+ "/video/BingoInes.m4v\" type=\"video/mp4\">\r\n");
+	      out.write("   \t\t    <source src=\""+ this.ipWebServer+ "/video/BingoInes.ogv\" type=\"video/ogg\">\r\n");
 	      out.write("   \t         HTML5 video is not supported by this browser \r\n");
 	      out.write("   \t         </video>\r\n");
 	      out.write("   \t         </div>\r\n");
@@ -739,7 +741,7 @@ private String user,sala,perfil;
 	      out.write("\r\n");
 	      out.write("\r\n");	      
 	      out.write("<audio id=\"audioWeb\">\r\n");
-	      out.write("  \t<source src=\"https://bingohome.000webhostapp.com/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
+	      out.write("  \t<source src=\""+this.ipWebServer+"/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
 	      out.write("\tYour browser does not support the audio element.\r\n");
 	      out.write("</audio>\r\n");
 	      out.write("\r\n");

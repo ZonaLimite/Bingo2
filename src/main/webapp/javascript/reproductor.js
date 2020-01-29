@@ -66,7 +66,7 @@ var contBackground2=91;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
 //var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
-var nombreFileVideo="http://boga.esy.es/video/BingoInes.mov";
+
 var cajaFecha;
 var arrayMessages=null;
 var copYColor,my_color;
@@ -96,7 +96,8 @@ var comandoHandshake;
 var iDGamerStatus;
 var canvas;
 var delay;
-
+var ipWebServer = "http://bogaservice.es/wildfly/";
+var nombreFileVideo= ipWebServer+ "/video/BingoInes.webm";
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -540,12 +541,12 @@ function elegirCantaor(cantaor){
 		    if (valCodecs=="MP4") {
 		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
 		    	if(cantaor=="Lola"){
-					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoLola.mov";
+					nombreFileVideo= ipWebServer+ "/video/BingoLola.m4v";
 					nombreRangos="rangosLola";
 					
 		    	}
 		    	if(cantaor=="Ines"){
-					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoInes.mov";
+					nombreFileVideo=ipWebServer +"/video/BingoInes.m4v";
 					nombreRangos="rangosInes";
 				}
 
@@ -555,11 +556,11 @@ function elegirCantaor(cantaor){
 		    if (valCodecs=="OGG") {
 		      //msg.innerHTML += "ogg is " + playMsg + " supported<br/>";
 				if(cantaor=="Lola"){
-					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoLola.ogv";
+					nombreFileVideo=ipWebServer +"/video/BingoLola.ogv";
 					nombreRangos="rangosLola";
 				}
 		    	if(cantaor=="Ines"){
-					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoInes.ogv";
+					nombreFileVideo=ipWebServer +"/video/BingoInes.ogv";
 							
 					nombreRangos="rangosInes";
 				}
@@ -568,12 +569,12 @@ function elegirCantaor(cantaor){
 		    }
 		    if (valCodecs=="WEBM") {
 		    	if(cantaor=="Lola"){
-					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoLola.webm";
+					nombreFileVideo=ipWebServer +"/video/BingoLola.webm";
 									
 					nombreRangos="rangosLola";
 				}
 		    	if(cantaor=="Ines"){
-					nombreFileVideo="https://bingohome.000webhostapp.com/video/BingoInes.webm";
+					nombreFileVideo=ipWebServer +"/video/BingoInes.webm";
 										
 					nombreRangos="rangosInes";
 				}
