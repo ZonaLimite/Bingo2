@@ -21,8 +21,8 @@ public class BingoServlet extends HttpServlet{
 private GestorSessions gestorSesions;	
 	
 private String user,sala,perfil;
-//utilizando el DNS de amazon
-private String ipWebServer ="http://bogaservice.es/wildfly/";
+//utilizando el DNS de amazon linkado por dominio bogaservice.es
+private String ipWebServer ="http://bogaservice.es/wildfly";
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url="Portal.jsp";
@@ -110,16 +110,16 @@ private String ipWebServer ="http://bogaservice.es/wildfly/";
 	      out.write("         <td class=\"panel\"> \r\n");
 	      out.write("            <label class=\"numeros\" ></label>             \r\n");
 	      out.write("        </td>\r\n");
-	      out.write("      <td id=\"pan10\"class=\"panel\"> \r\n");
+	      out.write("      <td id=\"pan10\" class=\"panel\"> \r\n");
 	      out.write("            <label id=\"10\" class=\"numeros\" >10</label>             \r\n");
 	      out.write("        </td>\r\n");
-	      out.write("      <td id=\"pan20\"class=\"panel\"> \r\n");
+	      out.write("      <td id=\"pan20\" class=\"panel\"> \r\n");
 	      out.write("            <label id=\"20\" class=\"numeros\" >20</label>             \r\n");
 	      out.write("        </td>\r\n");
-	      out.write("      <td id=\"pan30\"class=\"panel\"> \r\n");
+	      out.write("      <td id=\"pan30\" class=\"panel\"> \r\n");
 	      out.write("            <label id=\"30\" class=\"numeros\" >30</label>             \r\n");
 	      out.write("        </td>\r\n");
-	      out.write("      <td id=\"pan40\"class=\"panel\"> \r\n");
+	      out.write("      <td id=\"pan40\" class=\"panel\"> \r\n");
 	      out.write("            <label id=\"40\" class=\"numeros\" >40</label>             \r\n");
 	      out.write("        </td>\r\n");
 	      out.write("      <td rowspan=\"10\" class=\"panel\" width=\"30%\"> \r\n");
@@ -598,7 +598,7 @@ private String ipWebServer ="http://bogaservice.es/wildfly/";
 	      out.write("</div>  \r\n");
 	      out.write("</article>\r\n");
 	      out.write("</div>\r\n");
-	      out.write("<article>\r\n");
+	      //out.write("<article>\r\n");
 	      out.write("\r\n");
 	      out.write("<p><label id=\"foot\"> BINGO 2018</label>></p>    \r\n");
 	      out.write("\r\n");
@@ -671,7 +671,7 @@ private String ipWebServer ="http://bogaservice.es/wildfly/";
 	      out.write("  <input name=\"videoON\" type=\"checkbox\" value=\"true\" checked>Activar Video\r\n");
 	      out.write("</p>\r\n");
 	      out.write("<p><input name=\"starsON\" type=\"checkbox\" value=\"true\" checked>Activar StartsField\r\n");
-	      out.write("</p>\r\n");
+	      //out.write("</p>\r\n");
 	      out.write("\r\n");
 	      out.write("<hr width=\"75%\"/>\r\n");
 	      out.write("\r\n");
@@ -730,7 +730,7 @@ private String ipWebServer ="http://bogaservice.es/wildfly/";
 	      out.write("<input type=\"hidden\" id=\"comandoHandshake\" name=\"comandoHandshake\" value=\"\">\r\n");
 	      out.write("<input type=\"hidden\" id=\"idSala\" name=\"idSala\" value=\""+sala+"\">\r\n");
 	      out.write("<input type=\"hidden\" id=\"jugador\" name=\"jugador\" value=\"\">\r\n");
-	      out.write("<input type=\"hidden\" id=\"usuario\"  name=\"usuario\" value=\"\"");
+	      out.write("<input type=\"hidden\" id=\"usuario\"  name=\"usuario\" value=\"");
 	out.print(user); 
 	      out.write("\">\r\n");
 	      out.write("<br>\r\n");

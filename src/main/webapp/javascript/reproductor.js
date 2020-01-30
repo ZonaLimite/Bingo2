@@ -96,7 +96,7 @@ var comandoHandshake;
 var iDGamerStatus;
 var canvas;
 var delay;
-var ipWebServer = "http://bogaservice.es/wildfly/";
+var ipWebServer = "http://bogaservice.es/wildfly";
 var nombreFileVideo= ipWebServer+ "/video/BingoInes.webm";
 
 function iniciar() {

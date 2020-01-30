@@ -54,7 +54,7 @@
 		<li class="botonEnlace" id="volcadoBonos">Checkeo Bonos
 		       <select name="idSala" id="idSala" >
        				<option value="sala1" selected>Sala1</option>
-      			</select></td>
+      			</select>
        <li class="botonEnlace" id="volcadoLiquidacion">Checkeo Liquidacion</li>  	       
 	   <li class="botonEnlace" id="botonJugadores">Jugadores</li> 
 	   <li class="botonEnlace" id="botonCartones">Cartones</li>  	        			

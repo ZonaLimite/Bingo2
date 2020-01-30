@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/WriterHeaderCarton")
 public class CartonServlet extends HttpServlet{
 	private String user,sala,perfil;
-	//DNS Amazon VPS
+	//DNS Amazon VPS (linkado por dominio bogaservice.es)
 	private String ipWebServer = "http://bogaservice.es/wildfly";
 	/**
 	 * 
