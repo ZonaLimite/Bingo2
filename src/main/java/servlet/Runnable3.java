@@ -58,6 +58,7 @@ public class Runnable3 implements Runnable{
         	pb.setIdState("Started");
         	pb.setNumeroOrden(1);
     		this.enviarMensajeAPerfil("cantarNumero_BuenasNoches_0","supervisor");
+    		this.enviarMensajeAPerfil("cantarNumero_BuenasNoches_0","tablero");    		
     		try {
 				wait();
 			} catch (InterruptedException e) {
@@ -70,6 +71,7 @@ public class Runnable3 implements Runnable{
     		int i;
         	for(i=0;i<listaNumeros.size();i++){
     			this.enviarMensajeAPerfil("EncenderNumero_"+listaNumeros.elementAt(i)+"_simple","supervisor");
+    			this.enviarMensajeAPerfil("EncenderNumero_"+listaNumeros.elementAt(i)+"_simple","tablero");    			
     			this.enviarMensajeAPerfil("EncenderNumero_"+listaNumeros.elementAt(i)+"_simple","jugador");
     			//this.enviarMensajeAPerfil("bolaJuego_"+(i+1));
     			try {
@@ -83,8 +85,10 @@ public class Runnable3 implements Runnable{
         	int number= pb.getNewBola();
         	//this.enviarMensajeAPerfil("bolaJuego_"+orden);
         	enviarMensajeAPerfil("cantarNumero_"+number+"_"+orden,"supervisor");
+        	enviarMensajeAPerfil("cantarNumero_"+number+"_"+orden,"tablero");
         	enviarMensajeAPerfil("cantarNumero_"+number+"_"+orden,"jugador");
         	enviarMensajeAPerfil("EncenderNumero_"+number,"supervisor");
+        	enviarMensajeAPerfil("EncenderNumero_"+number,"tablero");        	
         	enviarMensajeAPerfil("EncenderNumero_"+number,"jugador");
         	
         	if(!(pb.getNewBola()==0))pb.addNumerosCalled(pb.getNewBola());
@@ -106,17 +110,21 @@ public class Runnable3 implements Runnable{
             try{
                 if(pb.getIdState().equals("Linea")){
                 	enviarMensajeAPerfil("Linea_linea","supervisor");
+                	enviarMensajeAPerfil("Linea_linea","tablero");
+                	
                 	//enviarMensajeAPerfil("ComprobarLinea");
                 	pb.setIdState("ComprobandoLinea");
                 	i--;
                 }else if(pb.getIdState().equals("ComprobandoLinea")){
                 	enviarMensajeAPerfil("ComprobarLinea","supervisor");
+                	enviarMensajeAPerfil("ComprobarLinea","tablero");                	
                 	enviarMensajeAPerfil("ComprobarLinea","jugador");
                 	//Comprobamos las lineas de todos los cartones y avisamos de quien tiene linea y alos despitados que la tienen y no la cantan
                 	cp.comprobarLineas(estaSalaEs);
                 	Thread.sleep(4000);
                 	//Si alguna no esta cantada se avisa y se da una opcion mas
                 	enviarMensajeAPerfil("Hay alguna linea mas?","supervisor");
+                	enviarMensajeAPerfil("Hay alguna linea mas?","tablero");                	
                 	enviarMensajeAPerfil("Hay alguna linea mas?","jugador");
                 	Thread.sleep(3000);
                 	//Al llegar aqui, preguntamos a super por premios de cartones manuales y que los meta en mapa Premios Manuales
@@ -128,6 +136,7 @@ public class Runnable3 implements Runnable{
         	    		if(nCartonesManuales>0){
         	    				//Emviar un mensaje atraves del webSocket a super, para ser tratado en la interface reproductor
         	    				this.enviarMensajeAPerfil("PreguntarPremiosLinea", "supervisor");
+        	    				this.enviarMensajeAPerfil("PreguntarPremiosLinea", "tablero");
         	    				pb.setIdState("WaitingResultSuper");
         	    				i--;
         	    				n=0;
@@ -147,29 +156,33 @@ public class Runnable3 implements Runnable{
                 			pb.setIdState("LineaOk");
                 			pb.setLineaCantada(true);
                 			enviarMensajeAPerfil("ApagaLinea","supervisor");
+                			enviarMensajeAPerfil("ApagaLinea","tablero");                			
                 			enviarMensajeAPerfil("ApagaLinea","jugador");
                    		}else{
                    			pb.setIdState("Continue");
                    			enviarMensajeAPerfil("Continuamos ...","supervisor");
+                   			enviarMensajeAPerfil("Continuamos ...","tablero");                   			
                    			enviarMensajeAPerfil("Continuando partida ...","jugador");
                    		}
                    		n=1;
                    		i--;        
                    		Thread.sleep(2000);
                    		enviarMensajeAPerfil("EnciendeVideo","supervisor");
+                   		enviarMensajeAPerfil("EnciendeVideo","tablero");                   		
                 
                 }else if(pb.getIdState().equals("LineaOk")){
                 	n=0;
                 	i--;
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"supervisor");
+                	enviarMensajeAPerfil("cantarNumero_lineaOk_"+pb.getNumeroOrden(),"tablero");
 
                 }else if(pb.getIdState().equals("Continue")){
                 	n=0;
                 	i--;
                 	pb.setIdState("Started");
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
-
+                	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"tablero");                	
                 	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");
                //---------------------------------------------------------------------------------------------- 
                 	
@@ -178,16 +191,19 @@ public class Runnable3 implements Runnable{
                 	
                 }else if(pb.getIdState().equals("Bingo")){
                     	enviarMensajeAPerfil("Bingo_bingo","supervisor");
+                    	enviarMensajeAPerfil("Bingo_bingo","tablero");                    	
                     	pb.setIdState("ComprobandoBingo");
                     	i--;
                     	
                }else if(pb.getIdState().equals("ComprobandoBingo")){
                     	enviarMensajeAPerfil("ComprobarBingo","supervisor");
+                    	enviarMensajeAPerfil("ComprobarBingo","tablero");
                     	enviarMensajeAPerfil("ComprobarBingo","jugador");
                     	cp.comprobarBingos(estaSalaEs);
                     	Thread.sleep(4000);
                     	//Si alguna no esta cantada se avisa y se da una opcion mas
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","supervisor");
+                    	enviarMensajeAPerfil("Hay algun Bingo mas?","tablero");
                     	enviarMensajeAPerfil("Hay algun Bingo mas?","jugador");
                     	Thread.sleep(3000);
                        	//Al llegar aqui, preguntamos a super por premios de cartones manuales y que los meta en mapa Premios Manuales
@@ -216,23 +232,28 @@ public class Runnable3 implements Runnable{
                			pb.setIdState("BingoOk");
                			pb.setLineaCantada(true);
                			enviarMensajeAPerfil("ApagaBingo","supervisor");
+               			enviarMensajeAPerfil("ApagaBingo","tablero");               			
                			enviarMensajeAPerfil("ApagaBingo","jugador");
                			
                		}else{
                			pb.setIdState("Continue");
                			enviarMensajeAPerfil("Continuamos ...","supervisor");
+               			enviarMensajeAPerfil("Continuamos ...","tablero");               			
                			enviarMensajeAPerfil("Continuando partida ...","jugador");
                		}
                		n=1;
                		i--;        
                		Thread.sleep(2000);
                		enviarMensajeAPerfil("EnciendeVideo","supervisor");
+               		enviarMensajeAPerfil("EnciendeVideo","tablero");               		
   	    		
 
                 }else if(pb.getIdState().equals("BingoOk")){
                 		n=0;
                 		i--;
                     	enviarMensajeAPerfil("cantarNumero_bingoOk_"+pb.getNumeroOrden(),"supervisor");
+                    	enviarMensajeAPerfil("cantarNumero_bingoOk_"+pb.getNumeroOrden(),"tablero");
+                    	
                     	pb.setIdState("EndBalls");
                 
                 }else if(pb.getIdState().equals("Continue")){
@@ -240,6 +261,7 @@ public class Runnable3 implements Runnable{
                 		i--;
                     	pb.setIdState("Started");
                     	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"supervisor");
+                    	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"tablero");
                     	enviarMensajeAPerfil("cantarNumero_"+pb.getNewBola()+"_"+pb.getNumeroOrden(),"jugador");                	
                 //---------------------------------------------------------------------------------------------                	
  
@@ -257,6 +279,7 @@ public class Runnable3 implements Runnable{
                 	
                 	//pb.setSecuenciaAcabada(false);
                 	enviarMensajeAPerfil("cantarNumero_"+number+"_"+i+"_"+pb.getLastNumber(),"supervisor");
+                	enviarMensajeAPerfil("cantarNumero_"+number+"_"+i+"_"+pb.getLastNumber(),"tablero");
                 	enviarMensajeAPerfil("cantarNumero_"+number+"_"+i+"_"+pb.getLastNumber(),"jugador");
                 	
                 	
@@ -282,11 +305,13 @@ public class Runnable3 implements Runnable{
                			
                			if(!(pb.getNewBola()==0))pb.addNumerosCalled(pb.getNewBola());
                			enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"supervisor");
+               			enviarMensajeAPerfil("EncenderNumero_"+pb.getNewBola(),"tablero");
 
                			if(pb.getIdState().equals("Started") && pb.getNumeroOrden()==90){
            					i--;
            					pb.setIdState("WarningFinalizando");
                	        	enviarMensajeAPerfil("WarningFinalizando","jugador");
+               	        	enviarMensajeAPerfil("WarningFinalizando","tablero");
                	        	enviarMensajeAPerfil("WarningFinalizando","supervisor");
                	        	break;
                			}	
@@ -302,6 +327,7 @@ public class Runnable3 implements Runnable{
                				gestorSesions.resetCartones(estaSalaEs);
                				pb.resetNumerosCalled();
                				enviarMensajeAPerfil("EndBalls","supervisor");
+               				enviarMensajeAPerfil("EndBalls","tablero");               				
                				enviarMensajeAPerfil("EndBalls","jugador"); 
                				pb.setIdState("Finalized");
                				return;
@@ -340,6 +366,7 @@ public class Runnable3 implements Runnable{
         gestorSesions.resetCartones(estaSalaEs);
         pb.resetNumerosCalled();
     	enviarMensajeAPerfil("EndBalls","supervisor");
+    	enviarMensajeAPerfil("EndBalls","tablero");
     	enviarMensajeAPerfil("EndBalls","jugador");                	
     	pb.setIdState("Finalized");
         log.info("Acabado bucle");//
@@ -357,14 +384,16 @@ public class Runnable3 implements Runnable{
     		//Set<UserBean> myUsersbean = (Set<UserBean>)this.session.getUserProperties().get("sesiones");
     		Set<UserBean> myUsersbean = gestorSesions.dameUserBeans(perfil);
     		Iterator<UserBean> itBeans= myUsersbean.iterator();
+    		UserBean usb ;
     		while (itBeans.hasNext()){
-    			Session sesionActiva = itBeans.next().getSesionSocket();
+    			usb=itBeans.next();
+    			Session sesionActiva = usb.getSesionSocket();
   
 
     				sesionActiva.getBasicRemote().sendText(textMessage);
     			
     			
-    			log.info("Enviando mensaje desde Hilo3(modified):" + textMessage);
+    			log.info("Enviando mensaje desde Hilo3("+usb.getUsername()+"):"+ textMessage);
     		}
   		
 		} catch (IOException e) {

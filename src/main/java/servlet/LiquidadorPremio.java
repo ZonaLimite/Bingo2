@@ -63,11 +63,13 @@ public class LiquidadorPremio {
 						gestorSesions.getJugadasSalas(sala).registraCartonPremiado(pp, carton, premioCobrado,cantidadCartonesJugados);
 						
 					    gestorSesions.enviarMensajeAPerfil("RefreshDatosCartones", "supervisor");
+					    gestorSesions.enviarMensajeAPerfil("RefreshDatosCartones", "tablero");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RefreshDatosCartones");
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("PremioLiquidado");
 						String message = "!Premio "+pp.getPremio()+"("+premioCobrado+" €)¡ Carton:"+carton.getnRef()+"\n ! Bien " +pp.getUserbean().getUsername()+" ¡";
 						ubPremiado.getSesionSocket().getBasicRemote().sendText("RetroMessage_"+message+"_blink");
 						gestorSesions.enviarMensajeAPerfil("RetroMessage_"+message+"_blink", "supervisor");
+						gestorSesions.enviarMensajeAPerfil("RetroMessage_"+message+"_blink", "tablero");
 					}
  					
 					hayPremios=true;

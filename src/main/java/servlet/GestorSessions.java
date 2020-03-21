@@ -243,7 +243,7 @@ import javax.websocket.Session;
 	            		  UserBean ub = itUsersBean.next();
 	            		  String perfil = ub.getPerfil();
 	            		  String usuario = ub.getUsername();
-	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar)&& !(userbean.getPerfil().equals("supervisor"))){
+	            		  if(perfil.equals(perfilAComparar) && usuario.equals(usuarioAComparar) && !(userbean.getPerfil().equals("supervisor") || userbean.getPerfil().equals("tablero"))){
 	            			  log.info("Si estaba este usuario y perfil iniciados(recuperando cartones)");
 	            			 //Conservamos la compra de cartones anterior del usuario
 	            			 Vector<Carton> cartones= ub.getvCarton();
@@ -617,8 +617,6 @@ import javax.websocket.Session;
 	    	pb.AsignaNCartonesA(ub.getUsername(),numeroCartonesSocio);
 	    	pb.AsignaPreferCarton(ub.getUsername(),0);
 	    	this.registraContexto("bingo",this.jugadasSalas);
-	    	
-	    	
 	    }
 	    
 	    private void ajustarCajaPorJugadaFinalizada(UserBean ub) {
@@ -670,6 +668,7 @@ import javax.websocket.Session;
 			porCientoCantaor=pb.getPorcientoCantaor();
 			String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor;
 			enviarMensajeAPerfil(construirScript,"supervisor");
+			enviarMensajeAPerfil(construirScript,"tablero");
 			enviarMensajeAPerfil("RefreshDatosCartones","jugador");
 		}
 		

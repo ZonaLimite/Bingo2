@@ -88,7 +88,7 @@ try
         	 }
          }
 
-         if(perfil.equals("supervisor")){
+         if(perfil.equals("supervisor") || perfil.equals("tablero")){
         	  //session.setAttribute("usuario_"+user.getUsername(),user.getUsername());
         	  HttpSession session = request.getSession(true);
         	  user.setSesionHttp(session);

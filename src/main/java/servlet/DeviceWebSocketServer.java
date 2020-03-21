@@ -59,7 +59,7 @@ private UserBean userBean;
 	log.info("Abierta Session WebSocket:"+ session.getId() + "del Usuario "+userBean.getUsername()+" ,perfil="+userBean.getPerfil()+" y nueva sessionHttp:"+idSesionHttp);
 	
 	//	Manejo perfil supervisor
-	if(perfil.equals("supervisor")){
+	if(perfil.equals("supervisor") || perfil.equals("tablero")){
 		
 		userBean.setStatusPlayer("playingBingo");
 		pb=gestorSesions.getJugadasSalas(salaInUse);
@@ -109,19 +109,23 @@ private UserBean userBean;
 	case "resume":
 		//if(pb!=null)this.guardaPocket("sala1", session);
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
+		this.enviarMensajeAPerfil("EnciendeVideo","tablero");
 		pb= gestorSesions.getJugadasSalas(salaInUse);
 		if(pb==null){
 			this.enviarMensajeAPerfil("No registrado Pocket","supervisor");
+			this.enviarMensajeAPerfil("No registrado Pocket","tablero");
 			break;
 		}
 		session.getUserProperties().put("sala1",pb);
 		if(pb.isLineaCantada()){
 			this.enviarMensajeAPerfil("ApagaLinea","supervisor");
+			this.enviarMensajeAPerfil("ApagaLinea","tablero");			
 		}else{
 			
 		}
 		if(pb.isBingoCantado()){
 			this.enviarMensajeAPerfil("ApagaBingo","supervisor");
+			this.enviarMensajeAPerfil("ApagaBingo","tablero");
 		}else{
 			
 		}
@@ -148,15 +152,21 @@ private UserBean userBean;
 		// Si no es un newGame
 		this.enviarMensajeAPerfil("Info_PocketAbierto","supervisor");
 		break;
-		
+	case "InitInterface":
+		this.enviarMensajeAPerfil("InitInterface","supervisor");
+		this.enviarMensajeAPerfil("InitInterface","tablero");
+		break;
 	case "autoGame":
 		//autoGame Dinamico , permite jugar sin intervencion del supervisor
 		//
 		break;
-	case "newGame":
+	case "newGame"://ojo a prueba
 		//this.borraPocket("user", session);vcfb
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
+		this.enviarMensajeAPerfil("EnciendeVideo","tablero");		
 		this.enviarMensajeAPerfil("InitInterface", "jugador");
+		this.enviarMensajeAPerfil("InitInterface","tablero");//ojo a prueba
+		this.enviarMensajeAPerfil("InitInterface","supervisor");//ojo a prueba	
 		//pb= new PocketBingo();
 		pb= gestorSesions.getJugadasSalas(salaInUse);
 		if(pb==null){
@@ -205,11 +215,13 @@ private UserBean userBean;
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
 				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
+				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"tablero");
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 			}else{
 				pb.setIdState("Linea");
 				enviarMensajeAPerfil("Linea_"+userBean.getUsername(),"jugador");
 				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"supervisor");
+				enviarMensajeAPerfil("LineaCantada_"+userBean.getUsername(),"tablero");
 			}
 		}
 		
@@ -237,8 +249,10 @@ private UserBean userBean;
 			pb.setIdState("LineaOk");
 			pb.setReasonInterrupt("secuenciaAcabada");
 			enviarMensajeAPerfil("ApagaLinea","supervisor");
+			enviarMensajeAPerfil("ApagaLinea","tablero");
 			enviarMensajeAPerfil("ApagaLinea","jugador");
 			enviarMensajeAPerfil("EnciendeVideo","supervisor");
+			enviarMensajeAPerfil("EnciendeVideo","tablero");
 			//this.guardaPocket("sala1", session);
 			hilo3.interrupt();
 		}
@@ -257,6 +271,7 @@ private UserBean userBean;
 				gestorSesions.getHiloSala(salaInUse).interrupt();
 				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"supervisor");
+				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"tablero");
 
 			}else if(pb.getIdState().equals("WarningFinalizando")){
 				
@@ -270,6 +285,7 @@ private UserBean userBean;
 				pb.setIdState("Bingo");
 				enviarMensajeAPerfil("Bingo_"+userBean.getUsername(),"jugador");
 				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"supervisor");
+				enviarMensajeAPerfil("BingoCantado_"+userBean.getUsername(),"tablero");
 			}
 		}
 
@@ -283,8 +299,10 @@ private UserBean userBean;
 			pb.setIdState("BingoOk");
 			pb.setReasonInterrupt("secuenciaAcabada");
 			enviarMensajeAPerfil("ApagaBingo","supervisor");
+			enviarMensajeAPerfil("ApagaBingo","tablero");
 			enviarMensajeAPerfil("ApagaBingo","jugador");
 			enviarMensajeAPerfil("EnciendeVideo","supervisor");
+			enviarMensajeAPerfil("EnciendeVideo","tablero");
 
 			//this.guardaPocket("sala1", session);
 			hilo3.interrupt();
@@ -295,6 +313,7 @@ private UserBean userBean;
 		if(pb.getIdState().equals("ComprobandoBingo") || pb.getIdState().equals("ComprobandoLinea")|| pb.getIdState().equals("WaitingResultSuper") ){		
 			pb.setIdState("Continue");
 			this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
+			this.enviarMensajeAPerfil("EnciendeVideo","tablero");
 			pb.setReasonInterrupt("continuar");
 			//	this.guardaPocket("sala1", session);
 			hilo3.interrupt();
@@ -311,6 +330,7 @@ private UserBean userBean;
 			pb.resetNumerosCalled();
 			gestorSesions.resetCartones(this.salaInUse);
 			enviarMensajeAPerfil("EndBalls","supervisor");
+			enviarMensajeAPerfil("EndBalls","tablero");
 			enviarMensajeAPerfil("EndBalls","jugador");               			
 			//Pendiente interrumpir hilo para que pare ya
 		//}
@@ -353,6 +373,7 @@ private UserBean userBean;
 				page_delay=pb.getDelay();
 				String construirScript="DATOSCARTONES_"+precioCarton+"_"+nCartones+"_"+porCientoLinea+"_"+porCientoBingo+"_"+porCientoCantaor+"_"+page_delay;
 				enviarMensajeAPerfil(construirScript,"supervisor");
+				enviarMensajeAPerfil(construirScript,"tablero");
 				enviarMensajeAPerfil(construirScript,"jugador");
 				break;
 				

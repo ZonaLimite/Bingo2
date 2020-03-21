@@ -672,7 +672,13 @@ function play_range2(ini,fin){
 
 	bucle=setInterval(procesarCuadros, 100);
 }
+function apagarNumeros(){
+	for(i=1;i<91;i++){
+		apagarNumero(""+i);
+	}
+}
 function initInterface(){
+	fullscreen(document.getElementById("content"));
 	triggerBingo="false";
 	triggerLinea="false";
 	lineaCantada="false";
@@ -681,9 +687,7 @@ function initInterface(){
 	palabraBingo.style.backgroundColor="#000000";
 	palabraLinea.style.visibility="visible";
 	palabraBingo.style.visibility="visible";
-	for(i=1;i<91;i++){
-		apagarNumero(""+i);
-	}
+	apagarNumeros();
 	canvas=document.getElementById('canvas_bola');
 	canvas.width=canvas.width;
 	lienzo=canvas.getContext('2d');
@@ -702,14 +706,16 @@ function initInterface(){
 function arrancar(){
 	//El socket ya esta creado
 	
-	fullscreen(document.getElementById("content"));
+	//fullscreen(document.getElementById("content"));
 
 	//video.play();
 	//video.pause();
 	//Se supone que aqui ya se conoce la sala y la partida sobre la que se juega
 	//
 	socket_send("newGame");
-	initInterface();
+	//vamos a probar a inicar el arranque de la partida a traves de llamada del servidor a
+	//mensaje "initInterface"
+	//initInterface();
 }
 function resumir(){
 	//El socket ya esta creado
@@ -908,6 +914,9 @@ function recibido(e){
 				play_range(myRango[0],myRango[1]);	
 	    	    
 				break;
+		case "InitInterface":
+			    initInterface();
+			    break;
 		case "EnciendeVideo":
 				enciendeVideo();
 				break;

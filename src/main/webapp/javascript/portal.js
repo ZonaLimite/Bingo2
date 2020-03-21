@@ -10,6 +10,7 @@ function iniciar2(){
 	perfil = document.getElementById("perfil");
 	sala = document.getElementById("sala");
 	if(perfil.value=="supervisor")url="WriterHeaderBingo?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
+	if(perfil.value=="tablero")url="WriterHeaderTablero?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
 	if(perfil.value=="jugador")url="WriterHeaderCarton?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
 	if(usuario.value=="null")mostrarHTML("MostrarLogin")
 	else{

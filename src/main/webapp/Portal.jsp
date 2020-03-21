@@ -48,8 +48,10 @@
     <ul class="nav">
       <li class="botonEnlace" id="AccessBingo">Acceso Bingo</li>
 	  <li class="botonEnlace" id="botonRanking">Ranking Bingo</li>
-	  <li class="botonEnlace" id="compraBonos">Compra Bonos</li>
-	  <li class="botonEnlace" id="liquidarBonos">Liquidar Bonos</li>
+		<%if(!(user.equals("publico"))){%>	  
+	  		<li class="botonEnlace" id="compraBonos">Compra Bonos</li>
+	  		<li class="botonEnlace" id="liquidarBonos">Liquidar Bonos</li>
+		<% }%>  
 	<%if(user.equals("super")){%>
 		<li class="botonEnlace" id="volcadoBonos">Checkeo Bonos
 		       <select name="idSala" id="idSala" >
