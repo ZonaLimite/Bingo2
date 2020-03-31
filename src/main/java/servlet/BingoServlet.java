@@ -22,12 +22,18 @@ private GestorSessions gestorSesions;
 	
 private String user,sala,perfil;
 //utilizando el DNS de amazon linkado por dominio bogaservice.es
-private String ipWebServer ="http://bogaservice.es/wildfly";
+
+private String ipWebServer;
+
+
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
-		
+		if(req.getScheme().equals("https"))ipWebServer = "https://bogaservice.es/wildfly";
+		if(req.getScheme().equals("http"))ipWebServer = "http://bogaservice.es/wildfly";		
+		//ipWebServer = req.getScheme()+"://"+req.getServerName()+"/wildfly";
+		System.out.println("ipWebServer: "+ipWebServer);
 		if(mySession!=null){
 			System.out.println("la mySesion "+ mySession.getId());
 			//Comprobacion de HttpSession registrada aqui

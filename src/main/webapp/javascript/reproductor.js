@@ -65,8 +65,6 @@ var contBackground=255;
 var contBackground2=91;
 //var nombreRangos="rangosLola";
 var nombreRangos="rangosInes";
-//var nombreFileVideo="http://boga.esy.es/video/BingoLola.mov";
-
 var cajaFecha;
 var arrayMessages=null;
 var copYColor,my_color;
@@ -96,14 +94,11 @@ var comandoHandshake;
 var iDGamerStatus;
 var canvas;
 var delay;
-var ipWebServer = "http://bogaservice.es/wildfly";
-var nombreFileVideo= ipWebServer+ "/video/BingoInes.webm";
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
 	rangos=eval(nombreRangos);
 	video = document.getElementById("medio");
-	//video.src=nombreFileVideo;
 	video.type="video/webm";
 	video.oncanplay = function() {
 	    flagVideoReady="true";
@@ -537,8 +532,12 @@ function apagaBingo(){
 function elegirCantaor(cantaor){
 	
 		    //var playMsg = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
-		    
-		    if (valCodecs=="MP4") {
+	
+
+	if(location.protocol=="https:")ipWebServer = "https://bogaservice.es/wildfly";
+	if(location.protocol=="http:")ipWebServer = "http://bogaservice.es/wildfly";
+	
+	if (valCodecs=="MP4") {
 		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
 		    	if(cantaor=="Lola"){
 					nombreFileVideo= ipWebServer+ "/video/BingoLola.m4v";
@@ -768,14 +767,12 @@ function mostrarHTML(comando){
 
 }
 function getRootUri() {
-	/*Web Sockets on OpenShift 2 work over ports 8000 for ws and 8443 for wss,*/
-	
+	/*Web Sockets on wildfly work over ports 8080 for ws and 8443 for wss,*/
+	 
 	    var hostname = document.location.hostname;
 		if(hostname.search("bingo")==-1){
 			
 			nameEndPoint = "/wildfly-1.0/";//haber 
-			port=":8080";
-
 
 		}
 		else{
@@ -785,7 +782,13 @@ function getRootUri() {
 		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
         /*return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
                 (document.location.port == "" ? "" : document.location.port) + nameEndPoint;*/
-        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
+		if(document.location.protocol == "http:"){
+			port=":8080";
+			return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
+		}else{
+			port=":8443";
+			return "wss://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
+		}
     
 }
 

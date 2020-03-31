@@ -67,7 +67,7 @@
     <td  class="Cabecera">Cartones</td>
     <td  class="Cabecera">Comprar</td>
   </tr>
-<----------------------------------------------------------------------->
+<---------- ------------------------------------------------------------->
 <tr onclick="valorCombo('elnombre')" class="fondosLineas" id="fila">
     <td class="otro"><label class="AIzquierdas">Diego Perez </label></td>
     <td class="otro"><label class="AIzquierdas">
@@ -79,7 +79,7 @@
       <input type="button" name="Quitar" id="Quitar" value="Comprar 1">
    </td>
 </tr>
-<----------------------------------------------------------------------->
+<-------------- --------------------------------------------------------->
  
 </table>
 

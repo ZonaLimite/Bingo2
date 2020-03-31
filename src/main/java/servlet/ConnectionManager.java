@@ -49,6 +49,31 @@ public class ConnectionManager {
 	    }
 	    return result;
     }
+   static Connection getConnectionUcanAccess(){
+	   
+	   String DATASOURCE_CONTEXT = "java:jboss/blastindex";//Acces a blastindex (en MIS)mediante ucanaccess
+
+	    Connection result = null;
+	    try {
+	      Context initialContext = new InitialContext();
+
+	      datasource = (DataSource)initialContext.lookup(DATASOURCE_CONTEXT);
+	      if (datasource != null) {
+	        result = datasource.getConnection();
+	        log.info("UcanAccess conexion realizada");
+	      }
+	      else {
+	        log.info("Failed to lookup datasource.");
+	      }
+	    }
+	    catch ( NamingException ex ) {
+	      log.info("Cannot get connection: "+"("+ DATASOURCE_CONTEXT+":"+ ex);
+	    }
+	    catch(SQLException ex){
+	      log.info("Cannot get connection: " + ex);
+	    }
+	    return result;
+    }
 
     public static Connection getConnection(String ipServer,String user,String pwd, String schema ){
     	Connection myConnection=null;

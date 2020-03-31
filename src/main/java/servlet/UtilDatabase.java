@@ -1,17 +1,10 @@
 package servlet;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.sql.Array;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UtilDatabase {
 	   static Connection currentCon = null;
