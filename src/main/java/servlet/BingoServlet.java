@@ -30,9 +30,12 @@ private String ipWebServer;
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
-		if(req.getScheme().equals("https"))ipWebServer = "https://bogaservice.es/wildfly";
-		if(req.getScheme().equals("http"))ipWebServer = "http://bogaservice.es/wildfly";		
-		//ipWebServer = req.getScheme()+"://"+req.getServerName()+"/wildfly";
+
+		String protocol = req.getScheme();
+		String host = req.getServerName();
+		int port= req.getServerPort();
+		ipWebServer = protocol+"://"+host+":"+port+"/wildfly";		
+		
 		System.out.println("ipWebServer: "+ipWebServer);
 		if(mySession!=null){
 			System.out.println("la mySesion "+ mySession.getId());

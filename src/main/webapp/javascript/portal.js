@@ -21,11 +21,15 @@ function iniciar2(){
 		botonCerrarSesion = document.getElementById("botonCerrarSesion");
 		botonCerrarSesion.onclick = function(){window.location.replace("HtmlPortal?comando=CerrarSesion");};
 		botonCompraBonos = document.getElementById("compraBonos");
-		botonCompraBonos.onclick = function(){mostrarHTML("Solicitud Bonus")};
+		if(botonCompraBonos !=null){
+			botonCompraBonos.onclick = function(){mostrarHTML("Solicitud Bonus")};
+		}
 		botonSolicitudLiquidarBonos = document.getElementById("liquidarBonos");
-		botonSolicitudLiquidarBonos.onclick = function(){mostrarHTML("Solicitud Liquidacion")};
+		if(botonSolicitudLiquidarBonos !=null){
+			botonSolicitudLiquidarBonos.onclick = function(){mostrarHTML("Solicitud Liquidacion")};
+		}
 		botonVolcadoLiquidacionBonos = document.getElementById("volcadoLiquidacion");
-		if(botonVolcadoLiquidacionBonos!=null){
+		if(botonVolcadoLiquidacionBonos !=null){
 			botonVolcadoLiquidacionBonos.onclick = function(){
 			mostrarHTML("VolcadoPeticionesLiquidacionBonus");
 			};

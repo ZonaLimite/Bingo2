@@ -534,9 +534,8 @@ function elegirCantaor(cantaor){
 		    //var playMsg = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
 	
 
-	if(location.protocol=="https:")ipWebServer = "https://bogaservice.es/wildfly";
-	if(location.protocol=="http:")ipWebServer = "http://bogaservice.es/wildfly";
-	
+
+	ipWebServer = location.protocol+"//"+location.host+"/wildfly";
 	if (valCodecs=="MP4") {
 		    	//msg.innerHTML += "mp4/H.264 is " + playMsg + " supported <br/>";
 		    	if(cantaor=="Lola"){
