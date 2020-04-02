@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class CartonServlet extends HttpServlet{
 	private String user,sala,perfil;
 	//DNS Amazon VPS (linkado por dominio bogaservice.es)
-	private String ipWebServer = "http://bogaservice.es/wildfly";
+	private String ipWebServer ;
 	/**
 	 * 
 	 */
@@ -22,6 +22,10 @@ public class CartonServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String url="Portal.jsp";
 		HttpSession mySession = req.getSession(false);
+		String protocol = req.getScheme();
+		String host = req.getServerName();
+		int port= req.getServerPort();
+		ipWebServer = protocol+"://"+host+":"+port+"/wildfly";					
 		if(mySession!=null){
 			
 			//Comprobacion de HttpSession registrada aqui

@@ -110,6 +110,8 @@
 		<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
 </article>
 </div>
+
+
 <footer id="footer" class="footerClass">
 <div id="cartones" title="Compra de cartones"> 
 <form id="requestForm">
@@ -123,6 +125,7 @@
 <img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
 </form>
 </div>
+
 <div id="welcome" title="¡BIENVENIDOS!"> 
 <form >
 <label >Pulsa "START" para comenzar</label>

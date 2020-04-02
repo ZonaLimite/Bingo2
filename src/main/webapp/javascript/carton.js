@@ -90,7 +90,7 @@ var hayNumerosParaCantar="No";
 var valueScale=14;
 var status="";
 var bucle10=null;
-var ipWebServer="http://bogaservice.es/wildfly";
+var ipWebServer = location.protocol+"//"+location.host+"/wildfly";
 
 function iniciar() {
 	salaInUse = document.getElementById("sala");
@@ -138,7 +138,7 @@ function iniciar() {
 	
 	obtenerDatosCartones();//Funcion ajax que consulta pocketBingo de sala corriente y obtiene datos cartones
 	
-	innerHTMLCartones();
+	innerHTMLCartones();// Dibuja los cartones en pantalla
 	creaSocket(salaInUse.textContent);
 	
 	
@@ -288,7 +288,7 @@ function innerHTMLCartones(){
 	var params = new Object();
 	params.comando="CartonesJuego";
 	params.usuario=document.getElementById("usuario").value;
-
+	
 	$.ajax({
 		  type: 'POST',
 		  url: "WriterCartonesServlet",
@@ -321,7 +321,8 @@ function DrawNumberAt(number,id){
 
   //ctx.scale(2,2);
   if(number==0){
-
+	  //Si no es celda de numero se muestra el icono de bola
+	  //Esto se puede aprovechar para algo
 	  ctx.drawImage(img, 0, 0,xWidth,yHeight);//
   }else{
 	  ctx.fillText(number,x, y);
@@ -438,7 +439,7 @@ function arrancar(){
 	startup();//activa manejadores carton
 	
 }
-function activarCartones(){
+function (){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
 	var array;
 	this.img = document.getElementById("Loto2");
@@ -581,18 +582,24 @@ function getRootUri() {
 		if(hostname.search("bingo")==-1){
 			
 			nameEndPoint = "/wildfly-1.0/";//haber si asi funciona a nivel red local
-			port=":8080";
+
 
 
 		}
 		else{
 			nameEndPoint="/";
-			port="";
+
 		}
 		/* Pero on openshift 3 vamos a probar sobre el 8080, (la uri sin especificar puerto).*/
         /*return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
                 (document.location.port == "" ? "" : document.location.port) + nameEndPoint;*/
-        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
+		if(document.location.protocol == "http:"){
+			port=":8080";
+			return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
+		}else{
+			port=":8443";
+			return "wss://" + (document.location.hostname == "" ? "localhost" : document.location.hostname)+ port+nameEndPoint;
+		}
     
 }
 function abierto(){
