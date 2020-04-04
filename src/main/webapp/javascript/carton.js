@@ -427,19 +427,15 @@ function initInterface(){
 	//borrarNumerosCarton();
 	habilitarBotonesBingo();
 	refreshDatosCartones();
-	
-
-	
 }
 function arrancar(){
 	//El socket ya esta creado
-	
 	//fullscreen(document.getElementById("content"));
 	initInterface();
 	startup();//activa manejadores carton
-	
 }
-function (){
+
+function activarCartones(){
 	numeroCartonesComprados=document.getElementById("numeroCartonesComprados").value;
 	var array;
 	this.img = document.getElementById("Loto2");
