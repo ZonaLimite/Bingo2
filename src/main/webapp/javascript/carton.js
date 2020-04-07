@@ -843,6 +843,18 @@ function sacarRangos(numerobase){
 		
 }
 function socket_send(comanda){
+	
+	message_JSON=JSON.stringify(comanda);
+	socket.send(comanda);
+}
+function socket_send_JSON(type,target,content){
+	message={
+		    name: document.getElementById("valorLinea").value,
+		    date: Date.now(),
+		    target: clientID,
+		    type: "messageJson"
+		  }
+	message_JSON=JSON.stringify(comanda);
 	socket.send(comanda);
 }
 

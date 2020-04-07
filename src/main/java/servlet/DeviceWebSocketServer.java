@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
+import com.google.gson.Gson;
+
 //import org.jboss.logging.Logger;
 
 
@@ -105,7 +107,10 @@ private UserBean userBean;
 @OnMessage
     public void handleMessage(String message, Session session) throws InterruptedException{ 
 	log.info("recibido mensaje:"+ message);
+	//Gson json = new Gson();
+
 	switch(message){
+	
 	case "resume":
 		//if(pb!=null)this.guardaPocket("sala1", session);
 		this.enviarMensajeAPerfil("EnciendeVideo","supervisor");
