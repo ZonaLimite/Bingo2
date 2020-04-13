@@ -66,6 +66,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("  <script src=\"//code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>\r\n");
 	      out.write("  <script src=\"javascript/canvasNumeros.js\"></script>\r\n");
 	      out.write("  <script src=\"javascript/carton.js\"></script>\r\n");
+	      out.write("  <script src=\"javascript/chat.js\"></script>\r\n");
 	      out.write("\r\n");
 	      out.write("</head>\r\n");		
 		//<Body>
@@ -77,6 +78,8 @@ public class CartonServlet extends HttpServlet{
 	      out.write("<table width=\"100%\" border=\"1\" cellspacing=\"2\" class=\"ano\">\r\n");
 	      out.write("  <tr>\r\n");
 	      out.write("  <td width=\"12%\" height=\"109\" padding=0>\r\n");
+	      out.write("  \t<select onchange=\"invite();\" name=\"Usuarios\"class=\"userConect\" id=\"userlistbox\" >\r\n");
+	      out.write("    </select>\r\n");	      
 	      out.write("  \t<label class=\"labelUser\">Saldo : <label class=\"saldo\" id=\"saldo\">0</label> €</label>\r\n");
 	      out.write("  \t<a href=Portal.jsp><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" ></a>\r\n");
 	      out.write("  \t<label id=\"sala\">");
@@ -86,6 +89,9 @@ public class CartonServlet extends HttpServlet{
 	      out.write("    <label class=\"labelUser\">");
 	out.print(user);
 	      out.write("</label>\r\n");
+	      out.write("  \t<button id=\"hangup-button\" onclick=\"hangUpCall()\" role=\"button\" >\r\n");
+	      out.write("        \t\t\tHang Up\r\n");
+	      out.write("      \t\t\t</button>\r\n");	      
 	      out.write("  \r\n");
 	      out.write(" \r\n");
 	      out.write("    </span></td>\r\n");
@@ -116,6 +122,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("     <td colspan=\"4\" class=\"valorInfo\" >\r\n");
 	      out.write("     <article id=\"articulo\">\t\r\n");
 	      out.write("\t\t<div align=\"center\">  \r\n");
+	      
 	      out.write("\t\t<label id=\"boton_Linea\" CLASS=\"menu_li2\" >LINEA</label>\r\n");
 	      out.write("\t\t<label id=\"boton_Bingo\" CLASS=\"menu_li2\" >BINGO</label>\r\n");
 	      out.write("\t\t<label id=\"boton_Jugar\" CLASS=\"menu_li2\" >FULL</label>\r\n");
@@ -143,6 +150,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("</header>\r\n");
 	      out.write("<article id=\"innerHTMLCartones\">\r\n");
 	      out.write("\t\t<!--Espacio para cartones via Servlet (WriterCartonesServlet)  -->\r\n");
+
 	      out.write("</article>\r\n");
 	      out.write("</div>\r\n");
 	      out.write("<footer id=\"footer\" class=\"footerClass\">");
@@ -178,6 +186,14 @@ public class CartonServlet extends HttpServlet{
 	      out.write("  \t<source src=\""+ipWebServer+"/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
 	      out.write("\tYour browser does not support the audio element....\r\n");
 	      out.write("</audio>\r\n");
+	      out.write("<div class=\"chat\">\r\n");
+	      out.write("    \t<ul class=\"userlistbox\"></ul>\r\n");
+	      out.write("    \t<div class=\"chatbox\"></div>\r\n");
+	      out.write("    \t\t<div class=\"camerabox\">\r\n");
+	      out.write("      \t\t\t<video id=\"received_video\" autoplay></video>\r\n");
+	      out.write("      \t\t\t<video id=\"local_video\" autoplay muted></video>\r\n");
+	      out.write("    \t</div>\r\n");
+	      out.write("\r\n");	      
 	      out.write("</footer>");
 	      out.write("</body>\r\n");
 	      out.write("\r\n");

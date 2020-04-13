@@ -18,7 +18,7 @@
   <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="javascript/canvasNumeros.js"></script>
   <script src="javascript/carton.js"></script>
-
+  <script src="javascript/chat.js"></script>
 </head>
 <%
 	
@@ -43,17 +43,25 @@
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
   <td width="12%" height="109" padding=0>
+  	<select name="Usuarios"class="userConect" id="userlistbox" >
+		 <option class="jq">Pepito</option>
+		 <option >Juanito</option>
+		 <option >Andresito</option>
+
+    </select>
   	<label class="labelUser">Saldo : <span id="saldo">
   	<span id="saldo">
   	<label class="saldo" id="saldo">0</label>
   	Euros</label>
-  	<a href=Portal.jsp><img id="logo" src="images/IconoBola.jpg" width="56" height="45" longdesc="file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg" ></a>
+  	<a href=Portal.jsp><img id="logo" src="images/IconoBola.jpg" width="56" height="45"></a>
   	<label id="sala"><%out.print(sala);%></label>
     <span class="labelUser">
     <label class="labelUser"><%out.print(user);%></label>
-  
- 
-    </span></td>
+    </span>
+  	<button class="jq" id="hangup-button" role="button">
+        			Hang Up
+      			</button>
+   </td>
   
  <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
    <tr>
@@ -79,7 +87,7 @@
 
    <tr>
      <td colspan="4" class="valorInfo" >
-     <article id="articulo">	
+     <article id="articulo" name="articulo">	
 		<div align="center">  
 		<label id="boton_Linea" CLASS="menu_li2" >LINEA</label>
 		<label id="boton_Bingo" CLASS="menu_li2" >BINGO</label>
@@ -106,40 +114,50 @@
    
 </table>
 </header>
+
 <article id="innerHTMLCartones">
 		<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
+	
 </article>
 </div>
 
 
 <footer id="footer" class="footerClass">
-<div id="cartones" title="Compra de cartones"> 
-<form id="requestForm">
 
-<label >Numero de cartones a jugar?:</label>
-<input id="spinner" type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
-<input type="hidden" id="sala" name="sala" value="<%out.print(sala); %>">
-<input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">
+<div id="cartones" title="Compra de cartones"> 
+	<form id="requestForm">
+		<label >Numero de cartones a jugar?:</label>
+		<input id="spinner" type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
+		<input type="hidden" id="sala" name="sala" value="<%out.print(sala); %>">
+		<input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">
 <br>
-<label id="feedback" style=" width : 100%;"></label>
-<img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
-</form>
+		<label id="feedback" style=" width : 100%;"></label>
+		<img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
+	</form>
 </div>
 
 <div id="welcome" title="¡BIENVENIDOS!"> 
-<form >
-<label >Pulsa "START" para comenzar</label>
-</form>	
+	<form >
+		<label >Pulsa "START" para comenzar</label>
+	</form>	
 </div>
 
-<span class="audioClass">
-
-</span>
 <audio id="audioWeb" class="audioClass" controls >
   	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
 	Your browser does not support the audio element....
 </audio>
+
+<div class="chat">
+    	<ul class="userlistbox"></ul>
+    	<div class="chatbox"></div>
+    		<div class="camerabox">
+      			<video id="received_video" autoplay></video>
+      			<video id="local_video" autoplay muted></video>
+    	</div>
+
+</div>	    		
 </footer>
+
 </body>
 
 </html>

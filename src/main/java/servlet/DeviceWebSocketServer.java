@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -22,6 +23,8 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 //import org.jboss.logging.Logger;
 
@@ -107,8 +110,13 @@ private UserBean userBean;
 @OnMessage
     public void handleMessage(String message, Session session) throws InterruptedException{ 
 	log.info("recibido mensaje:"+ message);
-	//Gson json = new Gson();
 
+	if(message.contains("type")) {
+		JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
+		String target = jsonObject.get("target").getAsString();
+		relayMessageToTarget(message,target);
+		return;
+	}
 	switch(message){
 	
 	case "resume":
@@ -326,11 +334,7 @@ private UserBean userBean;
 		break;
 	
 	case "Finalize":
-		/*if(!(hilo3==null)){
-				//pb.setIdState("EndBalls");
-				pb.setReasonInterrupt("Finalize");
-				hilo3.interrupt();
-		}else{*/
+
 			pb.setIdState("Finalized");
 			pb.resetNumerosCalled();
 			gestorSesions.resetCartones(this.salaInUse);
@@ -385,11 +389,7 @@ private UserBean userBean;
 			case "SET_DATOS_DELAY"://JSON#SET_DATOS_DELAY#delay
 				this.delay=new Integer(arrayMessage.elementAt(2)).intValue();
 				if(pb!=null)pb.setDelay(delay);
-
 			}
-				
-		
-
 		}
 	}
 }
@@ -437,6 +437,19 @@ private PocketBingo leePocket(String sala, Session sesion){
 			e.printStackTrace();
 		}
   }
+  private void relayMessageToTarget(String textMessage,String target){
+	  	try {
+			Set<UserBean> myUsersbean = gestorSesions.dameUserBeansPorUser(target);
+			Iterator<UserBean> itBeans= myUsersbean.iterator();
+			while (itBeans.hasNext()){
+				Session sesionActiva = itBeans.next().getSesionSocket();
+				sesionActiva.getBasicRemote().sendText(textMessage);
+			}
+				//log.info("Relay desde servidor a navegador:"+textMessage);
+			} catch (IOException e) {
+				log.warning("Error en relayMessage:"+e.getMessage());
+			}
+	  }
   private void guardaPocket(String sala, Session sesion){
 	  	String ruta,fichero;
 	  	

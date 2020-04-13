@@ -73,7 +73,7 @@ header {
 	padding-right: 0;
 	padding-bottom: 10px;
 	padding-left: 10;
-	height: 800px;
+	height: auto;
 	overflow-y: scroll;
 }
 aside {
@@ -158,4 +158,7 @@ header, section, footer, aside, article, figure {
 	background-color: #000;
 	font-weight: bolder;
 	font-size: 18px;
+}
+.camerabox {
+	width: 100%;
 }

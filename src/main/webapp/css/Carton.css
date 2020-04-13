@@ -434,3 +434,8 @@ display: block;
 #saldo {
 	font-size: 14px;
 }
+.userConect {
+	width: 96%;
+	color: #0F0;
+	background-color: #000;
+}

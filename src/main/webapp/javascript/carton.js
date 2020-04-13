@@ -3,7 +3,7 @@
  */
 
 var video; /** el elemento video */
-
+var boton_Test;
 var boton_Linea;
 var boton_Bingo
 var boton_Continuar;
@@ -91,8 +91,11 @@ var valueScale=14;
 var status="";
 var bucle10=null;
 var ipWebServer = location.protocol+"//"+location.host+"/wildfly";
+var usuario;
+var usuariosEnJuego;
 
 function iniciar() {
+	usuario = document.getElementById("usuario").value;
 	salaInUse = document.getElementById("sala");
 	elementCanvas = document.getElementById("canvas_bola");	
 	ctxCanvas = elementCanvas.getContext("2d");
@@ -114,7 +117,6 @@ function iniciar() {
 	
 	boton_Bingo= document.getElementById("boton_Bingo");
 
-
 	boton_iniciar = document.getElementById("boton_Jugar");
 	boton_iniciar.onclick = function(){ fullscreen(document.getElementById("content"));};
 	
@@ -129,7 +131,17 @@ function iniciar() {
 	lienzo=canvas.getContext('2d');
 	
 	comboTexto = document.getElementById("comboTexto");
-	
+	//Manejador para lanzar la funcion invite de videochat
+	$( ".jq" )
+	  .click(function() {
+	    var str = "";
+	    $( "select option:selected" ).each(function() {
+	      str += $( this ).text() + " ";
+	    });
+	   invite(str);
+	  })
+	  .trigger( "change" );
+
 	/*
 	window.onresize = function(e){
 		//e.preventDefault();
@@ -137,7 +149,7 @@ function iniciar() {
 	}*/
 	
 	obtenerDatosCartones();//Funcion ajax que consulta pocketBingo de sala corriente y obtiene datos cartones
-	
+	//Actualizar lista conectados aqui
 	innerHTMLCartones();// Dibuja los cartones en pantalla
 	creaSocket(salaInUse.textContent);
 	
@@ -266,9 +278,21 @@ function trampaAudio(){
 	audio.pause();
 	audio.style.opacity = "0";
 }
-
+function declararHandlerJQ(){
+	$( ".jq" )
+	  .click(function() {
+	    var str = "";
+	    $( "select option:selected" ).each(function() {
+	      str += $( this ).text() + " ";
+	    });
+	   invite(str);
+	  })
+	  .trigger( "change" );
+}
+function hola(event){
+	alert("Hola");
+}
 function habilitarBotonesBingo(){
-
 
 	boton_Linea.onclick = function(){ 
 		//if(lineaCantada=="true" || lineaCantada=="comprobando")return;
@@ -284,6 +308,24 @@ function habilitarBotonesBingo(){
 		triggerBingo="true";
 	};
 }
+function handleUserlistInvite(users) {
+	  //users es un array con los usuarios conectados
+	  var i;
+	  listElem=document.getElementById("userlistbox");
+	  listElem.disabled=true;
+	  var InnerHtml="";
+	  InnerHtml += "<option>LLamar a</option>";
+	  parte1="<option class='jq'>";
+	  
+	  for (i=0;i<users.length;i++){
+		  		InnerHtml+=parte1+users[i]+"</option>";
+	  }
+	  listElem.innerHTML=InnerHtml;
+	  listElem.disabled=false;
+	  
+	  //declararHandlerJQ();
+	}
+
 function innerHTMLCartones(){
 	var params = new Object();
 	params.comando="CartonesJuego";
@@ -494,6 +536,7 @@ function obtenerNumerosCantados(){
 	return array3
 }
 
+
 function obtenerDatosCartones(){
 	//servlet de servicio --->SourcerArraysCarton
 	var params = new Object();
@@ -517,6 +560,8 @@ function obtenerDatosCartones(){
 			porCientoLinea=myArrayDatosCartones[6];
 			porCientoBingo=myArrayDatosCartones[7];
 			porCientoCantaor=myArrayDatosCartones[5];
+			usuariosEnJuego =myArrayDatosCartones[8];
+			handleUserlistInvite(usuariosEnJuego);
 	});
 	return;
 }
@@ -660,9 +705,30 @@ function errores(e){
 }
 function recibido(e){
 	//manejador mensajes
-	
+	console.info(e.data);
+	val = e.data.indexOf("type");
+	if (val>-1) {
+		msg = JSON.parse(e.data);
+		switch(msg.type){
+		case "video-offer":  // Invitation and offer to chat
+	        handleVideoOfferMsg(msg);
+	        break;
 
+	      case "video-answer":  // Callee has answered our offer
+	        handleVideoAnswerMsg(msg);
+	        break;
 
+	      case "new-ice-candidate": // A new ICE candidate has been received
+	        handleNewICECandidateMsg(msg);
+	        break;
+
+	      case "hang-up": // The other peer has hung up the call
+	    	closeVideoCall();;
+	        break;
+
+		} 
+		
+	} else {
 	mensaje=""+e.data;
 	
 	arrayMessages=mensaje.split("_");
@@ -790,6 +856,7 @@ function recibido(e){
 		default:
         		
 		} 
+	}// Del If diferenciador de datos signalyng
 	}
 }
 
@@ -844,18 +911,14 @@ function sacarRangos(numerobase){
 }
 function socket_send(comanda){
 	
-	message_JSON=JSON.stringify(comanda);
+	//message_JSON=JSON.stringify(comanda);
 	socket.send(comanda);
 }
-function socket_send_JSON(type,target,content){
-	message={
-		    name: document.getElementById("valorLinea").value,
-		    date: Date.now(),
-		    target: clientID,
-		    type: "messageJson"
-		  }
-	message_JSON=JSON.stringify(comanda);
-	socket.send(comanda);
+
+function socket_send_JSON(message){
+	
+	message_JSON=JSON.stringify(message);
+	socket.send(message_JSON);
 }
 
 function procesarCuadros(){

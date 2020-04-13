@@ -1,0 +1,57 @@
+@charset "utf-8";
+@import url("../webfonts/Airstrike_3d/stylesheet.css");
+
+/* CSS Document */
+
+.chat {
+	display: block;
+	background-color: #000;
+}
+.chat_structure {
+	width: 100%;
+	height: 100%;
+	border-top-style: groove;
+	border-right-style: groove;
+	border-bottom-style: groove;
+	border-left-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+.filaChat {
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #09C;
+	color: #FFF;
+	font-style: normal;
+	font-weight: normal;
+	font-family: "Courier New", Courier, monospace;
+}
+.cajaSendText {
+	background-color: #000;
+	color: #FFF;
+	width: 99%;
+	border-top-color: #09C;
+	border-right-color: #09C;
+	border-bottom-color: #09C;
+	border-left-color: #09C;
+	border-top-style: outset;
+	border-right-style: outset;
+	border-bottom-style: outset;
+	border-left-style: outset;
+	font-size: 14px;
+	height: 30px;
+}
+.ListaUsuarios {
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}

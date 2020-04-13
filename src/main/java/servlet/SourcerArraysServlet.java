@@ -1,8 +1,9 @@
 package servlet;
 
 import java.io.IOException;
-
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.inject.Inject;
@@ -51,6 +52,8 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		if(comando.equals("DatosCartones")){
 			UtilDatabase uDatabase= new UtilDatabase();
 			UserBean userbean = gestorSesions.dameUserBeansPorUser(usuario, perfil, idHttpSession);
+			//ultimo
+			if(userbean==null)return;
 			String sala = userbean.getSalonInUse();
 			float precioCarton = new Float(gestorSesions.getJugadasSalas(sala).getPrecioCarton());
 			float saldoUsuario = new Float(uDatabase.consultaSQLUnica("Select Saldo From usuarios Where User = '"+userbean.getUsername()+"'"));
@@ -61,6 +64,18 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			int porCientoCantaor = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoCantaor());
 			int porCientoLinea = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoLinea());
 			int porCientoBingo = new Integer(gestorSesions.getJugadasSalas(sala).getPorcientoBingo());
+			
+			Set<UserBean> usuariosEnJuego = gestorSesions.dameUserBeansEnPortal("jugador");
+			Iterator<UserBean> itUBeans = usuariosEnJuego.iterator();
+			int numUsuariosJugando = usuariosEnJuego.size();
+			String[] arrayUsers = new String[numUsuariosJugando];
+			int i=0;
+			while(itUBeans.hasNext()) {
+				arrayUsers[i]=itUBeans.next().getUsername();
+				i++;
+			}
+			
+			
 			//float premioLinea = gestorSesions.getJugadasSalas(sala).
 			//Pasamos los datos a array
 			// index 0 = precioCarton - float
@@ -71,6 +86,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			// index 5 = % Cantaor - int
 			// index 6 - % Linea - int
 			// index 7 - % Bingo - int
+			// index 8 - numero de Jugadors en Linea
 			
 			Object datosCartones [] = new Object[10];
 			datosCartones[0] = precioCarton;
@@ -81,6 +97,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			datosCartones[5] = porCientoCantaor;
 			datosCartones[6] = porCientoLinea;
 			datosCartones[7] = porCientoBingo;
+			datosCartones[8] = arrayUsers;
 			
 			//Ahora a enviarlo como JSON
 			 String json = new Gson().toJson(datosCartones);
