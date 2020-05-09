@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>selected demo</title>
+  <style>
+  div {
+    color: red;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  
+</head>
+<body>
+
+<select onchange="alert()" name="garden" id="userlistbox">
+  <option class="jq" id="Pepe">Pepe</option>
+  <option selected="selected">Shrubs</option>
+  <option onclick="alert(hola);">Trees</option>
+  <option class="jq" id="pepeillo" selected="selected">Bushes</option>
+  <option>Grass</option>
+  <option>Dirt</option>
+</select>
+<div></div>
+<script>
+lista = document.getElementById(userlistbox);
+lista.disabled=true;
+</script> 
+
+ 
+</body>
+</html>
