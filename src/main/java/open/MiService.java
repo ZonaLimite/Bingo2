@@ -4,6 +4,7 @@ package open;
 import java.io.IOException;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -26,6 +27,8 @@ import com.google.gson.JsonParser;
 
 import servlet.GestorSessions;
 
+
+
 @Path("/openvidu")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
@@ -36,6 +39,7 @@ public class MiService {
 
 	@Inject
 	private GestorSessions gestorSesions;	
+	
 	
 	@GET
     @Path("/ping")

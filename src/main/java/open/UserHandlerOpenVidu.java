@@ -16,11 +16,11 @@ import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.OpenViduRole;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.TokenOptions;
+import servlet.GestorSessions;
 
 @Startup
 @Singleton
 public class UserHandlerOpenVidu {
-
 
 	
 	// OpenVidu object as entrypoint of the SDK
@@ -113,7 +113,9 @@ public class UserHandlerOpenVidu {
 				token = session.generateToken(tokenOptions);
 			} catch (OpenViduJavaClientException | OpenViduHttpException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("Fallo al instanciar el token :"+e.getMessage());
+				token ="Fallo token";
+				return token;
 			}
 
 			// Store the session and the token in our collections
@@ -160,5 +162,7 @@ public class UserHandlerOpenVidu {
 		 Set salas = mapSessions.entrySet();
 		 System.out.println("Sesiones:");
 		 System.out.println(salas.toString());
+
+
 	 }
 }
