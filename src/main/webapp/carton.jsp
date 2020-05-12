@@ -6,6 +6,8 @@
 <%! HttpSession mySession = null;%>
 <%! String user = null;%>
 <%! String sala = null;%>
+<%! String perfil = null;%>
+<%! String ipwebserver = null;%>
 <!doctype html>
 <html>
 <head>
@@ -27,7 +29,7 @@
 		System.out.println("la mySesion "+ mySession.getId());
 		user = request.getParameter("usuario");
 		sala = request.getParameter("sala");
-		
+		perfil = request.getParameter("perfil");
 
 	}else{
 		System.out.print("la sesion es null");
@@ -35,6 +37,10 @@
         response.sendRedirect(url); //logged-in page // 
         return;
 	}
+	String protocol = request.getScheme();
+	String host = request.getServerName();
+	int port= request.getServerPort();
+	String ipWebServer = protocol+"://"+host+":"+port+"/wildfly";				
 %>
 <body class="pagina" id="content">
 <div id="agrupar">
@@ -116,7 +122,8 @@
 </header>
 
 <article id="innerHTMLCartones">
-		<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
+	
+    	<!-----------------------------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
 	
 </article>
 </div>
@@ -130,6 +137,7 @@
 		<input id="spinner" type="text" width="20" value="1" name="nCartones" style=" width : 27px;">
 		<input type="hidden" id="sala" name="sala" value="<%out.print(sala); %>">
 		<input type="hidden" id="usuario"  name="usuario" value="<%out.print(user); %>">
+		<input type="hidden" id="perfil"  name="perfil" value="<%out.print(perfil); %>">
 <br>
 		<label id="feedback" style=" width : 100%;"></label>
 		<img id="Loto2" class="hiddenImage" src="./images/Loto2.png">
@@ -143,7 +151,7 @@
 </div>
 
 <audio id="audioWeb" class="audioClass" controls >
-  	<source src="http://boga.esy.es/audio/AudioLinea1.mp3" type="audio/mpeg">
+  	<source src=<%out.print(ipWebServer); %>/media/AudioLinea1.mp3" type="audio/mpeg">
 	Your browser does not support the audio element....
 </audio>
 
@@ -155,7 +163,19 @@
       			<video id="local_video" autoplay muted></video>
     	</div>
 
-</div>	    		
+</div>
+			<div id="session" >
+				<div id="session-header">
+					<h1 id="session-title"></h1>
+					<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onmouseup="removeUser(); leaveSession()" value="Leave session">
+				</div>
+				<div id="main-video" class="col-md-6">
+					<p class="nickName"></p>
+					<p class="userName"></p>
+					<video autoplay playsinline="true"></video>
+				</div>
+				<div id="video-container" class="col-md-6"></div>
+			</div>	    		
 </footer>
 
 </body>

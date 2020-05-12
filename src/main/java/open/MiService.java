@@ -82,6 +82,7 @@ public class MiService {
 		}
 	
 		String token = uhov.getToken(sessionName,user);
+		uhov.objetosViduPorSesion();
 		Set jugadores = gestorSesions.dameUserBeansEnPortal("jugador");
 		System.out.println("Jugadores Bingo="+jugadores);
 

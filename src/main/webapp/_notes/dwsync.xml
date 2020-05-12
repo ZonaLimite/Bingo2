@@ -6,6 +6,11 @@
 <file name="Portal.jsp" server="C:/Users/NITRO PC/git/Bingo2/src/main" local="132292821200000000" remote="132292821200000000" Dst="2" />
 <file name="chat.jsp" server="C:/Users/NITRO PC/git/Bingo2/src/main" local="132310160829776325" remote="132310160820000000" Dst="2" />
 <file name="chat.jsp" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132310864580663368" remote="132310864580000000" Dst="2" />
-<file name="carton.jsp" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132311901972086150" remote="132311901970000000" Dst="2" />
+<file name="carton.jsp" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132336906806144811" remote="132336906800000000" Dst="2" />
 <file name="PruebaJQuery.html" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132311795947657961" remote="132311795940000000" Dst="2" />
+<file name="Login.html" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132072684912181906" remote="132072684910000000" Dst="2" />
+<file name="Login.jsp" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132336916034235112" remote="132336916030000000" Dst="2" />
+<file name="indexVidu.html" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132331806302560000" remote="132331806300000000" Dst="2" />
+<file name="index.html" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="131485277301356294" remote="131485277300000000" Dst="2" />
+<file name="LoginError.jsp" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="131485277306196573" remote="131485277300000000" Dst="2" />
 </dwsync>

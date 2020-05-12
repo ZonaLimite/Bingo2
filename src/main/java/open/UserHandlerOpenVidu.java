@@ -105,7 +105,9 @@ public class UserHandlerOpenVidu {
 					session = this.openVidu.createSession();
 				} catch (OpenViduJavaClientException | OpenViduHttpException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.err.println("Fallo al creear sesion :"+e.getMessage());
+					token ="Fallo creacion sesion";
+					return token;
 				}
 
 			// Generate a new token with the recently created tokenOptions

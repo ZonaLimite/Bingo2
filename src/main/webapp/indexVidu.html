@@ -14,7 +14,7 @@
 	<!-- Bootstrap -->
 
 	<link rel="styleSheet" href="./css/style.css" type="text/css" media="screen">
-	<script src="./javascript/openvidu-browser-2.12.0.js"></script>
+	<script src="./javascript/openvidu-browser-2.13.0.js"></script>
 	<script src="./javascript/app.js"></script>
 	<script>
 		$(document).ready(function () {
@@ -77,7 +77,7 @@
 			</table>
 		</div>
 
-		<div id="logged" hidden>
+		<div id="logged" >
 			<div id="join" class="vertical-center">
 				<div id="img-div"><img src="images/openvidu_grey_bg_transp_cropped.png" /></div>
 				<div id="join-dialog" class="jumbotron">
@@ -103,7 +103,7 @@
 				</div>
 			</div>
 
-			<div id="session" style="display: none;">
+			<div id="session" >
 				<div id="session-header">
 					<h1 id="session-title"></h1>
 					<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onmouseup="removeUser(); leaveSession()" value="Leave session">

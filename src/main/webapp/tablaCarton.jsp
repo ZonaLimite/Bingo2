@@ -1,3 +1,19 @@
+<%@ page language="java" 
+    contentType="text/html; charset=utf-8"
+    pageEncoding="UTF-8"
+%>
+<!doctype html>
+<html>
+<head>
+  <link href="css/Carton.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="javascript/canvasNumeros.js"></script>
+  <script src="javascript/carton.js"></script>
+  <script src="javascript/chat.js"></script>
+</head>
+<body>
 <table class="tablero">
     <tr>
          <td  class="panel"> 
@@ -95,3 +111,4 @@
     	<td colspan="9" class="letraCarton">CARTON n:<Label id="refCarton<%=request.getParameter("cartonSeq") %>"><%=request.getParameter("nRef")%></label></td>
     </tr>
 </table>
+</body>

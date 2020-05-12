@@ -285,7 +285,11 @@ function declararHandlerJQ(){
 	    $( "select option:selected" ).each(function() {
 	      str += $( this ).text() + " ";
 	    });
-	   invite(str);
+	    //La funcion invite (sobre chat.js)permite una comunicacion de audio uno a uno
+	    //La funcion join() (sobre app.js) permite una comunicacon tipo room (audio+video)
+	    
+	    invite(str);
+	    //join(str;)
 	  })
 	  .trigger( "change" );
 }
