@@ -3,14 +3,15 @@ var session;
 
 var sessionName;	// Name of the video session the user will connect to
 var token;			// Token retrieved from OpenVidu Server
-
+var nickName       // nombre de usuario client
 
 /* OPENVIDU METHODS */
 
-function joinSession(usuario) {
+function joinSession(usuario,room) {
 	//nickName esla variable de usuario del script original
 	// aqui vamos a entrar con un usuario a traves de gestorsessions.
-	var nickName = $("#nickName").val();
+	nickName = usuario;
+	sessionName=room;
 	//var nickName = usuario;
 	var userName = "user:"+nickName;
 	//var userName = $("#user").val();
@@ -31,13 +32,17 @@ function joinSession(usuario) {
 
 			// Subscribe to the Stream to receive it
 			// HTML video will be appended to element with 'video-container' id
-			var subscriber = session.subscribe(event.stream, 'video-container');
-
+			//var subscriber = session.subscribe(event.stream, 'video-container');
+			//var subscriber = session.subscribe(event.stream, targetElement, {insertMode: 'APPEND'});
+			elementTarget = document.getElementById("1F1C1");
+		    var subscriber = session.subscribe(event.stream,"1F1C1" ,{insertMode: 'REPLACE'});
+		    //subscriber = session.subscribe(event.stream, undefined);
+		    //subscriber.addVideoElement(videoElement);
 			// When the HTML video has been appended to DOM...
 			subscriber.on('videoElementCreated', (event) => {
-
+				console.warn("el video elemento creado es :"+event.element);
 				// Add a new HTML element for the user's name and nickname over its video
-				appendUserData(event.element, subscriber.stream.connection);
+				//appendUserData(event.element, subscriber.stream.connection);
 			});
 		});
 
@@ -102,7 +107,7 @@ function joinSession(usuario) {
 							userName: userName
 						};
 						initMainVideo(event.element, userData);
-						appendUserData(event.element, userData);
+						//appendUserData(event.element, userData);
 						$(event.element).prop('muted', true); // Mute local video
 					});
 
@@ -168,11 +173,11 @@ function logOut() {
 }
 
 function getToken(callback) {
-	sessionName = $("#sessionName").val(); // Video-call chosen by the user
-    user= $("#nickName").val();
+	//sessionName = $("#sessionName").val(); // Video-call chosen by the user
+    //user= $("#nickName").val();
 	httpPostRequest(
 		'./rest-api/openvidu/get-token',
-		{sessionName: sessionName, usuario: user},
+		{sessionName: sessionName, usuario: nickName},
 		'Request of TOKEN gone WRONG:',
 		(response) => {
 			token = response; // Get token from response

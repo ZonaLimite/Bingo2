@@ -131,22 +131,9 @@ function iniciar() {
 	lienzo=canvas.getContext('2d');
 	
 	comboTexto = document.getElementById("comboTexto");
-	//Manejador para lanzar la funcion invite de videochat
-	$( ".jq" )
-	  .click(function() {
-	    var str = "";
-	    $( "select option:selected" ).each(function() {
-	      str += $( this ).text() + " ";
-	    });
-	   invite(str);
-	  })
-	  .trigger( "change" );
-
-	/*
-	window.onresize = function(e){
-		//e.preventDefault();
-		resizeBolas();
-	}*/
+	
+	//Manejador para lanzar la funcion invite de videochat.
+	declararHandlerJQ()
 	
 	obtenerDatosCartones();//Funcion ajax que consulta pocketBingo de sala corriente y obtiene datos cartones
 	//Actualizar lista conectados aqui
@@ -279,19 +266,24 @@ function trampaAudio(){
 	audio.style.opacity = "0";
 }
 function declararHandlerJQ(){
-	$( ".jq" )
-	  .click(function() {
+	//Manejador para lanzar la funcion invite de videochat
+	$( "#userlistbox" )
+	  .change(function() {
+		 
 	    var str = "";
 	    $( "select option:selected" ).each(function() {
 	      str += $( this ).text() + " ";
+	      alert("Seleccionado:"+str);
+	      sala=$("#sala").val();
+		  //Comunicacion uno  a uno
+	      //invite(str);
+	      //Comunicacion room
+	      joinSession(str,sala); 
 	    });
-	    //La funcion invite (sobre chat.js)permite una comunicacion de audio uno a uno
-	    //La funcion join() (sobre app.js) permite una comunicacon tipo room (audio+video)
-	    
-	    invite(str);
-	    //join(str;)
+
 	  })
 	  .trigger( "change" );
+
 }
 function hola(event){
 	alert("Hola");

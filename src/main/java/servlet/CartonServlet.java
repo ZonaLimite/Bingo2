@@ -67,6 +67,9 @@ public class CartonServlet extends HttpServlet{
 	      out.write("  <script src=\"javascript/canvasNumeros.js\"></script>\r\n");
 	      out.write("  <script src=\"javascript/carton.js\"></script>\r\n");
 	      out.write("  <script src=\"javascript/chat.js\"></script>\r\n");
+	      out.write("  <script src=\"javascript/app.js\"></script>\r\n");
+	      out.write("  <script src=\"javascript/openvidu-browser-2.13.0.js\"></script>\r\n");	      
+	      	      
 	      out.write("\r\n");
 	      out.write("</head>\r\n");		
 		//<Body>
@@ -78,7 +81,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("<table width=\"100%\" border=\"1\" cellspacing=\"2\" class=\"ano\">\r\n");
 	      out.write("  <tr>\r\n");
 	      out.write("  <td width=\"12%\" height=\"109\" padding=0>\r\n");
-	      out.write("  \t<select onchange=\"invite();\" name=\"Usuarios\"class=\"userConect\" id=\"userlistbox\" >\r\n");
+	      out.write("  \t<select  name=\"Usuarios\"class=\"userConect\" id=\"userlistbox\" >\r\n");
 	      out.write("    </select>\r\n");	      
 	      out.write("  \t<label class=\"labelUser\">Saldo : <label class=\"saldo\" id=\"saldo\">0</label> €</label>\r\n");
 	      out.write("  \t<a href=Portal.jsp><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" ></a>\r\n");
@@ -186,6 +189,21 @@ public class CartonServlet extends HttpServlet{
 	      out.write("  \t<source src=\""+ipWebServer+"/audio/AudioLinea1.mp3\" type=\"audio/mpeg\">\r\n");
 	      out.write("\tYour browser does not support the audio element....\r\n");
 	      out.write("</audio>\r\n");
+
+	      out.write("<!-----------Espacio para cartones via Servlet (WriterCartonesServlet)  -->\r\n");
+	      out.write("\t\t\t<div id=\"session\" >\r\n");
+	      out.write("\t\t\t\t<div id=\"session-header\">\r\n");
+	      out.write("\t\t\t\t\t<h1 id=\"session-title\"></h1>\r\n");
+	      out.write("\t\t\t\t\t<input class=\"btn btn-large btn-danger\" type=\"button\" id=\"buttonLeaveSession\" onmouseup=\"removeUser(); leaveSession()\" value=\"Leave session\">\r\n");
+	      out.write("\t\t\t\t</div>\r\n");
+	      out.write("\t\t\t\t<div id=\"main-video\" class=\"col-md-6\">\r\n");
+	      out.write("\t\t\t\t\t<p class=\"nickName\"></p>\r\n");
+	      out.write("\t\t\t\t\t<p class=\"userName\"></p>\r\n");
+	      out.write("\t\t\t\t\t<video autoplay playsinline=\"true\"></video>\r\n");
+	      out.write("\t\t\t\t</div>\r\n");
+	      out.write("\t\t\t\t<div id=\"video-container\" class=\"col-md-6\"></div>\r\n");
+	      out.write("\t\t\t</div>\t    \t\t\r\n");	
+	      
 	      out.write("<div class=\"chat\">\r\n");
 	      out.write("    \t<ul class=\"userlistbox\"></ul>\r\n");
 	      out.write("    \t<div class=\"chatbox\"></div>\r\n");
@@ -193,7 +211,8 @@ public class CartonServlet extends HttpServlet{
 	      out.write("      \t\t\t<video id=\"received_video\" autoplay></video>\r\n");
 	      out.write("      \t\t\t<video id=\"local_video\" autoplay muted></video>\r\n");
 	      out.write("    \t</div>\r\n");
-	      out.write("\r\n");	      
+	      out.write("\r\n");
+	      
 	      out.write("</footer>");
 	      out.write("</body>\r\n");
 	      out.write("\r\n");

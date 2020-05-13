@@ -155,15 +155,17 @@
 	Your browser does not support the audio element....
 </audio>
 
-<div class="chat">
-    	<ul class="userlistbox"></ul>
-    	<div class="chatbox"></div>
-    		<div class="camerabox">
-      			<video id="received_video" autoplay></video>
-      			<video id="local_video" autoplay muted></video>
-    	</div>
+			<div class="chat">
+    				<ul class="userlistbox"></ul>
+    				<div class="chatbox"></div>
+    				<div class="camerabox">
+      					<video id="received_video" autoplay></video>
+      					<video id="local_video" autoplay muted></video>
+    				</div>
 
-</div>
+			</div>
+			
+<!-----------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
 			<div id="session" >
 				<div id="session-header">
 					<h1 id="session-title"></h1>
