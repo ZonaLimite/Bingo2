@@ -50,9 +50,8 @@
           <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F2C1"></canvas>             
         </td>
     <td class="panel">	          
-    <canvas class="canvasNumero"  id="<%=request.getParameter("cartonSeq") %>F2C2">
-	           
-    </canvas></td>
+    <canvas class="canvasNumero"  id="<%=request.getParameter("cartonSeq") %>F2C2"></canvas>  
+    </td>
       <td class="panel"> 
      	<canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F2C3"></canvas>   
         </td>
@@ -78,12 +77,13 @@
     </tr>
    <tr>
          <td onClick="analizaTecla(this)" class="panel"> 
-          <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F3C1"></canvas>             
+          <video class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F3C1"></video>             
         </td>
     <td class="panel" >	          
-    <canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F3C2">
+    <video class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F3C2"></video>
+    
 	           
-    </canvas></td>
+   </td>
       <td class="panel"> 
      	<canvas class="canvasNumero" id="<%=request.getParameter("cartonSeq") %>F3C3"></canvas>   
         </td>

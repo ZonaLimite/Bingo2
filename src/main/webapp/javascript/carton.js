@@ -344,25 +344,27 @@ function DrawNumberAt(number,id){
   element= document.getElementById(id);
   xWidth= element.width;
   yHeight = element.height;
-  var ctx = element.getContext('2d');
-  
-  ctx.font = '120px Hotel Coral Essex';
-  
-  var textMeter = ctx.measureText(""+number);
-  anchoTexto= textMeter.width;
-  altoTexto = yHeight;
-  x= Math.floor((xWidth/2))- Math.floor((anchoTexto/2)); 
-  y= Math.floor((altoTexto/2))+Math.floor((altoTexto/3));
-  //Numero de color
-  //ctx.fillStyle="#0099FF";
-  ctx.fillStyle="#0099FF";
+ 
 
   //ctx.scale(2,2);
   if(number==0){
 	  //Si no es celda de numero se muestra el icono de bola
 	  //Esto se puede aprovechar para algo
-	  ctx.drawImage(img, 0, 0,xWidth,yHeight);//
+	  //ctx.drawImage(img, 0, 0,xWidth,yHeight);//
+	  element.poster="./images/Loto2.png";
   }else{
+	  var ctx = element.getContext('2d');
+	  
+	  ctx.font = '120px Hotel Coral Essex';
+	  
+	  var textMeter = ctx.measureText(""+number);
+	  anchoTexto= textMeter.width;
+	  altoTexto = yHeight;
+	  x= Math.floor((xWidth/2))- Math.floor((anchoTexto/2)); 
+	  y= Math.floor((altoTexto/2))+Math.floor((altoTexto/3));
+	  //Numero de color
+	  //ctx.fillStyle="#0099FF";
+	  ctx.fillStyle="#0099FF";
 	  ctx.fillText(number,x, y);
   }
 }

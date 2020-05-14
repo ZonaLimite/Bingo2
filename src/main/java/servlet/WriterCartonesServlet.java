@@ -112,14 +112,33 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 	  //	Para luego poder identificarlo en el check de carton
 			carton.setnOrden(nC);
 			vCarton.set(nC-1, carton);
+			int [][]maskCellVideo = carton.getNumeros();
 			
-			String nRef = carton.getnRef()+"";
 			out.write("<table class=\"tablero\">\r\n");
-			out.write("    <tr>\r\n");
-			out.write("         <td  class=\"panel\"> \r\n");
-			out.write("          <canvas class=\"canvasNumero\" id=\"");
-			out.print(""+nC) ;
-			out.write("F1C1\" ></canvas>             \r\n");
+			for(int fila=0;fila<3;fila++) {
+				out.write("    <tr>\r\n");
+				for (int col=0; col < 9; col++) {
+					if(maskCellVideo[fila][col]==0) {
+						out.write("    </td>\r\n");
+						out.write("      <td class=\"panel\"> \r\n");
+						out.write("     \t<video autoplay playsinline=\"true\" class=\"canvasNumero\" id=\"");
+						out.print(""+nC) ;
+						out.write("F"+(fila+1)+"C"+(col+1)+"\"></video>   \r\n");
+	
+					}else {
+						out.write("         <td  class=\"panel\"> \r\n");
+						out.write("          <canvas class=\"canvasNumero\" id=\"");
+						out.print(""+nC) ;
+						out.write("F"+(fila+1)+"C"+(col+1)+"\" ></canvas>             \r\n");
+					}
+
+					
+				}
+			}
+			String nRef = carton.getnRef()+"";
+			
+
+            /*
 			out.write("        </td>\r\n");
 			out.write("    <td class=\"panel\" >\t          \r\n");
 			out.write("  \t\t  <canvas class=\"canvasNumero\" id=\"");
@@ -127,7 +146,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			out.write("F1C2\" ></canvas>\r\n");
 			out.write("    </td>\r\n");
 			out.write("      <td class=\"panel\"> \r\n");
-			out.write("     \t<canvas class=\"canvasNumero\" id=\"");
+			out.write("     \t<video autoplay playsinline=\"true\" class=\"canvasNumero\" id=\"");
 			out.print(""+nC) ;
 			out.write("F1C3\"></canvas>   \r\n");
 			out.write("        </td>\r\n");
@@ -176,7 +195,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			out.write("\t           \r\n");
 			out.write("    </canvas></td>\r\n");
 			out.write("      <td class=\"panel\"> \r\n");
-			out.write("     \t<canvas class=\"canvasNumero\" id=\"");
+			out.write("     \t<video autoplay playsinline=\"true\" class=\"canvasNumero\" id=\"");
 			out.print(""+nC) ;
 			out.write("F2C3\"></canvas>   \r\n");
 			out.write("        </td>\r\n");
@@ -214,7 +233,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			out.write("    </tr>\r\n");
 			out.write("   <tr>\r\n");
 			out.write("         <td class=\"panel\"> \r\n");
-			out.write("          <canvas class=\"canvasNumero\" id=\"");
+			out.write("          <video autoplay playsinline=\"true\" class=\"canvasNumero\" id=\"");
 			out.print(""+nC) ;
 			out.write("F3C1\"></canvas>             \r\n");
 			out.write("        </td>\r\n");
@@ -249,7 +268,12 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			out.print(""+nC) ;
 			out.write("F3C7\"></canvas>               \r\n");
 			out.write("     </td >\r\n");
-			out.write("        <td  class=\"panel\">\r\n");
+			o			out.write("    </td>\r\n");
+			out.write("      <td class=\"panel\"> \r\n");
+			out.write("     \t<video autoplay playsinline=\"true\" class=\"canvasNumero\" id=\"");
+			out.print(""+nC) ;
+			out.write("F1C3\"></canvas>   \r\n");
+ut.write("        <td  class=\"panel\">\r\n");
 			out.write("\t\t<canvas class=\"canvasNumero\" id=\"");
 			out.print(""+nC) ;
 			out.write("F3C8\"></canvas>          \r\n");
@@ -259,6 +283,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 			out.print(""+nC) ;
 			out.write("F3C9\"></canvas>          \r\n");
 			out.write("        </td >\r\n");
+			*/
 			out.write("\r\n");
 			out.write("    </tr>\r\n");
 			out.write("    <tr>\r\n");

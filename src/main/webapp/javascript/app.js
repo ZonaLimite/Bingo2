@@ -35,9 +35,9 @@ function joinSession(usuario,room) {
 			//var subscriber = session.subscribe(event.stream, 'video-container');
 			//var subscriber = session.subscribe(event.stream, targetElement, {insertMode: 'APPEND'});
 			elementTarget = document.getElementById("1F1C1");
-		    var subscriber = session.subscribe(event.stream,"1F1C1" ,{insertMode: 'REPLACE'});
-		    //subscriber = session.subscribe(event.stream, undefined);
-		    //subscriber.addVideoElement(videoElement);
+		    //var subscriber = session.subscribe(event.stream,"1F1C1" ,{insertMode: 'REPLACE'});
+		    var subscriber = session.subscribe(event.stream, undefined);
+		    subscriber.addVideoElement(elementTarget,{insertMode: 'BEFORE'});
 			// When the HTML video has been appended to DOM...
 			subscriber.on('videoElementCreated', (event) => {
 				console.warn("el video elemento creado es :"+event.element);
