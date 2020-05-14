@@ -257,7 +257,28 @@ function iniciar() {
 	
 		$( "#welcome" ).dialog( "open" );		
 }
+// Fin iniatializacion
+function buscarElementoVideoLibre(){
+	videoLibre=undefined;
+	for(i=0;i<=numeroCartonesComprados;i++){
+		var myArrayCartones=myArrayCartonesJuego[i];
+		for(f=0;f<3;f++){
+			for(c=0;c<9;c++){
+				arrayLinea= myArrayCartones[f];
+				number = arrayLinea[c];
+				id=numberCarton+"F"+(f+1)+"C"+(c+1);
+				element= document.getElementById(id);
+				//DrawNumberAt(number,id);
+				if(element.readyState !=0){
+					videoLibre=element;
+					
+				};
 
+			}
+		}
+	}
+	return videoLibre
+}
 function trampaAudio(){
 	audio.style.opacity = "1";
 	audio.src=ipWebServer+"/audio/AudioLinea1.mp3";
@@ -351,7 +372,7 @@ function DrawNumberAt(number,id){
 	  //Si no es celda de numero se muestra el icono de bola
 	  //Esto se puede aprovechar para algo
 	  //ctx.drawImage(img, 0, 0,xWidth,yHeight);//
-	  element.poster="./images/Loto2.png";
+	  if(element.readyState==0)element.poster="./images/Loto2.png";
   }else{
 	  var ctx = element.getContext('2d');
 	  

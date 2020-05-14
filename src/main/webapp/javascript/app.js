@@ -7,11 +7,11 @@ var nickName       // nombre de usuario client
 
 /* OPENVIDU METHODS */
 
-function joinSession(usuario,room) {
+function joinSession(usuario,roomName) {
 	//nickName esla variable de usuario del script original
 	// aqui vamos a entrar con un usuario a traves de gestorsessions.
 	nickName = usuario;
-	sessionName=room;
+	sessionName=roomName;
 	//var nickName = usuario;
 	var userName = "user:"+nickName;
 	//var userName = $("#user").val();
@@ -34,12 +34,16 @@ function joinSession(usuario,room) {
 			// HTML video will be appended to element with 'video-container' id
 			//var subscriber = session.subscribe(event.stream, 'video-container');
 			//var subscriber = session.subscribe(event.stream, targetElement, {insertMode: 'APPEND'});
-			elementTarget = document.getElementById("1F1C1");
+
+			//rutina de busqueda elemento video libre disponible para subscripcion
+			elementTarget = buscarElementoVideoLibre();
 		    //var subscriber = session.subscribe(event.stream,"1F1C1" ,{insertMode: 'REPLACE'});
+			
 		    var subscriber = session.subscribe(event.stream, undefined);
-		    subscriber.addVideoElement(elementTarget,{insertMode: 'BEFORE'});
-			// When the HTML video has been appended to DOM...
-			subscriber.on('videoElementCreated', (event) => {
+		    subscriber.addVideoElement(elementTarget);
+		    
+				// When the HTML video has been appended to DOM...
+				subscriber.on('videoElementCreated', (event) => {
 				console.warn("el video elemento creado es :"+event.element);
 				// Add a new HTML element for the user's name and nickname over its video
 				//appendUserData(event.element, subscriber.stream.connection);
