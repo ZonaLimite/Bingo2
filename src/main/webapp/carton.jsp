@@ -21,6 +21,7 @@
   <script src="javascript/canvasNumeros.js"></script>
   <script src="javascript/carton.js"></script>
   <script src="javascript/chat.js"></script>
+  <script src="javascript/app.js"></script>
 </head>
 <%
 	
@@ -48,7 +49,7 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-  <td width="12%" height="109" padding=0>
+  	<td width="12%" height="109" padding=0>
   	<select name="Usuarios"class="userConect" id="userlistbox" >
 		 <option class="jq">Pepito</option>
 		 <option >Juanito</option>
@@ -67,10 +68,11 @@
   	<button class="jq" id="hangup-button" role="button">
         			Hang Up
       			</button>
-   </td>
+    </td>
   
- <td width="60%" class="tablaInfo" ><table width="100%"  align="center" class="tablaInfo">
-   <tr>
+    <td width="60%" class="tablaInfo" >
+    <table width="100%"  align="center" class="tablaInfo">
+   	<tr>
      <td width="97" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
      <td width="37" id="datoOrdenBola" class="celdaInfo"  ><span class="Comander">
        <label id="labelOrden" class="valorInfo">0</label>
@@ -90,7 +92,6 @@
        <label id="valorBingo" class="valorInfo">0 €</label>
      </span></td>
    </tr>
-
    <tr>
      <td colspan="4" class="valorInfo" >
      <article id="articulo" name="articulo">	
@@ -104,18 +105,15 @@
 	</td>
    </tr>
 	   <tr>
-     <td colspan="4" class="valorInfo" id="comboTexto">
-     <label  id="labelTexto" >combotexto</label>
-	 </td>
-   </tr>      
- </table>
- 
-  
-	
-    <td id="CajaDcha" width="38%">	          
-    <canvas id="canvas_bola" class="canvasBola">
-	           
-    </canvas></td>
+    	 <td colspan="4" class="valorInfo" id="comboTexto">
+     		<label  id="labelTexto" >combotexto</label>
+	 	</td>
+  	</tr>      
+  </table>
+  </td>
+  <td id="CajaDcha" width="38%">	          
+		    <canvas id="canvas_bola" class="canvasBola"></canvas>
+	   </td>
   </tr>
    
 </table>
@@ -165,7 +163,7 @@
 
 			</div>
 			
-<!-----------Espacio para cartones via Servlet (WriterCartonesServlet)  -->
+<!-----------Espacio definicion contenedores videocnferencia  -->
 			<div id="session" >
 				<div id="session-header">
 					<h1 id="session-title"></h1>

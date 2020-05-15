@@ -42,6 +42,7 @@ function joinSession(usuario,roomName) {
 		    var subscriber = session.subscribe(event.stream, undefined);
 		    subscriber.addVideoElement(elementTarget);
 		    
+		   // ES POSBLE QUE ESTO NO SE EJECUTE;POR UTILIZAR LA DEFINICION DIreCTA
 				// When the HTML video has been appended to DOM...
 				subscriber.on('videoElementCreated', (event) => {
 				console.warn("el video elemento creado es :"+event.element);
@@ -52,8 +53,15 @@ function joinSession(usuario,roomName) {
 
 		// On every Stream destroyed...
 		session.on('streamDestroyed', (event) => {
-			// Delete the HTML element with the user's name and nickname
-			removeUserData(event.stream.connection);
+			//en el event  tenemos el stream. y en el Stream  ya traves de su streamManager 
+			//,los videos que estan displayando el Stream con lo que ya podemos hacer lo que 
+			// sea con lso videos dependientes.
+			videosAfectados = event.stream.streamManager.videos;
+			// tambien podemos utilizar la conexion para extraer la informacion del
+			// usuario que ha dejado ede emitir
+			datosDeConnection = event.stream.connection.data;
+			
+			//removeUserData(event.stream.connection);
 		});
 
 		// --- 4) Connect to the session passing the retrieved token and some more data from

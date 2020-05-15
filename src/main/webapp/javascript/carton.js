@@ -259,20 +259,26 @@ function iniciar() {
 }
 // Fin iniatializacion
 function buscarElementoVideoLibre(){
-	videoLibre=undefined;
-	for(i=0;i<=numeroCartonesComprados;i++){
-		var myArrayCartones=myArrayCartonesJuego[i];
+	var videoLibre=undefined;
+	for(i=1;i<=numeroCartonesComprados;i++){
+		arrayCard = myArrayCartonesJuego[i];
+
 		for(f=0;f<3;f++){
 			for(c=0;c<9;c++){
-				arrayLinea= myArrayCartones[f];
-				number = arrayLinea[c];
-				id=numberCarton+"F"+(f+1)+"C"+(c+1);
-				element= document.getElementById(id);
-				//DrawNumberAt(number,id);
-				if(element.readyState !=0){
-					videoLibre=element;
-					
-				};
+				arrayFila= arrayCard[f];
+				number = arrayFila[c];
+				if(number==0){
+					id=(i)+"F"+(f+1)+"C"+(c+1);
+					element= document.getElementById(id);
+					//DrawNumberAt(number,id);
+					console.info("id:"+id+" -->"+element.readyState);
+					if(element.readyState !=0){
+						videoLibre=element;
+						console.info("Cell VideoLibre = "+videoLibre.id)
+						return videoLibre;
+					};
+				}
+
 
 			}
 		}
@@ -357,8 +363,9 @@ function innerHTMLCartones(){
 			borrarNumerosCarton();
 			ventanaCartones.innerHTML=data;
 			activarCartones();
-		
+			
 	});
+	buscarElementoVideoLibre();
 }
 
 function DrawNumberAt(number,id){
