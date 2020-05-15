@@ -93,7 +93,8 @@ var bucle10=null;
 var ipWebServer = location.protocol+"//"+location.host+"/wildfly";
 var usuario;
 var usuariosEnJuego;
-
+var sizeVideoPosterWidth;
+var sizeVideoPosterHeigth;
 function iniciar() {
 	usuario = document.getElementById("usuario").value;
 	salaInUse = document.getElementById("sala");
@@ -272,7 +273,7 @@ function buscarElementoVideoLibre(){
 					element= document.getElementById(id);
 					//DrawNumberAt(number,id);
 					console.info("id:"+id+" -->"+element.readyState);
-					if(element.readyState !=0){
+					if(element.readyState ==0){
 						videoLibre=element;
 						console.info("Cell VideoLibre = "+videoLibre.id)
 						return videoLibre;
@@ -379,7 +380,13 @@ function DrawNumberAt(number,id){
 	  //Si no es celda de numero se muestra el icono de bola
 	  //Esto se puede aprovechar para algo
 	  //ctx.drawImage(img, 0, 0,xWidth,yHeight);//
+	  var sizeVideoPosterWidth = element.clientWidth;
+	  //var sizeVideoPosterHeigth = element.offsetWidth;
+
 	  if(element.readyState==0)element.poster="./images/Loto2.png";
+	  //element.width=sizeVideoPosterWidth;
+	  element.parentElement.width=sizeVideoPosterWidth;
+	  //element.height=sizeVideoPosterHeigth;
   }else{
 	  var ctx = element.getContext('2d');
 	  
