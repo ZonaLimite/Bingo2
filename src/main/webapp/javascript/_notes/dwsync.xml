@@ -5,6 +5,10 @@
 <file name="utilDialogos.js" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="131817376302874302" remote="131817376300000000" Dst="2" />
 <file name="chat.js" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132312038043433983" remote="132312038040000000" Dst="2" />
 <file name="reproductor.js" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132302817733431181" remote="132302817730000000" Dst="2" />
-<file name="openvidu-browser-2.12.0.js" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132331783551420000" remote="132331783550000000" Dst="2" />
 <file name="app.js" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132336841127086404" remote="132336841120000000" Dst="2" />
+<file name="canvasNumeros.js" server="C:/Users/NITRO PC/git/Bingo2/src/main/webapp/" local="131652664877824111" remote="131652664870000000" Dst="2" />
+<file name="carton.js" server="C:/Users/NITRO PC/git/Bingo2/src/main/webapp/" local="132347474631823580" remote="132347474630000000" Dst="2" />
+<file name="chat.js" server="C:/Users/NITRO PC/git/Bingo2/src/main/webapp/" local="132312038043433983" remote="132312038040000000" Dst="2" />
+<file name="app.js" server="C:/Users/NITRO PC/git/Bingo2/src/main/webapp/" local="132347356728083776" remote="132347356720000000" Dst="2" />
+<file name="openvidu-browser-2.13.0.js" server="C:/Users/NITRO PC/git/Bingo2/src/main/webapp/" local="132337702210374643" remote="132337702210000000" Dst="2" />
 </dwsync>

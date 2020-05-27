@@ -82,7 +82,7 @@ public class MiService {
 		}
 	
 		String token = uhov.getToken(sessionName,user);
-		uhov.objetosViduPorSesion();
+		uhov.objetosViduPorSesion(sessionName);
 		Set jugadores = gestorSesions.dameUserBeansEnPortal("jugador");
 		System.out.println("Jugadores Bingo="+jugadores);
 
@@ -108,7 +108,7 @@ public class MiService {
 		String sessionName = (String) sessionNameTokenJSON.get("sessionName").getAsString();
 		String token = (String) sessionNameTokenJSON.get("token").getAsString();
 		res = uhov.removeUser(sessionName, token);
-		uhov.objetosViduPorSesion();
+		uhov.objetosViduPorSesion(sessionName);
 		return res;
 	}
 }

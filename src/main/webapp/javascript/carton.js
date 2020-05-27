@@ -84,6 +84,7 @@ var numeroCartonesComprados;
 var myArrayCartonesJuego= new Array();
 var myArrayNumerosCantados = new Array();
 var myArrayDatosCartones = new Array();
+var myArrayCeldasOcupadas = new Array();
 var ventanaCartones;
 var audio;
 var hayNumerosParaCantar="No";
@@ -95,6 +96,7 @@ var usuario;
 var usuariosEnJuego;
 var sizeVideoPosterWidth;
 var sizeVideoPosterHeigth;
+var botonConf;
 function iniciar() {
 	usuario = document.getElementById("usuario").value;
 	salaInUse = document.getElementById("sala");
@@ -120,13 +122,20 @@ function iniciar() {
 
 	boton_iniciar = document.getElementById("boton_Jugar");
 	boton_iniciar.onclick = function(){ fullscreen(document.getElementById("content"));};
-	
+	botonConf = document.getElementById("video-button");
+	botonConf.onclick = function(){
+		joinSession(usuario,salaInUse.value);
+	}
 	boton_Carton = document.getElementById("boton_Carton");
 	boton_Carton.onclick = function(){
 		refreshDatosCartones();
 		$( "#cartones" ).dialog( "open" );
 	};
-	
+	botonColgar = document.getElementById("hangup-button");
+	botonColgar.onclick = function(){
+		document.getElementById("userlistbox").selectedIndex = "0";
+		hangUpCall();
+	}
 	datoOrdenBola= document.getElementById("datoOrdenBola")
 	canvas=document.getElementById('canvas_bola');
 	lienzo=canvas.getContext('2d');
@@ -134,10 +143,13 @@ function iniciar() {
 	comboTexto = document.getElementById("comboTexto");
 	
 	//Manejador para lanzar la funcion invite de videochat.
-	declararHandlerJQ()
-	
-	obtenerDatosCartones();//Funcion ajax que consulta pocketBingo de sala corriente y obtiene datos cartones
-	//Actualizar lista conectados aqui
+	declararHandlerJQ();
+	//Actualizar constraints para la funcion de llamad uno a uno
+	comprobarConstraits();
+	//Funcion ajax que consulta pocketBingo de sala corriente y obtiene datos cartones
+	obtenerDatosCartones();
+
+
 	innerHTMLCartones();// Dibuja los cartones en pantalla
 	creaSocket(salaInUse.textContent);
 	
@@ -270,12 +282,16 @@ function buscarElementoVideoLibre(){
 				number = arrayFila[c];
 				if(number==0){
 					id=(i)+"F"+(f+1)+"C"+(c+1);
+
 					element= document.getElementById(id);
 					//DrawNumberAt(number,id);
 					console.info("id:"+id+" -->"+element.readyState);
-					if(element.readyState ==0){
+					found = myArrayCeldasOcupadas.find(element => element == id);
+					console.info("IndexArrayFounded="+found);
+					if(element.readyState ==0 & (found==undefined)){
 						videoLibre=element;
-						console.info("Cell VideoLibre = "+videoLibre.id)
+						console.info("Cell VideoLibre = "+videoLibre.id);
+						myArrayCeldasOcupadas.push(videoLibre.id);
 						return videoLibre;
 					};
 				}
@@ -285,6 +301,9 @@ function buscarElementoVideoLibre(){
 		}
 	}
 	return videoLibre
+}
+function verificarCeldaLibre(idCelda){
+	myArrayCeldasOcupadas.find();
 }
 function trampaAudio(){
 	audio.style.opacity = "1";
@@ -301,12 +320,13 @@ function declararHandlerJQ(){
 	    var str = "";
 	    $( "select option:selected" ).each(function() {
 	      str += $( this ).text() + " ";
-	      alert("Seleccionado:"+str);
-	      sala=$("#sala").val();
+	      //alert("Seleccionado:"+str);
+	      sala=$("input#sala").val();
 		  //Comunicacion uno  a uno
-	      //invite(str);
+		  show_InMessage("Marcando ...",null);
+	      invite(str);
 	      //Comunicacion room
-	      joinSession(str,sala); 
+	     //joinSession(str,sala); 
 	    });
 
 	  })
@@ -366,7 +386,11 @@ function innerHTMLCartones(){
 			activarCartones();
 			
 	});
-	buscarElementoVideoLibre();
+	//Automaticamente se pone la conferencia en Linea
+	//removeUser();
+	//leaveSession();
+	//joinSession(usuario,salaInUse.value)
+	
 }
 
 function DrawNumberAt(number,id){
@@ -384,8 +408,10 @@ function DrawNumberAt(number,id){
 	  //var sizeVideoPosterHeigth = element.offsetWidth;
 
 	  if(element.readyState==0)element.poster="./images/Loto2.png";
-	  //element.width=sizeVideoPosterWidth;
-	  element.parentElement.width=sizeVideoPosterWidth;
+	  if(element.clientWidth!=sizeVideoPosterWidth){
+		  element.parentElement.width=sizeVideoPosterWidth;
+	  }
+	  
 	  //element.height=sizeVideoPosterHeigth;
   }else{
 	  var ctx = element.getContext('2d');

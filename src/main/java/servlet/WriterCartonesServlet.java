@@ -38,6 +38,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse res) throws Se
 		if(comando.equals("CartonesJuego")){
 			//Los Cartones se obtienen de un vector de UserBeans para luego registrarlo, modificado ,a el mapa del usuario.
 			Vector<UserBean> vUserBean = gestorSesions.dameVectorUserBeansUsuario(usuario);
+		
 			Iterator<UserBean> itUserBean = vUserBean.iterator();
 			//Iteramos todas posibles conexiones o userbeans de usuario activas
 			while(itUserBean.hasNext()){

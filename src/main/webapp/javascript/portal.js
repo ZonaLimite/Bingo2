@@ -11,7 +11,8 @@ function iniciar2(){
 	sala = document.getElementById("sala");
 	if(perfil.value=="supervisor")url="WriterHeaderBingo?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
 	if(perfil.value=="tablero")url="WriterHeaderTablero?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
-	if(perfil.value=="jugador")url="WriterHeaderCarton?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
+	//if(perfil.value=="jugador")url="WriterHeaderCarton?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
+	if(perfil.value=="jugador")url="carton.jsp?usuario="+usuario.value+"&sala="+sala.value+"&perfil="+perfil.value;
 	if(usuario.value=="null")mostrarHTML("MostrarLogin")
 	else{
 		botonAccessBingo = document.getElementById("AccessBingo");

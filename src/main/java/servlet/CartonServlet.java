@@ -82,7 +82,29 @@ public class CartonServlet extends HttpServlet{
 	      out.write("  <tr>\r\n");
 	      out.write("  <td width=\"12%\" height=\"109\" padding=0>\r\n");
 	      out.write("  \t<select  name=\"Usuarios\"class=\"userConect\" id=\"userlistbox\" >\r\n");
-	      out.write("    </select>\r\n");	      
+	      out.write("    </select>\r\n");
+	
+	      out.write("      <div id=\"separador\"  >\r\n");
+	      out.write("      \t<div class=\"anuladorHigh\" id=\"divNormal\"  >\r\n");
+	      out.write("  \t \t \t<label class=\"labelUser\">Saldo : </label>\r\n");
+	      out.write("  \t  \t\t<label class=\"saldo\" id=\"saldo\">0</label>\r\n");
+	      out.write("  \t  \t\t<a href=Portal.jsp><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\"></a>\r\n");
+	      out.write("  \t  \t\t<label id=\"sala\">");
+	out.print(sala);
+	      out.write("</label>\r\n");
+	      out.write("      \t\t<span class=\"labelUser\">\r\n");
+	      out.write("      \t\t<label class=\"labelUser\">");
+	out.print(user);
+	      out.write("</label>\r\n");
+	      out.write("      \t\t</span>\r\n");
+	      out.write("      \t</div>\r\n");
+	      out.write("\t  \t<div id=\"main-video\" class=\"anuladorHigh2\">\r\n");
+	      out.write("\t  \t\t<video autoplay playsinline=\"true\">\t</video>\r\n");
+	      out.write("            <input class=\"btn btn-large btn-danger\" type=\"button\" id=\"buttonLeaveSession\" onmouseup=\"removeUser(); leaveSession()\" value=\"Leave session\">\r\n");
+	      out.write("\t  \t</div>\r\n");
+	      out.write("      </div>\r\n");	      
+	      
+	      /*
 	      out.write("  \t<label class=\"labelUser\">Saldo : <label class=\"saldo\" id=\"saldo\">0</label> €</label>\r\n");
 	      out.write("  \t<a href=Portal.jsp><img id=\"logo\" src=\"images/IconoBola.jpg\" width=\"56\" height=\"45\" longdesc=\"file:///C|/Users/boga/git/wildfly/src/main/webapp/images/IconoBola.jpg\" ></a>\r\n");
 	      out.write("  \t<label id=\"sala\">");
@@ -92,6 +114,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("    <label class=\"labelUser\">");
 	out.print(user);
 	      out.write("</label>\r\n");
+	      */
 	      out.write("  \t<button id=\"hangup-button\" onclick=\"hangUpCall()\" role=\"button\" >\r\n");
 	      out.write("        \t\t\tHang Up\r\n");
 	      out.write("      \t\t\t</button>\r\n");	      
@@ -191,7 +214,7 @@ public class CartonServlet extends HttpServlet{
 	      out.write("</audio>\r\n");
 
 	      out.write("<!-----------Espacio para cartones via Servlet (WriterCartonesServlet)  -->\r\n");
-	      out.write("\t\t\t<div id=\"session\" >\r\n");
+	      out.write("\t\t\t<div id=\"session\" hidden=true>\r\n");
 	      out.write("\t\t\t\t<div id=\"session-header\">\r\n");
 	      out.write("\t\t\t\t\t<h1 id=\"session-title\"></h1>\r\n");
 	      out.write("\t\t\t\t\t<input class=\"btn btn-large btn-danger\" type=\"button\" id=\"buttonLeaveSession\" onmouseup=\"removeUser(); leaveSession()\" value=\"Leave session\">\r\n");

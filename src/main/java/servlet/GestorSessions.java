@@ -37,6 +37,7 @@ import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -51,6 +52,7 @@ import javax.websocket.Session;
 
 	@Startup
 	@Singleton
+	@Named("gestor")
 	public class GestorSessions implements Serializable {
             /**
               * 

@@ -13,4 +13,5 @@
 <file name="indexVidu.html" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="132331806302560000" remote="132331806300000000" Dst="2" />
 <file name="index.html" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="131485277301356294" remote="131485277300000000" Dst="2" />
 <file name="LoginError.jsp" server="C:/Users/NITRO PC/wildfly-16.0.0.Final/standalone/deployments/wildfly-1.0.war/" local="131485277306196573" remote="131485277300000000" Dst="2" />
+<file name="carton.jsp" server="C:/Users/NITRO PC/git/Bingo2/src/main/webapp/" local="132347529739343335" remote="132347529730000000" Dst="2" />
 </dwsync>

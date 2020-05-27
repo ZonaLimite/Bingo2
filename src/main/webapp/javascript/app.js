@@ -38,7 +38,9 @@ function joinSession(usuario,roomName) {
 			//rutina de busqueda elemento video libre disponible para subscripcion
 			elementTarget = buscarElementoVideoLibre();
 		    //var subscriber = session.subscribe(event.stream,"1F1C1" ,{insertMode: 'REPLACE'});
-			
+			if(elementTarget==undefined){
+				return;
+			}
 		    var subscriber = session.subscribe(event.stream, undefined);
 		    subscriber.addVideoElement(elementTarget);
 		    
@@ -56,7 +58,9 @@ function joinSession(usuario,roomName) {
 			//en el event  tenemos el stream. y en el Stream  ya traves de su streamManager 
 			//,los videos que estan displayando el Stream con lo que ya podemos hacer lo que 
 			// sea con lso videos dependientes.
-			videosAfectados = event.stream.streamManager.videos;
+			idVideoAfectado = event.stream.streamManager.videos[0].id;
+			indexFinded = myArrayCeldasOcupadas.lastIndexOf(idVideoAfectado);
+			myArrayCeldasOcupadas.splice(indexFinded,1);
 			// tambien podemos utilizar la conexion para extraer la informacion del
 			// usuario que ha dejado ede emitir
 			datosDeConnection = event.stream.connection.data;
@@ -64,7 +68,7 @@ function joinSession(usuario,roomName) {
 			//removeUserData(event.stream.connection);
 		});
 
-		// --- 4) Connect to the session passing the retrieved token and some more data from
+		// --- 4) Connect  to the session passing the retrieved token and some more data from
 		//        the client (in this case a JSON with the nickname chosen by the user) ---
 
 		
@@ -75,15 +79,14 @@ function joinSession(usuario,roomName) {
 
 				
 				$('#session-title').text(sessionName);
-				$('#join').hide();
-				$('#session').show();
-
-
-				// Here we check somehow if the user has 'PUBLISHER' role before
-				// trying to publish its stream. Even if someone modified the client's code and
-				// published the stream, it wouldn't work if the token sent in Session.connect
-				// method is not recognized as 'PUBLIHSER' role by OpenVidu Server
+				var divNormal = document.getElementById('divNormal');
+				divNormal.style.display = 'none';
 				
+				var divMain = document.getElementById('main-video');
+				divMain.style.display = 'inherit';
+				$('#session').show();
+				show_InMessage("Videoconferencia activa ...",null)
+
 
 					// --- 6) Test available devices ---
 				    // Solo conectamos si hay dispositivos
@@ -97,7 +100,7 @@ function joinSession(usuario,roomName) {
 								if(devices[i].kind=="videoinput")videosource=undefined;
 							}
 						}
-					
+					    
 						var publisher = OV.initPublisher('video-container', {
 							audioSource: audiosource, // The source of audio. If undefined default microphone
 							videoSource: videosource, // The source of video. If undefined default webcam
@@ -118,7 +121,7 @@ function joinSession(usuario,roomName) {
 							nickName: nickName,
 							userName: userName
 						};
-						initMainVideo(event.element, userData);
+						initLocalVideo(event.element, userData);
 						//appendUserData(event.element, userData);
 						$(event.element).prop('muted', true); // Mute local video
 					});
@@ -141,15 +144,21 @@ function joinSession(usuario,roomName) {
 function leaveSession() {
 
 	// --- 9) Leave the session by calling 'disconnect' method over the Session object ---
-
+	if(session==undefined)return;
 	session.disconnect();
 	session = null;
 
 	// Removing all HTML elements with the user's nicknames
 	cleanSessionView();
-
-	$('#join').show();
-	$('#session').hide();
+	
+	//$('#join').show();
+	var divNormal = document.getElementById('divNormal');
+	divNormal.style.display = 'inherit';
+	
+	var divMain = document.getElementById('main-video');
+	divMain.style.display = 'none';	
+	//$('#session').hide();
+	show_InMessage("Videoconferencia Off ...",null)
 }
 
 /* OPENVIDU METHODS */
@@ -200,6 +209,7 @@ function getToken(callback) {
 }
 
 function removeUser() {
+	if(token==undefined | session==null )return;
 	httpPostRequest(
 		'./rest-api/openvidu/remove-user',
 		{sessionName: sessionName, token: token},
@@ -301,19 +311,26 @@ function cleanMainVideo() {
 
 function addClickListener(videoElement, clientData, serverData) {
 	videoElement.addEventListener('click', function () {
-		var mainVideo = $('#main-video video').get(0);
-		if (mainVideo.srcObject !== videoElement.srcObject) {
-			$('#main-video').fadeOut("fast", () => {
-				$('#main-video p.nickName').html(clientData);
+		var secondvideo = $('#second-video video').get(0);
+		if (secondvideo.srcObject !== videoElement.srcObject) {
+			$('#second-video').fadeOut("fast", () => {
+				$('#second-video p.nickName').html(clientData);
 				
-				mainVideo.srcObject = videoElement.srcObject;
-				$('#main-video').fadeIn("fast");
+				secondvideo.srcObject = videoElement.srcObject;
+				$('#second-video').fadeIn("fast");
 			});
 		}
 	});
 }
 
 function initMainVideo(videoElement, userData) {
+	$('#main-video video').get(0).srcObject = videoElement.srcObject;
+	$('#main-video p.nickName').html(userData.nickName);
+
+	$('#main-video video').prop('muted', true);
+}
+
+function initLocalVideo(videoElement, userData) {
 	$('#main-video video').get(0).srcObject = videoElement.srcObject;
 	$('#main-video p.nickName').html(userData.nickName);
 
@@ -332,6 +349,7 @@ function cleanSessionView() {
 	removeAllUserData();
 	cleanMainVideo();
 	$('#main-video video').css("background", "");
+	myArrayCeldasOcupadas = new Array();
 }
 
 /* APPLICATION BROWSER METHODS */

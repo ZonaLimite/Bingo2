@@ -39,10 +39,12 @@ public class UserHandlerOpenVidu {
 	private String SECRET ="ntmanager";
 	//private HttpSession httpSesion=null;
 
-    
+    private RestClient restClient;
 	
 	 public UserHandlerOpenVidu() {
 		 //initOpenVidu();
+		 RestClient rc = new RestClient();
+		 this.restClient = rc;
 		 
 	 }
 	 private void initOpenVidu() {
@@ -75,23 +77,35 @@ public class UserHandlerOpenVidu {
 
 		// Build tokenOptions object with the serverData and the role
 		TokenOptions tokenOptions = new TokenOptions.Builder().data(serverData).role(OpenViduRole.PUBLISHER).build();
-		
-			if (this.mapSessions.get(sessionName) != null) {
-				// Session already exists
+			Session nameSessionIntern = this.mapSessions.get(sessionName);
+			
+						
+			//Ojo porque no sabemos si en el servidor OPenVidu existe realmente esta sesion.
+			//Hay que hacer alguna comprobacion
+			if (nameSessionIntern != null) {
+		    // Session already exists
 				System.out.println("Existing session " + sessionName);
-				
+				System.out.println("Comprobando session ID:"+nameSessionIntern.getSessionId()+"="+this.restClient.comprobarSession(nameSessionIntern.getSessionId()));
 
 				// Generate a new token with the recently created tokenOptions
 				try {
 					token = this.mapSessions.get(sessionName).generateToken(tokenOptions);
+					// Update our collection storing the new token
+					this.mapSessionNamesTokens.get(sessionName).put(token, OpenViduRole.PUBLISHER);
+					return token;
 				} catch (OpenViduJavaClientException | OpenViduHttpException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.err.println("error al crear token:"+e.getMessage()+"con sesion:"+this.mapSessions.get(sessionName));
+					//e.printStackTrace();
+					String s = this.mapSessions.get(sessionName).getSessionId();
+					try {
+						this.restClient.comprobarSession(s);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						System.err.println("Error al hacer el get Rest "+e1.getMessage());
+						e.printStackTrace();
+					} 
 				}
-				
-				// Update our collection storing the new token
-				this.mapSessionNamesTokens.get(sessionName).put(token, OpenViduRole.PUBLISHER);
-				return token;
 			}
 
 		// New session
@@ -134,7 +148,6 @@ public class UserHandlerOpenVidu {
 	 public Response removeUser( String sessionName, String token ) {
 			// If the session exists
 			if (this.mapSessions.get(sessionName) != null && this.mapSessionNamesTokens.get(sessionName) != null) {
-
 				// If the token exists
 				if (this.mapSessionNamesTokens.get(sessionName).remove(token) != null) {
 					// User left the session
@@ -159,11 +172,16 @@ public class UserHandlerOpenVidu {
 				//return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 	 }
-	 public void objetosViduPorSesion() {
+	 public void objetosViduPorSesion(String idSession) {
 		 //private Map<String, Session> mapSessions
 		 Set salas = mapSessions.entrySet();
 		 System.out.println("Sesiones:");
 		 System.out.println(salas.toString());
+		 if(mapSessionNamesTokens.get(idSession)!=null) {
+			 System.out.println("Tokens:"+mapSessionNamesTokens.get(idSession).size());
+		 }
+		
+		 System.out.println(mapSessionNamesTokens);
 
 
 	 }

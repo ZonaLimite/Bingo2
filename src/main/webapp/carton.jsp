@@ -22,19 +22,27 @@
   <script src="javascript/carton.js"></script>
   <script src="javascript/chat.js"></script>
   <script src="javascript/app.js"></script>
+  <script src="javascript/openvidu-browser-2.13.0.js"></script>
 </head>
 <%
 	
 	mySession = request.getSession(false);
+	String url="Login.jsp";
 	if(mySession!=null){
-		System.out.println("la mySesion "+ mySession.getId());
+		System.out.println("la mySesion "+ mySession.getId()+ " de "+mySession.getAttribute("usuario"));
+ 
+		if(mySession.getAttribute("usuario")==null){
+	        response.sendRedirect(url); //logged-in page // 
+	        return;//Si entramos por jsp es un checkeo de sesion
+		}
+		
 		user = request.getParameter("usuario");
 		sala = request.getParameter("sala");
 		perfil = request.getParameter("perfil");
-
+		
 	}else{
 		System.out.print("la sesion es null");
-        String url="Login.jsp";
+
         response.sendRedirect(url); //logged-in page // 
         return;
 	}
@@ -49,28 +57,33 @@
 
 <table width="100%" border="1" cellspacing="2" class="ano">
   <tr>
-  	<td width="12%" height="109" padding=0>
-  	<select name="Usuarios"class="userConect" id="userlistbox" >
-		 <option class="jq">Pepito</option>
-		 <option >Juanito</option>
-		 <option >Andresito</option>
+  	<td width="12%"  padding=0>
+  	 <div id="contenedorIZq" >
+  	   <div id="separador"  >
+  	     <div class="anuladorHigh" id="divNormal"  >
+  	 	 	<label class="labelUser">Saldo : </label>
+  	  		<label class="saldo" id="saldo">100 €</label><br>
+  	  		<a href=Portal.jsp><img id="logo" src="images/IconoBola.jpg" width="56" height="45"></a><br>
+  	  		
+      		<span class="labelUser">
+      		<label class="labelUser"><%out.print(user);%></label>
+      		</span><br>
+            <button  class="jq2" id="video-button" role="button">
+        			VideoConf.
+      	 	</button>
+      	</div>
+	  	<div id="main-video" class="anuladorHigh2">
+	  		<video width="100%"  autoplay playsinline="true">	</video>
+            <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onmouseup="removeUser(); leaveSession()" value="Leave session">
+	  	</div>
+    </div>
+  	     
+     </div>
 
-    </select>
-  	<label class="labelUser">Saldo : <span id="saldo">
-  	<span id="saldo">
-  	<label class="saldo" id="saldo">0</label>
-  	Euros</label>
-  	<a href=Portal.jsp><img id="logo" src="images/IconoBola.jpg" width="56" height="45"></a>
-  	<label id="sala"><%out.print(sala);%></label>
-    <span class="labelUser">
-    <label class="labelUser"><%out.print(user);%></label>
-    </span>
-  	<button class="jq" id="hangup-button" role="button">
-        			Hang Up
-      			</button>
     </td>
-  
-    <td width="60%" class="tablaInfo" >
+ 
+    
+    <td width="58%" class="tablaInfo" >
     <table width="100%"  align="center" class="tablaInfo">
    	<tr>
      <td width="97" class="celdaInfo"><span class="Comander">BOLA N:</span></td>
@@ -111,9 +124,17 @@
   	</tr>      
   </table>
   </td>
-  <td id="CajaDcha" width="38%">	          
-		    <canvas id="canvas_bola" class="canvasBola"></canvas>
-	   </td>
+  
+  <td width="30%" id="CajaDcha">
+	         
+		<select name="Usuarios"class="userConect" id="userlistbox" >
+		</select>
+        <button class="jq" id="hangup-button" role="button">
+        			Colgar
+      	 </button>
+		<canvas id="canvas_bola" class="canvasBola"></canvas>
+
+	</td>
   </tr>
    
 </table>
@@ -149,31 +170,30 @@
 </div>
 
 <audio id="audioWeb" class="audioClass" controls >
-  	<source src=<%out.print(ipWebServer); %>/media/AudioLinea1.mp3" type="audio/mpeg">
+  	<source src="<%out.print(ipWebServer); %>/audio/AudioLinea1.mp3" type="audio/mpeg">
 	Your browser does not support the audio element....
 </audio>
 
 			<div class="chat">
+
     				<ul class="userlistbox"></ul>
     				<div class="chatbox"></div>
     				<div class="camerabox">
       					<video id="received_video" autoplay></video>
       					<video id="local_video" autoplay muted></video>
     				</div>
-
+			
 			</div>
 			
 <!-----------Espacio definicion contenedores videocnferencia  -->
-			<div id="session" >
+			<div id="session" hidden=true>
 				<div id="session-header">
 					<h1 id="session-title"></h1>
-					<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onmouseup="removeUser(); leaveSession()" value="Leave session">
+					
 				</div>
-				<div id="main-video" class="col-md-6">
-					<p class="nickName"></p>
-					<p class="userName"></p>
-					<video autoplay playsinline="true"></video>
-				</div>
+        <div id="second-video" class="secondVid">
+		<video width="100%" autoplay playsinline="true"></video>
+		</div>	 
 				<div id="video-container" class="col-md-6"></div>
 			</div>	    		
 </footer>

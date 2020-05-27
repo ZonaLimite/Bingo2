@@ -10,13 +10,25 @@ const configuration = {
 
 // Necesidades media requeridas
 var mediaConstraints = {
-		  audio: true, // We want an audio track
-		  video: false // ...and we wan'nt a video track
+		  audio: false, 
+		  video: false 
 };
 var myPeerConnection = null;    // RTCPeerConnection
 var callerUsername = null;
 var targetUsername = null;
 var quienSoy = null;
+//Actualizando contrains presentes en este dispostivo
+function comprobarConstraits(){
+	navigator.mediaDevices.enumerateDevices().then(devices => {
+		if (devices.length > 0){
+			for(i=0; i < devices.length;i++){
+				console.warn("id="+devices[i].deviceId+" clase:"+devices[i].kind+" descripcion:"+devices[i].label);
+				if(devices[i].kind=="audioinput")mediaConstraints.audio=true;
+				if(devices[i].kind=="videoinput")mediaConstraints.video=true
+			}
+		}
+	});
+}
 // Empezando una llamada a un user
 function invite() {
 	  listElem = document.getElementById("userlistbox");
@@ -36,15 +48,15 @@ function invite() {
 	    quienSoy = "caller";
 	    targetUsername = clickedUsername;
 	    createPeerConnectionCaller();
-
+		
 	    navigator.mediaDevices.getUserMedia(mediaConstraints)
 	    .then(function(localStream) {
-	      document.getElementById("local_video").srcObject = localStream;
-	      localStream.getTracks().forEach(track => 
-		  	myPeerConnection.addTrack(track, localStream));
+	      			document.getElementById("local_video").srcObject = localStream;
+	      			localStream.getTracks().forEach(track => 
+		  			myPeerConnection.addTrack(track, localStream));
 	    })
-	    .catch(handleGetUserMediaError);
-	  }
+		.catch(handleGetUserMediaError);
+	    };
 }
 
 // Y por ultimo el Caller tiene reconocimiento de haber sido aceptada
@@ -65,6 +77,7 @@ function handleVideoAnswerMsg(msg) {
 function handleTrackEvent(event) {
 	 //Pendiente revisar estos elementos en el html (video y boton colgar)
 	  document.getElementById("received_video").srcObject = event.streams[0];
+	  show_InMessage("Conexion establecida ...",null);
 	  document.getElementById("hangup-button").disabled = false;
 }
 
@@ -85,7 +98,7 @@ function createPeerConnectionCaller() {
 }
 function createPeerConnectionCally() {
 	  myPeerConnection = new RTCPeerConnection(configuration);
-	  myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
+	  //myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
 	  myPeerConnection.onicecandidate = handleICECandidateEventCally;
 	  myPeerConnection.ontrack = handleTrackEvent;
 	  myPeerConnection.onremovetrack = handleRemoveTrackEvent;
@@ -184,7 +197,10 @@ function handleNewICECandidateMsg(msg) {
 	  var candidate = new RTCIceCandidate(msg.candidate);
 	  console.info("Cally "+usuario+ " regsitrando candidatos del Caller "+ msg.name)
 	  myPeerConnection.addIceCandidate(candidate)
-	    .catch(reportError);
+	    .catch(error => {
+	    	reportError(error);
+	    	return;
+	    });
 }
 
 
@@ -249,7 +265,8 @@ function closeVideoCall() {
 	  targetUsername = null;
 	  callerUsername = null;
 	  quienSoy = null;
-	  console.info("conexion reseteada")
+	  console.info("conexion finalizada");
+	  show_InMessage("conexion finalizada ...",null);
 }
 
 // Manejador de errores del RTCpeerConnection
