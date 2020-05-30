@@ -1,13 +1,12 @@
 package open;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
 
 import io.openvidu.java.client.OpenVidu;
@@ -16,7 +15,6 @@ import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.OpenViduRole;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.TokenOptions;
-import servlet.GestorSessions;
 
 @Startup
 @Singleton
@@ -85,7 +83,7 @@ public class UserHandlerOpenVidu {
 			if (nameSessionIntern != null) {
 		    // Session already exists
 				System.out.println("Existing session " + sessionName);
-				System.out.println("Comprobando session ID:"+nameSessionIntern.getSessionId()+"="+this.restClient.comprobarSession(nameSessionIntern.getSessionId()));
+				//System.out.println("Comprobando session ID:"+nameSessionIntern.getSessionId()+"="+this.restClient.comprobarSession(nameSessionIntern.getSessionId()));
 
 				// Generate a new token with the recently created tokenOptions
 				try {
@@ -98,8 +96,17 @@ public class UserHandlerOpenVidu {
 					System.err.println("error al crear token:"+e.getMessage()+"con sesion:"+this.mapSessions.get(sessionName));
 					//e.printStackTrace();
 					String s = this.mapSessions.get(sessionName).getSessionId();
+					Map<String,String> headers = new ConcurrentHashMap<>();
+					headers.put("Content-Type", "application/x-www-form-urlencoded");
 					try {
-						this.restClient.comprobarSession(s);
+						Map<String,String> resp = this.restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/api/sessions/"+s,headers, null);
+						if(resp.get("status")=="404"){
+							this.mapSessions.remove(sessionName);
+							this.mapSessionNamesTokens.remove(sessionName);
+							//JsonObject jSonObject = (JsonObject) new JsonParser().parse(resp).getAsJsonObject();
+							//No existe esta sesion en OpenVidu
+						}
+				        //System.out.println("numeroSesionesOpen"+jSonObject.get("numberOfElements").getAsString());
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						System.err.println("Error al hacer el get Rest "+e1.getMessage());
@@ -110,7 +117,7 @@ public class UserHandlerOpenVidu {
 
 		// New session
 			System.out.println("New session " + sessionName);
-		
+			//System.out.println("Sesion presente:"+this.restClient.comprobarSession(sessionName));
 
 			// Create a new OpenVidu Session
 			
@@ -174,7 +181,7 @@ public class UserHandlerOpenVidu {
 	 }
 	 public void objetosViduPorSesion(String idSession) {
 		 //private Map<String, Session> mapSessions
-		 Set salas = mapSessions.entrySet();
+		 Set<Entry<String, Session>> salas = mapSessions.entrySet();
 		 System.out.println("Sesiones:");
 		 System.out.println(salas.toString());
 		 if(mapSessionNamesTokens.get(idSession)!=null) {
