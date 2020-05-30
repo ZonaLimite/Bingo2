@@ -2,6 +2,7 @@ package open;
 
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -47,6 +48,15 @@ public class MiService {
     public Response ping() {
         return Response.ok().entity("{Service online:yes}").build();
     }
+	@GET
+    @Path("/config")
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response configOpenVidu() {
+		RestClient restClient = new RestClient();
+		Map<String,String> resp = restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/config",null, null);
+		
+        return Response.ok().entity("{Config Openvidu:"+resp.get("body")+"}").build();
+    }	
 	
 	@GET
 	@Path("/get-token-GET")

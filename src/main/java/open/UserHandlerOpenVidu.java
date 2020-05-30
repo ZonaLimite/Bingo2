@@ -188,8 +188,7 @@ public class UserHandlerOpenVidu {
 			 System.out.println("Tokens:"+mapSessionNamesTokens.get(idSession).size());
 		 }
 		
-		 System.out.println(mapSessionNamesTokens);
-
-
+		 Map<String,String> resp = this.restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/api/sessions",null, null);
+		 
 	 }
 }
