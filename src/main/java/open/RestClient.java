@@ -67,6 +67,7 @@ public class RestClient{
 		
 		String status = response.getStatus()+"";
 		String body = response.readEntity(String.class);
+		
 		System.out.println("Status:"+status);
 		System.out.println("Response:"+body);
         //JsonObject jSonObject = (JsonObject) new JsonParser().parse(body).getAsJsonObject();

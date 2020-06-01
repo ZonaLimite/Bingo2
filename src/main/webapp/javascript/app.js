@@ -92,11 +92,14 @@ function joinSession(usuario,roomName) {
 				    // Solo conectamos si hay dispositivos
 					var audiosource=false;
 					var videosource=false;
+				
 					OV.getDevices().then(devices => {
 						if (devices.length > 0){
 							for(i=0; i < devices.length;i++){
 								console.warn("id="+devices[i].deviceId+" clase:"+devices[i].kind+" descripcion:"+devices[i].label);
-								if(devices[i].kind=="audioinput")audiosource=undefined;
+								var labelDevice=devices[i].label;
+								if(devices[i].kind=="audioinput"){}
+										audiosource=undefined;
 								if(devices[i].kind=="videoinput")videosource=undefined;
 							}
 						}

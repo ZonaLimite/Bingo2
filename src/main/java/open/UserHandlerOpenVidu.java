@@ -32,7 +32,7 @@ public class UserHandlerOpenVidu {
 
 	// URL where our OpenVidu server is listening
 	//Cambiar a localhost cuando vaya al servidor
-	private String OPENVIDU_URL = "https://18.221.239.217:4443";
+	private String OPENVIDU_URL = "https://localhost:4443";
 	// Secret shared with our OpenVidu server
 	private String SECRET ="ntmanager";
 	//private HttpSession httpSesion=null;
@@ -99,10 +99,11 @@ public class UserHandlerOpenVidu {
 					Map<String,String> headers = new ConcurrentHashMap<>();
 					headers.put("Content-Type", "application/x-www-form-urlencoded");
 					try {
-						Map<String,String> resp = this.restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/api/sessions/"+s,headers, null);
+						Map<String,String> resp = this.restClient.apiOpenvidu("GET" ,"https://bogaservice.es:4443/api/sessions/"+s,headers, null);
 						if(resp.get("status")=="404"){
 							this.mapSessions.remove(sessionName);
 							this.mapSessionNamesTokens.remove(sessionName);
+							System.out.println("Purgada sesion descontralada..."); 
 							//JsonObject jSonObject = (JsonObject) new JsonParser().parse(resp).getAsJsonObject();
 							//No existe esta sesion en OpenVidu
 						}
@@ -188,7 +189,7 @@ public class UserHandlerOpenVidu {
 			 System.out.println("Tokens:"+mapSessionNamesTokens.get(idSession).size());
 		 }
 		
-		 Map<String,String> resp = this.restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/api/sessions",null, null);
+		 //Map<String,String> resp = this.restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/api/sessions",null, null);
 		 
 	 }
 }

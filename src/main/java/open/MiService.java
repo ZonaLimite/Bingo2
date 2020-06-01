@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,12 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -53,7 +47,7 @@ public class MiService {
 	@Produces(MediaType.APPLICATION_JSON)
     public Response configOpenVidu() {
 		RestClient restClient = new RestClient();
-		Map<String,String> resp = restClient.apiOpenvidu("GET" ,"https://<YOUR_OPENVIDUSERVER_IP>/config",null, null);
+		Map<String,String> resp = restClient.apiOpenvidu("GET" ,"https://bogaservice.es:4443/config",null, null);
 		
         return Response.ok().entity("{Config Openvidu:"+resp.get("body")+"}").build();
     }	
