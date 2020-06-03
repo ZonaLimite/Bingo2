@@ -97,6 +97,7 @@ var usuariosEnJuego;
 var sizeVideoPosterWidth;
 var sizeVideoPosterHeigth;
 var botonConf;
+var listDev;
 function iniciar() {
 	usuario = document.getElementById("usuario").value;
 	salaInUse = document.getElementById("sala");
@@ -126,6 +127,8 @@ function iniciar() {
 	botonConf.onclick = function(){
 		joinSession(usuario,salaInUse.value);
 	}
+	
+
 	boton_Carton = document.getElementById("boton_Carton");
 	boton_Carton.onclick = function(){
 		refreshDatosCartones();
@@ -234,7 +237,40 @@ function iniciar() {
 			 }
 		  ]
 		});
+	
+	//----------------------------------------------------
+	//Plantilla JQuery para Dialogo Eleccion Device WebRT	
+	$( "#divDevices" ).dialog({ autoOpen: false ,
+		modal: false,
+		height: 'auto',
+		width: 360});
+	$( "#divDevices" ).dialog({
+		create: function( event, ui ) {
+		event.preventDefault();
+		}
+	});
+	$( "#divDevices" ).dialog({
+		open: function( event, ui ) {
+		event.preventDefault();
+
+		}
+	});
+
+	$( "#divDevices" ).dialog({
+		buttons: [
+		{
+			text: "CLOSE",
+			icons: {
+				primary: "ui-icon-heart"
+			},
+			click: function() {
+				$( this ).dialog( "close" );
+			}	
+
+		}]
 		
+	});	
+	
 		//Plantilla JQuery para Dialogo Welcome/	
 		$( "#welcome" ).dialog({ autoOpen: false ,
 			modal: true,
@@ -267,8 +303,8 @@ function iniciar() {
 			}]
 			
 		});
-	
-		$( "#welcome" ).dialog( "open" );		
+		$( "#welcome" ).dialog( "open" );
+
 }
 // Fin iniatializacion
 function buscarElementoVideoLibre(){
@@ -333,6 +369,29 @@ function declararHandlerJQ(){
 	  .trigger( "change" );
 
 }
+function declararHandlerEleccionDevicesWEbRT(){
+	//Manejador para lanzar la funcion invite de videochat
+	$( "#idDevices" )
+	  .change(function() {
+		 
+	    var str = "";
+	    $( "select option:selected" ).each(function() {
+	    	
+	    	index = $( this ).index();
+	    	if(index==0)return;
+	      //alert("Seleccionado:"+str);
+	      //sala=$("input#sala").val();
+		  //Comunicacion uno  a uno
+		  show_InMessage("Seleccion dispostivo ... id ="+index,null);
+	      //invite(str);
+	      //Comunicacion room
+	     //joinSession(str,sala); 
+	    });
+
+	  })
+	  .trigger( "change" );
+
+}
 function hola(event){
 	alert("Hola");
 }
@@ -368,6 +427,26 @@ function handleUserlistInvite(users) {
 	  listElem.disabled=false;
 	  
 	  //declararHandlerJQ();
+	}
+function handleUserlistDevicesWebRT(devices) {
+	
+	  
+	  //devices es un array con los dispositivos detectados
+	  var i;
+	  listDev=document.getElementById("idDevices");
+	  listDev.disabled=true;
+	  var InnerHtml="";
+	  InnerHtml += "<option>Dispositivos:</option>";
+	  parte1="<option class='jq'>";
+	  
+	  for (i=0;i<devices.length;i++){
+		  		InnerHtml+=parte1+devices[i].label+"</option>";
+	  }
+	  listDev.innerHTML=InnerHtml;
+	 
+	  listDev.disabled=false;
+	  
+	  
 	}
 
 function innerHTMLCartones(){

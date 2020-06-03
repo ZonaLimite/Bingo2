@@ -78,13 +78,6 @@ function joinSession(usuario,roomName) {
 				// --- 5) Set page layout for active call ---
 
 				
-				$('#session-title').text(sessionName);
-				var divNormal = document.getElementById('divNormal');
-				divNormal.style.display = 'none';
-				
-				var divMain = document.getElementById('main-video');
-				divMain.style.display = 'inherit';
-				$('#session').show();
 				show_InMessage("Videoconferencia activa ...",null)
 
 
@@ -98,12 +91,14 @@ function joinSession(usuario,roomName) {
 							for(i=0; i < devices.length;i++){
 								console.warn("id="+devices[i].deviceId+" clase:"+devices[i].kind+" descripcion:"+devices[i].label);
 								var labelDevice=devices[i].label;
-								if(devices[i].kind=="audioinput"){}
-										audiosource=undefined;
+								if(devices[i].kind=="audioinput")audiosource=undefined;
 								if(devices[i].kind=="videoinput")videosource=undefined;
 							}
+							toggleDivVideoConferencia();
+							handleUserlistDevicesWebRT(devices);
+							
 						}
-					    
+						
 						var publisher = OV.initPublisher('video-container', {
 							audioSource: audiosource, // The source of audio. If undefined default microphone
 							videoSource: videosource, // The source of video. If undefined default webcam
@@ -134,16 +129,35 @@ function joinSession(usuario,roomName) {
 
 					session.publish(publisher);
 				});
+				
 
 			})
 			.catch(error => {
 				console.warn('There was an error connecting to the session:', error.code, error.message);
 			});
 	});
-
+	
 	return false;
 }
-
+function toggleDivVideoConferencia(){
+	
+	$('#session-title').text(sessionName);
+	var divNormal = document.getElementById('divNormal');
+	divNormal.style.display = 'none';
+	
+	var divMain = document.getElementById('main-video');
+	divMain.style.display = 'inherit';
+	
+		
+	$('#session').show();
+	
+	botonDevice = document.getElementById("device-button");
+	botonDevice.onclick = function(){
+		$( "#divDevices" ).dialog( "open" );
+		declararHandlerEleccionDevicesWEbRT();
+	}
+	
+}
 function leaveSession() {
 
 	// --- 9) Leave the session by calling 'disconnect' method over the Session object ---

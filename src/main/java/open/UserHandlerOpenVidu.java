@@ -32,7 +32,8 @@ public class UserHandlerOpenVidu {
 
 	// URL where our OpenVidu server is listening
 	//Cambiar a localhost cuando vaya al servidor
-	private String OPENVIDU_URL = "https://localhost:4443";
+	private String OPENVIDU_URL = "https://18.221.239.217:4443";
+	
 	// Secret shared with our OpenVidu server
 	private String SECRET ="ntmanager";
 	//private HttpSession httpSesion=null;

@@ -73,6 +73,9 @@
       	 	</button>
       	</div>
 	  	<div id="main-video" class="anuladorHigh2">
+	  	    <button  class="jq2" id="device-button" role="button">
+        			¿Dispositivo?
+      	 	</button>
 	  		<video width="100%"  autoplay playsinline="true">	</video>
             <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onmouseup="removeUser(); leaveSession()" value="Leave session">
 	  	</div>
@@ -166,6 +169,15 @@
 <div id="welcome" title="¡BIENVENIDOS!"> 
 	<form >
 		<label >Pulsa "START" para comenzar</label>
+	</form>	
+</div>
+<!-------------------Formulario para Jquery Eleccion devices -->
+<div id="divDevices" title="Cambio Dispositivo audio-video"> 
+	<form >
+		<label >Dispositivos disponibles</label>
+		<select name="devices"class="userConect" id="idDevices" >
+	  		
+			</select>
 	</form>	
 </div>
 
