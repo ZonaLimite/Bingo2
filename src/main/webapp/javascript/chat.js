@@ -19,6 +19,7 @@ var targetUsername = null;
 var quienSoy = null;
 //Actualizando contrains presentes en este dispostivo
 function comprobarConstraits(){
+	if(navigator.mediaDevices==null)return;
 	navigator.mediaDevices.enumerateDevices().then(devices => {
 		if (devices.length > 0){
 			for(i=0; i < devices.length;i++){

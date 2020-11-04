@@ -19,7 +19,11 @@ import javax.ws.rs.core.Response;
 public class RestClient{
 	public static void main(String args[]) {
 		RestClient restC = new RestClient();
-        restC.apiOpenvidu("GET","https://bogaservice.es:4443/api/sessions",null,null);
+        //restC.apiOpenvidu("GET","https://bogaservice.es:4443/api/sessions",null,null);
+		Map<String,String> entityMap =  restC.executeApiRest("Get", "http://localhost:8080/GatewayJava.war/rest-api/openvidu/ping",null, null);
+		System.out.println("Status:"+entityMap.get("Status"));
+		System.out.println("Body:"+entityMap.get("Body"));
+		
 	}
 	public Map<String,String> apiOpenvidu(String operation ,String url, Map<String,String> headers, String bodyJSON) 
 	{
@@ -80,4 +84,56 @@ public class RestClient{
         
         return myEntity;
 	}
+	public Map<String,String> executeApiRest(String operation ,String url, Map<String,String> headers, String bodyJSON) 
+	{
+		Map<String,String> myEntity = new ConcurrentHashMap<>();
+		Response response = null;
+		
+		Client client = ClientBuilder.newClient();
+		WebTarget resourceTarget = client.target(url);
+
+		// obtener el Invocacion.Builder
+		Invocation.Builder invocation = (Builder) resourceTarget.request();
+
+        
+		//aplicar Headers
+        if(headers!=null) {
+        	Set<String> keyHeaders = headers.keySet();
+        	Iterator<String> itKeys = keyHeaders.iterator();      
+        	while(itKeys.hasNext()) {
+        		String key = itKeys.next();
+        		((Builder) invocation).header(key,headers.get(key));
+        	}
+        }
+        
+		//Solicitar ejecucion
+        //Invoke the request using generic interface
+        switch(operation) {
+        	case "GET":
+        		response = ((Builder) invocation).buildGet().invoke();
+        		break;
+        	case "POST":
+        		Entity<String> entity = Entity.text(bodyJSON);
+        		response=((Builder) invocation).buildPost(entity).invoke();
+        		break;
+        	case "DELETE":	
+        		response =((Builder) invocation).buildDelete().invoke();
+        }
+	
+		
+		String status = response.getStatus()+"";
+		String body = response.readEntity(String.class);
+		
+		System.out.println("Status:"+status);
+		System.out.println("Response:"+body);
+        //JsonObject jSonObject = (JsonObject) new JsonParser().parse(body).getAsJsonObject();
+        
+        //System.out.println("numeroSesionesOpen"+jSonObject.get("numberOfElements").getAsString());
+        response.close();  // You should close connections!
+	   
+        myEntity.put("status", status);
+        myEntity.put("body", body);
+        
+        return myEntity;
+	}	
 }

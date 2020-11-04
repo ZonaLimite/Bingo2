@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
-import javax.ejb.Singleton;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -104,4 +103,31 @@ public class ConnectionManager {
     
     return conSQL;
     }
+    
+    //Conexion a origen de datos tipo ODBC
+    public static Connection getConexionODBC(String origenDatosODBC,String user,String pwd, String schema ){
+        Connection conSQL = null;
+        Properties connectionProps = new Properties();//
+        connectionProps.put("user", user);
+        connectionProps.put("password", pwd);
+
+          try {
+               try {
+            	   Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+               } catch (ClassNotFoundException e) {
+            	   // TODO Auto-generated catch block
+            	   e.printStackTrace();
+               }
+            
+               String cadena = "jdbc:odbc:"+origenDatosODBC;
+               System.out.println("Cadena conexion:"+ cadena);
+               conSQL = DriverManager.getConnection(cadena,connectionProps);
+               System.out.println("Connected to database ODBC "+ origenDatosODBC );
+           } catch (SQLException ex) {
+               Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
+           }
+      
+        
+        return conSQL;
+        }    
 }

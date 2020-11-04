@@ -31,8 +31,8 @@ public class UserHandlerOpenVidu {
 	private Map<String, Map<String, OpenViduRole>> mapSessionNamesTokens = new ConcurrentHashMap<>();
 
 	// URL where our OpenVidu server is listening
-	//Cambiar a localhost cuando vaya al servidor
-	private String OPENVIDU_URL = "https://18.221.239.217:4443";
+	//Cambiar a localhost cuando vaya al servidor con IP de dominio
+	private String OPENVIDU_URL = "https://bogaservic.es:4443";
 	
 	// Secret shared with our OpenVidu server
 	private String SECRET ="ntmanager";
