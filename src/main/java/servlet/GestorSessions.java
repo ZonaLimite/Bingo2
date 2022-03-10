@@ -55,7 +55,7 @@ import javax.websocket.Session;
 	@Named("gestor")
 	public class GestorSessions implements Serializable {
             /**
-              * 
+              * g
             */
 		@Resource(lookup = "java:jboss/datasources/MySQLDS2")
 		private static javax.sql.DataSource datasource ;
