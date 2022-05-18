@@ -23,9 +23,9 @@ public class UserDAO
       	 username.contains("\"") ||
       	 username.contains("<")  ||
       	 username.contains(">")){
-    	 //Hay caracteres no permitidos
+    	 //Hay caracteres no permitidos, Prevencion Inyeccion SQL
     	 bean.setValid(false);
-    	 System.out.println("Detectados caracteres no permitidos en campo usuario");
+    	 System.out.println("Detectados caracteres no permitidos en campo usuario¡¡¡");
     	 return bean;
       }
       	 
