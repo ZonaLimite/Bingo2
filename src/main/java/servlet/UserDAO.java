@@ -17,7 +17,18 @@ public class UserDAO
 	
       String username = bean.getUsername();    
       String password = bean.getPassword();   
-	    
+	  //Comprobacion Inyeccion de codigo SQl
+      if (username.contains("\\") || 
+      	 username.contains("'") ||
+      	 username.contains("\"") ||
+      	 username.contains("<")  ||
+      	 username.contains(">")){
+    	 //Hay caracteres no permitidos
+    	 bean.setValid(false);
+    	 System.out.println("Detectados caracteres no permitidos en campo usuario");
+    	 return bean;
+      }
+      	 
       String searchQuery =
             "select * from usuarios where User='"
                      + username
@@ -26,8 +37,8 @@ public class UserDAO
                      + "'";
 	    
    // "System.out.println" prints in the console; Normally used to trace the process
-   System.out.println("Your user name is " + username);          
-   System.out.println("Your password is " + password);
+   //System.out.println("Your user name is " + username);          
+   //System.out.println("Your password is " + password);
    log.info("Query: "+searchQuery);
 	    
    try 
